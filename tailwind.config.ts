@@ -17,6 +17,7 @@ const config: Config = {
         background: "#ffffff",
         foreground: "#363636",
         "primary-foreground": "#363636",
+        "invoice-blue": "#0b2d65", // New custom color
       },
     },
   },

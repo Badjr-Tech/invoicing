@@ -82,7 +82,7 @@ export default function InvoicingPageClient({
         {/* Right Column: Invoice Cart */}
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Invoice</h2>
-          <form action={formAction} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+          <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-lg shadow-md text-white">
             <div>
               <label htmlFor="clientId" className="block text-sm font-medium text-gray-700">
                 Client
