@@ -1,6 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { InferSelectModel } from "drizzle-orm";
+import { invoices, businesses, clients, services } from "@/db/schema";
+
+type Invoice = InferSelectModel<typeof invoices>;
+type Business = InferSelectModel<typeof businesses>;
+type Client = InferSelectModel<typeof clients>;
+type Service = InferSelectModel<typeof services>;
 
 export default function RecordsPageClient({
   invoices,
@@ -8,10 +15,10 @@ export default function RecordsPageClient({
   clients,
   services,
 }: {
-  invoices: any[]; // TODO: Define proper types
-  businesses: any[]; // TODO: Define proper types
-  clients: any[]; // TODO: Define proper types
-  services: any[]; // TODO: Define proper types
+  invoices: Invoice[];
+  businesses: Business[];
+  clients: Client[];
+  services: Service[];
 }) {
   const [activeTab, setActiveTab] = useState('invoices');
 
