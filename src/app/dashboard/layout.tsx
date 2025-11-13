@@ -87,12 +87,6 @@ export default async function DashboardLayout({
                 Admin Users
               </Link>
               <Link
-                href="/dashboard/admin/pitch-competition"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-              >
-                Events
-              </Link>
-              <Link
                 href="/dashboard/admin/hth-class"
                 className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
               >

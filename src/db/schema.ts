@@ -143,6 +143,13 @@ export const enrollments = pgTable('enrollments', {
   enrollmentDate: timestamp('enrollment_date', { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const passwordResetTokens = pgTable('password_reset_tokens', {
+  id: serial('id').primaryKey(),
+  token: text('token').notNull().unique(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+});
+
 // --- Types for InferSelectModel ---
 export type Demographic = InferSelectModel<typeof demographics>;
 export type Location = InferSelectModel<typeof locations>;
@@ -164,6 +171,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   enrollments: many(enrollments),
   createdPitchCompetitionEvents: many(pitchCompetitionEvents),
   pitchSubmissions: many(pitchSubmissions),
+  passwordResetTokens: many(passwordResetTokens),
 }));
 
 export const businessesRelations = relations(businesses, ({ one }) => ({
@@ -244,5 +252,12 @@ export const enrollmentsRelations = relations(enrollments, ({ one }) => ({
   class: one(classes, {
     fields: [enrollments.classId],
     references: [classes.id],
+  }),
+}));
+
+export const passwordResetTokensRelations = relations(passwordResetTokens, ({ one }) => ({
+  user: one(users, {
+    fields: [passwordResetTokens.userId],
+    references: [users.id],
   }),
 }));
