@@ -169,6 +169,14 @@ export const clients = pgTable('clients', {
   email: text('email').notNull(),
 });
 
+export const services = pgTable('services', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  name: text('name').notNull(),
+  description: text('description'),
+  price: numeric('price', { precision: 10, scale: 2 }).notNull(),
+});
+
 // --- Types for InferSelectModel ---
 export type Demographic = InferSelectModel<typeof demographics>;
 export type Location = InferSelectModel<typeof locations>;
@@ -193,6 +201,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   passwordResetTokens: many(passwordResetTokens),
   invoices: many(invoices),
   clients: many(clients),
+  services: many(services),
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
@@ -205,6 +214,13 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
 export const clientsRelations = relations(clients, ({ one }) => ({
   user: one(users, {
     fields: [clients.userId],
+    references: [users.id],
+  }),
+}));
+
+export const servicesRelations = relations(services, ({ one }) => ({
+  user: one(users, {
+    fields: [services.userId],
     references: [users.id],
   }),
 }));

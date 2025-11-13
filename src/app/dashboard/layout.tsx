@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/app/login/actions";
 import LogoutButton from "@/app/components/LogoutButton";
 import Link from "next/link";
+import Image from "next/image";
 import { getAllUserBusinesses } from "./businesses/actions";
 // import AdminViewToggle from "./components/AdminViewToggle"; // New import
 // import { headers, cookies } from "next/headers"; // New import for searchParams and cookies
@@ -33,7 +34,7 @@ export default async function DashboardLayout({
           <LogoutButton />
         </div>
         <div className="mb-6 text-center">
-          <img src="/yellow.png" alt="Logo" className="h-24 w-auto mx-auto" />
+          <Image src="/yellow.png" alt="Logo" width={96} height={96} className="mx-auto" />
         </div>
         <nav className="space-y-2 font-semibold text-white">
           <Link
