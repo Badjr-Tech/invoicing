@@ -98,6 +98,12 @@ export default async function DashboardLayout({
             Invoicing
           </Link>
           <Link
+            href="/dashboard/invoices"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            View Invoices
+          </Link>
+          <Link
             href="/dashboard/clients"
             className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
           >
