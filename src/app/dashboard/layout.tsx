@@ -34,7 +34,7 @@ export default async function DashboardLayout({
           <LogoutButton />
         </div>
         <div className="mb-6 text-center">
-          <Image src="/yellow.png" alt="Logo" width={96} height={96} className="mx-auto" />
+          <Image src="/yellow.png" alt="Logo" width={72} height={72} className="mx-auto" />
         </div>
         <nav className="space-y-2 font-semibold text-white">
           <Link
