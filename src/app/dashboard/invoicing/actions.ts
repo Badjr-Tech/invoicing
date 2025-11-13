@@ -18,8 +18,12 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   }
 
   const clientId = parseInt(formData.get("clientId") as string);
-  const serviceDescription = formData.get("serviceDescription") as string;
-  const amount = parseFloat(formData.get("amount") as string);
+  const services = JSON.parse(formData.get("services") as string);
+  const totalAmount = parseFloat(formData.get("totalAmount") as string);
+
+  if (!clientId || !services || services.length === 0) {
+    return { message: "", error: "Please select a client and at least one service." };
+  }
 
   try {
     const client = await db.query.clients.findFirst({
@@ -30,12 +34,14 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
       return { message: "", error: "Client not found." };
     }
 
+    const serviceDescription = services.map((s: any) => s.name).join(", ");
+
     await db.insert(invoices).values({
       userId: session.user.id,
       clientName: client.name,
       clientEmail: client.email,
       serviceDescription,
-      amount,
+      amount: totalAmount,
     });
 
     revalidatePath("/dashboard/invoicing");
