@@ -162,6 +162,13 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
   expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });
 
+export const clients = pgTable('clients', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+});
+
 // --- Types for InferSelectModel ---
 export type Demographic = InferSelectModel<typeof demographics>;
 export type Location = InferSelectModel<typeof locations>;
@@ -185,11 +192,19 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   pitchSubmissions: many(pitchSubmissions),
   passwordResetTokens: many(passwordResetTokens),
   invoices: many(invoices),
+  clients: many(clients),
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
   user: one(users, {
     fields: [invoices.userId],
+    references: [users.id],
+  }),
+}));
+
+export const clientsRelations = relations(clients, ({ one }) => ({
+  user: one(users, {
+    fields: [clients.userId],
     references: [users.id],
   }),
 }));
