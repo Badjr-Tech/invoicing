@@ -31,6 +31,24 @@ export default async function DashboardLayout({
             Home
           </Link>
           <Link
+            href="/dashboard/messages"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            Messages
+          </Link>
+          <Link
+            href="/dashboard/resources"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            Resources
+          </Link>
+          <Link
+            href="/dashboard/admin/businesses/manage"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            Business search
+          </Link>
+          <Link
             href="/dashboard/hth-class"
             className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
           >
@@ -51,6 +69,24 @@ export default async function DashboardLayout({
               - {business.businessName}
             </Link>
           ))}
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Financial Tools
+          </h2>
+          <Link
+            href="/dashboard/invoicing"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            Invoicing
+          </Link>
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Advice & Info
+          </h2>
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Business Tools
+          </h2>
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Products
+          </h2>
           {isAdmin && (
             <>
               <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
