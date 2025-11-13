@@ -70,6 +70,12 @@ export default async function DashboardLayout({
             </Link>
           ))}
           <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Advice & Info
+          </h2>
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Business Tools
+          </h2>
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
             Financial Tools
           </h2>
           <Link
@@ -78,12 +84,6 @@ export default async function DashboardLayout({
           >
             Invoicing
           </Link>
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
-            Advice & Info
-          </h2>
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
-            Business Tools
-          </h2>
           <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
             Products
           </h2>
