@@ -5,6 +5,13 @@ import { useFormState } from "react-dom";
 import { createInvoice } from "./actions";
 import { generateInvoicePDF } from "./pdf";
 
+interface Service {
+  id: number;
+  name: string;
+  description: string | null;
+  price: string; // Price is stored as string in Drizzle schema
+}
+
 export type FormState = {
   message: string;
   error: string;
@@ -21,10 +28,10 @@ export default function InvoicingPageClient({
   services,
 }: {
   clients: { id: number; name: string; email: string }[];
-  services: { id: number; name: string; description: string | null; price: string }[];
+  services: Service[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
-  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+  const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
 
   useEffect(() => {
@@ -40,7 +47,7 @@ export default function InvoicingPageClient({
     }
   }, [state]);
 
-  const handleAddService = (service: any) => {
+  const handleAddService = (service: Service) => {
     setSelectedServices([...selectedServices, service]);
   };
 

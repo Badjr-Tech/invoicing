@@ -6,6 +6,11 @@ import { getSession } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
 import { eq, and } from "drizzle-orm";
 
+interface Service {
+  name: string;
+  price: string;
+}
+
 export type FormState = {
   message: string;
   error: string;
@@ -24,7 +29,7 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   }
 
   const clientId = parseInt(formData.get("clientId") as string);
-  const services = JSON.parse(formData.get("services") as string);
+  const services: Service[] = JSON.parse(formData.get("services") as string);
   const totalAmount = parseFloat(formData.get("totalAmount") as string);
 
   if (!clientId || !services || services.length === 0) {
@@ -44,7 +49,7 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
       where: and(eq(businesses.userId, session.user.id), eq(businesses.isArchived, false)),
     });
 
-    const serviceDescription = services.map((s: any) => s.name).join(", ");
+    const serviceDescription = services.map((s: Service) => s.name).join(", ");
 
     const [newInvoice] = await db.insert(invoices).values({
       userId: session.user.id,
