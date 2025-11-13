@@ -109,9 +109,12 @@ export default async function DashboardLayout({
           >
             Services
           </Link>
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+          <Link
+            href="/dashboard/products"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-lg font-semibold uppercase mt-6 mb-2"
+          >
             Products
-          </h2>
+          </Link>
           {isAdmin && (
             <>
               <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
