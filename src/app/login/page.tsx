@@ -66,6 +66,16 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
+        <div className="mt-4 text-center">
+          <Link href="/forgot-password">
+            <a className="text-sm text-foreground hover:underline">Forgot Password?</a>
+          </Link>
+        </div>
+        <div className="mt-2 text-center">
+          <Link href="/create-account">
+            <a className="text-sm text-foreground hover:underline">Create an account</a>
+          </Link>
+        </div>
       </div>
     </div>
   );
