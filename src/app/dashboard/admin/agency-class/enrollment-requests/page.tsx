@@ -8,13 +8,13 @@ export default async function EnrollmentRequestsPage() {
   async function handleAccept(enrollmentId: number) {
     'use server';
     await acceptEnrollment(enrollmentId);
-    revalidatePath('/dashboard/admin/hth-class/enrollment-requests');
+    revalidatePath('/dashboard/admin/agency-class/enrollment-requests');
   }
 
   async function handleReject(enrollmentId: number) {
     'use server';
     await rejectEnrollment(enrollmentId);
-    revalidatePath('/dashboard/admin/hth-class/enrollment-requests');
+    revalidatePath('/dashboard/admin/agency-class/enrollment-requests');
   }
 
   return (

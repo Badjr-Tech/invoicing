@@ -9,7 +9,7 @@ export async function createClass(formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const teacherId = parseInt(formData.get('teacherId') as string);
-  const type = formData.get('type') as 'pre-course' | 'hth-course';
+  const type = formData.get('type') as 'pre-course' | 'agency-course';
   const syllabusUrl = formData.get('syllabusUrl') as string | null; // New syllabusUrl field
 
   if (!title || !teacherId || !type) {
@@ -24,13 +24,13 @@ export async function createClass(formData: FormData) {
     syllabusUrl, // Added syllabusUrl
   });
 
-  revalidatePath('/dashboard/admin/hth-class');
+  revalidatePath('/dashboard/admin/agency-class');
 }
 
 export async function updateClass(classId: number, formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
-  const type = formData.get('type') as 'pre-course' | 'hth-course';
+  const type = formData.get('type') as 'pre-course' | 'agency-course';
   const syllabusUrl = formData.get('syllabusUrl') as string | null; // New syllabusUrl field
 
   if (!title || !type) {
@@ -47,13 +47,13 @@ export async function updateClass(classId: number, formData: FormData) {
     })
     .where(eq(classes.id, classId));
 
-  revalidatePath('/dashboard/admin/hth-class');
-  revalidatePath(`/dashboard/admin/hth-class/edit-class/${classId}`);
+  revalidatePath('/dashboard/admin/agency-class');
+  revalidatePath(`/dashboard/admin/agency-class/edit-class/${classId}`);
 }
 
 export async function deleteClass(classId: number) {
   await db.delete(classes).where(eq(classes.id, classId));
-  revalidatePath('/dashboard/admin/hth-class');
+  revalidatePath('/dashboard/admin/agency-class');
 }
 
 export async function getClassById(classId: number) {
@@ -87,8 +87,8 @@ export async function createLesson(formData: FormData) {
     order,
   });
 
-  revalidatePath('/dashboard/admin/hth-class');
-  revalidatePath(`/dashboard/admin/hth-class/edit-class/${classId}`);
+  revalidatePath('/dashboard/admin/agency-class');
+  revalidatePath(`/dashboard/admin/agency-class/edit-class/${classId}`);
 }
 
 export async function updateLesson(lessonId: number, formData: FormData) {
@@ -109,15 +109,15 @@ export async function updateLesson(lessonId: number, formData: FormData) {
     })
     .where(eq(lessons.id, lessonId));
 
-  revalidatePath('/dashboard/admin/hth-class');
+  revalidatePath('/dashboard/admin/agency-class');
   // Revalidate paths for any class that might contain this lesson
   // This might need to be more specific if lessons can belong to multiple classes
-  revalidatePath(`/dashboard/admin/hth-class/edit-lesson/${lessonId}`);
+  revalidatePath(`/dashboard/admin/agency-class/edit-lesson/${lessonId}`);
 }
 
 export async function deleteLesson(lessonId: number) {
   await db.delete(lessons).where(eq(lessons.id, lessonId));
-  revalidatePath('/dashboard/admin/hth-class');
+  revalidatePath('/dashboard/admin/agency-class');
 }
 
 export async function getLessonById(lessonId: number) {
@@ -169,8 +169,8 @@ export async function requestEnrollment(userId: number, classId: number) {
     status: 'pending', // Default to pending for requests
   });
 
-  revalidatePath(`/dashboard/admin/hth-class/enrollment-requests`); // Revalidate admin requests page
-  revalidatePath(`/dashboard/hth-class`); // Revalidate user class list
+  revalidatePath(`/dashboard/admin/agency-class/enrollment-requests`); // Revalidate admin requests page
+  revalidatePath(`/dashboard/agency-class`); // Revalidate user class list
 }
 
 export async function acceptEnrollment(enrollmentId: number) {
@@ -178,8 +178,8 @@ export async function acceptEnrollment(enrollmentId: number) {
     .set({ status: 'enrolled' })
     .where(eq(enrollments.id, enrollmentId));
 
-  revalidatePath(`/dashboard/admin/hth-class/enrollment-requests`);
-  revalidatePath(`/dashboard/hth-class`);
+  revalidatePath(`/dashboard/admin/agency-class/enrollment-requests`);
+  revalidatePath(`/dashboard/agency-class`);
   // Revalidate class detail page if needed
 }
 
@@ -188,8 +188,8 @@ export async function rejectEnrollment(enrollmentId: number) {
     .set({ status: 'rejected' })
     .where(eq(enrollments.id, enrollmentId));
 
-  revalidatePath(`/dashboard/admin/hth-class/enrollment-requests`);
-  revalidatePath(`/dashboard/hth-class`);
+  revalidatePath(`/dashboard/admin/agency-class/enrollment-requests`);
+  revalidatePath(`/dashboard/agency-class`);
   // Revalidate class detail page if needed
 }
 

@@ -7,8 +7,9 @@ export const businessTypeEnum = pgEnum('business_type', ['Sole Proprietorship', 
 export const businessTaxStatusEnum = pgEnum('business_tax_status', ['S-Corporation', 'C-Corporation', 'Not Applicable']);
 export const demographicCategoryEnum = pgEnum('demographic_category', ['Race', 'Gender', 'Religion']);
 export const locationCategoryEnum = pgEnum('location_category', ['City', 'Region']);
-export const classTypeEnum = pgEnum('class_type', ['pre-course', 'hth-course']);
+export const classTypeEnum = pgEnum('class_type', ['pre-course', 'agency-course']);
 export const enrollmentStatusEnum = pgEnum('enrollment_status', ['enrolled', 'completed', 'dropped', 'pending', 'rejected']);
+export const invoiceStatus = pgEnum('invoice_status', ['draft', 'sent', 'paid']);
 
 // --- Tables ---
 export const users = pgTable('users', {
@@ -25,6 +26,17 @@ export const users = pgTable('users', {
   personalZipCode: varchar('personal_zip_code', { length: 10 }),
   profilePhotoUrl: text('profile_photo_url'),
   isOptedOut: boolean('is_opted_out').notNull().default(false),
+});
+
+export const invoices = pgTable('invoices', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  clientName: text('client_name').notNull(),
+  clientEmail: text('client_email').notNull(),
+  serviceDescription: text('service_description').notNull(),
+  amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
+  status: invoiceStatus('status').notNull().default('draft'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const demographics = pgTable('demographics', {
@@ -119,7 +131,7 @@ export const classes = pgTable('classes', {
   title: text('title').notNull(),
   description: text('description'),
   teacherId: integer('teacher_id').notNull().references(() => users.id),
-  type: classTypeEnum('type').notNull().default('hth-course'),
+  type: classTypeEnum('type').notNull().default('agency-course'),
   syllabusUrl: text('syllabus_url'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
@@ -172,6 +184,14 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   createdPitchCompetitionEvents: many(pitchCompetitionEvents),
   pitchSubmissions: many(pitchSubmissions),
   passwordResetTokens: many(passwordResetTokens),
+  invoices: many(invoices),
+}));
+
+export const invoicesRelations = relations(invoices, ({ one }) => ({
+  user: one(users, {
+    fields: [invoices.userId],
+    references: [users.id],
+  }),
 }));
 
 export const businessesRelations = relations(businesses, ({ one }) => ({

@@ -11,7 +11,7 @@ export default async function AddClassPage() {
     try {
       // The syllabusUrl will be automatically included in formData from the hidden input
       await createClass(formData);
-      redirect('/dashboard/admin/hth-class');
+      redirect('/dashboard/admin/agency-class');
     } catch (error) {
       console.error('Error creating class:', error);
       // TODO: Display an error message to the user
@@ -62,11 +62,11 @@ export default async function AddClassPage() {
             id="type"
             name="type"
             required
-            defaultValue="hth-course" // Default to HTH Course
+            defaultValue="agency-course" // Default to AGENCY Course
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           >
             <option value="pre-course">Pre-Course</option>
-            <option value="hth-course">HTH Course</option>
+            <option value="agency-course">AGENCY Course</option>
           </select>
         </div>
         <div>

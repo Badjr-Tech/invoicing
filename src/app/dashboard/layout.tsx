@@ -96,10 +96,10 @@ export default async function DashboardLayout({
                 Admin Users
               </Link>
               <Link
-                href="/dashboard/admin/hth-class"
+                href="/dashboard/admin/agency-class"
                 className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
               >
-                Admin HTH Class
+                Admin AGENCY Class
               </Link>
             </>
           )}

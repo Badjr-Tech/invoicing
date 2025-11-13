@@ -8,7 +8,7 @@ export default function AddLessonPage() {
     try {
       await createLesson(formData);
       // TODO: Redirect to the class detail page or lesson list after creation
-      redirect('/dashboard/admin/hth-class'); // Redirect to the admin class list for now
+      redirect('/dashboard/admin/agency-class'); // Redirect to the admin class list for now
     } catch (error) {
       console.error('Error creating lesson:', error);
       // TODO: Display an error message to the user
