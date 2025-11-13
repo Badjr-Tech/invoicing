@@ -31,6 +31,12 @@ export default async function DashboardLayout({
             Home
           </Link>
           <Link
+            href="/dashboard/hth-class"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            Page 2
+          </Link>
+          <Link
             href="/dashboard/businesses"
             className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
           >
@@ -45,36 +51,6 @@ export default async function DashboardLayout({
               - {business.businessName}
             </Link>
           ))}
-          <Link
-            href="/dashboard/heighten-ai"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Page 1
-          </Link>
-          <Link
-            href="/dashboard/messages"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Messages
-          </Link>
-          <Link
-            href="/dashboard/resources"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Resources
-          </Link>
-          <Link
-            href="/dashboard/admin/businesses/manage"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Business search
-          </Link>
-          <Link
-            href="/dashboard/hth-class"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Page 2
-          </Link>
           {isAdmin && (
             <>
               <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
