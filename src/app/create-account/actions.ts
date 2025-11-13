@@ -3,6 +3,7 @@
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import bcrypt from "bcrypt";
+import { eq } from "drizzle-orm";
 
 export type FormState = {
   message: string;
@@ -16,6 +17,14 @@ export async function createAccount(prevState: FormState, formData: FormData): P
   const password = formData.get("password") as string;
 
   try {
+    const existingUser = await db.query.users.findFirst({
+      where: eq(users.email, email),
+    });
+
+    if (existingUser) {
+      return { message: "", error: "An account with this email already exists." };
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await db.insert(users).values({
