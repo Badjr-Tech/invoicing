@@ -1,19 +1,19 @@
 "use client";
 
 import { useFormState } from "react-dom";
-// import { createClient } from "./actions";
+import { createClient } from "./actions";
 
-// export type FormState = {
-//   message: string;
-//   error: string;
-// } | undefined;
+export type FormState = {
+  message: string;
+  error: string;
+} | undefined;
 
-export default function ClientsPage({
+export default function ClientsPageClient({
   clients,
 }: {
   clients: { id: number; name: string; email: string }[];
 }) {
-  // const [state, formAction] = useFormState<FormState, FormData>(createClient, undefined);
+  const [state, formAction] = useFormState<FormState, FormData>(createClient, undefined);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -21,7 +21,7 @@ export default function ClientsPage({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Client</h2>
-          <form /*action={formAction}*/ className="space-y-6">
+          <form action={formAction} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Client Name
@@ -52,8 +52,8 @@ export default function ClientsPage({
               </div>
             </div>
 
-            {/* {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
-            {state?.error && <p className="text-red-600 text-sm">{state.error}</p>} */}
+            {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
+            {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
 
             <div>
               <button

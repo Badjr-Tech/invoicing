@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { invoices, clients } from "@/db/schema";
+import { invoices, clients, businesses } from "@/db/schema";
 import { getSession } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export type FormState = {
   message: string;
@@ -40,6 +40,10 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
       return { message: "", error: "Client not found." };
     }
 
+    const business = await db.query.businesses.findFirst({
+      where: and(eq(businesses.userId, session.user.id), eq(businesses.isArchived, false)),
+    });
+
     const serviceDescription = services.map((s: any) => s.name).join(", ");
 
     const [newInvoice] = await db.insert(invoices).values({
@@ -58,7 +62,7 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
         client: { name: client.name, email: client.email },
         services,
         totalAmount,
-        user: { logoUrl: session.user.profilePhotoUrl },
+        user: { logoUrl: business?.logoUrl || null },
       },
     };
   } catch (error: unknown) {
