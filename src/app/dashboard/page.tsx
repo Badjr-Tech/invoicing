@@ -30,16 +30,16 @@ export default function DashboardPage() {
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-foreground mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-4">
-            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
+            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-[#0b2d65] text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
               <span className="text-xl font-semibold text-center">Business Checklist</span>
             </Link>
-            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
+            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-[#0b2d65] text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
               <span className="text-xl font-semibold text-center">Invoice</span>
             </Link>
-            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
+            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-[#0b2d65] text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
               <span className="text-xl font-semibold text-center">Pay Contractors</span>
             </Link>
-            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-primary text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
+            <Link href="#" className="flex flex-col items-center justify-center p-6 bg-[#0b2d65] text-white rounded-lg shadow-md hover:bg-secondary transition-colors duration-200 aspect-square">
               <span className="text-xl font-semibold text-center">Take a Payment</span>
             </Link>
           </div>
