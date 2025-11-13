@@ -42,6 +42,15 @@ export default async function DashboardLayout({
           >
             Home
           </Link>
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+            Business Tools
+          </h2>
+          <Link
+            href="/dashboard/messages"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+          >
+            Messages
+          </Link>
           <Link
             href="/dashboard/businesses"
             className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
@@ -57,30 +66,6 @@ export default async function DashboardLayout({
               - {business.businessName}
             </Link>
           ))}
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
-            Advice & Info
-          </h2>
-          <Link
-            href="/dashboard/resources"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Resources
-          </Link>
-          <Link
-            href="/dashboard/hth-class"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Page 2
-          </Link>
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
-            Business Tools
-          </h2>
-          <Link
-            href="/dashboard/messages"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Messages
-          </Link>
           <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
             Financial Tools
           </h2>
