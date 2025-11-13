@@ -54,7 +54,7 @@ export default function InvoicingPageClient({
   const totalAmount = selectedServices.reduce((acc, service) => acc + parseFloat(service.price), 0);
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="p-6">
       <h1 className="text-4xl font-bold text-gray-800 mb-6">Create Invoice</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add Services */}

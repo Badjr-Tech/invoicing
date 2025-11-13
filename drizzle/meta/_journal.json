@@ -57,6 +57,13 @@
       "when": 1763071967686,
       "tag": "0007_abnormal_valeria_richards",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1763076997140,
+      "tag": "0008_young_stardust",
+      "breakpoints": true
     }
   ]
 }
