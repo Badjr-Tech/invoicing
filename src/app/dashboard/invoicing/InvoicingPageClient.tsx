@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
 import { createInvoice } from "./actions";
+import { generateInvoicePDF } from "./pdf";
 
 export type FormState = {
   message: string;
   error: string;
+  invoice?: {
+    client: { name: string; email: string };
+    services: { name: string; price: string }[];
+    totalAmount: number;
+    user: { logoUrl: string | null };
+  };
 } | undefined;
 
 export default function InvoicingPageClient({
@@ -19,6 +26,19 @@ export default function InvoicingPageClient({
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<any[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (state?.message && state.invoice) {
+      generateInvoicePDF(
+        state.invoice.client,
+        state.invoice.services,
+        state.invoice.totalAmount,
+        state.invoice.user.logoUrl
+      );
+      const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice&body=Please find your invoice attached.`;
+      window.location.href = mailtoLink;
+    }
+  }, [state]);
 
   const handleAddService = (service: any) => {
     setSelectedServices([...selectedServices, service]);

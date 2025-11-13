@@ -9,6 +9,12 @@ import { eq } from "drizzle-orm";
 export type FormState = {
   message: string;
   error: string;
+  invoice?: {
+    client: { name: string; email: string };
+    services: { name: string; price: string }[];
+    totalAmount: number;
+    user: { logoUrl: string | null };
+  };
 } | undefined;
 
 export async function createInvoice(prevState: FormState, formData: FormData): Promise<FormState> {
@@ -36,16 +42,25 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
 
     const serviceDescription = services.map((s: any) => s.name).join(", ");
 
-    await db.insert(invoices).values({
+    const [newInvoice] = await db.insert(invoices).values({
       userId: session.user.id,
       clientName: client.name,
       clientEmail: client.email,
       serviceDescription,
       amount: totalAmount,
-    });
+    }).returning();
 
     revalidatePath("/dashboard/invoicing");
-    return { message: "Invoice created successfully!", error: "" };
+    return {
+      message: "Invoice created successfully!",
+      error: "",
+      invoice: {
+        client: { name: client.name, email: client.email },
+        services,
+        totalAmount,
+        user: { logoUrl: session.user.profilePhotoUrl },
+      },
+    };
   } catch (error: unknown) {
     console.error("Error creating invoice:", error);
     let errorMessage = "Failed to create invoice.";
@@ -55,3 +70,4 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
     return { message: "", error: errorMessage };
   }
 }
+
