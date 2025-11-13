@@ -91,18 +91,20 @@ export default async function DashboardLayout({
           <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
             Financial Tools
           </h2>
-          <Link
-            href="/dashboard/invoicing"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            Invoicing
-          </Link>
-          <Link
-            href="/dashboard/invoices"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
-          >
-            View Invoices
-          </Link>
+          <div className="group">
+            <Link
+              href="/dashboard/invoicing"
+              className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            >
+              Invoicing
+            </Link>
+            <Link
+              href="/dashboard/invoices"
+              className="hidden group-hover:block py-2 px-8 text-sm rounded transition duration-200 hover:bg-primary"
+            >
+              View Invoices
+            </Link>
+          </div>
           <Link
             href="/dashboard/clients"
             className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
