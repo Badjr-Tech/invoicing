@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
-      <aside className="relative w-64 bg-secondary text-white px-4 pt-12 space-y-6">
+      <aside className="relative w-64 bg-secondary text-white px-4 pt-4 space-y-6">
         <div className="flex items-center space-x-2">
           <Link
             href="/dashboard/profile"
