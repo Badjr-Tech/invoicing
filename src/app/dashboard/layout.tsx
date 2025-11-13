@@ -23,6 +23,9 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
       <aside className="relative w-64 bg-secondary text-white px-4 pt-12 space-y-6">
+        <div className="mb-6 text-center">
+          <img src="/yellow.png" alt="Logo" className="h-24 w-auto mx-auto" />
+        </div>
         <nav className="space-y-2 font-semibold text-white">
           <Link
             href="/dashboard"
