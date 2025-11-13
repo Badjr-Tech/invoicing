@@ -5,6 +5,9 @@ import { services } from "@/db/schema";
 import { getSession } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
+import { InferInsertModel } from 'drizzle-orm'; // Import InferInsertModel
+
+type InsertService = InferInsertModel<typeof services>; // Define InsertService type
 
 export type FormState = {
   message: string;
@@ -22,12 +25,14 @@ export async function createService(prevState: FormState, formData: FormData): P
   const price = parseFloat(formData.get("price") as string);
 
   try {
-    await db.insert(services).values({
+    const serviceData: InsertService = {
       userId: session.user.id,
       name,
       description,
-      price,
-    });
+      price: price.toString(), // Ensure price is string for numeric type
+    };
+
+    await db.insert(services).values(serviceData);
 
     revalidatePath("/dashboard/services");
     return { message: "Service created successfully!", error: "" };
