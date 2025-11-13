@@ -144,6 +144,12 @@ export default async function DashboardLayout({
               >
                 Admin AGENCY Class
               </Link>
+              <Link
+                href="/dashboard/admin/records"
+                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+              >
+                Admin Records
+              </Link>
             </>
           )}
         </nav>
