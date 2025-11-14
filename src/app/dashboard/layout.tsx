@@ -27,7 +27,7 @@ export default async function DashboardLayout({
         <div className="flex items-center space-x-2">
           <Link
             href="/dashboard/profile"
-            className="py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-sm font-semibold"
+            className="py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs font-semibold"
           >
             Profile
           </Link>
@@ -39,7 +39,7 @@ export default async function DashboardLayout({
         <nav className="space-y-1 font-semibold text-white">
           <Link
             href="/dashboard"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Home
           </Link>
@@ -48,19 +48,19 @@ export default async function DashboardLayout({
           </h2>
           <Link
             href="/dashboard/resources"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Resources
           </Link>
           <Link
             href="/dashboard/agency-class"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Page 2
           </Link>
           <Link
             href="/dashboard/business-checklist"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Business Checklist
           </Link>
@@ -69,13 +69,13 @@ export default async function DashboardLayout({
           </h2>
           <Link
             href="/dashboard/messages"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Messages
           </Link>
           <Link
             href="/dashboard/businesses"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Businesses
           </Link>
@@ -83,7 +83,7 @@ export default async function DashboardLayout({
             <Link
               key={business.id}
               href={`/dashboard/businesses/${business.id}`}
-              className="block py-2 px-6 text-sm rounded transition duration-200 hover:bg-primary"
+              className="block py-2 px-6 text-xs rounded transition duration-200 hover:bg-primary"
             >
               - {business.businessName}
             </Link>
@@ -94,32 +94,32 @@ export default async function DashboardLayout({
           <div className="group">
             <Link
               href="/dashboard/invoicing"
-              className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+              className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
             >
               Invoicing
             </Link>
             <Link
               href="/dashboard/invoices"
-              className="hidden group-hover:block py-2 px-8 text-sm rounded transition duration-200 hover:bg-primary"
+              className="hidden group-hover:block py-2 px-8 text-xs rounded transition duration-200 hover:bg-primary"
             >
               View Invoices
             </Link>
           </div>
           <Link
             href="/dashboard/clients"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Clients
           </Link>
           <Link
             href="/dashboard/services"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Services
           </Link>
           <Link
             href="/dashboard/products"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-lg font-semibold uppercase mt-6 mb-2"
+            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Products
           </Link>
@@ -130,25 +130,25 @@ export default async function DashboardLayout({
               </h2>
               <Link
                 href="/dashboard/admin/businesses/manage"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Business search
               </Link>
               <Link
                 href="/dashboard/admin/users"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Admin Users
               </Link>
               <Link
                 href="/dashboard/admin/agency-class"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Admin AGENCY Class
               </Link>
               <Link
                 href="/dashboard/admin/records"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
+                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Admin Records
               </Link>
