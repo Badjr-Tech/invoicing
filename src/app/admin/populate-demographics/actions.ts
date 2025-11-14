@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { demographics, demographicCategoryEnum } from "@/db/schema";
+import { eq, and } from "drizzle-orm";
 
 export async function populateDemographics() {
   const religions = [
@@ -24,21 +25,48 @@ export async function populateDemographics() {
   try {
     // Insert Religions
     for (const religion of religions) {
-      await db.insert(demographics).values({ name: religion, category: 'Religion' });
+      console.log(`Attempting to insert Religion: ${religion}`);
+      const existing = await db.query.demographics.findFirst({
+        where: and(eq(demographics.name, religion), eq(demographics.category, 'Religion')),
+      });
+      if (!existing) {
+        await db.insert(demographics).values({ name: religion, category: 'Religion' });
+        console.log(`Successfully inserted Religion: ${religion}`);
+      } else {
+        console.log(`Religion already exists, skipping: ${religion}`);
+      }
     }
-    console.log("Religions populated successfully.");
+    console.log("Religions population complete.");
 
     // Insert Races
     for (const race of races) {
-      await db.insert(demographics).values({ name: race, category: 'Race' });
+      console.log(`Attempting to insert Race: ${race}`);
+      const existing = await db.query.demographics.findFirst({
+        where: and(eq(demographics.name, race), eq(demographics.category, 'Race')),
+      });
+      if (!existing) {
+        await db.insert(demographics).values({ name: race, category: 'Race' });
+        console.log(`Successfully inserted Race: ${race}`);
+      } else {
+        console.log(`Race already exists, skipping: ${race}`);
+      }
     }
-    console.log("Races populated successfully.");
+    console.log("Races population complete.");
 
     // Insert Genders
     for (const gender of genders) {
-      await db.insert(demographics).values({ name: gender, category: 'Gender' });
+      console.log(`Attempting to insert Gender: ${gender}`);
+      const existing = await db.query.demographics.findFirst({
+        where: and(eq(demographics.name, gender), eq(demographics.category, 'Gender')),
+      });
+      if (!existing) {
+        await db.insert(demographics).values({ name: gender, category: 'Gender' });
+        console.log(`Successfully inserted Gender: ${gender}`);
+      } else {
+        console.log(`Gender already exists, skipping: ${gender}`);
+      }
     }
-    console.log("Genders populated successfully.");
+    console.log("Genders population complete.");
 
     return { success: true, message: "Demographics populated successfully!" };
   } catch (error) {
