@@ -269,15 +269,29 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       // New: Handle logo upload
       let logoUrl: string | undefined;
       if (logo && logo.size > 0) {
-        const blob = await put(logo.name, logo, { access: 'public', allowOverwrite: true });
-        logoUrl = blob.url;
+        console.log("updateBusinessProfile: Attempting to upload logo:", logo.name);
+        try {
+          const blob = await put(logo.name, logo, { access: 'public', allowOverwrite: true });
+          logoUrl = blob.url;
+          console.log("updateBusinessProfile: Logo uploaded successfully:", logoUrl);
+        } catch (uploadError) {
+          console.error("updateBusinessProfile: Error uploading logo:", uploadError);
+          // Optionally, return an error to the user or set a default logo
+        }
       }
 
       // New: Handle business profile photo upload
       let businessProfilePhotoUrl: string | undefined;
       if (businessProfilePhoto && businessProfilePhoto.size > 0) {
-        const blob = await put(businessProfilePhoto.name, businessProfilePhoto, { access: 'public', allowOverwrite: true });
-        businessProfilePhotoUrl = blob.url;
+        console.log("updateBusinessProfile: Attempting to upload business profile photo:", businessProfilePhoto.name);
+        try {
+          const blob = await put(businessProfilePhoto.name, businessProfilePhoto, { access: 'public', allowOverwrite: true });
+          businessProfilePhotoUrl = blob.url;
+          console.log("updateBusinessProfile: Business profile photo uploaded successfully:", businessProfilePhotoUrl);
+        } catch (uploadError) {
+          console.error("updateBusinessProfile: Error uploading business profile photo:", uploadError);
+          // Optionally, return an error to the user or set a default photo
+        }
       }
 
       const updateData: Partial<InferInsertModel<typeof businesses>> & { [key: string]: string | number | boolean | undefined | null } = {
