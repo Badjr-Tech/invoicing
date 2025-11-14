@@ -1,18 +1,19 @@
-import { getServiceCategories } from "../categories/actions";
-import { getServices } from "../actions";
-import { notFound } from "next/navigation";
+"use client"; // Added
+
+// import { getServiceCategories } from "../categories/actions"; // Removed
+// import { getServices } from "../actions"; // Removed
+// import { notFound } from "next/navigation"; // Removed
 import Link from "next/link";
-// import { FormState } from "./page"; // No longer needed
 
-export default async function CategoryServicesList({ categoryId }: { categoryId: number }) { // Removed state prop
-  const categories = await getServiceCategories();
-  const currentCategory = categories.find((cat) => cat.id === categoryId);
+export default function CategoryServicesList({ category, services }: { category: any, services: any[] }) { // Accept category and services as props
+  // const categories = await getServiceCategories(); // Removed
+  // const currentCategory = categories.find((cat) => cat.id === categoryId); // Removed
 
-  if (!currentCategory) {
-    notFound();
-  }
+  // if (!currentCategory) { // Removed
+  //   notFound(); // Removed
+  // }
 
-  const services = await getServices(categoryId);
+  // const services = await getServices(categoryId); // Removed
 
   return (
     <div>

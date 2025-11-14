@@ -1,9 +1,10 @@
-import { getServiceCategories } from "./categories/actions";
-import Link from "next/link";
-// import { FormState } from "./page"; // No longer needed
+"use client"; // Added
 
-export default async function ServiceCategoriesList() { // Removed state prop
-  const categories = await getServiceCategories();
+// import { getServiceCategories } from "./categories/actions"; // Removed
+import Link from "next/link";
+
+export default function ServiceCategoriesList({ categories }: { categories: any[] }) { // Accept categories as prop
+  // const categories = await getServiceCategories(); // Removed
 
   return (
     <div>
