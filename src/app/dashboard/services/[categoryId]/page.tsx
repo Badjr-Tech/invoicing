@@ -7,10 +7,7 @@ import CategoryServicesList from "./CategoryServicesList"; // Import the new Ser
 import { useParams } from "next/navigation"; // Import useParams
 import dynamic from "next/dynamic"; // Import dynamic
 
-export type FormState = {
-  message: string;
-  error: string;
-} | undefined;
+// FormState type moved to ServiceForm.tsx
 
 // const INITIAL_STATE: FormState = { // No longer needed here
 //   message: "",

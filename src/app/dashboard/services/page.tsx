@@ -6,10 +6,7 @@ import ServiceCategoriesList from "./ServiceCategoriesList"; // Import the new S
 // import Link from "next/link"; // No longer needed here
 import dynamic from "next/dynamic"; // Import dynamic
 
-export type FormState = {
-  message: string;
-  error: string;
-} | undefined;
+// FormState type moved to ServiceCategoryForm.tsx
 
 // const INITIAL_STATE: FormState = { // No longer needed here
 //   message: "",

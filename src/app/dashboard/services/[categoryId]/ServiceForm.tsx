@@ -1,8 +1,13 @@
 "use client";
 
 import { createService } from "../actions";
-import { useFormState } from "react-dom";
-import { FormState } from "./page"; // Import FormState type
+import { useFormState } = "react-dom";
+// import { FormState } from "./page"; // Removed import
+
+export type FormState = { // Added type definition
+  message: string;
+  error: string;
+} | undefined;
 
 export default function ServiceForm({ categoryId }: { categoryId: number }) {
   const [state, formAction] = useFormState<FormState, FormData>(createService, { message: "", error: "" });
