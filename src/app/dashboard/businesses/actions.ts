@@ -181,14 +181,17 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
 
 export async function updateBusinessProfile(prevState: FormState, formData: FormData): Promise<FormState> {
     const userId = await getUserIdFromSession();
+    console.log("updateBusinessProfile: userId", userId);
 
     if (!userId) {
       return { message: "", error: "User not authenticated." };
     }
 
     const businessId = parseInt(formData.get("businessId") as string);
+    console.log("updateBusinessProfile: businessId", businessId);
 
     if (isNaN(businessId)) {
+      console.error("updateBusinessProfile: Invalid business ID.");
       return { message: "", error: "Business ID is invalid." };
     }
 
@@ -209,6 +212,26 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
     const logo = formData.get("logo") as File; // New: Get logo file
     const businessProfilePhoto = formData.get("businessProfilePhoto") as File; // New: Get business profile photo file
+
+    console.log("updateBusinessProfile: formData fields:", {
+      ownerName,
+      percentOwnership,
+      businessName,
+      businessType,
+      businessTaxStatus,
+      businessDescription,
+      businessIndustry,
+      naicsCode,
+      streetAddress,
+      city,
+      state,
+      zipCode,
+      phone,
+      website,
+      businessMaterials: businessMaterials ? businessMaterials.name : "no file",
+      logo: logo ? logo.name : "no file",
+      businessProfilePhoto: businessProfilePhoto ? businessProfilePhoto.name : "no file",
+    });
 
     // New: Handle 5 material uploads and titles
     const materialUpdates: { urlField: string; titleField: string; url?: string; title?: string; }[] = [];
@@ -231,6 +254,7 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     }
 
     if (!ownerName || isNaN(percentOwnership) || !businessName || !businessType || !businessTaxStatus || !businessIndustry) {
+      console.error("updateBusinessProfile: Required fields missing or invalid.");
       return { message: "", error: "Required fields are missing." };
     }
 
@@ -285,17 +309,23 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
           updateData[update.titleField] = update.title;
         }
       });
+      console.log("updateBusinessProfile: updateData before db.update:", updateData);
 
       await db.update(businesses)
         .set(updateData)
         .where(eq(businesses.id, businessId));
+      console.log("updateBusinessProfile: Business updated successfully.");
 
       revalidatePath("/dashboard/businesses");
       revalidatePath(`/dashboard/businesses/${businessId}`); // Revalidate specific business page
       return { message: "Business profile updated successfully!", error: "" };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error updating business profile:", error);
-      return { message: "", error: "Failed to update business profile." };
+      let errorMessage = "Failed to update business profile.";
+      if (error instanceof Error) {
+        errorMessage = `Failed to update business profile: ${error.message}`;
+      }
+      return { message: "", error: errorMessage };
     }
   }
 
