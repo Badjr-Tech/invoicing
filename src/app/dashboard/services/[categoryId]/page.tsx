@@ -4,18 +4,16 @@ import { createService } from "../actions";
 import { useFormState } from "react-dom";
 import Link from "next/link";
 import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
+import { useParams } from "next/navigation"; // Import useParams
 
 export type FormState = {
   message: string;
   error: string;
 } | undefined;
 
-export default function CategoryServicesPage({
-  params,
-}: {
-  params: { categoryId: string };
-}) {
-  const categoryId = parseInt(params.categoryId);
+export default function CategoryServicesPage() { // Removed params from props
+  const params = useParams(); // Use useParams hook
+  const categoryId = parseInt(params.categoryId as string);
 
   const [state, formAction] = useFormState<FormState, FormData>(createService, undefined);
 
