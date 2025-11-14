@@ -2,7 +2,7 @@
 
 import { createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
-import { FormState } from "../page"; // Import FormState type
+import { FormState } from "./page"; // Import FormState type
 
 export default function ServiceCategoryForm() {
   const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, { message: "", error: "" });
