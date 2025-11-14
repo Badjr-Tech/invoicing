@@ -23,59 +23,59 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
-      <aside className="relative w-64 bg-secondary text-white px-4 pt-4 space-y-4">
+      <aside className="relative w-64 bg-secondary text-white px-4 pt-4 space-y-2">
         <div className="flex items-center space-x-2">
           <Link
             href="/dashboard/profile"
-            className="py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs font-semibold"
+            className="py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs font-semibold"
           >
             Profile
           </Link>
           <LogoutButton />
         </div>
-        <div className="mb-6 text-center">
+        <div className="mb-4 text-center">
           <Image src="/yellow.png" alt="Logo" width={72} height={72} className="mx-auto" />
         </div>
-        <nav className="space-y-1 font-semibold text-white">
+        <nav className="space-y-0.5 font-semibold text-white">
           <Link
             href="/dashboard"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Home
           </Link>
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
             Advice & Info
           </h2>
           <Link
             href="/dashboard/resources"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Resources
           </Link>
           <Link
             href="/dashboard/agency-class"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Page 2
           </Link>
           <Link
             href="/dashboard/business-checklist"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Business Checklist
           </Link>
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
             Business Tools
           </h2>
           <Link
             href="/dashboard/messages"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Messages
           </Link>
           <Link
             href="/dashboard/businesses"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Businesses
           </Link>
@@ -83,72 +83,72 @@ export default async function DashboardLayout({
             <Link
               key={business.id}
               href={`/dashboard/businesses/${business.id}`}
-              className="block py-2 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+              className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
             >
               - {business.businessName}
             </Link>
           ))}
-          <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+          <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
             Financial Tools
           </h2>
           <div className="group">
             <Link
               href="/dashboard/invoicing"
-              className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
             >
               Invoicing
             </Link>
             <Link
               href="/dashboard/invoices"
-              className="hidden group-hover:block py-2 px-8 text-xs rounded transition duration-200 hover:bg-primary"
+              className="hidden group-hover:block py-1 px-8 text-xs rounded transition duration-200 hover:bg-primary"
             >
               View Invoices
             </Link>
           </div>
           <Link
             href="/dashboard/clients"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Clients
           </Link>
           <Link
             href="/dashboard/services"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Services
           </Link>
           <Link
             href="/dashboard/products"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
           >
             Products
           </Link>
           {isAdmin && (
             <>
-              <h2 className="text-lg font-semibold text-light-gray uppercase mt-6 mb-2">
+              <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
                 Admin Tools
               </h2>
               <Link
                 href="/dashboard/admin/businesses/manage"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Business search
               </Link>
               <Link
                 href="/dashboard/admin/users"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Admin Users
               </Link>
               <Link
                 href="/dashboard/admin/agency-class"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Admin AGENCY Class
               </Link>
               <Link
                 href="/dashboard/admin/records"
-                className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
               >
                 Admin Records
               </Link>
