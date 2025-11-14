@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBusinessProfile, getDemographicsByCategory, getLocationsByCategory } from "../actions"; // Import getBusinessProfile and new actions
 import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
+import BusinessDetailClientPage from "./BusinessDetailClientPage"; // Import BusinessDetailClientPage
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function BusinessDetailPage({ params }: { params: { businessId: string } & Promise<any> }) {
