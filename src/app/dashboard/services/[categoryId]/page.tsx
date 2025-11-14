@@ -14,10 +14,13 @@ export default async function CategoryServicesPage({
   searchParams?: { [key: string]: string | string[] | undefined }; // Added searchParams type
 }) {
   const categoryId = parseInt(params.categoryId as string);
+  console.log("CategoryServicesPage: categoryId", categoryId);
 
   // Fetch category details
   const allCategories = await getServiceCategories();
+  console.log("CategoryServicesPage: allCategories", allCategories);
   const category = allCategories.find(cat => cat.id === categoryId);
+  console.log("CategoryServicesPage: found category", category);
 
   if (!category) { // Handle category not found
     notFound();
@@ -25,6 +28,7 @@ export default async function CategoryServicesPage({
 
   // Fetch services for this category
   const services = await getServices(categoryId);
+  console.log("CategoryServicesPage: services for category", services);
 
   return (
     <div className="flex-1 p-6">

@@ -11,6 +11,9 @@ type ServiceCategory = InferSelectModel<typeof serviceCategories>; // Define Ser
 type Service = InferSelectModel<typeof servicesSchema>; // Define Service type
 
 export default function CategoryServicesList({ category, services }: { category: ServiceCategory, services: Service[] }) { // Use ServiceCategory and Service types
+  console.log("CategoryServicesList: category prop", category);
+  console.log("CategoryServicesList: services prop", services);
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Services</h2>
