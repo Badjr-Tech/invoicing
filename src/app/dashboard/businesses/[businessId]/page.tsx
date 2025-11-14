@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
-import { getBusinessProfile } from "../actions"; // Import getBusinessProfile
-import { BusinessWithDemographic, BusinessWithLocation, BusinessWithDemographicAndLocation } from "@/db/schema"; // Import BusinessWithDemographic from schema
-import { getAvailableDemographics, getAvailableLocations } from "../../messages/actions"; // Import getAvailableDemographics
-import BusinessDetailClientPage from "./BusinessDetailClientPage"; // New import
+import { getBusinessProfile, getDemographicsByCategory, getLocationsByCategory } from "../actions"; // Import getBusinessProfile and new actions
+import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function BusinessDetailPage({ params }: { params: { businessId: string } & Promise<any> }) {
@@ -13,13 +11,15 @@ export default async function BusinessDetailPage({ params }: { params: { busines
     notFound();
   }
 
-  const business: BusinessWithLocation | null = await getBusinessProfile(businessId); // Use the new type
-  const availableDemographics = await getAvailableDemographics(); // Fetch available demographics
-  const availableLocations = await getAvailableLocations(); // Fetch available locations
+  const business: (Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; }) | null = await getBusinessProfile(businessId); // Use the new type
+  const genders = await getDemographicsByCategory('Gender'); // Fetch genders
+  const races = await getDemographicsByCategory('Race'); // Fetch races
+  const religions = await getDemographicsByCategory('Religion'); // Fetch religions
+  const regions = await getLocationsByCategory('Region'); // Fetch regions
 
   if (!business) {
     notFound();
   }
 
-  return <BusinessDetailClientPage initialBusiness={business} availableDemographics={availableDemographics} availableLocations={availableLocations} />;
+  return <BusinessDetailClientPage initialBusiness={business} genders={genders} races={races} religions={religions} regions={regions} />;
 }

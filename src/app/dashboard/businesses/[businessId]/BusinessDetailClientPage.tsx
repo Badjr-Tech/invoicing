@@ -1,23 +1,22 @@
-'use client';
-
 import { useState, useEffect } from "react";
 import { getBusinessProfile } from "../actions"; // Import getBusinessProfile
-import { businesses, businessesRelations, Business, Demographic, BusinessWithDemographic, BusinessWithLocation, BusinessWithDemographicAndLocation, type Location as LocationType } from "@/db/schema";
-import { InferSelectModel } from "drizzle-orm";
+import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
 import Image from "next/image";
 import EditBusinessProfileForm from "./EditBusinessProfileForm";
 import BusinessDetailsForm from "./BusinessDetailsForm";
 import BusinessMaterials from "./BusinessMaterials";
-
+import OwnerDetailsForm from "./OwnerDetailsForm"; // New import
 
 interface BusinessDetailClientPageProps {
-  initialBusiness: BusinessWithLocation;
-  availableDemographics: Demographic[];
-  availableLocations: LocationType[];
+  initialBusiness: Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; };
+  genders: Demographic[];
+  races: Demographic[];
+  religions: Demographic[];
+  regions: Location[];
 }
 
-export default function BusinessDetailClientPage({ initialBusiness, availableDemographics, availableLocations }: BusinessDetailClientPageProps) {
-  const [business, setBusiness] = useState<BusinessWithLocation>(initialBusiness);
+export default function BusinessDetailClientPage({ initialBusiness, genders, races, religions, regions }: BusinessDetailClientPageProps) {
+  const [business, setBusiness] = useState(initialBusiness);
   const [activeTab, setActiveTab] = useState('business-profile');
 
   return (
@@ -29,6 +28,12 @@ export default function BusinessDetailClientPage({ initialBusiness, availableDem
             className={`${activeTab === 'business-profile' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Profile
+          </button>
+          <button
+            onClick={() => setActiveTab('owner-details')} // New tab for Owner Details
+            className={`${activeTab === 'owner-details' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+          >
+            Owner Details
           </button>
           <button
             onClick={() => setActiveTab('business-details')}
@@ -116,6 +121,29 @@ export default function BusinessDetailClientPage({ initialBusiness, availableDem
                 </li>
               )}
             </ul>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'owner-details' && ( // New tab content
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Column: Owner Details Form */}
+          <div>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Owner Details</h2>
+            <OwnerDetailsForm
+              business={business}
+              genders={genders}
+              races={races}
+              religions={religions}
+              regions={regions}
+            />
+          </div>
+          {/* Right Column: Placeholder for future additions */}
+          <div>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Additional Information</h2>
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <p className="text-gray-700">Content for this section will be added later.</p>
+            </div>
           </div>
         </div>
       )}

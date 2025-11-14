@@ -25,12 +25,16 @@ export async function fetchSession(): Promise<SessionPayload | null> {
   return await getSession();
 }
 
-export async function getBusinessProfile(businessId: number): Promise<BusinessWithLocation | null> {
+export async function getBusinessProfile(businessId: number): Promise<BusinessWithLocation & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; } | null> {
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
       with: {
         location: true, // Include location details
+        ownerGender: true, // New: Include ownerGender
+        ownerRace: true, // New: Include ownerRace
+        ownerReligion: true, // New: Include ownerReligion
+        ownerRegion: true, // New: Include ownerRegion
       },
     });
     if (!profile) { return null; }
@@ -481,5 +485,79 @@ export async function searchBusinesses(query: string): Promise<Business[]> {
   } catch (error) {
     console.error("Error searching businesses:", error);
     return [];
+  }
+}
+
+export async function getDemographicsByCategory(category: 'Race' | 'Gender' | 'Religion') {
+  try {
+    const items = await db.query.demographics.findMany({
+      where: eq(demographics.category, category),
+    });
+    return items;
+  } catch (error) {
+    console.error(`Error fetching ${category} demographics:`, error);
+    return [];
+  }
+}
+
+export async function getLocationsByCategory(category: 'City' | 'Region') {
+  try {
+    const items = await db.query.locations.findMany({
+      where: eq(locations.category, category),
+    });
+    return items;
+  } catch (error) {
+    console.error(`Error fetching ${category} locations:`, error);
+    return [];
+  }
+}
+
+export async function updateBusinessOwnerDetails(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const businessId = parseInt(formData.get("businessId") as string);
+  const ownerGenderId = formData.get("ownerGenderId") ? parseInt(formData.get("ownerGenderId") as string) : null;
+  const ownerRaceId = formData.get("ownerRaceId") ? parseInt(formData.get("ownerRaceId") as string) : null;
+  const ownerReligionId = formData.get("ownerReligionId") ? parseInt(formData.get("ownerReligionId") as string) : null;
+  const ownerRegionId = formData.get("ownerRegionId") ? parseInt(formData.get("ownerRegionId") as string) : null;
+
+  if (isNaN(businessId)) {
+    return { message: "", error: "Invalid business ID." };
+  }
+
+  try {
+    const updateData: {
+      ownerGenderId?: number | null;
+      ownerRaceId?: number | null;
+      ownerReligionId?: number | null;
+      ownerRegionId?: number | null;
+    } = {};
+
+    if (ownerGenderId !== null) updateData.ownerGenderId = ownerGenderId;
+    if (ownerRaceId !== null) updateData.ownerRaceId = ownerRaceId;
+    if (ownerReligionId !== null) updateData.ownerReligionId = ownerReligionId;
+    if (ownerRegionId !== null) updateData.ownerRegionId = ownerRegionId;
+
+    if (Object.keys(updateData).length === 0) {
+      return { message: "", error: "No owner details to update." };
+    }
+
+    await db.update(businesses)
+      .set(updateData)
+      .where(eq(businesses.id, businessId));
+
+    revalidatePath(`/dashboard/businesses/${businessId}`);
+    return { message: "Owner details updated successfully!", error: "" };
+  } catch (error) {
+    console.error("Error updating business owner details:", error);
+    let errorMessage = "Failed to update owner details.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update owner details: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
   }
 }

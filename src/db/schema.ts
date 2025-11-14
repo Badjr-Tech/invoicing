@@ -76,6 +76,10 @@ export const businesses = pgTable('businesses', {
   isArchived: boolean('is_archived').notNull().default(false),
   locationId: integer('location_id').references(() => locations.id),
   demographicIds: integer('demographic_ids').array(),
+  ownerGenderId: integer('owner_gender_id').references(() => demographics.id), // New optional foreign key
+  ownerRaceId: integer('owner_race_id').references(() => demographics.id), // New optional foreign key
+  ownerReligionId: integer('owner_religion_id').references(() => demographics.id), // New optional foreign key
+  ownerRegionId: integer('owner_region_id').references(() => locations.id), // New optional foreign key
   material1Url: text('material1_url'),
   material1Title: text('material1_title'),
   material2Url: text('material2_url'),
@@ -271,6 +275,22 @@ export const businessesRelations = relations(businesses, ({ one }) => ({
   }),
   location: one(locations, {
     fields: [businesses.locationId],
+    references: [locations.id],
+  }),
+  ownerGender: one(demographics, { // New relation
+    fields: [businesses.ownerGenderId],
+    references: [demographics.id],
+  }),
+  ownerRace: one(demographics, { // New relation
+    fields: [businesses.ownerRaceId],
+    references: [demographics.id],
+  }),
+  ownerReligion: one(demographics, { // New relation
+    fields: [businesses.ownerReligionId],
+    references: [demographics.id],
+  }),
+  ownerRegion: one(locations, { // New relation
+    fields: [businesses.ownerRegionId],
     references: [locations.id],
   }),
 }));
