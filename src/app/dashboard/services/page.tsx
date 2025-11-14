@@ -1,8 +1,8 @@
-// "use client"; // Removed
+"use client"; // Added back
 
 // import { createServiceCategory } from "./categories/actions"; // No longer needed here
 // import { useFormState } from "react-dom"; // No longer needed here
-import ServiceCategoriesList from "./ServiceCategoriesList"; // Import the new Server Component
+// import ServiceCategoriesList from "./ServiceCategoriesList"; // Import the new Server Component
 // import Link from "next/link"; // No longer needed here
 import dynamic from "next/dynamic"; // Import dynamic
 
@@ -15,7 +15,7 @@ import dynamic from "next/dynamic"; // Import dynamic
 
 const ServiceCategoryForm = dynamic(() => import("./ServiceCategoryForm"), { ssr: false }); // Dynamically import with ssr: false
 
-export default async function ServicesPage() { // Made async
+export default function ServicesPage() { // Made non-async
   // const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, INITIAL_STATE); // No longer needed here
 
   return (
@@ -27,7 +27,8 @@ export default async function ServicesPage() { // Made async
         <ServiceCategoryForm /> {/* Render the dynamically imported Client Component */}
 
         {/* Right Column: Your Categories */}
-        <ServiceCategoriesList /> {/* Render the Server Component here */}
+        {/* <ServiceCategoriesList /> */} {/* Temporarily removed */}
+        <p>Service Categories List (Temporarily removed for debugging)</p>
       </div>
     </div>
   );

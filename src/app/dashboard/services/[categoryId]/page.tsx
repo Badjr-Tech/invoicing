@@ -1,10 +1,10 @@
-// "use client"; // Removed
+"use client"; // Added back
 
 // import { createService } from "../actions"; // No longer needed here
 // import { useFormState } from "react-dom"; // No longer needed here
 import Link from "next/link";
-import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
-// import { useParams } from "next/navigation"; // Removed useParams
+// import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
+import { useParams } from "next/navigation"; // Added back useParams
 import dynamic from "next/dynamic"; // Import dynamic
 
 // FormState type moved to ServiceForm.tsx
@@ -16,8 +16,8 @@ import dynamic from "next/dynamic"; // Import dynamic
 
 const ServiceForm = dynamic(() => import("./ServiceForm"), { ssr: false }); // Dynamically import with ssr: false
 
-export default async function CategoryServicesPage({ params }: { params: { categoryId: string } }) { // Made async and added params
-  // const params = useParams(); // Removed useParams hook
+export default function CategoryServicesPage() { // Made non-async and reverted params
+  const params = useParams(); // Use useParams hook
   const categoryId = parseInt(params.categoryId as string);
 
   // const [state, formAction] = useFormState<FormState, FormData>(createService, INITIAL_STATE); // No longer needed here
@@ -39,7 +39,8 @@ export default async function CategoryServicesPage({ params }: { params: { categ
         <ServiceForm categoryId={categoryId} /> {/* Render the dynamically imported Client Component */}
 
         {/* Right Column: Services in this Category */}
-        <CategoryServicesList categoryId={categoryId} /> {/* Render the Server Component here */}
+        {/* <CategoryServicesList categoryId={categoryId} /> */} {/* Temporarily removed */}
+        <p>Category Services List (Temporarily removed for debugging)</p>
       </div>
     </div>
   );
