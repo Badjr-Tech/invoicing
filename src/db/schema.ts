@@ -205,6 +205,8 @@ export type IndividualMessage = InferSelectModel<typeof individualMessages>;
 export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEvents>;
 export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
+export type Service = InferSelectModel<typeof services>; // New type
+export type Client = InferSelectModel<typeof clients>; // New type
 
 // --- Relations ---
 export const usersRelations = relations(users, ({ one, many }) => ({
