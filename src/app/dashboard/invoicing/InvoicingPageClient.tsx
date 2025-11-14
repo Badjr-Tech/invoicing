@@ -41,30 +41,37 @@ export default function InvoicingPageClient({
   clients,
   services,
   categories,
-  businesses, // New: Accept businesses prop
+  businesses,
 }: {
   clients: { id: number; name: string; email: string }[];
   services: Service[];
   categories: ServiceCategory[];
-  businesses: { id: number; businessName: string }[]; // New: Define businesses prop type
+  businesses: { id: number; businessName: string; color1: string | null; color2: string | null; color3: string | null; color4: string | null; logoUrl: string | null; }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
-  const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null); // New: State for selected business
+  const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null);
 
   useEffect(() => {
     if (state?.message && state.invoice) {
+      const business = businesses.find(b => b.id === selectedBusiness);
       generateInvoicePDF(
         state.invoice.client,
         state.invoice.services,
         state.invoice.totalAmount,
-        state.invoice.user.logoUrl
+        business?.logoUrl || null,
+        {
+          color1: business?.color1 || '#000000',
+          color2: business?.color2 || '#000000',
+          color3: business?.color3 || '#000000',
+          color4: business?.color4 || '#000000',
+        }
       );
       const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice&body=Please find your invoice attached.`;
       window.location.href = mailtoLink;
     }
-  }, [state]);
+  }, [state, businesses, selectedBusiness]);
 
   const handleAddService = (service: Service) => {
     setSelectedServices([...selectedServices, service]);

@@ -125,6 +125,14 @@ export async function updateService(serviceId: number, prevState: FormState, for
   }
 
   try {
+    const service = await db.query.services.findFirst({
+      where: and(eq(services.id, serviceId), eq(services.userId, session.user.id)),
+    });
+
+    if (!service) {
+      return { message: "", error: "Service not found." };
+    }
+
     await db.update(services)
       .set({
         name,
@@ -134,8 +142,9 @@ export async function updateService(serviceId: number, prevState: FormState, for
       .where(and(eq(services.id, serviceId), eq(services.userId, session.user.id)));
 
     revalidatePath("/dashboard/services");
-    // We don't know the categoryId here, so we can't revalidate the specific category page.
-    // A broader revalidation or a different approach might be needed if this becomes an issue.
+    if (service.categoryId) {
+      revalidatePath(`/dashboard/services/${service.categoryId}`);
+    }
     return { message: "Service updated successfully!", error: "" };
   } catch (error: unknown) {
     console.error("Error updating service:", error);
@@ -154,10 +163,20 @@ export async function deleteService(serviceId: number): Promise<FormState> {
   }
 
   try {
+    const service = await db.query.services.findFirst({
+      where: and(eq(services.id, serviceId), eq(services.userId, session.user.id)),
+    });
+
+    if (!service) {
+      return { message: "", error: "Service not found." };
+    }
+
     await db.delete(services).where(and(eq(services.id, serviceId), eq(services.userId, session.user.id)));
+
     revalidatePath("/dashboard/services");
-    // We don't know the categoryId here, so we can't revalidate the specific category page.
-    // A broader revalidation or a different approach might be needed if this becomes an issue.
+    if (service.categoryId) {
+      revalidatePath(`/dashboard/services/${service.categoryId}`);
+    }
     return { message: "Service deleted successfully!", error: "" };
   } catch (error: unknown) {
     console.error("Error deleting service:", error);
