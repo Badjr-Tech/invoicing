@@ -11,11 +11,16 @@ export type FormState = {
   error: string;
 } | undefined;
 
+const INITIAL_STATE: FormState = {
+  message: "",
+  error: "",
+};
+
 export default function CategoryServicesPage() { // Removed params from props
   const params = useParams(); // Use useParams hook
   const categoryId = parseInt(params.categoryId as string);
 
-  const [state, formAction] = useFormState<FormState, FormData>(createService, undefined);
+  const [state, formAction] = useFormState<FormState, FormData>(createService, INITIAL_STATE); // Use INITIAL_STATE
 
   return (
     <div className="flex-1 p-6">
@@ -95,7 +100,7 @@ export default function CategoryServicesPage() { // Removed params from props
         </div>
 
         {/* Right Column: Services in this Category */}
-        <CategoryServicesList categoryId={categoryId} /> {/* Render the Server Component here, removed state prop */}
+        <CategoryServicesList categoryId={categoryId} /> {/* Render the Server Component here */}
       </div>
     </div>
   );

@@ -9,8 +9,13 @@ export type FormState = {
   error: string;
 } | undefined;
 
+const INITIAL_STATE: FormState = {
+  message: "",
+  error: "",
+};
+
 export default function ServicesPage() { // Removed async
-  const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, undefined);
+  const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, INITIAL_STATE); // Use INITIAL_STATE
 
   return (
     <div className="flex-1 p-6">
