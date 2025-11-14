@@ -1,6 +1,6 @@
 'use client';
 
-import { BusinessWithDemographic, BusinessWithLocation } from "@/db/schema";
+import { Business, Demographic, Location } from "@/db/schema"; // Updated import
 import { useFormState } from "react-dom";
 import { updateBusinessMaterials } from "../actions";
 
@@ -10,7 +10,7 @@ type FormState = {
 } | undefined;
 
 interface BusinessDocumentsProps {
-  business: BusinessWithLocation;
+  business: Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
 }
 
 export default function BusinessDocuments({ business }: BusinessDocumentsProps) {
