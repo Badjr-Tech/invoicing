@@ -109,3 +109,62 @@ export async function getAllServices() {
     return [];
   }
 }
+
+export async function updateService(serviceId: number, prevState: FormState, formData: FormData): Promise<FormState> {
+  const session = await getSession();
+  if (!session || !session.user) {
+    return { message: "", error: "You must be logged in to update a service." };
+  }
+
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  const price = parseFloat(formData.get("price") as string);
+
+  if (!name || isNaN(price)) {
+    return { message: "", error: "Name and price are required." };
+  }
+
+  try {
+    await db.update(services)
+      .set({
+        name,
+        description,
+        price: price.toString(),
+      })
+      .where(and(eq(services.id, serviceId), eq(services.userId, session.user.id)));
+
+    revalidatePath("/dashboard/services");
+    // We don't know the categoryId here, so we can't revalidate the specific category page.
+    // A broader revalidation or a different approach might be needed if this becomes an issue.
+    return { message: "Service updated successfully!", error: "" };
+  } catch (error: unknown) {
+    console.error("Error updating service:", error);
+    let errorMessage = "Failed to update service.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update service: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
+
+export async function deleteService(serviceId: number): Promise<FormState> {
+  const session = await getSession();
+  if (!session || !session.user) {
+    return { message: "", error: "You must be logged in to delete a service." };
+  }
+
+  try {
+    await db.delete(services).where(and(eq(services.id, serviceId), eq(services.userId, session.user.id)));
+    revalidatePath("/dashboard/services");
+    // We don't know the categoryId here, so we can't revalidate the specific category page.
+    // A broader revalidation or a different approach might be needed if this becomes an issue.
+    return { message: "Service deleted successfully!", error: "" };
+  } catch (error: unknown) {
+    console.error("Error deleting service:", error);
+    let errorMessage = "Failed to delete service.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to delete service: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}

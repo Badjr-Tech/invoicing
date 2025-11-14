@@ -1,18 +1,34 @@
-"use client"; // Added
+"use client";
 
-// import { getServiceCategories } from "../categories/actions"; // Removed
-// import { getServices } from "../actions"; // Removed
-// import { notFound } from "next/navigation"; // Removed
 import Link from "next/link";
-import { InferSelectModel } from "drizzle-orm"; // Import InferSelectModel
-import { serviceCategories, services as servicesSchema } from "@/db/schema"; // Import schemas
+import { InferSelectModel } from "drizzle-orm";
+import { serviceCategories, services as servicesSchema } from "@/db/schema";
+import { deleteService } from "../actions";
+import { useTransition, useState } from "react";
+import EditServiceModal from "../EditServiceModal";
 
-type ServiceCategory = InferSelectModel<typeof serviceCategories>; // Define ServiceCategory type
-type Service = InferSelectModel<typeof servicesSchema>; // Define Service type
+type ServiceCategory = InferSelectModel<typeof serviceCategories>;
+type Service = InferSelectModel<typeof servicesSchema>;
 
-export default function CategoryServicesList({ category, services }: { category: ServiceCategory, services: Service[] }) { // Use ServiceCategory and Service types
-  console.log("CategoryServicesList: category prop", category);
-  console.log("CategoryServicesList: services prop", services);
+export default function CategoryServicesList({ category, services }: { category: ServiceCategory, services: Service[] }) {
+  const [isPending, startTransition] = useTransition();
+  const [editingService, setEditingService] = useState<Service | null>(null);
+
+  const handleDelete = (serviceId: number) => {
+    if (window.confirm("Are you sure you want to delete this service?")) {
+      startTransition(async () => {
+        await deleteService(serviceId);
+      });
+    }
+  };
+
+  const handleEditClick = (service: Service) => {
+    setEditingService(service);
+  };
+
+  const handleCloseModal = () => {
+    setEditingService(null);
+  };
 
   return (
     <div>
@@ -28,11 +44,30 @@ export default function CategoryServicesList({ category, services }: { category:
                 {service.description && <p className="text-sm text-gray-600">{service.description}</p>}
                 <p className="text-sm font-bold">${parseFloat(service.price).toFixed(2)}</p>
               </div>
-              {/* Add edit/delete buttons here later */}
+              <div className="flex items-center space-x-2">
+                <button onClick={() => handleEditClick(service)} className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">Edit</button>
+                <button
+                  onClick={() => handleDelete(service.id)}
+                  disabled={isPending}
+                  className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 disabled:bg-gray-400"
+                >
+                  {isPending ? "Deleting..." : "Delete"}
+                </button>
+              </div>
             </li>
           ))
         )}
       </ul>
+      {editingService && (
+        <EditServiceModal
+          service={editingService}
+          onClose={handleCloseModal}
+          onSubmissionSuccess={() => {
+            // Optionally, you can add a success message here
+            handleCloseModal();
+          }}
+        />
+      )}
     </div>
   );
 }

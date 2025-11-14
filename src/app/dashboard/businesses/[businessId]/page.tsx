@@ -16,8 +16,8 @@ export default async function BusinessDetailPage({ params }: { params: { busines
   const races = await getDemographicsByCategory('Race'); // Fetch races
   const religions = await getDemographicsByCategory('Religion'); // Fetch religions
   const regions = await getLocationsByCategory('Region'); // Fetch regions
-  const availableDemographics = await getDemographicsByCategory('Race'); // Fetch all demographics
-  const availableLocations = await getLocationsByCategory('City'); // Fetch all locations
+  const availableDemographics = await db.query.demographics.findMany(); // Fetch all demographics
+  const availableLocations = await db.query.locations.findMany(); // Fetch all locations
 
   if (!business) {
     notFound();
