@@ -22,12 +22,14 @@ export async function createClient(prevState: FormState, formData: FormData): Pr
 
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
+  const businessId = formData.get("businessId") ? parseInt(formData.get("businessId") as string) : undefined; // New: Get optional businessId
 
   try {
     const clientData: InsertClient = {
       userId: session.user.id,
       name,
       email,
+      ...(businessId && { businessId }), // New: Conditionally add businessId
     };
 
     await db.insert(clients).values(clientData);

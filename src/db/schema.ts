@@ -167,6 +167,7 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
 export const clients = pgTable('clients', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').references(() => businesses.id), // New optional foreign key
   name: text('name').notNull(),
   email: text('email').notNull(),
 });
@@ -235,6 +236,10 @@ export const clientsRelations = relations(clients, ({ one }) => ({
   user: one(users, {
     fields: [clients.userId],
     references: [users.id],
+  }),
+  business: one(businesses, { // New relation
+    fields: [clients.businessId],
+    references: [businesses.id],
   }),
 }));
 

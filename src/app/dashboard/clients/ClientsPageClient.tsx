@@ -10,8 +10,10 @@ export type FormState = {
 
 export default function ClientsPageClient({
   clients,
+  businesses, // New: Accept businesses prop
 }: {
   clients: { id: number; name: string; email: string }[];
+  businesses: { id: number; businessName: string }[]; // New: Define businesses prop type
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createClient, undefined);
 
@@ -49,6 +51,27 @@ export default function ClientsPageClient({
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
+              </div>
+            </div>
+
+            {/* New: Business Dropdown */}
+            <div>
+              <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+                Assign to Business (Optional)
+              </label>
+              <div className="mt-1">
+                <select
+                  id="businessId"
+                  name="businessId"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="">Select a business</option>
+                  {businesses.map((business) => (
+                    <option key={business.id} value={business.id}>
+                      {business.businessName}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
