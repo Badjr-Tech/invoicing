@@ -1,50 +1,35 @@
 "use client";
 
-import { getServiceCategories } from "../categories/actions";
-import { getServices, createService } from "../actions";
+import { createService } from "../actions";
 import { useFormState } from "react-dom";
-import { notFound } from "next/navigation";
 import Link from "next/link";
+import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
 
 export type FormState = {
   message: string;
   error: string;
 } | undefined;
 
-export default async function CategoryServicesPage({
+export default function CategoryServicesPage({
   params,
 }: {
   params: { categoryId: string };
 }) {
   const categoryId = parseInt(params.categoryId);
 
-  if (isNaN(categoryId)) {
-    notFound();
-  }
-
-  const categories = await getServiceCategories();
-  const currentCategory = categories.find((cat) => cat.id === categoryId);
-
-  if (!currentCategory) {
-    notFound();
-  }
-
-  const services = await getServices(categoryId);
   const [state, formAction] = useFormState<FormState, FormData>(createService, undefined);
 
   return (
     <div className="flex-1 p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-4xl font-bold text-gray-800">
-          Services in {currentCategory.name}
+          Services in Category
         </h1>
         <Link href="/dashboard/services" className="py-2 px-4 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
           Back to Categories
         </Link>
       </div>
-      {currentCategory.description && (
-        <p className="text-gray-600 mb-6">{currentCategory.description}</p>
-      )}
+      {/* The category description will be rendered by CategoryServicesList */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add New Service */}
@@ -112,25 +97,7 @@ export default async function CategoryServicesPage({
         </div>
 
         {/* Right Column: Services in this Category */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Services</h2>
-          <ul className="space-y-4">
-            {services.length === 0 ? (
-              <p>No services found in this category. Add one using the form!</p>
-            ) : (
-              services.map((service) => (
-                <li key={service.id} className="p-4 bg-white rounded-lg shadow flex justify-between items-center">
-                  <div>
-                    <p className="font-semibold">{service.name}</p>
-                    {service.description && <p className="text-sm text-gray-600">{service.description}</p>}
-                    <p className="text-sm font-bold">${parseFloat(service.price).toFixed(2)}</p>
-                  </div>
-                  {/* Add edit/delete buttons here later */}
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
+        <CategoryServicesList categoryId={categoryId} state={state} /> {/* Render the Server Component here */}
       </div>
     </div>
   );

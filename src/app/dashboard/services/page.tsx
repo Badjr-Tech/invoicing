@@ -1,16 +1,15 @@
 "use client";
 
-import { getServiceCategories, createServiceCategory } from "./categories/actions";
+import { createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
-import Link from "next/link";
+import ServiceCategoriesList from "./ServiceCategoriesList"; // Import the new Server Component
 
 export type FormState = {
   message: string;
   error: string;
 } | undefined;
 
-export default async function ServicesPage() {
-  const categories = await getServiceCategories();
+export default function ServicesPage() { // Removed async
   const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, undefined);
 
   return (
@@ -66,26 +65,7 @@ export default async function ServicesPage() {
         </div>
 
         {/* Right Column: Your Categories */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Categories</h2>
-          <ul className="space-y-4">
-            {categories.length === 0 ? (
-              <p>No service categories found. Add one to get started!</p>
-            ) : (
-              categories.map((category) => (
-                <li key={category.id} className="p-4 bg-white rounded-lg shadow flex justify-between items-center">
-                  <div>
-                    <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
-                      {category.name}
-                    </Link>
-                    {category.description && <p className="text-sm text-gray-600">{category.description}</p>}
-                  </div>
-                  {/* Add edit/delete buttons here later */}
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
+        <ServiceCategoriesList state={state} /> {/* Render the Server Component here */}
       </div>
     </div>
   );
