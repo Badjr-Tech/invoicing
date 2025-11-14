@@ -41,14 +41,17 @@ export default function InvoicingPageClient({
   clients,
   services,
   categories,
+  businesses, // New: Accept businesses prop
 }: {
   clients: { id: number; name: string; email: string }[];
   services: Service[];
   categories: ServiceCategory[];
+  businesses: { id: number; businessName: string }[]; // New: Define businesses prop type
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
+  const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null); // New: State for selected business
 
   useEffect(() => {
     if (state?.message && state.invoice) {
@@ -124,6 +127,28 @@ export default function InvoicingPageClient({
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Invoice</h2>
           <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-lg shadow-md text-white">
+            <div>
+              <label htmlFor="businessId" className="block text-sm font-medium text-white">
+                Your Business
+              </label>
+              <div className="mt-1">
+                <select
+                  id="businessId"
+                  name="businessId"
+                  required
+                  onChange={(e) => setSelectedBusiness(parseInt(e.target.value))}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
+                >
+                  <option value="">Select your business</option>
+                  {businesses.map((business) => (
+                    <option key={business.id} value={business.id}>
+                      {business.businessName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div>
               <label htmlFor="clientId" className="block text-sm font-medium text-white">
                 Client

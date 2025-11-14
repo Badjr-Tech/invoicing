@@ -32,11 +32,12 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   }
 
   const clientId = parseInt(formData.get("clientId") as string);
+  const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
   const services: Service[] = JSON.parse(formData.get("services") as string);
   const totalAmount = parseFloat(formData.get("totalAmount") as string);
 
-  if (!clientId || !services || services.length === 0) {
-    return { message: "", error: "Please select a client and at least one service." };
+  if (!clientId || !businessId || !services || services.length === 0) { // New: Validate businessId
+    return { message: "", error: "Please select a client, a business, and at least one service." };
   }
 
   try {
@@ -49,13 +50,18 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
     }
 
     const business = await db.query.businesses.findFirst({
-      where: and(eq(businesses.userId, session.user.id), eq(businesses.isArchived, false)),
+      where: and(eq(businesses.userId, session.user.id), eq(businesses.id, businessId)), // New: Use businessId
     });
+
+    if (!business) { // New: Handle business not found
+      return { message: "", error: "Business not found." };
+    }
 
     const serviceDescription = services.map((s: Service) => s.name).join(", ");
 
     const invoiceData: InsertInvoice = {
       userId: session.user.id,
+      businessId: business.id, // New: Include businessId
       clientName: client.name,
       clientEmail: client.email,
       serviceDescription,

@@ -32,6 +32,7 @@ export const users = pgTable('users', {
 export const invoices = pgTable('invoices', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').notNull().references(() => businesses.id), // New foreign key
   clientName: text('client_name').notNull(),
   clientEmail: text('client_email').notNull(),
   serviceDescription: text('service_description').notNull(),
@@ -223,6 +224,10 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
   user: one(users, {
     fields: [invoices.userId],
     references: [users.id],
+  }),
+  business: one(businesses, { // New relation
+    fields: [invoices.businessId],
+    references: [businesses.id],
   }),
 }));
 
