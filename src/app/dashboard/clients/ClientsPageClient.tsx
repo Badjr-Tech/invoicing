@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react"; // Import useState
 import { useFormState } from "react-dom";
 import { createClient } from "./actions";
+import EditClientModal from "./EditClientModal"; // Import EditClientModal
+import { Client } from "@/db/schema"; // Import Client type
 
 export type FormState = {
   message: string;
@@ -12,10 +15,22 @@ export default function ClientsPageClient({
   clients,
   businesses, // New: Accept businesses prop
 }: {
-  clients: { id: number; name: string; email: string }[];
+  clients: Client[]; // Use Client type
   businesses: { id: number; businessName: string }[]; // New: Define businesses prop type
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createClient, undefined);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
+
+  const handleEditClick = (client: Client) => {
+    setEditingClient(client);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingClient(null);
+  };
 
   return (
     <div className="p-6">
@@ -92,14 +107,31 @@ export default function ClientsPageClient({
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Clients</h2>
           <ul className="space-y-4">
             {clients && clients.map((client) => (
-              <li key={client.id} className="p-4 bg-gray-50 rounded-lg shadow">
-                <p className="font-semibold">{client.name}</p>
-                <p className="text-sm text-gray-600">{client.email}</p>
+              <li key={client.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
+                <div>
+                  <p className="font-semibold">{client.name}</p>
+                  <p className="text-sm text-gray-600">{client.email}</p>
+                </div>
+                <button
+                  onClick={() => handleEditClick(client)}
+                  className="ml-4 px-3 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Edit
+                </button>
               </li>
             ))}
           </ul>
         </div>
       </div>
+
+      {editingClient && (
+        <EditClientModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          client={editingClient}
+          businesses={businesses}
+        />
+      )}
     </div>
   );
 }

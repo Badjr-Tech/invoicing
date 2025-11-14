@@ -73,3 +73,39 @@ export async function getAllClients() {
     return [];
   }
 }
+
+export async function updateClient(prevState: FormState, formData: FormData): Promise<FormState> {
+  const session = await getSession();
+  if (!session || !session.user) {
+    return { message: "", error: "You must be logged in to update a client." };
+  }
+
+  const id = parseInt(formData.get("id") as string);
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const businessId = formData.get("businessId") ? parseInt(formData.get("businessId") as string) : null; // Can be null for optional
+
+  if (isNaN(id)) {
+    return { message: "", error: "Invalid client ID." };
+  }
+
+  try {
+    await db.update(clients)
+      .set({
+        name,
+        email,
+        businessId, // Update businessId
+      })
+      .where(eq(clients.id, id));
+
+    revalidatePath("/dashboard/clients");
+    return { message: "Client updated successfully!", error: "" };
+  } catch (error: unknown) {
+    console.error("Error updating client:", error);
+    let errorMessage = "Failed to update client.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update client: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
