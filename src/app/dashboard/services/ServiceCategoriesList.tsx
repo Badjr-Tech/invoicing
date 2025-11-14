@@ -16,7 +16,7 @@ export default async function ServiceCategoriesList() { // Removed state prop
             <li key={category.id} className="p-4 bg-white rounded-lg shadow flex justify-between items-center">
               <div>
                 <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
-                  {category.name}
+                  {category.name} {category.customId && <span className="text-gray-500 text-xs">({category.customId})</span>}
                 </Link>
                 {category.description && <p className="text-sm text-gray-600">{category.description}</p>}
               </div>
