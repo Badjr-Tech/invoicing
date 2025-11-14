@@ -39,7 +39,7 @@ export default function ClientsPageClient({
   );
 
   return (
-    <div className="p-6">
+    <div className="p-6" suppressHydrationWarning>
       <h1 className="text-4xl font-bold text-gray-800 mb-6">Clients</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
