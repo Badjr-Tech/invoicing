@@ -2,7 +2,6 @@
 
 import { createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
-// import { FormState } from "./page"; // Removed import
 
 export type FormState = { // Added type definition
   message: string;

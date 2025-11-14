@@ -3,7 +3,7 @@
 // import { createService } from "../actions"; // No longer needed here
 // import { useFormState } from "react-dom"; // No longer needed here
 import Link from "next/link";
-// import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
+import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
 import { useParams } from "next/navigation"; // Added back useParams
 import dynamic from "next/dynamic"; // Import dynamic
 
@@ -39,8 +39,7 @@ export default function CategoryServicesPage() { // Made non-async and reverted 
         <ServiceForm categoryId={categoryId} /> {/* Render the dynamically imported Client Component */}
 
         {/* Right Column: Services in this Category */}
-        {/* <CategoryServicesList categoryId={categoryId} /> */} {/* Temporarily removed */}
-        <p>Category Services List (Temporarily removed for debugging)</p>
+        <CategoryServicesList categoryId={categoryId} /> {/* Re-added */}
       </div>
     </div>
   );
