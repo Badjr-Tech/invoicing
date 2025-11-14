@@ -16,9 +16,11 @@ interface BusinessDetailClientPageProps {
   races: Demographic[];
   religions: Demographic[];
   regions: Location[];
+  availableDemographics: Demographic[]; // Re-added
+  availableLocations: Location[]; // Re-added
 }
 
-export default function BusinessDetailClientPage({ initialBusiness, genders, races, religions, regions }: BusinessDetailClientPageProps) {
+export default function BusinessDetailClientPage({ initialBusiness, genders, races, religions, regions, availableDemographics, availableLocations }: BusinessDetailClientPageProps) {
   const [business, setBusiness] = useState(initialBusiness);
   const [activeTab, setActiveTab] = useState('business-profile');
 
