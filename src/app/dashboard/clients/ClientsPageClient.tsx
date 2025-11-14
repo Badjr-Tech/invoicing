@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useFormState } from "react-dom";
 import { createClient } from "./actions";
 import EditClientModal from "./EditClientModal";
-import { Client } from "@/db/schema"; // Import Client type
+import { Client, ClientWithBusiness } from "@/db/schema"; // Import Client and ClientWithBusiness types
 
 export type FormState = {
   message: string;
@@ -13,14 +13,17 @@ export type FormState = {
 
 export default function ClientsPageClient({
   clients,
+  businesses,
 }: {
-  clients: Client[]; // Use Client type
+  clients: ClientWithBusiness[]; // Use ClientWithBusiness type
+  businesses: { id: number; businessName: string }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createClient, undefined);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [editingClient, setEditingClient] = useState<ClientWithBusiness | null>(null);
+  const [selectedBusinessFilter, setSelectedBusinessFilter] = useState<string>(''); // State for business filter
 
-  const handleEditClick = (client: Client) => {
+  const handleEditClick = (client: ClientWithBusiness) => {
     setEditingClient(client);
     setIsEditModalOpen(true);
   };
@@ -29,6 +32,11 @@ export default function ClientsPageClient({
     setIsEditModalOpen(false);
     setEditingClient(null);
   };
+
+  // Filtered clients based on selected business
+  const filteredClients = clients.filter(client =>
+    selectedBusinessFilter === '' || client.businessId?.toString() === selectedBusinessFilter
+  );
 
   return (
     <div className="p-6">
@@ -82,6 +90,27 @@ export default function ClientsPageClient({
               </div>
             </div>
 
+            {/* Business Dropdown for Add Client */}
+            <div>
+              <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+                Assign to Business (Optional)
+              </label>
+              <div className="mt-1">
+                <select
+                  id="businessId"
+                  name="businessId"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="">Select a business</option>
+                  {businesses.map((business) => (
+                    <option key={business.id} value={business.id}>
+                      {business.businessName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
             {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
 
@@ -97,14 +126,38 @@ export default function ClientsPageClient({
         </div>
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Clients</h2>
+          {/* New: Filter by Business Dropdown */}
+          <div className="mb-4">
+            <label htmlFor="filterBusiness" className="block text-sm font-medium text-gray-700">
+              Filter by Business
+            </label>
+            <select
+              id="filterBusiness"
+              name="filterBusiness"
+              value={selectedBusinessFilter}
+              onChange={(e) => setSelectedBusinessFilter(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            >
+              <option value="">All Businesses</option>
+              {businesses.map((business) => (
+                <option key={business.id} value={business.id}>
+                  {business.businessName}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <ul className="space-y-4">
-            {clients && clients.map((client) => (
+            {filteredClients && filteredClients.map((client) => (
               <li key={client.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
                 <div>
                   <p className="font-semibold">{client.name}</p>
                   <p className="text-sm text-gray-600">Email: {client.email}</p>
                   {client.clientBusinessName && (
-                    <p className="text-sm text-gray-500">Business: {client.clientBusinessName}</p>
+                    <p className="text-sm text-gray-500">Client Business: {client.clientBusinessName}</p>
+                  )}
+                  {client.business && ( // Display associated business
+                    <p className="text-sm text-gray-500">Linked Business: {client.business.businessName}</p>
                   )}
                 </div>
                 <button
@@ -124,6 +177,7 @@ export default function ClientsPageClient({
           isOpen={isEditModalOpen}
           onClose={handleCloseEditModal}
           client={editingClient}
+          businesses={businesses}
         />
       )}
     </div>

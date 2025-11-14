@@ -23,6 +23,7 @@ export async function createClient(prevState: FormState, formData: FormData): Pr
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const clientBusinessName = formData.get("clientBusinessName") as string; // New: Get optional clientBusinessName
+  const businessId = formData.get("businessId") ? parseInt(formData.get("businessId") as string) : undefined; // Re-added: Get optional businessId
 
   try {
     const clientData: InsertClient = {
@@ -30,6 +31,7 @@ export async function createClient(prevState: FormState, formData: FormData): Pr
       name,
       email,
       clientBusinessName: clientBusinessName || null, // New: Add clientBusinessName
+      ...(businessId && { businessId }), // Re-added: Conditionally add businessId
     };
 
     await db.insert(clients).values(clientData);
@@ -54,6 +56,9 @@ export async function getClients() {
 
   const userClients = await db.query.clients.findMany({
     where: eq(clients.userId, session.user.id),
+    with: {
+      business: true, // Re-added: Include the associated business
+    },
   });
 
   return userClients;
@@ -84,6 +89,7 @@ export async function updateClient(prevState: FormState, formData: FormData): Pr
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const clientBusinessName = formData.get("clientBusinessName") as string; // New: Get clientBusinessName
+  const businessId = formData.get("businessId") ? parseInt(formData.get("businessId") as string) : null; // Re-added: Get optional businessId
 
   if (isNaN(id)) {
     return { message: "", error: "Invalid client ID." };
@@ -95,6 +101,7 @@ export async function updateClient(prevState: FormState, formData: FormData): Pr
         name,
         email,
         clientBusinessName: clientBusinessName || null, // Update clientBusinessName
+        businessId, // Update businessId
       })
       .where(eq(clients.id, id));
 

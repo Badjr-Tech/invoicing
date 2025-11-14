@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useFormState } from 'react-dom';
 import { updateClient } from './actions';
-import { Client } from '@/db/schema'; // Import Client type
+import { Client, ClientWithBusiness } from '@/db/schema'; // Import Client and ClientWithBusiness types
 
 export type FormState = {
   message: string;
@@ -15,13 +15,15 @@ export default function EditClientModal({
   isOpen,
   onClose,
   client,
+  businesses, // Re-added
 }: {
   isOpen: boolean;
   onClose: () => void;
-  client: Client | null; // Updated type
+  client: ClientWithBusiness | null; // Updated type
+  businesses: { id: number; businessName: string }[]; // Re-added
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(updateClient, undefined);
-  const [currentClient, setCurrentClient] = useState<Client | null>(client); // Updated type
+  const [currentClient, setCurrentClient] = useState<ClientWithBusiness | null>(client); // Updated type
 
   useEffect(() => {
     setCurrentClient(client);
@@ -117,6 +119,25 @@ export default function EditClientModal({
                         onChange={handleInputChange}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
+                    </div>
+                    <div>
+                      <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+                        Assign to Business (Optional)
+                      </label>
+                      <select
+                        id="businessId"
+                        name="businessId"
+                        value={currentClient.businessId || ''}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      >
+                        <option value="">Select a business</option>
+                        {businesses.map((business) => (
+                          <option key={business.id} value={business.id}>
+                            {business.businessName}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
