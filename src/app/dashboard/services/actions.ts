@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { services } from "@/db/schema";
 import { getSession } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm"; // Import 'and' for multiple conditions
 import { InferInsertModel } from 'drizzle-orm'; // Import InferInsertModel
 
 type InsertService = InferInsertModel<typeof services>; // Define InsertService type
@@ -23,10 +23,16 @@ export async function createService(prevState: FormState, formData: FormData): P
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = parseFloat(formData.get("price") as string);
+  const categoryId = formData.get("categoryId") ? parseInt(formData.get("categoryId") as string) : undefined; // New: Get categoryId
+
+  if (isNaN(price)) {
+    return { message: "", error: "Price must be a valid number." };
+  }
 
   try {
     const serviceData: InsertService = {
       userId: session.user.id,
+      categoryId, // New: Include categoryId
       name,
       description,
       price: price.toString(), // Ensure price is string for numeric type
@@ -35,6 +41,9 @@ export async function createService(prevState: FormState, formData: FormData): P
     await db.insert(services).values(serviceData);
 
     revalidatePath("/dashboard/services");
+    if (categoryId) {
+      revalidatePath(`/dashboard/services/${categoryId}`); // Revalidate specific category page
+    }
     return { message: "Service created successfully!", error: "" };
   } catch (error: unknown) {
     console.error("Error creating service:", error);
@@ -46,14 +55,22 @@ export async function createService(prevState: FormState, formData: FormData): P
   }
 }
 
-export async function getServices() {
+export async function getServices(categoryId?: number) { // New: Accept optional categoryId
   const session = await getSession();
   if (!session || !session.user) {
     return [];
   }
 
+  const conditions = [eq(services.userId, session.user.id)];
+  if (categoryId !== undefined) {
+    conditions.push(eq(services.categoryId, categoryId));
+  }
+
   const userServices = await db.query.services.findMany({
-    where: eq(services.userId, session.user.id),
+    where: and(...conditions),
+    with: {
+      category: true, // New: Fetch category details
+    },
   });
 
   return userServices;
@@ -66,7 +83,11 @@ export async function getAllServices() {
   }
 
   try {
-    const allServices = await db.query.services.findMany();
+    const allServices = await db.query.services.findMany({
+      with: {
+        category: true, // New: Fetch category details
+      },
+    });
     return allServices;
   } catch (error) {
     console.error("Error fetching all services:", error);

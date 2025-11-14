@@ -169,9 +169,19 @@ export const clients = pgTable('clients', {
   email: text('email').notNull(),
 });
 
+export const serviceCategories = pgTable('service_categories', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  name: text('name').notNull(),
+  description: text('description'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
+  categoryId: integer('category_id').references(() => serviceCategories.id), // New foreign key
   name: text('name').notNull(),
   description: text('description'),
   price: numeric('price', { precision: 10, scale: 2 }).notNull(),
@@ -188,7 +198,7 @@ export type MassMessage = InferSelectModel<typeof massMessages>;
 export type IndividualMessage = InferSelectModel<typeof individualMessages>;
 export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEvents>;
 export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
-
+export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 
 // --- Relations ---
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -202,6 +212,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   invoices: many(invoices),
   clients: many(clients),
   services: many(services),
+  serviceCategories: many(serviceCategories), // New relation
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
@@ -218,10 +229,22 @@ export const clientsRelations = relations(clients, ({ one }) => ({
   }),
 }));
 
+export const serviceCategoriesRelations = relations(serviceCategories, ({ one, many }) => ({
+  user: one(users, {
+    fields: [serviceCategories.userId],
+    references: [users.id],
+  }),
+  services: many(services), // New relation
+}));
+
 export const servicesRelations = relations(services, ({ one }) => ({
   user: one(users, {
     fields: [services.userId],
     references: [users.id],
+  }),
+  category: one(serviceCategories, { // New relation
+    fields: [services.categoryId],
+    references: [serviceCategories.id],
   }),
 }));
 
