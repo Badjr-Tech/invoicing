@@ -1,3 +1,5 @@
+"use client";
+
 import { getServiceCategories, createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
 import Link from "next/link";

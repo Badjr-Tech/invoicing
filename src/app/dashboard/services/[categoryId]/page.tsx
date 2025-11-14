@@ -1,3 +1,5 @@
+"use client";
+
 import { getServiceCategories } from "../categories/actions";
 import { getServices, createService } from "../actions";
 import { useFormState } from "react-dom";
