@@ -3,8 +3,8 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useFormState } from 'react-dom';
-import { updateClient } from './actions'; // Assuming updateClient action will be created
-import { Client } from '@/db/schema'; // Assuming Client type is available from schema
+import { updateClient } from './actions';
+import { Client, ClientWithBusiness } from '@/db/schema'; // Import ClientWithBusiness type
 
 export type FormState = {
   message: string;
@@ -19,11 +19,11 @@ export default function EditClientModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  client: Client | null;
+  client: ClientWithBusiness | null; // Updated type
   businesses: { id: number; businessName: string }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(updateClient, undefined);
-  const [currentClient, setCurrentClient] = useState<Client | null>(client);
+  const [currentClient, setCurrentClient] = useState<ClientWithBusiness | null>(client); // Updated type
 
   useEffect(() => {
     setCurrentClient(client);
