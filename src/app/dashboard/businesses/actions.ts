@@ -31,10 +31,7 @@ export async function getBusinessProfile(businessId: number): Promise<Business &
       where: eq(businesses.id, businessId),
       with: {
         location: true, // Include location details
-        ownerGender: true, // New: Include ownerGender
-        ownerRace: true, // New: Include ownerRace
-        ownerReligion: true, // New: Include ownerReligion
-        ownerRegion: true, // New: Include ownerRegion
+        // Temporarily removed ownerGender, ownerRace, ownerReligion, ownerRegion until DB is migrated
       },
     });
     if (!profile) { return null; }
