@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
-import { updateBusinessDesign } from "../../actions"; // Assuming updateBusinessDesign action will be created
+import { updateBusinessDesign } from "../actions"; // Assuming updateBusinessDesign action will be created
 import { Business } from "@/db/schema"; // Import necessary types
 
 export type FormState = {
