@@ -23,7 +23,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
-      <aside className="relative w-64 bg-secondary text-white px-4 pt-4 space-y-6">
+      <aside className="relative w-64 bg-secondary text-white px-4 pt-4 space-y-4">
         <div className="flex items-center space-x-2">
           <Link
             href="/dashboard/profile"
@@ -36,7 +36,7 @@ export default async function DashboardLayout({
         <div className="mb-6 text-center">
           <Image src="/yellow.png" alt="Logo" width={72} height={72} className="mx-auto" />
         </div>
-        <nav className="space-y-2 font-semibold text-white">
+        <nav className="space-y-1 font-semibold text-white">
           <Link
             href="/dashboard"
             className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary"
