@@ -96,6 +96,10 @@ export default function YourBusinessesPageContent() {
                 Owner&apos;s Name
               </label>
               <input
+                id="ownerName" // Added id
+                name="ownerName" // Added name
+                type="text" // Added type
+                required // Added required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
               />
             </div>

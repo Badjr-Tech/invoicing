@@ -89,6 +89,7 @@ export async function getAllBusinesses() {
 
 export async function createBusinessProfile(prevState: FormState, formData: FormData): Promise<FormState> {
   const userId = await getUserIdFromSession();
+  console.log("createBusinessProfile: userId", userId);
 
   if (!userId) {
     return { message: "", error: "User not authenticated." };
@@ -110,7 +111,26 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const website = formData.get("website") as string;
   const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
 
+  console.log("createBusinessProfile: formData fields:", {
+    ownerName,
+    percentOwnership,
+    businessName,
+    businessType,
+    businessTaxStatus,
+    businessDescription,
+    businessIndustry,
+    naicsCode,
+    streetAddress,
+    city,
+    state,
+    zipCode,
+    phone,
+    website,
+    businessMaterials: businessMaterials ? businessMaterials.name : "no file",
+  });
+
   if (!ownerName || isNaN(percentOwnership) || !businessName || !businessType || !businessTaxStatus || !businessIndustry) {
+    console.error("createBusinessProfile: Required fields missing or invalid.");
     return { message: "", error: "Required fields are missing." };
   }
 
@@ -142,14 +162,20 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
       website,
       businessMaterialsUrl,
     };
+    console.log("createBusinessProfile: newBusinessData before insert:", newBusinessData);
 
     await db.insert(businesses).values(newBusinessData);
+    console.log("createBusinessProfile: Business inserted successfully.");
 
     revalidatePath("/dashboard/businesses");
     return { message: "Business profile created successfully!", error: "" };
   } catch (error) {
     console.error("Error creating business profile:", error);
-    return { message: "", error: "Failed to create business profile." };
+    let errorMessage = "Failed to create business profile.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to create business profile: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
   }
 }
 
