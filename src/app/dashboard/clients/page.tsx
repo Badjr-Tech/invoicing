@@ -1,17 +1,15 @@
 import { getClients } from "./actions";
-import { getAllUserBusinesses } from "../businesses/actions";
 import ClientsPageClient from "./ClientsPageClient";
 import { getSession } from "@/app/login/actions";
-import { ClientWithBusiness } from "@/db/schema"; // New import for enriched client type
+import { Client } from "@/db/schema"; // Import Client type
 
 export default async function ClientsPage() {
   const session = await getSession();
   if (!session || !session.user) {
-    return <ClientsPageClient clients={[]} businesses={[]} />;
+    return <ClientsPageClient clients={[]} />;
   }
 
-  const clients: ClientWithBusiness[] = await getClients(); // Use the enriched client type
-  const businesses = await getAllUserBusinesses(session.user.id);
+  const clients = await getClients(); // Use the Client type
 
-  return <ClientsPageClient clients={clients} businesses={businesses} />;
+  return <ClientsPageClient clients={clients} />;
 }
