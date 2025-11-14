@@ -71,6 +71,13 @@
       "when": 1763080654868,
       "tag": "0009_small_lord_hawal",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1763087705477,
+      "tag": "0010_noisy_leader",
+      "breakpoints": true
     }
   ]
 }

@@ -16,6 +16,8 @@ interface Service {
     id: number;
     name: string;
   } | null;
+  designation: 'hourly' | 'per deliverable' | 'flat fee'; // New field
+  serviceNumber: string | null; // New field
 }
 
 interface ServiceCategory {
