@@ -11,6 +11,17 @@ interface Service {
   name: string;
   description: string | null;
   price: string; // Price is stored as string in Drizzle schema
+  categoryId: number | null;
+  category?: {
+    id: number;
+    name: string;
+  } | null;
+}
+
+interface ServiceCategory {
+  id: number;
+  name: string;
+  description: string | null;
 }
 
 export type FormState = {
@@ -27,9 +38,11 @@ export type FormState = {
 export default function InvoicingPageClient({
   clients,
   services,
+  categories,
 }: {
   clients: { id: number; name: string; email: string }[];
   services: Service[];
+  categories: ServiceCategory[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
@@ -54,6 +67,15 @@ export default function InvoicingPageClient({
 
   const totalAmount = selectedServices.reduce((acc, service) => acc + parseFloat(service.price), 0);
 
+  // Group services by category
+  const servicesByCategory: { [key: string]: Service[] } = {};
+  categories.forEach(category => {
+    servicesByCategory[category.name] = services.filter(service => service.categoryId === category.id);
+  });
+  // Add uncategorized services
+  servicesByCategory["Uncategorized"] = services.filter(service => service.categoryId === null);
+
+
   return (
     <div className="p-6">
       <div className="flex justify-end mb-4">
@@ -66,20 +88,31 @@ export default function InvoicingPageClient({
         {/* Left Column: Add Services */}
         <div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Add Services</h2>
-          <div className="space-y-4">
-            {services.map((service) => (
-              <div key={service.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
-                <div>
-                  <p className="font-semibold">{service.name}</p>
-                  <p className="text-sm text-gray-600">{service.description}</p>
-                  <p className="text-sm font-bold">${service.price}</p>
-                </div>
-                <button
-                  onClick={() => handleAddService(service)}
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Add
-                </button>
+          <div className="space-y-6">
+            {Object.entries(servicesByCategory).map(([categoryName, servicesInCat]) => (
+              <div key={categoryName}>
+                <h3 className="text-xl font-semibold text-gray-700 mb-3">{categoryName}</h3>
+                {servicesInCat.length === 0 ? (
+                  <p className="text-gray-500">No services in this category.</p>
+                ) : (
+                  <div className="space-y-4">
+                    {servicesInCat.map((service) => (
+                      <div key={service.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
+                        <div>
+                          <p className="font-semibold">{service.name}</p>
+                          <p className="text-sm text-gray-600">{service.description}</p>
+                          <p className="text-sm font-bold">${service.price}</p>
+                        </div>
+                        <button
+                          onClick={() => handleAddService(service)}
+                          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
