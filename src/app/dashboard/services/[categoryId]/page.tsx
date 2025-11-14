@@ -1,10 +1,10 @@
-"use client";
+// "use client"; // Removed
 
 // import { createService } from "../actions"; // No longer needed here
 // import { useFormState } from "react-dom"; // No longer needed here
 import Link from "next/link";
 import CategoryServicesList from "./CategoryServicesList"; // Import the new Server Component
-import { useParams } from "next/navigation"; // Import useParams
+// import { useParams } from "next/navigation"; // Removed useParams
 import dynamic from "next/dynamic"; // Import dynamic
 
 // FormState type moved to ServiceForm.tsx
@@ -16,8 +16,8 @@ import dynamic from "next/dynamic"; // Import dynamic
 
 const ServiceForm = dynamic(() => import("./ServiceForm"), { ssr: false }); // Dynamically import with ssr: false
 
-export default function CategoryServicesPage() { // Removed params from props
-  const params = useParams(); // Use useParams hook
+export default async function CategoryServicesPage({ params }: { params: { categoryId: string } }) { // Made async and added params
+  // const params = useParams(); // Removed useParams hook
   const categoryId = parseInt(params.categoryId as string);
 
   // const [state, formAction] = useFormState<FormState, FormData>(createService, INITIAL_STATE); // No longer needed here

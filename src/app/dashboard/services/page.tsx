@@ -1,4 +1,4 @@
-"use client";
+// "use client"; // Removed
 
 // import { createServiceCategory } from "./categories/actions"; // No longer needed here
 // import { useFormState } from "react-dom"; // No longer needed here
@@ -15,7 +15,7 @@ import dynamic from "next/dynamic"; // Import dynamic
 
 const ServiceCategoryForm = dynamic(() => import("./ServiceCategoryForm"), { ssr: false }); // Dynamically import with ssr: false
 
-export default function ServicesPage() { // Removed async
+export default async function ServicesPage() { // Made async
   // const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, INITIAL_STATE); // No longer needed here
 
   return (
