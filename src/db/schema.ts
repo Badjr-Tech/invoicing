@@ -90,6 +90,10 @@ export const businesses = pgTable('businesses', {
   material4Title: text('material4_title'),
   material5Url: text('material5_url'),
   material5Title: text('material5_title'),
+  color1: text('color1'), // New optional column for business color scheme
+  color2: text('color2'), // New optional column for business color scheme
+  color3: text('color3'), // New optional column for business color scheme
+  color4: text('color4'), // New optional column for business color scheme
 });
 
 export const massMessages = pgTable('mass_messages', {

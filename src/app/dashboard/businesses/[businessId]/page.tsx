@@ -12,7 +12,7 @@ export default async function BusinessDetailPage({ params }: { params: { busines
     notFound();
   }
 
-  const business: (Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; }) | null = await getBusinessProfile(businessId); // Use the new type
+  const business: (Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }) | null = await getBusinessProfile(businessId); // Use the new type
   const genders = await getDemographicsByCategory('Gender'); // Fetch genders
   const races = await getDemographicsByCategory('Race'); // Fetch races
   const religions = await getDemographicsByCategory('Religion'); // Fetch religions

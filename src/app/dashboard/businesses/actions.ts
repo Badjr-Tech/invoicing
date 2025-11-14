@@ -25,7 +25,7 @@ export async function fetchSession(): Promise<SessionPayload | null> {
   return await getSession();
 }
 
-export async function getBusinessProfile(businessId: number): Promise<BusinessWithLocation & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; } | null> {
+export async function getBusinessProfile(businessId: number): Promise<BusinessWithLocation & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
@@ -557,6 +557,52 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
     let errorMessage = "Failed to update owner details.";
     if (error instanceof Error) {
       errorMessage = `Failed to update owner details: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
+
+export async function updateBusinessDesign(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const businessId = parseInt(formData.get("businessId") as string);
+  const color1 = formData.get("color1") as string;
+  const color2 = formData.get("color2") as string;
+  const color3 = formData.get("color3") as string;
+  const color4 = formData.get("color4") as string;
+
+  if (isNaN(businessId)) {
+    return { message: "", error: "Invalid business ID." };
+  }
+
+  try {
+    const updateData: {
+      color1?: string | null;
+      color2?: string | null;
+      color3?: string | null;
+      color4?: string | null;
+    } = {};
+
+    if (color1) updateData.color1 = color1; else updateData.color1 = null;
+    if (color2) updateData.color2 = color2; else updateData.color2 = null;
+    if (color3) updateData.color3 = color3; else updateData.color3 = null;
+    if (color4) updateData.color4 = color4; else updateData.color4 = null;
+
+    await db.update(businesses)
+      .set(updateData)
+      .where(eq(businesses.id, businessId));
+
+    revalidatePath(`/dashboard/businesses/${businessId}`);
+    return { message: "Business design updated successfully!", error: "" };
+  } catch (error) {
+    console.error("Error updating business design:", error);
+    let errorMessage = "Failed to update business design.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update business design: ${error.message}`;
     }
     return { message: "", error: errorMessage };
   }
