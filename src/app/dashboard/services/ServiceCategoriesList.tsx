@@ -1,8 +1,8 @@
 import { getServiceCategories } from "./categories/actions";
 import Link from "next/link";
-import { FormState } from "./page"; // Import FormState type
+// import { FormState } from "./page"; // No longer needed
 
-export default async function ServiceCategoriesList({ state }: { state: FormState }) {
+export default async function ServiceCategoriesList() { // Removed state prop
   const categories = await getServiceCategories();
 
   return (

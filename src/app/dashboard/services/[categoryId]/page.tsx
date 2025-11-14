@@ -95,7 +95,7 @@ export default function CategoryServicesPage() { // Removed params from props
         </div>
 
         {/* Right Column: Services in this Category */}
-        <CategoryServicesList categoryId={categoryId} state={state} /> {/* Render the Server Component here */}
+        <CategoryServicesList categoryId={categoryId} /> {/* Render the Server Component here, removed state prop */}
       </div>
     </div>
   );

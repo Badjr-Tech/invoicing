@@ -2,9 +2,9 @@ import { getServiceCategories } from "../categories/actions";
 import { getServices } from "../actions";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { FormState } from "./page"; // Import FormState type
+// import { FormState } from "./page"; // No longer needed
 
-export default async function CategoryServicesList({ categoryId, state }: { categoryId: number; state: FormState }) {
+export default async function CategoryServicesList({ categoryId }: { categoryId: number }) { // Removed state prop
   const categories = await getServiceCategories();
   const currentCategory = categories.find((cat) => cat.id === categoryId);
 

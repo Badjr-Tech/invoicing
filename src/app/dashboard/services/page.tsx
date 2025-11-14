@@ -65,7 +65,7 @@ export default function ServicesPage() { // Removed async
         </div>
 
         {/* Right Column: Your Categories */}
-        <ServiceCategoriesList state={state} /> {/* Render the Server Component here */}
+        <ServiceCategoriesList /> {/* Render the Server Component here, removed state prop */}
       </div>
     </div>
   );
