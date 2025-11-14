@@ -5,13 +5,13 @@ import { getServices } from "../actions"; // Import server action for services
 import ServiceFormWrapper from "./ServiceFormWrapper"; // Import the new Client Component
 import { notFound } from "next/navigation"; // Import notFound
 
-interface PageProps {
-  params: {
-    categoryId: string;
-  };
-}
-
-export default async function CategoryServicesPage({ params }: PageProps) { // Use PageProps
+export default async function CategoryServicesPage({
+  params,
+  searchParams, // Added searchParams as a placeholder
+}: {
+  params: { categoryId: string };
+  searchParams?: { [key: string]: string | string[] | undefined }; // Added searchParams type
+}) {
   const categoryId = parseInt(params.categoryId as string);
 
   // Fetch category details
