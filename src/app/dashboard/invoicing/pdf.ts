@@ -6,23 +6,58 @@ export function generateInvoicePDF(
   totalAmount: number,
   logoUrl: string | null
 ) {
-  const doc = new jsPDF();
+  console.log("generateInvoicePDF: Function started.");
+  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "logoUrl:", logoUrl);
 
-  // Add logo
-  if (logoUrl) {
-    // Note: This will only work if the logo is accessible via a public URL
-    // and the browser can fetch it without CORS issues.
-    // You might need to handle image loading more robustly.
-    try {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = logoUrl;
-      doc.addImage(img, 'PNG', 10, 10, 50, 20);
-    } catch (error) {
-      console.error("Error adding logo to PDF:", error);
+  try {
+    const doc = new jsPDF();
+
+    // Add logo
+    if (logoUrl) {
+      console.log("generateInvoicePDF: Attempting to add logo from URL:", logoUrl);
+      try {
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        img.src = logoUrl;
+        // Ensure image is loaded before adding to PDF
+        img.onload = () => {
+          doc.addImage(img, 'PNG', 10, 10, 50, 20);
+          // Continue PDF generation after image is loaded
+          addPdfContent(doc, client, services, totalAmount);
+          console.log("generateInvoicePDF: Logo added. Saving PDF.");
+          doc.save('invoice.pdf'); // Force download
+        };
+        img.onerror = (error) => {
+          console.error("generateInvoicePDF: Error loading logo image:", error);
+          // Continue without logo if it fails to load
+          addPdfContent(doc, client, services, totalAmount);
+          console.log("generateInvoicePDF: Logo failed to load. Saving PDF without logo.");
+          doc.save('invoice.pdf'); // Force download
+        };
+      } catch (error) {
+        console.error("generateInvoicePDF: Error in logo handling block:", error);
+        // Continue without logo if an error occurs in the handling block
+        addPdfContent(doc, client, services, totalAmount);
+        console.log("generateInvoicePDF: Error in logo handling. Saving PDF without logo.");
+        doc.save('invoice.pdf'); // Force download
+      }
+    } else {
+      console.log("generateInvoicePDF: No logo URL provided. Generating PDF without logo.");
+      addPdfContent(doc, client, services, totalAmount);
+      console.log("generateInvoicePDF: Saving PDF without logo.");
+      doc.save('invoice.pdf'); // Force download
     }
+  } catch (error) {
+    console.error("generateInvoicePDF: Error during PDF generation:", error);
   }
+}
 
+function addPdfContent(
+  doc: jsPDF,
+  client: { name: string; email: string },
+  services: { name: string; price: string }[],
+  totalAmount: number
+) {
   // Add header
   doc.setFontSize(22);
   doc.text('Invoice', 10, 40);
@@ -47,7 +82,4 @@ export function generateInvoicePDF(
   // Add total
   doc.setFontSize(14);
   doc.text(`Total: $${totalAmount.toFixed(2)}`, 150, y + 10);
-
-  // Open the PDF in a new tab
-  doc.output('dataurlnewwindow');
 }
