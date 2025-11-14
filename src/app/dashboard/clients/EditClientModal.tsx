@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useFormState } from 'react-dom';
 import { updateClient } from './actions';
-import { Client, ClientWithBusiness } from '@/db/schema'; // Import ClientWithBusiness type
+import { Client } from '@/db/schema'; // Import Client type
 
 export type FormState = {
   message: string;
@@ -15,15 +15,13 @@ export default function EditClientModal({
   isOpen,
   onClose,
   client,
-  businesses,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  client: ClientWithBusiness | null; // Updated type
-  businesses: { id: number; businessName: string }[];
+  client: Client | null; // Updated type
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(updateClient, undefined);
-  const [currentClient, setCurrentClient] = useState<ClientWithBusiness | null>(client); // Updated type
+  const [currentClient, setCurrentClient] = useState<Client | null>(client); // Updated type
 
   useEffect(() => {
     setCurrentClient(client);
@@ -108,23 +106,17 @@ export default function EditClientModal({
                       />
                     </div>
                     <div>
-                      <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
-                        Assign to Business (Optional)
+                      <label htmlFor="clientBusinessName" className="block text-sm font-medium text-gray-700">
+                        Client Business Name (Optional)
                       </label>
-                      <select
-                        id="businessId"
-                        name="businessId"
-                        value={currentClient.businessId || ''}
+                      <input
+                        type="text"
+                        name="clientBusinessName"
+                        id="clientBusinessName"
+                        value={currentClient.clientBusinessName || ''}
                         onChange={handleInputChange}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      >
-                        <option value="">Select a business</option>
-                        {businesses.map((business) => (
-                          <option key={business.id} value={business.id}>
-                            {business.businessName}
-                          </option>
-                        ))}
-                      </select>
+                      />
                     </div>
 
                     {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}

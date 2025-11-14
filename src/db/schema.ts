@@ -176,9 +176,9 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
 export const clients = pgTable('clients', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
-  businessId: integer('business_id').references(() => businesses.id), // New optional foreign key
   name: text('name').notNull(),
   email: text('email').notNull(),
+  clientBusinessName: text('client_business_name'), // New optional column
 });
 
 export const serviceCategories = pgTable('service_categories', {
@@ -230,7 +230,7 @@ export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEven
 export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
-export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // New type
+
 
 // --- Relations ---
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -262,10 +262,6 @@ export const clientsRelations = relations(clients, ({ one }) => ({
   user: one(users, {
     fields: [clients.userId],
     references: [users.id],
-  }),
-  business: one(businesses, { // New relation
-    fields: [clients.businessId],
-    references: [businesses.id],
   }),
 }));
 

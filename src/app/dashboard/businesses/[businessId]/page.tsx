@@ -5,7 +5,6 @@ import BusinessDetailClientPage from "./BusinessDetailClientPage"; // Import Bus
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function BusinessDetailPage({ params }: { params: { businessId: string } & Promise<any> }) {
-  console.log('--- BusinessDetailPage loaded for businessId:', params.businessId, '---');
   const businessId = parseInt(params.businessId);
 
   if (isNaN(businessId)) {
