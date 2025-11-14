@@ -1,13 +1,11 @@
-// "use client"; // Removed
-
 import Link from "next/link";
 import CategoryServicesList from "./CategoryServicesList"; // Import the new Client Component
-// import { useParams } from "next/navigation"; // Removed useParams
-import dynamic from "next/dynamic"; // Import dynamic
+// import dynamic from "next/dynamic"; // Removed
 import { getServiceCategories } from "../categories/actions"; // Import server action for category
 import { getServices } from "../actions"; // Import server action for services
+import ServiceFormWrapper from "./ServiceFormWrapper"; // Import the new Client Component
 
-const ServiceForm = dynamic(() => import("./ServiceForm"), { ssr: false }); // Dynamically import with ssr: false
+// const ServiceForm = dynamic(() => import("./ServiceForm"), { ssr: false }); // Removed
 
 export default async function CategoryServicesPage({ params }: { params: { categoryId: string } }) { // Made async and added params
   const categoryId = parseInt(params.categoryId as string);
@@ -33,7 +31,7 @@ export default async function CategoryServicesPage({ params }: { params: { categ
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add New Service */}
-        <ServiceForm categoryId={categoryId} /> {/* Render the dynamically imported Client Component */}
+        <ServiceFormWrapper categoryId={categoryId} /> {/* Render the new wrapper */}
 
         {/* Right Column: Services in this Category */}
         <CategoryServicesList category={category} services={services} /> {/* Pass category and services as props */}
