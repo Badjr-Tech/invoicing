@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
-import { updateBusinessOwnerDetails } from "../actions"; // Assuming updateBusinessOwnerDetails action will be created
-import { Business, DemographicType, LocationType } from "@/db/schema"; // Import necessary types
+import { updateBusinessOwnerDetails } from "../actions";
+import { Business, DemographicType, LocationType } from "@/db/schema";
 
 export type FormState = {
   message: string;
@@ -16,20 +16,30 @@ interface OwnerDetailsFormProps {
   races: DemographicType[];
   religions: DemographicType[];
   regions: LocationType[];
+  availableDemographics: DemographicType[]; // New prop
+  availableLocations: LocationType[]; // New prop
 }
 
-export default function OwnerDetailsForm({ business, genders, races, religions, regions }: OwnerDetailsFormProps) {
+export default function OwnerDetailsForm({ business, genders, races, religions, regions, availableDemographics, availableLocations }: OwnerDetailsFormProps) {
   const [state, formAction] = useFormState<FormState, FormData>(updateBusinessOwnerDetails, undefined);
   const [currentGenderId, setCurrentGenderId] = useState<number | null>(business.ownerGenderId || null);
   const [currentRaceId, setCurrentRaceId] = useState<number | null>(business.ownerRaceId || null);
   const [currentReligionId, setCurrentReligionId] = useState<number | null>(business.ownerReligionId || null);
   const [currentRegionId, setCurrentRegionId] = useState<number | null>(business.ownerRegionId || null);
+  const [selectedDemographicIds, setSelectedDemographicIds] = useState<number[]>(business.demographicIds || []); // New state for business demographics
+  const [selectedLocationId, setSelectedLocationId] = useState<number | null>(business.locationId || null); // New state for business location
 
   useEffect(() => {
     if (state?.message === "Owner details updated successfully!") {
       // Optionally, show a success message or revalidate data
     }
   }, [state]);
+
+  const handleDemographicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const options = Array.from(e.target.selectedOptions);
+    const values = options.map(option => parseInt(option.value));
+    setSelectedDemographicIds(values);
+  };
 
   return (
     <form action={formAction} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
@@ -38,7 +48,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
       {/* Gender Dropdown */}
       <div>
         <label htmlFor="ownerGenderId" className="block text-sm font-medium text-gray-700">
-          Gender
+          Owner Gender
         </label>
         <select
           id="ownerGenderId"
@@ -59,7 +69,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
       {/* Race Dropdown */}
       <div>
         <label htmlFor="ownerRaceId" className="block text-sm font-medium text-gray-700">
-          Race
+          Owner Race
         </label>
         <select
           id="ownerRaceId"
@@ -80,7 +90,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
       {/* Religion Dropdown */}
       <div>
         <label htmlFor="ownerReligionId" className="block text-sm font-medium text-gray-700">
-          Religion
+          Owner Religion
         </label>
         <select
           id="ownerReligionId"
@@ -101,7 +111,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
       {/* Region Dropdown */}
       <div>
         <label htmlFor="ownerRegionId" className="block text-sm font-medium text-gray-700">
-          Region
+          Owner Region
         </label>
         <select
           id="ownerRegionId"
@@ -114,6 +124,49 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
           {regions.map((region) => (
             <option key={region.id} value={region.id}>
               {region.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* New: Business Demographics Multi-select */}
+      <div>
+        <label htmlFor="demographicIds" className="block text-sm font-medium text-gray-700">
+          Business Demographics
+        </label>
+        <select
+          id="demographicIds"
+          name="demographicIds"
+          multiple
+          value={selectedDemographicIds.map(String)} // Convert numbers to strings for select value
+          onChange={handleDemographicChange}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-32" // Increased height for multi-select
+        >
+          {availableDemographics.map((demo) => (
+            <option key={demo.id} value={demo.id}>
+              {demo.name} ({demo.category})
+            </option>
+          ))}
+        </select>
+        <input type="hidden" name="selectedDemographicIds" value={JSON.stringify(selectedDemographicIds)} />
+      </div>
+
+      {/* New: Business Primary Location Dropdown */}
+      <div>
+        <label htmlFor="locationId" className="block text-sm font-medium text-gray-700">
+          Business Primary Location
+        </label>
+        <select
+          id="locationId"
+          name="locationId"
+          value={selectedLocationId || ''}
+          onChange={(e) => setSelectedLocationId(parseInt(e.target.value) || null)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        >
+          <option value="">Select Primary Location</option>
+          {availableLocations.map((loc) => (
+            <option key={loc.id} value={loc.id}>
+              {loc.name} ({loc.category})
             </option>
           ))}
         </select>

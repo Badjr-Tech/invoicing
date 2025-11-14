@@ -366,52 +366,7 @@ export async function archiveBusiness(businessId: number): Promise<FormState> {
   }
 }
 
-export async function updateBusinessDemographics(prevState: FormState, formData: FormData): Promise<FormState> {
-  const userId = await getUserIdFromSession();
 
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
-
-  const businessId = parseInt(formData.get("businessId") as string);
-  const selectedDemographicIdsString = formData.get("selectedDemographicIds") as string;
-  const locationId = parseInt(formData.get("locationId") as string);
-
-  if (isNaN(businessId)) {
-    return { message: "", error: "Invalid business ID." };
-  }
-
-  let selectedDemographicIds: number[] = [];
-  if (selectedDemographicIdsString) {
-    selectedDemographicIds = JSON.parse(selectedDemographicIdsString);
-  }
-
-  const dataToUpdate: { demographicIds?: number[]; locationId?: number } = {};
-
-  if (selectedDemographicIds.length > 0) {
-    dataToUpdate.demographicIds = selectedDemographicIds;
-  }
-
-  if (!isNaN(locationId)) {
-    dataToUpdate.locationId = locationId;
-  }
-
-  if (Object.keys(dataToUpdate).length === 0) {
-    return { message: "", error: "No demographic or location data to update." };
-  }
-
-  try {
-    await db.update(businesses)
-      .set(dataToUpdate)
-      .where(eq(businesses.id, businessId));
-
-    revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "Business details updated successfully!", error: "" };
-  } catch (error) {
-    console.error("Error updating business details:", error);
-    return { message: "", error: "Failed to update business details." };
-  }
-}
 
 export async function updateBusinessMaterials(prevState: FormState, formData: FormData): Promise<FormState> {
   const userId = await getUserIdFromSession();
@@ -521,9 +476,16 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
   const ownerRaceId = formData.get("ownerRaceId") ? parseInt(formData.get("ownerRaceId") as string) : null;
   const ownerReligionId = formData.get("ownerReligionId") ? parseInt(formData.get("ownerReligionId") as string) : null;
   const ownerRegionId = formData.get("ownerRegionId") ? parseInt(formData.get("ownerRegionId") as string) : null;
+  const selectedDemographicIdsString = formData.get("selectedDemographicIds") as string; // New: Get business demographic IDs
+  const locationId = formData.get("locationId") ? parseInt(formData.get("locationId") as string) : null; // New: Get business location ID
 
   if (isNaN(businessId)) {
     return { message: "", error: "Invalid business ID." };
+  }
+
+  let selectedDemographicIds: number[] = [];
+  if (selectedDemographicIdsString) {
+    selectedDemographicIds = JSON.parse(selectedDemographicIdsString);
   }
 
   try {
@@ -532,15 +494,30 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
       ownerRaceId?: number | null;
       ownerReligionId?: number | null;
       ownerRegionId?: number | null;
+      demographicIds?: number[] | null; // New: Add demographicIds
+      locationId?: number | null; // New: Add locationId
     } = {};
 
     if (ownerGenderId !== null) updateData.ownerGenderId = ownerGenderId;
     if (ownerRaceId !== null) updateData.ownerRaceId = ownerRaceId;
     if (ownerReligionId !== null) updateData.ownerReligionId = ownerReligionId;
     if (ownerRegionId !== null) updateData.ownerRegionId = ownerRegionId;
+    
+    // New: Add business demographic and location updates
+    if (selectedDemographicIds.length > 0) {
+      updateData.demographicIds = selectedDemographicIds;
+    } else {
+      updateData.demographicIds = null; // Set to null if no demographics selected
+    }
+
+    if (locationId !== null) {
+      updateData.locationId = locationId;
+    } else {
+      updateData.locationId = null; // Set to null if no location selected
+    }
 
     if (Object.keys(updateData).length === 0) {
-      return { message: "", error: "No owner details to update." };
+      return { message: "", error: "No owner or business details to update." };
     }
 
     await db.update(businesses)
@@ -548,12 +525,12 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
       .where(eq(businesses.id, businessId));
 
     revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "Owner details updated successfully!", error: "" };
+    return { message: "Owner and business details updated successfully!", error: "" };
   } catch (error) {
     console.error("Error updating business owner details:", error);
-    let errorMessage = "Failed to update owner details.";
+    let errorMessage = "Failed to update owner and business details.";
     if (error instanceof Error) {
-      errorMessage = `Failed to update owner details: ${error.message}`;
+      errorMessage = `Failed to update owner and business details: ${error.message}`;
     }
     return { message: "", error: errorMessage };
   }

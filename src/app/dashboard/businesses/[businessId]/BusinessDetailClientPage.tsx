@@ -141,6 +141,8 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
               races={races}
               religions={religions}
               regions={regions}
+              availableDemographics={availableDemographics} // Pass new prop
+              availableLocations={availableLocations} // Pass new prop
             />
           </div>
           {/* Right Column: Placeholder for future additions */}
