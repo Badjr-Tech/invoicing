@@ -5,7 +5,7 @@ import { InferSelectModel } from "drizzle-orm";
 import { serviceCategories, services as servicesSchema } from "@/db/schema";
 import { deleteService } from "../actions";
 import { useTransition, useState } from "react";
-import EditServiceModal from "../EditServiceModal";
+import EditServiceModal from "@/app/dashboard/services/EditServiceModal";
 
 type ServiceCategory = InferSelectModel<typeof serviceCategories>;
 type Service = InferSelectModel<typeof servicesSchema>;
