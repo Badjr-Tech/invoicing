@@ -6,13 +6,8 @@ import { getServices } from "../actions"; // Import server action for services
 import ServiceFormWrapper from "./ServiceFormWrapper"; // Import the new Client Component
 import { notFound } from "next/navigation"; // Import notFound
 
-export default async function CategoryServicesPage({
-  params,
-  searchParams, // Added searchParams as a placeholder
-}: {
-  params: any; // Changed to any for debugging
-  searchParams?: { [key: string]: string | string[] | undefined }; // Added searchParams type
-}) {
+export default async function CategoryServicesPage(props: any) { // Changed props to any
+  const { params, searchParams } = props; // Destructure params and searchParams from props
   const categoryId = parseInt(params.categoryId as string);
   console.log("CategoryServicesPage: categoryId", categoryId);
 
