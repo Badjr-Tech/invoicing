@@ -137,7 +137,7 @@ export default function InvoicingPageClient({
                   name="businessId"
                   required
                   onChange={(e) => setSelectedBusiness(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select your business</option>
                   {businesses.map((business) => (
@@ -159,7 +159,7 @@ export default function InvoicingPageClient({
                   name="clientId"
                   required
                   onChange={(e) => setSelectedClient(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" // Added text-gray-900 to select for contrast
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select a client</option>
                   {clients.map((client) => (
