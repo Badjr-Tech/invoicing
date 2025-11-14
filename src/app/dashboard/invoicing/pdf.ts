@@ -58,6 +58,8 @@ function addPdfContent(
   services: { name: string; price: string }[],
   totalAmount: number
 ) {
+  doc.setFont('courier'); // Set font to Courier
+
   // Add header
   doc.setFontSize(22);
   doc.text('Invoice', 10, 40);
