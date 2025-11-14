@@ -1,6 +1,6 @@
 "use client";
 
-import { createServiceCategory } from "../categories/actions";
+import { createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
 import { FormState } from "../page"; // Import FormState type
 
