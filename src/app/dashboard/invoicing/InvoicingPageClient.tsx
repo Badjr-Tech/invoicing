@@ -90,7 +90,7 @@ export default function InvoicingPageClient({
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Invoice</h2>
           <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-lg shadow-md text-white">
             <div>
-              <label htmlFor="clientId" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="clientId" className="block text-sm font-medium text-white">
                 Client
               </label>
               <div className="mt-1">
@@ -99,7 +99,7 @@ export default function InvoicingPageClient({
                   name="clientId"
                   required
                   onChange={(e) => setSelectedClient(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900" // Added text-gray-900 to select for contrast
                 >
                   <option value="">Select a client</option>
                   {clients.map((client) => (
@@ -112,7 +112,7 @@ export default function InvoicingPageClient({
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-lg font-medium text-gray-800">Selected Services</h3>
+              <h3 className="text-lg font-medium text-white">Selected Services</h3>
               {selectedServices.map((service, index) => (
                 <div key={index} className="flex justify-between items-center">
                   <p>{service.name}</p>
