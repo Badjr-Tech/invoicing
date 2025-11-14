@@ -31,7 +31,10 @@ export async function getBusinessProfile(businessId: number): Promise<Business &
       where: eq(businesses.id, businessId),
       with: {
         location: true, // Include location details
-        // Temporarily removed ownerGender, ownerRace, ownerReligion, ownerRegion until DB is migrated
+        ownerGender: true,
+        ownerRace: true,
+        ownerReligion: true,
+        ownerRegion: true,
       },
     });
     if (!profile) { return null; }
