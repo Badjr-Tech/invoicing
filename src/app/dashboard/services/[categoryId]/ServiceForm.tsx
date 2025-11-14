@@ -1,7 +1,7 @@
 "use client";
 
 import { createService } from "../actions";
-import { useFormState } = "react-dom";
+import { useFormState } from "react-dom";
 // import { FormState } from "./page"; // Removed import
 
 export type FormState = { // Added type definition
