@@ -86,6 +86,7 @@ export async function updateServiceCategory(prevState: FormState, formData: Form
   const id = parseInt(formData.get("id") as string);
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
+  const customId = formData.get("customId") as string | null; // New: Get customId
 
   if (isNaN(id) || !name) {
     return { message: "", error: "Invalid category ID or name." };
@@ -93,7 +94,7 @@ export async function updateServiceCategory(prevState: FormState, formData: Form
 
   try {
     await db.update(serviceCategories)
-      .set({ name, description, updatedAt: new Date() })
+      .set({ name, description, customId: customId || null, updatedAt: new Date() }) // New: Update customId
       .where(eq(serviceCategories.id, id));
 
     revalidatePath("/dashboard/services");
