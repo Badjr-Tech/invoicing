@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { getBusinessProfile } from "../actions"; // Import getBusinessProfile
 import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
