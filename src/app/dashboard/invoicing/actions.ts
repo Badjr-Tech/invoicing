@@ -91,19 +91,6 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   }
 }
 
-export async function getInvoices() {
-  const session = await getSession();
-  if (!session || !session.user) {
-    return [];
-  }
-
-  const userInvoices = await db.query.invoices.findMany({
-    where: eq(invoices.userId, session.user.id),
-  });
-
-  return userInvoices;
-}
-
 export async function getAllInvoices() {
   const session = await getSession();
   if (!session || !session.user || session.user.role !== 'admin') {
@@ -117,4 +104,45 @@ export async function getAllInvoices() {
     console.error("Error fetching all invoices:", error);
     return [];
   }
+}
+
+export async function archiveInvoice(invoiceId: number, archiveStatus: boolean): Promise<FormState> {
+  const session = await getSession();
+  if (!session || !session.user) {
+    return { message: "", error: "You must be logged in to archive an invoice." };
+  }
+
+  try {
+    await db.update(invoices)
+      .set({ isArchived: archiveStatus })
+      .where(and(eq(invoices.id, invoiceId), eq(invoices.userId, session.user.id)));
+
+    revalidatePath("/dashboard/invoices");
+    return { message: `Invoice ${archiveStatus ? 'archived' : 'unarchived'} successfully!`, error: "" };
+  } catch (error) {
+    console.error("Error archiving/unarchiving invoice:", error);
+    let errorMessage = `Failed to ${archiveStatus ? 'archive' : 'unarchive'} invoice.`;
+    if (error instanceof Error) {
+      errorMessage = `Failed to ${archiveStatus ? 'archive' : 'unarchive'} invoice: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
+
+export async function getInvoices(includeArchived: boolean = false) {
+  const session = await getSession();
+  if (!session || !session.user) {
+    return [];
+  }
+
+  const conditions = [eq(invoices.userId, session.user.id)];
+  if (!includeArchived) {
+    conditions.push(eq(invoices.isArchived, false));
+  }
+
+  const userInvoices = await db.query.invoices.findMany({
+    where: and(...conditions),
+  });
+
+  return userInvoices;
 }

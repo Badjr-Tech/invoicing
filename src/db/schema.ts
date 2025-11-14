@@ -38,6 +38,7 @@ export const invoices = pgTable('invoices', {
   serviceDescription: text('service_description').notNull(),
   amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
   status: invoiceStatus('status').notNull().default('draft'),
+  isArchived: boolean('is_archived').notNull().default(false), // New column
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
