@@ -10,6 +10,7 @@ export const locationCategoryEnum = pgEnum('location_category', ['City', 'Region
 export const classTypeEnum = pgEnum('class_type', ['pre-course', 'agency-course']);
 export const enrollmentStatusEnum = pgEnum('enrollment_status', ['enrolled', 'completed', 'dropped', 'pending', 'rejected']);
 export const invoiceStatus = pgEnum('invoice_status', ['draft', 'sent', 'paid']);
+export const serviceDesignationEnum = pgEnum('service_designation', ['hourly', 'per deliverable', 'flat fee']); // New Enum
 
 // --- Tables ---
 export const users = pgTable('users', {
@@ -183,6 +184,8 @@ export const services = pgTable('services', {
   userId: integer('user_id').notNull().references(() => users.id),
   categoryId: integer('category_id').references(() => serviceCategories.id), // New foreign key
   name: text('name').notNull(),
+  designation: serviceDesignationEnum('designation').notNull().default('flat fee'), // New column
+  serviceNumber: text('service_number'), // New column
   description: text('description'),
   price: numeric('price', { precision: 10, scale: 2 }).notNull(),
 });
