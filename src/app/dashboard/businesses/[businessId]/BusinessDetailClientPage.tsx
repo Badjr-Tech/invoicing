@@ -5,7 +5,6 @@ import { getBusinessProfile } from "../actions"; // Import getBusinessProfile
 import { Business, DemographicType, LocationType } from "@/db/schema"; // Import necessary types
 import Image from "next/image";
 import EditBusinessProfileForm from "./EditBusinessProfileForm";
-import BusinessDetailsForm from "./BusinessDetailsForm";
 import BusinessMaterials from "./BusinessMaterials";
 import OwnerDetailsForm from "./OwnerDetailsForm";
 import BusinessDesignForm from "./BusinessDesignForm"; // New import
