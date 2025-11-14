@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 
 export default async function CategoryServicesPage({
   params,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any; // Changed to any for debugging
 }) {
   return (
