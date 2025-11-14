@@ -1,11 +1,12 @@
 "use client"; // Added
 
-// import { getServiceCategories } from "./categories/actions"; // Removed
 import Link from "next/link";
+import { InferSelectModel } from "drizzle-orm"; // Import InferSelectModel
+import { serviceCategories } from "@/db/schema"; // Import serviceCategories
 
-export default function ServiceCategoriesList({ categories }: { categories: any[] }) { // Accept categories as prop
-  // const categories = await getServiceCategories(); // Removed
+type ServiceCategory = InferSelectModel<typeof serviceCategories>; // Define ServiceCategory type
 
+export default function ServiceCategoriesList({ categories }: { categories: ServiceCategory[] }) { // Use ServiceCategory type
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Categories</h2>

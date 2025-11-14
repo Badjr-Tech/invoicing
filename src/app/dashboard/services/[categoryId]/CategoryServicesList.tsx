@@ -4,17 +4,13 @@
 // import { getServices } from "../actions"; // Removed
 // import { notFound } from "next/navigation"; // Removed
 import Link from "next/link";
+import { InferSelectModel } from "drizzle-orm"; // Import InferSelectModel
+import { serviceCategories, services as servicesSchema } from "@/db/schema"; // Import schemas
 
-export default function CategoryServicesList({ category, services }: { category: any, services: any[] }) { // Accept category and services as props
-  // const categories = await getServiceCategories(); // Removed
-  // const currentCategory = categories.find((cat) => cat.id === categoryId); // Removed
+type ServiceCategory = InferSelectModel<typeof serviceCategories>; // Define ServiceCategory type
+type Service = InferSelectModel<typeof servicesSchema>; // Define Service type
 
-  // if (!currentCategory) { // Removed
-  //   notFound(); // Removed
-  // }
-
-  // const services = await getServices(categoryId); // Removed
-
+export default function CategoryServicesList({ category, services }: { category: ServiceCategory, services: Service[] }) { // Use ServiceCategory and Service types
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Services</h2>
