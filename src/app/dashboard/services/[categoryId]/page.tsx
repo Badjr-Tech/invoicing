@@ -3,7 +3,7 @@ import Link from "next/link";
 export default async function CategoryServicesPage({
   params,
 }: {
-  params: { categoryId: string };
+  params: any; // Changed to any for debugging
 }) {
   return (
     <div className="flex-1 p-6">
