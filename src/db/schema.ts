@@ -174,6 +174,7 @@ export const serviceCategories = pgTable('service_categories', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
   name: text('name').notNull(),
+  customId: text('custom_id'), // New optional column for custom identifier
   description: text('description'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),

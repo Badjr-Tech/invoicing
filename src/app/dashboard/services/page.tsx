@@ -1,34 +1,41 @@
 "use client"; // Added back
 
-// import { createServiceCategory } from "./categories/actions"; // No longer needed here
-// import { useFormState } from "react-dom"; // No longer needed here
+import { useState } from "react"; // Import useState
 import ServiceCategoriesList from "./ServiceCategoriesList"; // Import the new Server Component
-// import Link from "next/link"; // No longer needed here
 import dynamic from "next/dynamic"; // Import dynamic
-
-// FormState type moved to ServiceCategoryForm.tsx
-
-// const INITIAL_STATE: FormState = { // No longer needed here
-//   message: "",
-//   error: "",
-// };
+import AddCategoryModal from "../components/AddCategoryModal"; // Import AddCategoryModal
 
 const ServiceCategoryForm = dynamic(() => import("./ServiceCategoryForm"), { ssr: false }); // Dynamically import with ssr: false
 
-export default function ServicesPage() { // Made non-async
-  // const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, INITIAL_STATE); // No longer needed here
+export default function ServicesPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Service Categories</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-4xl font-bold text-gray-800">Service Categories</h1>
+        <button
+          onClick={openModal}
+          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Add Category
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Column: Add New Category */}
-        <ServiceCategoryForm /> {/* Render the dynamically imported Client Component */}
+        {/* Left Column: Add New Category (now in modal) */}
+        {/* <ServiceCategoryForm /> */} {/* Moved to modal */}
 
         {/* Right Column: Your Categories */}
-        <ServiceCategoriesList /> {/* Re-added */}
+        <ServiceCategoriesList />
       </div>
+
+      <AddCategoryModal isOpen={isModalOpen} onClose={closeModal} title="Add New Service Category">
+        <ServiceCategoryForm onSubmissionSuccess={closeModal} />
+      </AddCategoryModal>
     </div>
   );
 }

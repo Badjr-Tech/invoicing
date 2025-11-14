@@ -2,14 +2,21 @@
 
 import { createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
+import { useEffect } from "react"; // Import useEffect
 
-export type FormState = { // Added type definition
+export type FormState = {
   message: string;
   error: string;
 } | undefined;
 
-export default function ServiceCategoryForm() {
+export default function ServiceCategoryForm({ onSubmissionSuccess }: { onSubmissionSuccess?: () => void }) {
   const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, { message: "", error: "" });
+
+  useEffect(() => {
+    if (state?.message && onSubmissionSuccess) {
+      onSubmissionSuccess();
+    }
+  }, [state, onSubmissionSuccess]);
 
   return (
     <div>
@@ -25,6 +32,20 @@ export default function ServiceCategoryForm() {
               name="name"
               type="text"
               required
+              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="customId" className="block text-sm font-medium text-gray-700">
+            Custom ID (Optional)
+          </label>
+          <div className="mt-1">
+            <input
+              id="customId"
+              name="customId"
+              type="text"
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>

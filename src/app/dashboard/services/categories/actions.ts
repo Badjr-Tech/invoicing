@@ -29,6 +29,7 @@ export async function createServiceCategory(prevState: FormState, formData: Form
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
+  const customId = formData.get("customId") as string | null; // New: Get customId
 
   if (!name) {
     return { message: "", error: "Category name is required." };
@@ -39,6 +40,7 @@ export async function createServiceCategory(prevState: FormState, formData: Form
       userId,
       name,
       description,
+      customId: customId || null, // New: Include customId
     };
 
     await db.insert(serviceCategories).values(categoryData);
