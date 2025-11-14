@@ -202,9 +202,24 @@ export const services = pgTable('services', {
   price: numeric('price', { precision: 10, scale: 2 }).notNull(),
 });
 
+export type Service = InferSelectModel<typeof services>; // New type
+
+// Explicitly define types for Drizzle models to ensure consistency
+export interface DemographicType {
+  id: number;
+  name: string;
+  category: 'Race' | 'Gender' | 'Religion';
+}
+
+export interface LocationType {
+  id: number;
+  name: string;
+  category: 'City' | 'Region';
+}
+
 // --- Types for InferSelectModel ---
-export type Demographic = InferSelectModel<typeof demographics>;
-export type Location = InferSelectModel<typeof locations>;
+export type Demographic = DemographicType;
+export type Location = LocationType;
 export type Business = InferSelectModel<typeof businesses>;
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
@@ -214,8 +229,8 @@ export type IndividualMessage = InferSelectModel<typeof individualMessages>;
 export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEvents>;
 export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
-export type Service = InferSelectModel<typeof services>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
+export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // New type
 
 // --- Relations ---
 export const usersRelations = relations(users, ({ one, many }) => ({

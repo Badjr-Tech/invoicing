@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { Business, Demographic, Location } from "@/db/schema"; // Updated import
+import { Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
 import { updateBusinessDemographics } from "../actions";
 import { useFormState } from "react-dom";
 
@@ -11,9 +11,9 @@ type FormState = {
 } | undefined;
 
 interface BusinessDetailsFormProps {
-  initialBusiness: Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
-  availableDemographics: Demographic[];
-  availableLocations: Location[];
+  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
+  availableDemographics: DemographicType[];
+  availableLocations: LocationType[];
 }
 
 export default function BusinessDetailsForm({ initialBusiness, availableDemographics, availableLocations }: BusinessDetailsFormProps) {

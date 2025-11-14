@@ -1,15 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import { Business, BusinessWithDemographic, BusinessWithLocation, Location } from "@/db/schema";
+import { Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
 import { updateBusinessProfile } from "../actions";
 import { useFormState } from "react-dom";
 import Image from "next/image";
-
-interface Demographic {
-  id: number;
-  name: string;
-}
 
 type FormState = {
   message: string;
@@ -17,13 +12,13 @@ type FormState = {
 } | undefined;
 
 interface EditBusinessProfileFormProps {
-  initialBusiness: BusinessWithLocation;
-  availableDemographics: Demographic[];
-  availableLocations: Location[];
+  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
+  availableDemographics: DemographicType[];
+  availableLocations: LocationType[];
 }
 
 export default function EditBusinessProfileForm({ initialBusiness, availableDemographics, availableLocations }: EditBusinessProfileFormProps) {
-  const [business, setBusiness] = useState<BusinessWithLocation>(initialBusiness);
+  const [business, setBusiness] = useState(initialBusiness); // Updated type
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(business.logoUrl);
 

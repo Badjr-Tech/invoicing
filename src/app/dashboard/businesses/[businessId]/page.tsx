@@ -12,15 +12,17 @@ export default async function BusinessDetailPage({ params }: { params: { busines
     notFound();
   }
 
-  const business: (Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }) | null = await getBusinessProfile(businessId); // Use the new type
+  const business = await getBusinessProfile(businessId); // Let TypeScript infer the type
   const genders = await getDemographicsByCategory('Gender'); // Fetch genders
   const races = await getDemographicsByCategory('Race'); // Fetch races
   const religions = await getDemographicsByCategory('Religion'); // Fetch religions
   const regions = await getLocationsByCategory('Region'); // Fetch regions
+  const availableDemographics = await getDemographicsByCategory('Race'); // Fetch all demographics
+  const availableLocations = await getLocationsByCategory('City'); // Fetch all locations
 
   if (!business) {
     notFound();
   }
 
-  return <BusinessDetailClientPage initialBusiness={business} genders={genders} races={races} religions={religions} regions={regions} />;
+  return <BusinessDetailClientPage initialBusiness={business} genders={genders} races={races} religions={religions} regions={regions} availableDemographics={availableDemographics} availableLocations={availableLocations} />;
 }

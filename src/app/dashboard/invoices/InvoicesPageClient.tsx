@@ -4,6 +4,12 @@ import { useRouter, usePathname } from "next/navigation"; // New imports
 import { archiveInvoice } from "../invoicing/actions"; // New import
 import { useFormState } from "react-dom"; // New import for useFormState
 
+// Define FormState type (assuming it's defined in actions.ts or a shared type file)
+type FormState = {
+  message: string;
+  error: string;
+} | undefined;
+
 export default function InvoicesPageClient({
   invoices,
   showArchived,
@@ -22,7 +28,15 @@ export default function InvoicesPageClient({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [state, formAction] = useFormState(archiveInvoice, undefined); // Initialize useFormState
+
+  // Wrapper action for useFormState
+  const archiveInvoiceAction = async (prevState: FormState, formData: FormData) => {
+    const invoiceId = parseInt(formData.get('invoiceId') as string);
+    const archiveStatus = formData.get('archiveStatus') === 'true';
+    return archiveInvoice(invoiceId, archiveStatus);
+  };
+
+  const [state, formAction] = useFormState<FormState, FormData>(archiveInvoiceAction, undefined); // Initialize useFormState with wrapper
 
   const handleArchiveToggle = () => {
     if (showArchived) {
@@ -37,7 +51,7 @@ export default function InvoicesPageClient({
       const formData = new FormData();
       formData.append('invoiceId', invoiceId.toString());
       formData.append('archiveStatus', (!currentArchiveStatus).toString());
-      await formAction(formData); // Call the server action
+      await formAction(formData); // Call the server action via useFormState's formAction
     }
   };
 

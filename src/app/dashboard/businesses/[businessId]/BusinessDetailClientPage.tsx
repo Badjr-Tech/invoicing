@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getBusinessProfile } from "../actions"; // Import getBusinessProfile
-import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
+import { Business, DemographicType, LocationType } from "@/db/schema"; // Import necessary types
 import Image from "next/image";
 import EditBusinessProfileForm from "./EditBusinessProfileForm";
 import BusinessDetailsForm from "./BusinessDetailsForm";
@@ -11,13 +11,13 @@ import OwnerDetailsForm from "./OwnerDetailsForm";
 import BusinessDesignForm from "./BusinessDesignForm"; // New import
 
 interface BusinessDetailClientPageProps {
-  initialBusiness: Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; };
-  genders: Demographic[];
-  races: Demographic[];
-  religions: Demographic[];
-  regions: Location[];
-  availableDemographics: Demographic[]; // Re-added
-  availableLocations: Location[]; // Re-added
+  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; };
+  genders: DemographicType[];
+  races: DemographicType[];
+  religions: DemographicType[];
+  regions: LocationType[];
+  availableDemographics: DemographicType[]; // Re-added
+  availableLocations: LocationType[]; // Re-added
 }
 
 export default function BusinessDetailClientPage({ initialBusiness, genders, races, religions, regions, availableDemographics, availableLocations }: BusinessDetailClientPageProps) {

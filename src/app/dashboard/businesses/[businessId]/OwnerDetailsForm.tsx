@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
 import { updateBusinessOwnerDetails } from "../actions"; // Assuming updateBusinessOwnerDetails action will be created
-import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
+import { Business, DemographicType, LocationType } from "@/db/schema"; // Import necessary types
 
 export type FormState = {
   message: string;
@@ -11,11 +11,11 @@ export type FormState = {
 } | undefined;
 
 interface OwnerDetailsFormProps {
-  business: Business & { ownerGender?: Demographic | null; ownerRace?: Demographic | null; ownerReligion?: Demographic | null; ownerRegion?: Location | null; };
-  genders: Demographic[];
-  races: Demographic[];
-  religions: Demographic[];
-  regions: Location[];
+  business: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; };
+  genders: DemographicType[];
+  races: DemographicType[];
+  religions: DemographicType[];
+  regions: LocationType[];
 }
 
 export default function OwnerDetailsForm({ business, genders, races, religions, regions }: OwnerDetailsFormProps) {
