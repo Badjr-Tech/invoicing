@@ -115,11 +115,14 @@ export default function DynamicSidebarContent() {
             - {business.businessName}
           </Link>
         ))}
-        <Link
-          href="/dashboard/financial-tools"
-          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 block py-1.5 px-4 rounded transition duration-200 hover:bg-primary"
-        >
+        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
           Financial Tools
+        </h2>
+        <Link
+          href="/dashboard/invoicing"
+          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+        >
+          Invoicing
         </Link>
         <Link
           href="/dashboard/clients"
