@@ -60,15 +60,18 @@ function addPdfContent(
   totalAmount: number,
   colors: { color1: string; color2: string; color3: string; color4: string; }
 ) {
+  console.log("addPdfContent: colors object:", colors);
   doc.setFont('Times-Roman'); // Set font to Times
 
   // Add header
   doc.setFontSize(22);
+  console.log("addPdfContent: setting color1:", colors.color1);
   doc.setTextColor(colors.color1);
   doc.text('Invoice', 10, 40);
 
   // Add client info
   doc.setFontSize(12);
+  console.log("addPdfContent: setting color2:", colors.color2);
   doc.setTextColor(colors.color2);
   doc.text(`Bill to: ${client.name}`, 10, 60);
   doc.text(`Email: ${client.email}`, 10, 65);
@@ -76,6 +79,7 @@ function addPdfContent(
   // Add services table
   let y = 80;
   doc.setFontSize(14);
+  console.log("addPdfContent: setting color3:", colors.color3);
   doc.setTextColor(colors.color3);
   doc.text('Services', 10, y);
   y += 10;
@@ -89,6 +93,7 @@ function addPdfContent(
 
   // Add total
   doc.setFontSize(14);
+  console.log("addPdfContent: setting color4:", colors.color4);
   doc.setTextColor(colors.color4);
   doc.text(`Total: $${totalAmount.toFixed(2)}`, 150, y + 10);
 }
