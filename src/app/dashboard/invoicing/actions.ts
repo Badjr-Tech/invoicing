@@ -10,6 +10,7 @@ import { InferInsertModel } from 'drizzle-orm'; // Import InferInsertModel
 interface Service {
   name: string;
   price: string;
+  description: string | null;
 }
 
 type InsertInvoice = InferInsertModel<typeof invoices>; // Define InsertInvoice type
@@ -19,9 +20,10 @@ export type FormState = {
   error: string;
   invoice?: {
     client: { name: string; email: string };
-    services: { name: string; price: string }[];
+    services: { name: string; price: string; description: string | null }[];
     totalAmount: number;
     user: { logoUrl: string | null };
+    dueDate: Date | null;
   };
 } | undefined;
 
@@ -35,6 +37,9 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
   const services: Service[] = JSON.parse(formData.get("services") as string);
   const totalAmount = parseFloat(formData.get("totalAmount") as string);
+
+  const dueDateString = formData.get("dueDate") as string;
+  const dueDate = dueDateString ? new Date(dueDateString) : null;
 
   if (!clientId || !businessId || !services || services.length === 0) { // New: Validate businessId
     return { message: "", error: "Please select a client, a business, and at least one service." };
@@ -66,6 +71,7 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
       clientEmail: client.email,
       serviceDescription,
       amount: totalAmount.toString(), // Ensure amount is string for numeric type
+      dueDate,
     };
 
     const [newInvoice] = await db.insert(invoices).values(invoiceData).returning();
@@ -79,6 +85,7 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
         services,
         totalAmount,
         user: { logoUrl: business?.logoUrl || null },
+        dueDate,
       },
     };
   } catch (error: unknown) {

@@ -31,9 +31,10 @@ export type FormState = {
   error: string;
   invoice?: {
     client: { name: string; email: string };
-    services: { name: string; price: string }[];
+    services: { name: string; price: string; description: string | null }[];
     totalAmount: number;
     user: { logoUrl: string | null };
+    dueDate: Date | null;
   };
 } | undefined;
 
@@ -46,7 +47,21 @@ export default function InvoicingPageClient({
   clients: { id: number; name: string; email: string }[];
   services: Service[];
   categories: ServiceCategory[];
-  businesses: { id: number; businessName: string; color1: string | null; color2: string | null; color3: string | null; color4: string | null; logoUrl: string | null; }[];
+  businesses: { 
+    id: number; 
+    businessName: string; 
+    color1: string | null; 
+    color2: string | null; 
+    color3: string | null; 
+    color4: string | null; 
+    logoUrl: string | null;
+    streetAddress: string | null;
+    city: string | null;
+    state: string | null;
+    zipCode: string | null;
+    phone: string | null;
+    website: string | null;
+  }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
@@ -56,18 +71,15 @@ export default function InvoicingPageClient({
   useEffect(() => {
     if (state?.message && state.invoice) {
       const business = businesses.find(b => b.id === selectedBusiness);
-      generateInvoicePDF(
-        state.invoice.client,
-        state.invoice.services,
-        state.invoice.totalAmount,
-        business?.logoUrl || null,
-        {
-          color1: business?.color1 || '#000000',
-          color2: business?.color2 || '#000000',
-          color3: business?.color3 || '#000000',
-          color4: business?.color4 || '#000000',
-        }
-      );
+      if (business) {
+        generateInvoicePDF(
+          state.invoice.client,
+          state.invoice.services,
+          state.invoice.totalAmount,
+          business,
+          state.invoice.dueDate,
+        );
+      }
       const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice&body=Please find your invoice attached.`;
       window.location.href = mailtoLink;
     }
@@ -175,6 +187,20 @@ export default function InvoicingPageClient({
                     </option>
                   ))}
                 </select>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="dueDate" className="block text-sm font-medium text-white">
+                Due Date
+              </label>
+              <div className="mt-1">
+                <input
+                  type="date"
+                  id="dueDate"
+                  name="dueDate"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
               </div>
             </div>
 

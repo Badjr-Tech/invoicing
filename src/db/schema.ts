@@ -40,6 +40,7 @@ export const invoices = pgTable('invoices', {
   status: invoiceStatus('status').notNull().default('draft'),
   isArchived: boolean('is_archived').notNull().default(false), // New column
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  dueDate: timestamp('due_date', { withTimezone: true }),
 });
 
 export const demographics = pgTable('demographics', {
