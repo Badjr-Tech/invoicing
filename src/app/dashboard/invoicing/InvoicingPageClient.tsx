@@ -68,6 +68,15 @@ export default function InvoicingPageClient({
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null);
 
+  const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
+
+  const toggleCategory = (categoryName: string) => {
+    setCollapsedCategories(prevState => ({
+      ...prevState,
+      [categoryName]: !prevState[categoryName],
+    }));
+  };
+
   useEffect(() => {
     if (state?.message && state.invoice) {
       const business = businesses.find(b => b.id === selectedBusiness);
@@ -115,27 +124,33 @@ export default function InvoicingPageClient({
           <div className="space-y-6">
             {Object.entries(servicesByCategory).map(([categoryName, servicesInCat]) => (
               <div key={categoryName}>
-                <h3 className="text-xl font-semibold text-gray-700 mb-3">{categoryName}</h3>
-                {servicesInCat.length === 0 ? (
-                  <p className="text-gray-500">No services in this category.</p>
-                ) : (
-                  <div className="space-y-4">
-                    {servicesInCat.map((service) => (
-                      <div key={service.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
-                        <div>
-                          <p className="font-semibold">{service.name}</p>
-                          <p className="text-sm text-gray-600">{service.description}</p>
-                          <p className="text-sm font-bold">${service.price}</p>
-                        </div>
-                        <button
-                          onClick={() => handleAddService(service)}
-                          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                          Add
-                        </button>
+                <h3 className="text-xl font-semibold text-gray-700 mb-3 cursor-pointer" onClick={() => toggleCategory(categoryName)}>
+                  {categoryName}
+                </h3>
+                {!collapsedCategories[categoryName] && (
+                  <>
+                    {servicesInCat.length === 0 ? (
+                      <p className="text-gray-500">No services in this category.</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {servicesInCat.map((service) => (
+                          <div key={service.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
+                            <div>
+                              <p className="font-semibold">{service.name}</p>
+                              <p className="text-sm text-gray-600">{service.description}</p>
+                              <p className="text-sm font-bold">${service.price}</p>
+                            </div>
+                            <button
+                              onClick={() => handleAddService(service)}
+                              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                              Add
+                            </button>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    )}
+                  </>
                 )}
               </div>
             ))}
