@@ -1,4 +1,17 @@
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: object) => jsPDF;
+  }
+}
+
+interface jsPDFWithAutoTable extends jsPDF {
+  lastAutoTable: {
+    finalY: number;
+  };
+}
 
 type Business = { 
   id: number; 
@@ -88,66 +101,61 @@ function addPdfContent(
   doc.setFont('Times-Roman'); // Set font to Times
 
   // Add header
+  doc.setFillColor(colors.color1);
+  doc.rect(0, 0, 210, 50, 'F');
   doc.setFontSize(22);
-  console.log("addPdfContent: setting color1:", colors.color1);
-  doc.setTextColor(colors.color1);
-  doc.text('Invoice', 10, 40);
+  doc.setTextColor('#FFFFFF');
+  doc.text('Invoice', 10, 30);
 
   // Add date
   const date = new Date().toLocaleDateString();
   doc.setFontSize(12);
-  doc.text(date, 150, 15);
+  doc.setTextColor('#FFFFFF');
+  doc.text(date, 150, 30);
 
   // Add business info
   doc.setFontSize(12);
-  doc.text(business.businessName, 150, 25);
-  doc.text(`${business.streetAddress || ''}`, 150, 30);
-  doc.text(`${business.city || ''}, ${business.state || ''} ${business.zipCode || ''}`, 150, 35);
-  doc.text(business.website || '', 150, 40);
+  doc.setTextColor('#FFFFFF');
+  doc.text(business.businessName, 150, 40);
+  doc.text(`${business.streetAddress || ''}`, 150, 45);
+  doc.text(`${business.city || ''}, ${business.state || ''} ${business.zipCode || ''}`, 150, 50);
+  doc.text(business.website || '', 150, 55);
 
 
   // Add client info
   doc.setFontSize(12);
-  console.log("addPdfContent: setting color2:", colors.color2);
   doc.setTextColor(colors.color2);
-  doc.text(`Bill to: ${client.name}`, 10, 60);
-  doc.text(`Email: ${client.email}`, 10, 65);
+  doc.text(`Bill to: ${client.name}`, 10, 70);
+  doc.text(`Email: ${client.email}`, 10, 75);
 
   // Add services table
-  let y = 80;
-  doc.setFontSize(14);
-  console.log("addPdfContent: setting color3:", colors.color3);
-  doc.setTextColor(colors.color3);
-  doc.text('Services', 10, y);
-  y += 10;
-  doc.setFontSize(12);
-  doc.setTextColor('#000000'); // Reset to black for service items
-  services.forEach(service => {
-    doc.text(`${service.name}`, 10, y);
-    doc.text(`$${service.price}`, 150, y);
-    y += 5;
-    if (service.description) {
-      doc.setFontSize(10);
-      doc.text(service.description, 10, y);
-      y += 5;
-    }
-    y += 2;
+  const tableData = services.map(service => [service.name, service.description || '', `$${service.price}`]);
+  doc.autoTable({
+    startY: 85,
+    head: [['Service', 'Description', 'Price']],
+    body: tableData,
+    theme: 'striped',
+    headStyles: {
+      fillColor: colors.color3,
+    },
   });
 
   // Add total
+  const tableEndY = (doc as jsPDFWithAutoTable).lastAutoTable.finalY;
   doc.setFontSize(14);
-  console.log("addPdfContent: setting color4:", colors.color4);
   doc.setTextColor(colors.color4);
-  doc.text(`Total: $${totalAmount.toFixed(2)}`, 150, y + 10);
+  doc.text(`Total: $${totalAmount.toFixed(2)}`, 150, tableEndY + 10);
 
   if (dueDate) {
     doc.setFontSize(12);
     doc.setTextColor('#000000');
-    doc.text(`To be paid: ${dueDate.toLocaleDateString()}`, 150, y + 20);
+    doc.text(`To be paid: ${dueDate.toLocaleDateString()}`, 150, tableEndY + 20);
   }
 
-  // Add payment info
+  // Add footer
+  doc.setDrawColor(colors.color1);
+  doc.line(10, 280, 200, 280);
   doc.setFontSize(10);
   doc.setTextColor('#000000');
-  doc.text(`Please remit payment to: ${business.businessName}`, 10, y + 30);
+  doc.text(`Please remit payment to: ${business.businessName}`, 10, 285);
 }

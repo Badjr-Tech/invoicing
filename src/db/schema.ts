@@ -235,6 +235,14 @@ export type Client = InferSelectModel<typeof clients>; // New type
 export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // Re-added type
 
 // --- Relations ---
+export const checklistItems = pgTable('checklist_items', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  category: text('category').notNull(),
+  text: text('text').notNull(),
+  isChecked: boolean('is_checked').notNull().default(false),
+});
+
 export const usersRelations = relations(users, ({ one, many }) => ({
   businesses: many(businesses),
   sentMessages: many(individualMessages, { relationName: 'sent_messages' }),
@@ -247,6 +255,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   clients: many(clients),
   services: many(services),
   serviceCategories: many(serviceCategories), // New relation
+  checklistItems: many(checklistItems),
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({

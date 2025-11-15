@@ -275,7 +275,8 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       if (logo && logo.size > 0) {
         console.log("updateBusinessProfile: Attempting to upload logo:", logo.name);
         try {
-          const blob = await put(logo.name, logo, { access: 'public', allowOverwrite: true });
+          const uniqueFilename = `${businessId}-${Date.now()}-${logo.name}`;
+          const blob = await put(uniqueFilename, logo, { access: 'public', allowOverwrite: true });
           logoUrl = blob.url;
           console.log("updateBusinessProfile: Logo uploaded successfully:", logoUrl);
         } catch (uploadError) {
