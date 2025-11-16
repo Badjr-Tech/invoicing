@@ -9,7 +9,7 @@ export type FormState = {
   error: string;
 } | undefined;
 
-export default function ServiceCategoryForm({ onSubmissionSuccess }: { onSubmissionSuccess?: () => void }) {
+export default function ServiceCategoryForm({ onSubmissionSuccess, businesses }: { onSubmissionSuccess?: () => void; businesses: { id: number; businessName: string }[] }) {
   const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, { message: "", error: "" });
 
   useEffect(() => {
@@ -22,6 +22,27 @@ export default function ServiceCategoryForm({ onSubmissionSuccess }: { onSubmiss
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Category</h2>
       <form action={formAction} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+        <div>
+          <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+            Assign to Business
+          </label>
+          <div className="mt-1">
+            <select
+              id="businessId"
+              name="businessId"
+              required
+              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="">Select a business</option>
+              {businesses.map((business) => (
+                <option key={business.id} value={business.id}>
+                  {business.businessName}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
             Category Name

@@ -33,12 +33,14 @@ export const invoices = pgTable('invoices', {
   businessId: integer('business_id').notNull().references(() => businesses.id), // New foreign key
   clientName: text('client_name').notNull(),
   clientEmail: text('client_email').notNull(),
-  serviceDescription: text('service_description').notNull(),
+  servicesJson: text('services_json').notNull(), // Changed from serviceDescription
   amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
   status: invoiceStatus('status').notNull().default('draft'),
   isArchived: boolean('is_archived').notNull().default(false), // New column
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   dueDate: timestamp('due_date', { withTimezone: true }),
+  invoiceNumber: varchar('invoice_number', { length: 256 }).notNull(), // New
+  notes: text('notes'), // New
 });
 
 export const businesses = pgTable('businesses', {
@@ -172,6 +174,7 @@ export const clients = pgTable('clients', {
 export const serviceCategories = pgTable('service_categories', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').references(() => businesses.id), // New optional foreign key
   name: text('name').notNull(),
   customId: text('custom_id'), // New optional column for custom identifier
   description: text('description'),
@@ -190,7 +193,9 @@ export const services = pgTable('services', {
   price: numeric('price', { precision: 10, scale: 2 }).notNull(),
 });
 
-export type Service = InferSelectModel<typeof services>; // New type
+export type Service = InferSelectModel<typeof services> & {
+  quantity: number;
+};
 
 // Explicitly define types for Drizzle models to ensure consistency
 export interface DemographicType {
@@ -270,6 +275,10 @@ export const serviceCategoriesRelations = relations(serviceCategories, ({ one, m
   user: one(users, {
     fields: [serviceCategories.userId],
     references: [users.id],
+  }),
+  business: one(businesses, { // New relation
+    fields: [serviceCategories.businessId],
+    references: [businesses.id],
   }),
   services: many(services), // New relation
 }));

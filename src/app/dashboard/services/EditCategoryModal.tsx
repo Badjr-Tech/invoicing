@@ -15,10 +15,12 @@ export default function EditCategoryModal({
   isOpen,
   onClose,
   category,
+  businesses,
 }: {
   isOpen: boolean;
   onClose: () => void;
   category: ServiceCategory | null;
+  businesses: { id: number; businessName: string }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(updateServiceCategory, undefined);
   const [currentCategory, setCurrentCategory] = useState<ServiceCategory | null>(category);
@@ -33,11 +35,11 @@ export default function EditCategoryModal({
     }
   }, [state, onClose]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     if (currentCategory) {
       setCurrentCategory({
         ...currentCategory,
-        [e.target.name]: e.target.value,
+        [e.target.name]: e.target.name === 'businessId' ? parseInt(e.target.value) : e.target.value,
       });
     }
   };
@@ -77,6 +79,28 @@ export default function EditCategoryModal({
                 <div className="mt-2">
                   <form action={formAction} className="space-y-4">
                     <input type="hidden" name="id" value={currentCategory.id} />
+                    <div>
+                      <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+                        Assign to Business
+                      </label>
+                      <div className="mt-1">
+                        <select
+                          id="businessId"
+                          name="businessId"
+                          required
+                          value={currentCategory.businessId || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        >
+                          <option value="">Select a business</option>
+                          {businesses.map((business) => (
+                            <option key={business.id} value={business.id}>
+                              {business.businessName}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                         Category Name

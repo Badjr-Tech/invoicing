@@ -18,13 +18,16 @@ export default function InvoicesPageClient({
     id: number;
     clientName: string;
     clientEmail: string;
-    serviceDescription: string;
+    servicesJson: string; // Changed from serviceDescription
     amount: string;
     status: string;
     createdAt: Date;
-    isArchived: boolean; // New: Include isArchived in type
+    isArchived: boolean;
+    invoiceNumber: string; // New
+    notes: string | null; // New
+    dueDate: Date | null; // New
   }[];
-  showArchived: boolean; // New: Accept showArchived prop
+  showArchived: boolean;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -77,25 +80,29 @@ export default function InvoicesPageClient({
         <p className="text-gray-600">No {showArchived ? 'archived' : 'active'} invoices found.</p>
       ) : (
         <ul className="space-y-4">
-          {invoices.map((invoice) => (
-            <li key={invoice.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
-              <div>
-                <p className="font-semibold">Client: {invoice.clientName}</p>
+          {invoices.map((invoice) => {
+            const parsedServices: { name: string; quantity: number; price: string; type: string }[] = JSON.parse(invoice.servicesJson);
+            return (
+              <li key={invoice.id} className="p-4 bg-gray-50 rounded-lg shadow">
+                <p className="font-semibold">Client: {invoice.clientName} (Invoice #: {invoice.invoiceNumber})</p>
                 <p className="text-sm text-gray-600">Email: {invoice.clientEmail}</p>
-                <p className="text-sm text-gray-600">Description: {invoice.serviceDescription}</p>
-                <p className="text-sm font-bold">Amount: ${parseFloat(invoice.amount).toFixed(2)}</p>
+                <p className="text-sm text-gray-600">Services:</p>
+                <ul className="list-disc list-inside ml-4">
+                  {parsedServices.map((service, idx) => (
+                    <li key={idx} className="text-sm text-gray-600">
+                      {service.name} (Qty: {service.quantity}) - ${parseFloat(service.price).toFixed(2)} each ({service.type})
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-sm font-bold">Total Amount: ${parseFloat(invoice.amount).toFixed(2)}</p>
+                <p className="text-sm text-gray-600">Due Date: {invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : 'N/A'}</p>
                 <p className="text-sm text-gray-600">Status: {invoice.status}</p>
                 <p className="text-sm text-gray-600">Created At: {new Date(invoice.createdAt).toLocaleDateString()}</p>
+                {invoice.notes && <p className="text-sm text-gray-600">Notes: {invoice.notes}</p>}
                 {invoice.isArchived && <p className="text-sm text-red-500 font-bold">ARCHIVED</p>}
-              </div>
-              <button
-                onClick={() => handleArchive(invoice.id, invoice.isArchived)}
-                className={`ml-4 px-3 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${invoice.isArchived ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500`}
-              >
-                {invoice.isArchived ? 'Unarchive' : 'Archive'}
-              </button>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

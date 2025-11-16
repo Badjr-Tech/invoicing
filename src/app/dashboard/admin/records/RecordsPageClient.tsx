@@ -4,7 +4,11 @@ import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { invoices, businesses, clients, services } from "@/db/schema";
 
-type Invoice = InferSelectModel<typeof invoices>;
+type Invoice = InferSelectModel<typeof invoices> & {
+  servicesJson: string;
+  invoiceNumber: string;
+  notes: string | null;
+};
 type Business = InferSelectModel<typeof businesses>;
 type Client = InferSelectModel<typeof clients>;
 type Service = InferSelectModel<typeof services>;
@@ -32,17 +36,29 @@ export default function RecordsPageClient({
               <p>No invoices found.</p>
             ) : (
               <ul className="space-y-4">
-                {invoices.map((invoice) => (
-                  <li key={invoice.id} className="p-4 bg-gray-50 rounded-lg shadow">
-                    <p className="font-semibold">Client: {invoice.clientName}</p>
-                    <p className="text-sm text-gray-600">Email: {invoice.clientEmail}</p>
-                    <p className="text-sm text-gray-600">Description: {invoice.serviceDescription}</p>
-                    <p className="text-sm font-bold">Amount: ${parseFloat(invoice.amount).toFixed(2)}</p>
-                    <p className="text-sm text-gray-600">Status: {invoice.status}</p>
-                    <p className="text-sm text-gray-600">Created By User ID: {invoice.userId}</p>
-                    <p className="text-sm text-gray-600">Created At: {new Date(invoice.createdAt).toLocaleDateString()}</p>
-                  </li>
-                ))}
+                {invoices.map((invoice) => {
+                  const parsedServices: { name: string; quantity: number; price: string }[] = JSON.parse(invoice.servicesJson);
+                  return (
+                    <li key={invoice.id} className="p-4 bg-gray-50 rounded-lg shadow">
+                      <p className="font-semibold">Client: {invoice.clientName}</p>
+                      <p className="text-sm text-gray-600">Email: {invoice.clientEmail}</p>
+                      <p className="text-sm text-gray-600">Invoice #: {invoice.invoiceNumber}</p>
+                      <p className="text-sm text-gray-600">Services:</p>
+                      <ul className="list-disc list-inside ml-4">
+                        {parsedServices.map((service, idx) => (
+                          <li key={idx} className="text-sm text-gray-600">
+                            {service.name} (Qty: {service.quantity}) - ${parseFloat(service.price).toFixed(2)} each
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="text-sm font-bold">Amount: ${parseFloat(invoice.amount).toFixed(2)}</p>
+                      <p className="text-sm text-gray-600">Status: {invoice.status}</p>
+                      <p className="text-sm text-gray-600">Created By User ID: {invoice.userId}</p>
+                      <p className="text-sm text-gray-600">Created At: {new Date(invoice.createdAt).toLocaleDateString()}</p>
+                      {invoice.notes && <p className="text-sm text-gray-600">Notes: {invoice.notes}</p>}
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </div>

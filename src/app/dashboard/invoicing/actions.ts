@@ -11,6 +11,8 @@ interface Service {
   name: string;
   price: string;
   description: string | null;
+  quantity: number;
+  type: 'hourly' | 'per_deliverable' | 'flat_fee';
 }
 
 type InsertInvoice = InferInsertModel<typeof invoices>; // Define InsertInvoice type
@@ -20,10 +22,12 @@ export type FormState = {
   error: string;
   invoice?: {
     client: { name: string; email: string };
-    services: { name: string; price: string; description: string | null }[];
+    services: Service[]; // Use updated Service interface
     totalAmount: number;
     user: { logoUrl: string | null };
     dueDate: Date | null;
+    invoiceNumber: string; // New
+    notes: string | null; // New
   };
 } | undefined;
 
@@ -34,15 +38,17 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   }
 
   const clientId = parseInt(formData.get("clientId") as string);
-  const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
+  const businessId = parseInt(formData.get("businessId") as string);
   const services: Service[] = JSON.parse(formData.get("services") as string);
   const totalAmount = parseFloat(formData.get("totalAmount") as string);
+  const invoiceNumber = formData.get("invoiceNumber") as string; // New
+  const notes = formData.get("notes") as string; // New
 
   const dueDateString = formData.get("dueDate") as string;
   const dueDate = dueDateString ? new Date(dueDateString) : null;
 
-  if (!clientId || !businessId || !services || services.length === 0) { // New: Validate businessId
-    return { message: "", error: "Please select a client, a business, and at least one service." };
+  if (!clientId || !businessId || !services || services.length === 0 || !invoiceNumber) {
+    return { message: "", error: "Please select a client, a business, at least one service, and provide an invoice number." };
   }
 
   try {
@@ -55,23 +61,23 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
     }
 
     const business = await db.query.businesses.findFirst({
-      where: and(eq(businesses.userId, session.user.id), eq(businesses.id, businessId)), // New: Use businessId
+      where: and(eq(businesses.userId, session.user.id), eq(businesses.id, businessId)),
     });
 
-    if (!business) { // New: Handle business not found
+    if (!business) {
       return { message: "", error: "Business not found." };
     }
 
-    const serviceDescription = services.map((s: Service) => s.name).join(", ");
-
     const invoiceData: InsertInvoice = {
       userId: session.user.id,
-      businessId: business.id, // New: Include businessId
+      businessId: business.id,
       clientName: client.name,
       clientEmail: client.email,
-      serviceDescription,
-      amount: totalAmount.toString(), // Ensure amount is string for numeric type
+      servicesJson: JSON.stringify(services), // Store full services array as JSON
+      amount: totalAmount.toFixed(2),
       dueDate,
+      invoiceNumber, // New
+      notes, // New
     };
 
     const [newInvoice] = await db.insert(invoices).values(invoiceData).returning();
@@ -86,6 +92,8 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
         totalAmount,
         user: { logoUrl: business?.logoUrl || null },
         dueDate,
+        invoiceNumber,
+        notes,
       },
     };
   } catch (error: unknown) {

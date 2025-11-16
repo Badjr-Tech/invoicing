@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/db";
-import { serviceCategories } from "@/db/schema";
+import { serviceCategories, businesses } from "@/db/schema"; // Import businesses schema
 import { getSession } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm"; // Import 'and' for multiple conditions
 import { InferInsertModel } from 'drizzle-orm';
 
 type InsertServiceCategory = InferInsertModel<typeof serviceCategories>;
@@ -29,23 +29,28 @@ export async function createServiceCategory(prevState: FormState, formData: Form
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
-  const customId = formData.get("customId") as string | null; // New: Get customId
+  const customId = formData.get("customId") as string | null;
+  const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
 
   if (!name) {
     return { message: "", error: "Category name is required." };
+  }
+  if (isNaN(businessId)) {
+    return { message: "", error: "Business selection is required." };
   }
 
   try {
     const categoryData: InsertServiceCategory = {
       userId,
+      businessId, // New: Include businessId
       name,
       description,
-      customId: customId || null, // New: Include customId
+      customId: customId || null,
     };
 
     await db.insert(serviceCategories).values(categoryData);
 
-    revalidatePath("/dashboard/services"); // Revalidate the services page to show new categories
+    revalidatePath("/dashboard/services");
     return { message: "Service category created successfully!", error: "" };
   } catch (error: unknown) {
     console.error("Error creating service category:", error);
@@ -67,11 +72,40 @@ export async function getServiceCategories() {
   try {
     const categories = await db.query.serviceCategories.findMany({
       where: eq(serviceCategories.userId, userId),
+      with: { // Fetch related business information
+        business: {
+          columns: {
+            businessName: true,
+          },
+        },
+      },
       orderBy: (serviceCategories, { asc }) => [asc(serviceCategories.name)],
     });
     return categories;
   } catch (error) {
     console.error("Error fetching service categories:", error);
+    return [];
+  }
+}
+
+export async function getUserBusinesses() {
+  const userId = await getUserIdFromSession();
+
+  if (!userId) {
+    return [];
+  }
+
+  try {
+    const userBusinesses = await db.query.businesses.findMany({
+      where: eq(businesses.userId, userId),
+      columns: {
+        id: true,
+        businessName: true,
+      },
+    });
+    return userBusinesses;
+  } catch (error) {
+    console.error("Error fetching user businesses:", error);
     return [];
   }
 }
@@ -86,15 +120,19 @@ export async function updateServiceCategory(prevState: FormState, formData: Form
   const id = parseInt(formData.get("id") as string);
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
-  const customId = formData.get("customId") as string | null; // New: Get customId
+  const customId = formData.get("customId") as string | null;
+  const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
 
   if (isNaN(id) || !name) {
     return { message: "", error: "Invalid category ID or name." };
   }
+  if (isNaN(businessId)) {
+    return { message: "", error: "Business selection is required." };
+  }
 
   try {
     await db.update(serviceCategories)
-      .set({ name, description, customId: customId || null, updatedAt: new Date() }) // New: Update customId
+      .set({ name, description, customId: customId || null, businessId, updatedAt: new Date() }) // New: Update customId and businessId
       .where(eq(serviceCategories.id, id));
 
     revalidatePath("/dashboard/services");

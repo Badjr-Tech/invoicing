@@ -30,12 +30,12 @@ type Business = {
 
 export function generateInvoicePDF(
   client: { name: string; email: string },
-  services: { name: string; price: string; description: string | null }[],
+  services: { name: string; price: string; description: string | null; quantity: number; type: 'hourly' | 'per_deliverable' | 'flat_fee' }[],
   totalAmount: number,
   business: Business,
   dueDate: Date | null,
-  invoiceNumber: string, // New parameter
-  notes: string | null, // New parameter
+  invoiceNumber: string,
+  notes: string | null,
 ) {
   console.log("generateInvoicePDF: Function started.");
   console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate, "invoiceNumber:", invoiceNumber, "notes:", notes);
@@ -92,13 +92,13 @@ export function generateInvoicePDF(
 function addPdfContent(
   doc: jsPDF,
   client: { name: string; email: string },
-  services: { name: string; price: string; description: string | null }[],
+  services: { name: string; price: string; description: string | null; quantity: number; type: 'hourly' | 'per_deliverable' | 'flat_fee' }[],
   totalAmount: number,
   business: Business,
   dueDate: Date | null,
-  contentStartAfterLogoY: number, // New parameter for dynamic content start
-  invoiceNumber: string, // New parameter
-  notes: string | null, // New parameter
+  contentStartAfterLogoY: number,
+  invoiceNumber: string,
+  notes: string | null,
 ) {
   const colors = {
     color1: business.color1 || '#000000',
@@ -170,10 +170,19 @@ function addPdfContent(
   contentY += (lineHeight * 2); // Extra space before table
 
   // Add services table
-  const tableData = services.map(service => [service.name, service.description || '', `$${service.price}`]);
+  const tableData = services.map(service => {
+    const lineTotal = parseFloat(service.price) * service.quantity;
+    return [
+      service.name,
+      service.description || '',
+      service.quantity.toString(),
+      `$${parseFloat(service.price).toFixed(2)}`,
+      `$${lineTotal.toFixed(2)}`
+    ];
+  });
   autoTable(doc, {
     startY: contentY,
-    head: [['Service', 'Description', 'Price']],
+    head: [['Service', 'Description', 'Qty', 'Price/Unit', 'Line Total']],
     body: tableData,
     theme: 'striped',
     headStyles: {
@@ -189,9 +198,11 @@ function addPdfContent(
       lineWidth: 0.1,
     },
     columnStyles: {
-      0: { cellWidth: 60 }, // Service Name
+      0: { cellWidth: 50 }, // Service Name
       1: { cellWidth: 'auto' }, // Description
-      2: { cellWidth: 30, halign: 'right' }, // Price
+      2: { cellWidth: 20, halign: 'right' }, // Quantity
+      3: { cellWidth: 30, halign: 'right' }, // Price/Unit
+      4: { cellWidth: 30, halign: 'right' }, // Line Total
     },
   });
 
@@ -201,7 +212,9 @@ function addPdfContent(
 
   doc.setFontSize(14);
   doc.setTextColor(colors.color4);
+  doc.setFont('Times-Roman', 'bold'); // Set font to bold
   doc.text(`Total: $${totalAmount.toFixed(2)}`, businessInfoX, finalY, { align: 'right' });
+  doc.setFont('Times-Roman', 'normal'); // Reset font to normal
   finalY += lineHeight;
 
   if (dueDate) {
@@ -210,6 +223,13 @@ function addPdfContent(
     doc.text(`Due Date: ${dueDate.toLocaleDateString()}`, businessInfoX, finalY, { align: 'right' });
     finalY += lineHeight;
   }
+
+  // Payment Link Placeholder
+  finalY += lineHeight; // Space before payment link
+  doc.setFontSize(12);
+  doc.setTextColor('#0000FF'); // Blue color for link
+  doc.textWithLink('Click here to pay online', businessInfoX, finalY, { url: 'YOUR_PAYMENT_LINK_HERE', align: 'right' });
+  finalY += lineHeight;
 
   // Notes Section
   if (notes) {

@@ -18,6 +18,7 @@ interface Service {
   } | null;
   designation: 'hourly' | 'per deliverable' | 'flat fee'; // New field
   serviceNumber: string | null; // New field
+  quantity?: number; // Made optional
 }
 
 interface ServiceCategory {
@@ -31,10 +32,12 @@ export type FormState = {
   error: string;
   invoice?: {
     client: { name: string; email: string };
-    services: { name: string; price: string; description: string | null }[];
+    services: { name: string; price: string; description: string | null; quantity: number; type: 'hourly' | 'per_deliverable' | 'flat_fee' }[]; // Updated service type
     totalAmount: number;
     user: { logoUrl: string | null };
     dueDate: Date | null;
+    invoiceNumber: string; // New field
+    notes: string | null; // New field
   };
 } | undefined;
 
@@ -67,6 +70,8 @@ export default function InvoicingPageClient({
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null);
+  const [invoiceNumber, setInvoiceNumber] = useState<string>(`INV-${Date.now()}`); // New state for invoice number
+  const [notes, setNotes] = useState<string>(''); // New state for notes
 
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
 
@@ -87,18 +92,26 @@ export default function InvoicingPageClient({
           state.invoice.totalAmount,
           business,
           state.invoice.dueDate,
+          state.invoice.invoiceNumber, // Pass invoiceNumber
+          state.invoice.notes, // Pass notes
         );
       }
-      const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice&body=Please find your invoice attached.`;
+      const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice ${state.invoice.invoiceNumber}&body=Please find your invoice attached.`;
       window.location.href = mailtoLink;
     }
   }, [state, businesses, selectedBusiness]);
 
   const handleAddService = (service: Service) => {
-    setSelectedServices([...selectedServices, service]);
+    setSelectedServices([...selectedServices, { ...service, quantity: 1 }]); // Initialize quantity
   };
 
-  const totalAmount = selectedServices.reduce((acc, service) => acc + parseFloat(service.price), 0);
+  const handleQuantityChange = (index: number, quantity: number) => {
+    const updatedServices = [...selectedServices];
+    updatedServices[index].quantity = quantity;
+    setSelectedServices(updatedServices);
+  };
+
+  const totalAmount = selectedServices.reduce((acc, service) => acc + (parseFloat(service.price) * (service.quantity ?? 0)), 0);
 
   // Group services by category
   const servicesByCategory: { [key: string]: Service[] } = {};
@@ -124,7 +137,8 @@ export default function InvoicingPageClient({
           <div className="space-y-6">
             {Object.entries(servicesByCategory).map(([categoryName, servicesInCat]) => (
               <div key={categoryName}>
-                <h3 className="text-xl font-semibold text-gray-700 mb-3 cursor-pointer" onClick={() => toggleCategory(categoryName)}>
+                <h3 className="text-xl font-semibold text-gray-700 mb-3 cursor-pointer flex items-center" onClick={() => toggleCategory(categoryName)}>
+                  <span className="mr-2">{collapsedCategories[categoryName] ? '▶' : '▼'}</span>
                   {categoryName}
                 </h3>
                 {!collapsedCategories[categoryName] && (
@@ -206,6 +220,22 @@ export default function InvoicingPageClient({
             </div>
 
             <div>
+              <label htmlFor="invoiceNumber" className="block text-sm font-medium text-white">
+                Invoice Number
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  id="invoiceNumber"
+                  name="invoiceNumber"
+                  value={invoiceNumber}
+                  onChange={(e) => setInvoiceNumber(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
               <label htmlFor="dueDate" className="block text-sm font-medium text-white">
                 Due Date
               </label>
@@ -225,7 +255,26 @@ export default function InvoicingPageClient({
               {selectedServices.map((service, index) => (
                 <div key={index} className="flex justify-between items-center">
                   <p>{service.name}</p>
-                  <p>${service.price}</p>
+                  <div className="flex items-center">
+                    {service.designation !== 'flat fee' && (
+                      <input
+                        type="number"
+                        min="1"
+                        value={service.quantity}
+                        onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
+                        className="w-16 text-black px-2 py-1 rounded-md mr-2"
+                      />
+                    )}
+                    {service.designation === 'flat fee' && (
+                      <input
+                        type="number"
+                        value={1} // Flat fee services always have quantity 1
+                        disabled
+                        className="w-16 text-black px-2 py-1 rounded-md mr-2 bg-gray-200"
+                      />
+                    )}
+                    <p>${(parseFloat(service.price) * (service.quantity ?? 0)).toFixed(2)}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -237,8 +286,26 @@ export default function InvoicingPageClient({
               </div>
             </div>
 
+            <div>
+              <label htmlFor="notes" className="block text-sm font-medium text-white">
+                Notes
+              </label>
+              <div className="mt-1">
+                <textarea
+                  id="notes"
+                  name="notes"
+                  rows={3}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                ></textarea>
+              </div>
+            </div>
+
             <input type="hidden" name="services" value={JSON.stringify(selectedServices)} />
             <input type="hidden" name="totalAmount" value={totalAmount} />
+            <input type="hidden" name="invoiceNumber" value={invoiceNumber} />
+            <input type="hidden" name="notes" value={notes} />
 
 
             {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}

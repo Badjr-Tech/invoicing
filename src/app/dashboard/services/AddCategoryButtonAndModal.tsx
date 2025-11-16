@@ -6,7 +6,7 @@ import AddCategoryModal from "@/app/dashboard/components/AddCategoryModal";
 
 const ServiceCategoryForm = dynamic(() => import("./ServiceCategoryForm"), { ssr: false });
 
-export default function AddCategoryButtonAndModal() {
+export default function AddCategoryButtonAndModal({ businesses }: { businesses: { id: number; businessName: string }[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -22,7 +22,7 @@ export default function AddCategoryButtonAndModal() {
       </button>
 
       <AddCategoryModal isOpen={isModalOpen} onClose={closeModal} title="Add New Service Category">
-        <ServiceCategoryForm onSubmissionSuccess={closeModal} />
+        <ServiceCategoryForm onSubmissionSuccess={closeModal} businesses={businesses} />
       </AddCategoryModal>
     </>
   );
