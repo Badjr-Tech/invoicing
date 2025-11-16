@@ -12,7 +12,7 @@ export default async function ServicesPage() {
     <div className="flex-1 p-6">
       {/* Your Categories section at the top */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-gray-800">Your Categories</h1>
+        <h1 className="text-4xl font-bold text-gray-800">Your Business Streams</h1>
         <AddCategoryButtonAndModal businesses={businesses} />
       </div>
 
