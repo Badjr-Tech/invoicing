@@ -73,7 +73,14 @@ export default function InvoicingPageClient({
   const [invoiceNumber, setInvoiceNumber] = useState<string>(`INV-${Date.now()}`); // New state for invoice number
   const [notes, setNotes] = useState<string>(''); // New state for notes
 
-  const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
+  const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>(() => {
+    const initialCollapsedState: Record<string, boolean> = {};
+    categories.forEach(category => {
+      initialCollapsedState[category.name] = true; // Start all categories collapsed
+    });
+    initialCollapsedState["Uncategorized"] = true; // Also collapse uncategorized
+    return initialCollapsedState;
+  });
 
   const toggleCategory = (categoryName: string) => {
     setCollapsedCategories(prevState => ({
@@ -262,7 +269,7 @@ export default function InvoicingPageClient({
                         min="1"
                         value={service.quantity}
                         onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-                        className="w-16 text-black px-2 py-1 rounded-md mr-2"
+                        className="w-16 text-white px-2 py-1 rounded-md mr-2"
                       />
                     )}
                     {service.designation === 'flat fee' && (
@@ -270,7 +277,7 @@ export default function InvoicingPageClient({
                         type="number"
                         value={1} // Flat fee services always have quantity 1
                         disabled
-                        className="w-16 text-black px-2 py-1 rounded-md mr-2 bg-gray-200"
+                        className="w-16 text-white px-2 py-1 rounded-md mr-2 bg-gray-200"
                       />
                     )}
                     <p>${(parseFloat(service.price) * (service.quantity ?? 0)).toFixed(2)}</p>
