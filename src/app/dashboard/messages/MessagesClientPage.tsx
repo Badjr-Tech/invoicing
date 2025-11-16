@@ -57,8 +57,6 @@ interface MessagesPageProps {
   isAdmin: boolean;
   initialInternalUsers: User[];
   initialMassMessages: MassMessage[];
-  initialLocations: Location[];
-  initialDemographics: Demographic[];
   initialIndividualMessages: Message[];
   currentUserId: number | null;
 }
@@ -67,8 +65,6 @@ export default function MessagesPage({
   isAdmin,
   initialInternalUsers,
   initialMassMessages,
-  initialLocations,
-  initialDemographics,
   initialIndividualMessages,
   currentUserId,
 }: MessagesPageProps) {
@@ -79,8 +75,6 @@ export default function MessagesPage({
     const [messageContent, setMessageContent] = useState("");
     const [activeTab, setActiveTab] = useState(isAdmin ? "mass-messages" : "correspondence");
     const [individualMessages, setIndividualMessages] = useState<Message[]>(initialIndividualMessages);
-    const [selectedLocations, setSelectedLocations] = useState<number[]>([]);
-    const [selectedDemographics, setSelectedDemographics] = useState<number[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState<Business[]>([]);
     const [excludeOptedOut, setExcludeOptedOut] = useState(true);
@@ -88,8 +82,6 @@ export default function MessagesPage({
     // Use initial props for data
     const users = initialInternalUsers;
     const massMessages = initialMassMessages;
-    const locations = initialLocations;
-    const demographics = initialDemographics;
     const pendingRequests: PendingRequest[] = []; // Assuming pending requests are not yet implemented or fetched here
   
     useEffect(() => {
@@ -97,22 +89,6 @@ export default function MessagesPage({
         searchBusinesses(searchQuery).then(setSearchResults);
       }
     }, [searchQuery]);
-  
-    const handleLocationChange = (locationId: number) => {
-      setSelectedLocations(prev =>
-        prev.includes(locationId)
-          ? prev.filter(id => id !== locationId)
-          : [...prev, locationId]
-      );
-    };
-  
-    const handleDemographicChange = (demographicId: number) => {
-      setSelectedDemographics(prev =>
-        prev.includes(demographicId)
-          ? prev.filter(id => id !== demographicId)
-          : [...prev, demographicId]
-      );
-    };
   
     const handleCreateCollaborationRequest = async (formData: FormData) => {
       // Implement collaboration request logic here
@@ -286,44 +262,6 @@ export default function MessagesPage({
   
               <h2 className="text-2xl font-bold text-foreground mb-4 mt-8">Send Mass Message</h2>
               <form action={handleSendMassMessage} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-foreground">Target Locations</label>
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    {locations.map(location => (
-                      <div key={location.id} className="flex items-center">
-                        <input
-                          id={`location-${location.id}`}
-                          name="targetLocations"
-                          type="checkbox"
-                          value={location.id}
-                          className="focus:ring-primary h-4 w-4 text-primary border-light-gray rounded"
-                        />
-                        <label htmlFor={`location-${location.id}`} className="ml-2 text-sm text-foreground">
-                          {location.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground">Target Demographics</label>
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    {demographics.map(demographic => (
-                      <div key={demographic.id} className="flex items-center">
-                        <input
-                          id={`demographic-${demographic.id}`}
-                          name="targetDemographics"
-                          type="checkbox"
-                          value={demographic.id}
-                          className="focus:ring-primary h-4 w-4 text-primary border-light-gray rounded"
-                        />
-                        <label htmlFor={`demographic-${demographic.id}`} className="ml-2 text-sm text-foreground">
-                          {demographic.name}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-foreground">Message</label>
                   <textarea

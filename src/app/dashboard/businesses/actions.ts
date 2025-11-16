@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from "@/db";
-import { businesses, businessTypeEnum, businessTaxStatusEnum, demographics, Business, DemographicType, LocationType, locations } from "@/db/schema"; // Updated import
+import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
 import { eq, like, and, InferSelectModel } from "drizzle-orm";
 import { getSession, SessionPayload } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
@@ -29,13 +29,6 @@ export async function getBusinessProfile(businessId: number): Promise<Business &
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
-      with: {
-        location: true, // Include location details
-        ownerGender: true,
-        ownerRace: true,
-        ownerReligion: true,
-        ownerRegion: true,
-      },
     });
     if (!profile) { return null; }
     return profile;
@@ -445,27 +438,61 @@ export async function searchBusinesses(query: string): Promise<Business[]> {
 }
 
 export async function getDemographicsByCategory(category: 'Race' | 'Gender' | 'Religion') {
-  try {
-    const items = await db.query.demographics.findMany({
-      where: eq(demographics.category, category),
-    });
-    return items;
-  } catch (error) {
-    console.error(`Error fetching ${category} demographics:`, error);
-    return [];
-  }
+  const demographics = {
+    Gender: [
+      { id: 1, name: "Male", category: "Gender" as const },
+      { id: 2, name: "Female", category: "Gender" as const },
+      { id: 3, name: "Non-binary", category: "Gender" as const },
+      { id: 4, name: "Prefer not to say", category: "Gender" as const },
+    ],
+    Race: [
+      { id: 5, name: "White", category: "Race" as const },
+      { id: 6, name: "Black or African American", category: "Race" as const },
+      { id: 7, name: "Asian", category: "Race" as const },
+      { id: 8, name: "American Indian or Alaska Native", category: "Race" as const },
+      { id: 9, name: "Native Hawaiian or Other Pacific Islander", category: "Race" as const },
+      { id: 10, name: "Hispanic or Latino", category: "Race" as const },
+      { id: 11, name: "Two or More Races", category: "Race" as const },
+      { id: 12, name: "Prefer not to say", category: "Race" as const },
+    ],
+    Religion: [
+      { id: 13, name: "Christianity", category: "Religion" as const },
+      { id: 14, name: "Islam", category: "Religion" as const },
+      { id: 15, name: "Hinduism", category: "Religion" as const },
+      { id: 16, name: "Buddhism", category: "Religion" as const },
+      { id: 17, name: "Sikhism", category: "Religion" as const },
+      { id: 18, name: "Judaism", category: "Religion" as const },
+      { id: 19, name: "Other", category: "Religion" as const },
+      { id: 20, name: "None", category: "Religion" as const },
+      { id: 21, name: "Prefer not to say", category: "Religion" as const },
+    ],
+  };
+  return demographics[category] || [];
 }
 
 export async function getLocationsByCategory(category: 'City' | 'Region') {
-  try {
-    const items = await db.query.locations.findMany({
-      where: eq(locations.category, category),
-    });
-    return items;
-  } catch (error) {
-    console.error(`Error fetching ${category} locations:`, error);
-    return [];
-  }
+  const locations = {
+    City: [
+      { id: 1, name: "New York", category: "City" as const },
+      { id: 2, name: "Los Angeles", category: "City" as const },
+      { id: 3, name: "Chicago", category: "City" as const },
+      { id: 4, name: "Houston", category: "City" as const },
+      { id: 5, name: "Phoenix", category: "City" as const },
+    ],
+    Region: [
+      { id: 6, name: "Northeast", category: "Region" as const },
+      { id: 7, name: "Mid-Atlantic (DMV)", category: "Region" as const },
+      { id: 8, name: "New England", category: "Region" as const },
+      { id: 9, name: "Midwest", category: "Region" as const },
+      { id: 10, name: "South", category: "Region" as const },
+      { id: 11, name: "Southeast", category: "Region" as const },
+      { id: 12, name: "Southwest", category: "Region" as const },
+      { id: 13, name: "West", category: "Region" as const },
+      { id: 14, name: "Northwest", category: "Region" as const },
+      { id: 15, name: "Other", category: "Region" as const },
+    ],
+  };
+  return locations[category] || [];
 }
 
 export async function updateBusinessOwnerDetails(prevState: FormState, formData: FormData): Promise<FormState> {
@@ -520,6 +547,8 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
       updateData.locationId = null; // Set to null if no location selected
     }
 
+  console.log("updateBusinessOwnerDetails: businessId", businessId);
+  console.log("updateBusinessOwnerDetails: updateData", updateData);
     if (Object.keys(updateData).length === 0) {
       return { message: "", error: "No owner or business details to update." };
     }

@@ -2,17 +2,9 @@
 
 import { getSession } from "@/app/login/actions";
 import { db } from "@/db";
-import { users, massMessages, locations, demographics, businesses, individualMessages } from "@/db/schema";
+import { users, massMessages, businesses, individualMessages } from "@/db/schema";
 import { eq, inArray, and, or, asc, arrayOverlaps } from "drizzle-orm";
 import { revalidateMessagesPath } from "./revalidate";
-
-async function getLocationIdsByNames(locationNames: string[]): Promise<number[]> {
-  if (locationNames.length === 0) {
-    return [];
-  }
-  const existingLocations = await db.select().from(locations).where(inArray(locations.name, locationNames));
-  return existingLocations.map(loc => loc.id);
-}
 
 type FormState = {
   message: string;
@@ -95,8 +87,6 @@ export async function sendMassMessage(prevState: FormState, formData: FormData):
   }
 
   const massMessageContent = formData.get("massMessageContent") as string;
-  const targetLocationIds = formData.getAll("locations").map(id => parseInt(id as string));
-  const targetDemographicIds = formData.getAll("demographics").map(id => parseInt(id as string));
   const excludeOptedOut = formData.get("excludeOptedOut") === "on";
 
   if (!massMessageContent) {
@@ -108,21 +98,13 @@ export async function sendMassMessage(prevState: FormState, formData: FormData):
     await db.insert(massMessages).values({
       adminId: session.user.id,
       content: massMessageContent,
-      targetLocationIds: targetLocationIds,
-      targetDemographicIds: targetDemographicIds,
+      targetLocationIds: [],
+      targetDemographicIds: [],
       timestamp: new Date(),
     });
 
     // Find target users based on locations and demographics
-    const conditions = [];
     const userConditions = [];
-
-    if (targetLocationIds.length > 0) {
-      conditions.push(inArray(businesses.locationId, targetLocationIds));
-    }
-    if (targetDemographicIds.length > 0) {
-      conditions.push(arrayOverlaps(businesses.demographicIds, targetDemographicIds));
-    }
 
     if (excludeOptedOut) {
       userConditions.push(eq(users.isOptedOut, false));
@@ -130,16 +112,9 @@ export async function sendMassMessage(prevState: FormState, formData: FormData):
 
     let targetedUsers: { id: number }[] = [];
 
-    if (conditions.length > 0) {
-      targetedUsers = await db.selectDistinct({ id: users.id }) // Use distinct to avoid duplicate users
-        .from(users)
-        .innerJoin(businesses, eq(users.id, businesses.userId))
-        .where(and(...conditions, ...userConditions));
-    } else {
-      // If no specific locations or demographics are selected, target all users that match the userConditions
-      userConditions.push(eq(users.role, 'internal')); // Original logic was to target internal users
-      targetedUsers = await db.select({ id: users.id }).from(users).where(and(...userConditions));
-    }
+    // If no specific locations or demographics are selected, target all users that match the userConditions
+    userConditions.push(eq(users.role, 'internal')); // Original logic was to target internal users
+    targetedUsers = await db.select({ id: users.id }).from(users).where(and(...userConditions));
 
     // Send individual messages to targeted users
     if (targetedUsers.length > 0) {
@@ -157,26 +132,6 @@ export async function sendMassMessage(prevState: FormState, formData: FormData):
   } catch (error) {
     console.error("Error sending mass message:", error);
     return { message: "", error: "Failed to send mass message." };
-  }
-}
-
-export async function getAvailableLocations() {
-  try {
-    const allLocations = await db.select().from(locations);
-    return allLocations;
-  } catch (error) {
-    console.error("Error fetching available locations:", error);
-    return [];
-  }
-}
-
-export async function getAvailableDemographics() {
-  try {
-    const allDemographics = await db.select().from(demographics);
-    return allDemographics;
-  } catch (error) {
-    console.error("Error fetching available demographics:", error);
-    return [];
   }
 }
 

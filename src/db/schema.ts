@@ -5,8 +5,6 @@ import { relations, InferSelectModel } from 'drizzle-orm';
 export const userRole = pgEnum('user_role', ['admin', 'internal', 'external']);
 export const businessTypeEnum = pgEnum('business_type', ['Sole Proprietorship', 'Partnership', 'Limited Liability Company (LLC)', 'Corporation']);
 export const businessTaxStatusEnum = pgEnum('business_tax_status', ['S-Corporation', 'C-Corporation', 'Not Applicable']);
-export const demographicCategoryEnum = pgEnum('demographic_category', ['Race', 'Gender', 'Religion']);
-export const locationCategoryEnum = pgEnum('location_category', ['City', 'Region']);
 export const classTypeEnum = pgEnum('class_type', ['pre-course', 'agency-course']);
 export const enrollmentStatusEnum = pgEnum('enrollment_status', ['enrolled', 'completed', 'dropped', 'pending', 'rejected']);
 export const invoiceStatus = pgEnum('invoice_status', ['draft', 'sent', 'paid']);
@@ -43,18 +41,6 @@ export const invoices = pgTable('invoices', {
   dueDate: timestamp('due_date', { withTimezone: true }),
 });
 
-export const demographics = pgTable('demographics', {
-  id: serial('id').primaryKey(),
-  name: text('name').notNull().unique(),
-  category: demographicCategoryEnum('category').notNull(),
-});
-
-export const locations = pgTable('locations', {
-  id: serial('id').primaryKey(),
-  name: text('name').notNull().unique(),
-  category: locationCategoryEnum('category').notNull().default('City'),
-});
-
 export const businesses = pgTable('businesses', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
@@ -76,12 +62,12 @@ export const businesses = pgTable('businesses', {
   phone: varchar('phone', { length: 20 }),
   website: text('website'),
   isArchived: boolean('is_archived').notNull().default(false),
-  locationId: integer('location_id').references(() => locations.id),
+  locationId: integer('location_id'),
   demographicIds: integer('demographic_ids').array(),
-  ownerGenderId: integer('owner_gender_id').references(() => demographics.id), // New optional foreign key
-  ownerRaceId: integer('owner_race_id').references(() => demographics.id), // New optional foreign key
-  ownerReligionId: integer('owner_religion_id').references(() => demographics.id), // New optional foreign key
-  ownerRegionId: integer('owner_region_id').references(() => locations.id), // New optional foreign key
+  ownerGenderId: integer('owner_gender_id'), // New optional foreign key
+  ownerRaceId: integer('owner_race_id'), // New optional foreign key
+  ownerReligionId: integer('owner_religion_id'), // New optional foreign key
+  ownerRegionId: integer('owner_region_id'), // New optional foreign key
   material1Url: text('material1_url'),
   material1Title: text('material1_title'),
   material2Url: text('material2_url'),
@@ -303,26 +289,6 @@ export const businessesRelations = relations(businesses, ({ one }) => ({
   user: one(users, {
     fields: [businesses.userId],
     references: [users.id],
-  }),
-  location: one(locations, {
-    fields: [businesses.locationId],
-    references: [locations.id],
-  }),
-  ownerGender: one(demographics, { // New relation
-    fields: [businesses.ownerGenderId],
-    references: [demographics.id],
-  }),
-  ownerRace: one(demographics, { // New relation
-    fields: [businesses.ownerRaceId],
-    references: [demographics.id],
-  }),
-  ownerReligion: one(demographics, { // New relation
-    fields: [businesses.ownerReligionId],
-    references: [demographics.id],
-  }),
-  ownerRegion: one(locations, { // New relation
-    fields: [businesses.ownerRegionId],
-    references: [locations.id],
   }),
 }));
 
