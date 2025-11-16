@@ -99,7 +99,7 @@ function addPdfContent(
     color4: business.color4 || '#000000',
   };
   console.log("addPdfContent: colors object:", colors);
-  doc.setFont('helvetica'); // Set font to Helvetica
+  doc.setFont('Times-Roman'); // Set font to Times-Roman
 
   const startX = 15;
   const startY = 15;
@@ -166,7 +166,7 @@ function addPdfContent(
       fontStyle: 'bold',
     },
     styles: {
-      font: 'helvetica',
+      font: 'Times-Roman',
       fontSize: 10,
       cellPadding: 3,
       lineColor: '#CCCCCC',
@@ -177,12 +177,6 @@ function addPdfContent(
       1: { cellWidth: 'auto' }, // Description
       2: { cellWidth: 30, halign: 'right' }, // Price
     },
-    didDrawPage: (data) => {
-      // Footer on each page
-      doc.setFontSize(8);
-      doc.setTextColor('#AAAAAA');
-      doc.text(`Page ${data.pageNumber} of ${doc.internal.getNumberOfPages()}`, 10, doc.internal.pageSize.height - 10);
-    }
   });
 
   // Add total and due date
