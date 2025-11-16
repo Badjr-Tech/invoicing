@@ -101,62 +101,110 @@ function addPdfContent(
   console.log("addPdfContent: colors object:", colors);
   doc.setFont('helvetica'); // Set font to Helvetica
 
-  // Add header
+  const startX = 15;
+  const startY = 15;
+  const lineHeight = 7;
+
+  // Header Background
   doc.setFillColor(colors.color1);
-  doc.rect(0, 0, 210, 50, 'F');
-  doc.setFontSize(22);
-  doc.setTextColor('#FFFFFF');
-  doc.text('Invoice', 10, 30);
+  doc.rect(0, 0, 210, 40, 'F'); // Adjusted height for header
 
-  // Add date
+  // Invoice Title
+  doc.setFontSize(28); // Larger font size for title
+  doc.setTextColor('#FFFFFF');
+  doc.text('INVOICE', startX, startY + 10);
+
+  // Business Info (Top Right)
+  doc.setFontSize(10);
+  doc.setTextColor('#FFFFFF');
+  const businessInfoX = 200; // Right align
+  let currentY = startY + 5;
+  doc.text(business.businessName, businessInfoX, currentY, { align: 'right' });
+  currentY += lineHeight;
+  if (business.streetAddress) {
+    doc.text(business.streetAddress, businessInfoX, currentY, { align: 'right' });
+    currentY += lineHeight;
+  }
+  if (business.city && business.state && business.zipCode) {
+    doc.text(`${business.city}, ${business.state} ${business.zipCode}`, businessInfoX, currentY, { align: 'right' });
+    currentY += lineHeight;
+  }
+  if (business.website) {
+    doc.text(business.website, businessInfoX, currentY, { align: 'right' });
+    currentY += lineHeight;
+  }
+
+  // Date (Below Business Info)
   const date = new Date().toLocaleDateString();
-  doc.setFontSize(12);
+  doc.setFontSize(10);
   doc.setTextColor('#FFFFFF');
-  doc.text(date, 150, 30);
+  doc.text(`Date: ${date}`, businessInfoX, currentY + 5, { align: 'right' }); // Add some space
 
-  // Add business info
-  doc.setFontSize(12);
-  doc.setTextColor('#FFFFFF');
-  doc.text(business.businessName, 150, 40);
-  doc.text(`${business.streetAddress || ''}`, 150, 45);
-  doc.text(`${business.city || ''}, ${business.state || ''} ${business.zipCode || ''}`, 150, 50);
-  doc.text(business.website || '', 150, 55);
-
-
-  // Add client info
+  // Client Info (Left, below header)
+  let contentY = 60; // Starting Y for main content
   doc.setFontSize(12);
   doc.setTextColor(colors.color2);
-  doc.text(`Bill to: ${client.name}`, 10, 70);
-  doc.text(`Email: ${client.email}`, 10, 75);
+  doc.text('Bill To:', startX, contentY);
+  contentY += lineHeight;
+  doc.setFontSize(14); // Slightly larger for client name
+  doc.text(client.name, startX, contentY);
+  contentY += lineHeight;
+  doc.setFontSize(12);
+  doc.text(client.email, startX, contentY);
+  contentY += (lineHeight * 2); // Extra space before table
 
   // Add services table
   const tableData = services.map(service => [service.name, service.description || '', `$${service.price}`]);
-  autoTable(doc, { // Use autoTable directly
-    startY: 85,
+  autoTable(doc, {
+    startY: contentY,
     head: [['Service', 'Description', 'Price']],
     body: tableData,
     theme: 'striped',
     headStyles: {
       fillColor: colors.color3,
+      textColor: '#FFFFFF',
+      fontStyle: 'bold',
     },
+    styles: {
+      font: 'helvetica',
+      fontSize: 10,
+      cellPadding: 3,
+      lineColor: '#CCCCCC',
+      lineWidth: 0.1,
+    },
+    columnStyles: {
+      0: { cellWidth: 60 }, // Service Name
+      1: { cellWidth: 'auto' }, // Description
+      2: { cellWidth: 30, halign: 'right' }, // Price
+    },
+    didDrawPage: (data) => {
+      // Footer on each page
+      doc.setFontSize(8);
+      doc.setTextColor('#AAAAAA');
+      doc.text(`Page ${data.pageNumber} of ${doc.internal.getNumberOfPages()}`, 10, doc.internal.pageSize.height - 10);
+    }
   });
 
-  // Add total
+  // Add total and due date
   const tableEndY = (doc as jsPDFWithAutoTable).lastAutoTable.finalY;
+  let finalY = tableEndY + 10;
+
   doc.setFontSize(14);
   doc.setTextColor(colors.color4);
-  doc.text(`Total: $${totalAmount.toFixed(2)}`, 150, tableEndY + 10);
+  doc.text(`Total: $${totalAmount.toFixed(2)}`, businessInfoX, finalY, { align: 'right' });
+  finalY += lineHeight;
 
   if (dueDate) {
     doc.setFontSize(12);
     doc.setTextColor('#000000');
-    doc.text(`To be paid: ${dueDate.toLocaleDateString()}`, 150, tableEndY + 20);
+    doc.text(`Due Date: ${dueDate.toLocaleDateString()}`, businessInfoX, finalY, { align: 'right' });
+    finalY += lineHeight;
   }
 
   // Add footer
   doc.setDrawColor(colors.color1);
-  doc.line(10, 280, 200, 280);
+  doc.line(startX, doc.internal.pageSize.height - 20, 200, doc.internal.pageSize.height - 20); // Horizontal line
   doc.setFontSize(10);
   doc.setTextColor('#000000');
-  doc.text(`Please remit payment to: ${business.businessName}`, 10, 285);
+  doc.text(`Please remit payment to: ${business.businessName}`, startX, doc.internal.pageSize.height - 10);
 }
