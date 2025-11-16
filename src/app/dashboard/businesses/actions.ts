@@ -558,7 +558,7 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
       .where(eq(businesses.id, businessId));
 
     revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "Owner and business details updated successfully!", error: "" };
+    return { message: "Owner and business details updated successfully. Refresh to see changes.", error: "" };
   } catch (error) {
     console.error("Error updating business owner details:", error);
     let errorMessage = "Failed to update owner and business details.";
