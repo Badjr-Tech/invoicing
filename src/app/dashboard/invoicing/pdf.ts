@@ -58,9 +58,24 @@ export function generateInvoicePDF(
         img.src = business.logoUrl;
         // Ensure image is loaded before adding to PDF
         img.onload = () => {
-          doc.addImage(img, 'PNG', logoX, logoY, logoWidth, logoHeight);
+          const imgWidth = img.naturalWidth;
+          const imgHeight = img.naturalHeight;
+          const aspectRatio = imgWidth / imgHeight;
+
+          const maxWidth = 50; // Max width for the logo
+          const maxHeight = 20; // Max height for the logo
+
+          let scaledWidth = maxWidth;
+          let scaledHeight = maxWidth / aspectRatio;
+
+          if (scaledHeight > maxHeight) {
+            scaledHeight = maxHeight;
+            scaledWidth = maxHeight * aspectRatio;
+          }
+          
+          doc.addImage(img, 'PNG', logoX, logoY, scaledWidth, scaledHeight);
           // Continue PDF generation after image is loaded
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + scaledHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
           console.log("generateInvoicePDF: Logo added. Saving PDF.");
           doc.save('invoice.pdf'); // Force download
         };
