@@ -105,26 +105,9 @@ export const individualMessages = pgTable('individual_messages', {
   replyToMessageId: integer('reply_to_message_id').references((): AnyPgColumn => individualMessages.id),
 });
 
-export const pitchCompetitionEvents = pgTable('pitch_competition_events', {
-  id: serial('id').primaryKey(),
-  name: text('name').notNull(),
-  description: text('description'),
-  startDate: timestamp('start_date', { withTimezone: true }),
-  endDate: timestamp('end_date', { withTimezone: true }),
-  createdById: integer('created_by_id').notNull().references(() => users.id),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-});
 
-export const pitchSubmissions = pgTable('pitch_submissions', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id),
-  competitionEventId: integer('competition_event_id').notNull().references(() => pitchCompetitionEvents.id),
-  projectName: text('project_name').notNull(),
-  projectLocation: text('project_location').notNull(),
-  pitchVideoUrl: text('pitch_video_url'),
-  pitchDeckUrl: text('pitch_deck_url'),
-  submittedAt: timestamp('submitted_at', { withTimezone: true }).notNull().defaultNow(),
-});
+
+
 
 export const classes = pgTable('classes', {
   id: serial('id').primaryKey(),
@@ -210,17 +193,13 @@ export interface LocationType {
   category: 'City' | 'Region';
 }
 
-// --- Types for InferSelectModel ---
-export type Demographic = DemographicType;
-export type Location = LocationType;
 export type Business = InferSelectModel<typeof businesses>;
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
 export type BusinessWithDemographicAndLocation = InferSelectModel<typeof businesses> & { demographic: Demographic | null, location: Location | null };
 export type MassMessage = InferSelectModel<typeof massMessages>;
 export type IndividualMessage = InferSelectModel<typeof individualMessages>;
-export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEvents>;
-export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
+
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
 export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // Re-added type
@@ -239,8 +218,6 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   sentMessages: many(individualMessages, { relationName: 'sent_messages' }),
   receivedMessages: many(individualMessages, { relationName: 'received_messages' }),
   enrollments: many(enrollments),
-  createdPitchCompetitionEvents: many(pitchCompetitionEvents),
-  pitchSubmissions: many(pitchSubmissions),
   passwordResetTokens: many(passwordResetTokens),
   invoices: many(invoices),
   clients: many(clients),
@@ -322,25 +299,6 @@ export const individualMessagesRelations = relations(individualMessages, ({ one 
   replyToMessage: one(individualMessages, {
     fields: [individualMessages.replyToMessageId],
     references: [individualMessages.id],
-  }),
-}));
-
-export const pitchCompetitionEventsRelations = relations(pitchCompetitionEvents, ({ one, many }) => ({
-  createdBy: one(users, {
-    fields: [pitchCompetitionEvents.createdById],
-    references: [users.id],
-  }),
-  submissions: many(pitchSubmissions),
-}));
-
-export const pitchSubmissionsRelations = relations(pitchSubmissions, ({ one }) => ({
-  user: one(users, {
-    fields: [pitchSubmissions.userId],
-    references: [users.id],
-  }),
-  competitionEvent: one(pitchCompetitionEvents, {
-    fields: [pitchSubmissions.competitionEventId],
-    references: [pitchCompetitionEvents.id],
   }),
 }));
 

@@ -24,6 +24,10 @@ export default function DynamicSidebarContent() {
   const [session, setSession] = useState<UserSession | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [loading, setLoading] = useState(true);
+  const [adviceInfoCollapsed, setAdviceInfoCollapsed] = useState(true);
+  const [businessToolsCollapsed, setBusinessToolsCollapsed] = useState(true);
+  const [financialToolsCollapsed, setFinancialToolsCollapsed] = useState(true);
+  const [adminToolsCollapsed, setAdminToolsCollapsed] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -70,107 +74,155 @@ export default function DynamicSidebarContent() {
         >
           Home
         </Link>
-        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
+        {/* Advice & Info Section */}
+        <h2 
+          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          onClick={() => setAdviceInfoCollapsed(!adviceInfoCollapsed)}
+        >
+          <span className="mr-2">{adviceInfoCollapsed ? '▶' : '▼'}</span>
           Advice & Info
         </h2>
-        <Link
-          href="/dashboard/resources"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+        {!adviceInfoCollapsed && (
+          <>
+            <Link
+              href="/dashboard/resources"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Resources
+            </Link>
+            <Link
+              href="/dashboard/agency-class"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Page 2
+            </Link>
+            <Link
+              href="/dashboard/business-checklist"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Business Checklist
+            </Link>
+          </>
+        )}
+        {/* Business Tools Section */}
+        <h2 
+          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          onClick={() => setBusinessToolsCollapsed(!businessToolsCollapsed)}
         >
-          Resources
-        </Link>
-        <Link
-          href="/dashboard/agency-class"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Page 2
-        </Link>
-        <Link
-          href="/dashboard/business-checklist"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Business Checklist
-        </Link>
-        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
+          <span className="mr-2">{businessToolsCollapsed ? '▶' : '▼'}</span>
           Business Tools
         </h2>
-        <Link
-          href="/dashboard/messages"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+        {!businessToolsCollapsed && (
+          <>
+            <Link
+              href="/dashboard/messages"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Messages
+            </Link>
+            <Link
+              href="/dashboard/businesses"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Businesses
+            </Link>
+            {businesses.map((business) => (
+              <Link
+                key={business.id}
+                href={`/dashboard/businesses/${business.id}`}
+                className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+              >
+                - {business.businessName}
+              </Link>
+            ))}
+          </>
+        )}
+        {/* Financial Tools Section */}
+        <h2 
+          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
         >
-          Messages
-        </Link>
-        <Link
-          href="/dashboard/businesses"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Businesses
-        </Link>
-        {businesses.map((business) => (
-          <Link
-            key={business.id}
-            href={`/dashboard/businesses/${business.id}`}
-            className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
-          >
-            - {business.businessName}
-          </Link>
-        ))}
-        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
+          <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
           Financial Tools
         </h2>
-        <Link
-          href="/dashboard/invoicing"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Invoicing
-        </Link>
-        <Link
-          href="/dashboard/clients"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Clients
-        </Link>
-        <Link
-          href="/dashboard/services"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Services
-        </Link>
-        <Link
-          href="/dashboard/products"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Products
-        </Link>
+        {!financialToolsCollapsed && (
+          <>
+            <Link
+              href="/dashboard/financial-tools" // This is the Financial Tools landing page
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Financial Tools Landing
+            </Link>
+            <Link
+              href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Financials Dashboard
+            </Link>
+            <Link
+              href="/dashboard/invoicing"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Invoicing
+            </Link>
+            <Link
+              href="/dashboard/clients"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Clients
+            </Link>
+            <Link
+              href="/dashboard/services"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Services
+            </Link>
+            <Link
+              href="/dashboard/products"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Products
+            </Link>
+          </>
+        )}
         {isAdmin && (
           <>
-            <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
+            {/* Admin Tools Section */}
+            <h2 
+              className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+              onClick={() => setAdminToolsCollapsed(!adminToolsCollapsed)}
+            >
+              <span className="mr-2">{adminToolsCollapsed ? '▶' : '▼'}</span>
               Admin Tools
             </h2>
-            <Link
-              href="/dashboard/admin/businesses/manage"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Business search
-            </Link>
-            <Link
-              href="/dashboard/admin/users"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Admin Users
-            </Link>
-            <Link
-              href="/dashboard/admin/agency-class"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Admin AGENCY Class
-            </Link>
-            <Link
-              href="/dashboard/admin/records"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Admin Records
-            </Link>
+            {!adminToolsCollapsed && (
+              <>
+                <Link
+                  href="/dashboard/admin/businesses/manage"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Business search
+                </Link>
+                <Link
+                  href="/dashboard/admin/users"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Admin Users
+                </Link>
+                <Link
+                  href="/dashboard/admin/agency-class"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Admin AGENCY Class
+                </Link>
+                <Link
+                  href="/dashboard/admin/records"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Admin Records
+                </Link>
+              </>
+            )}
           </>
         )}
       </nav>

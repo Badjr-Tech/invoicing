@@ -43,6 +43,13 @@
       "when": 1763268665372,
       "tag": "0005_wise_bloodscream",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1763274065678,
+      "tag": "0006_spicy_vin_gonzales",
+      "breakpoints": true
     }
   ]
 }
