@@ -193,6 +193,9 @@ export interface LocationType {
   category: 'City' | 'Region';
 }
 
+export type Demographic = DemographicType;
+export type Location = LocationType;
+
 export type Business = InferSelectModel<typeof businesses>;
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
