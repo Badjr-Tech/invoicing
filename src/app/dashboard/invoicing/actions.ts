@@ -41,14 +41,13 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
   const businessId = parseInt(formData.get("businessId") as string);
   const services: Service[] = JSON.parse(formData.get("services") as string);
   const totalAmount = parseFloat(formData.get("totalAmount") as string);
-  const invoiceNumber = formData.get("invoiceNumber") as string; // New
-  const notes = formData.get("notes") as string; // New
+  const notes = formData.get("notes") as string;
 
   const dueDateString = formData.get("dueDate") as string;
   const dueDate = dueDateString ? new Date(dueDateString) : null;
 
-  if (!clientId || !businessId || !services || services.length === 0 || !invoiceNumber) {
-    return { message: "", error: "Please select a client, a business, at least one service, and provide an invoice number." };
+  if (!clientId || !businessId || !services || services.length === 0) {
+    return { message: "", error: "Please select a client, a business, and at least one service." };
   }
 
   try {
@@ -68,16 +67,31 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
       return { message: "", error: "Business not found." };
     }
 
+    // Generate invoice number
+    const latestInvoice = await db.query.invoices.findFirst({
+      where: eq(invoices.businessId, businessId),
+      orderBy: (invoices, { desc }) => desc(invoices.createdAt),
+    });
+
+    let nextInvoiceNumber = 1;
+    if (latestInvoice && latestInvoice.invoiceNumber) {
+      const lastNumberMatch = latestInvoice.invoiceNumber.match(/INV-(\d{5})/);
+      if (lastNumberMatch) {
+        nextInvoiceNumber = parseInt(lastNumberMatch[1]) + 1;
+      }
+    }
+    const invoiceNumber = `INV-${String(nextInvoiceNumber).padStart(5, '0')}`;
+
     const invoiceData: InsertInvoice = {
       userId: session.user.id,
       businessId: business.id,
       clientName: client.name,
       clientEmail: client.email,
-      servicesJson: JSON.stringify(services), // Store full services array as JSON
+      servicesJson: JSON.stringify(services),
       amount: totalAmount.toFixed(2),
       dueDate,
-      invoiceNumber, // New
-      notes, // New
+      invoiceNumber,
+      notes,
     };
 
     const [newInvoice] = await db.insert(invoices).values(invoiceData).returning();

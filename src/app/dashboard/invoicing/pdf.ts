@@ -63,7 +63,7 @@ export function generateInvoicePDF(
           const aspectRatio = imgWidth / imgHeight;
 
           const maxWidth = 50; // Max width for the logo
-          const maxHeight = 20; // Max height for the logo
+          const maxHeight = 30; // Increased max height for the logo
 
           let scaledWidth = maxWidth;
           let scaledHeight = maxWidth / aspectRatio;
