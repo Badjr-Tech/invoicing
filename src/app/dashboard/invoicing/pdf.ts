@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable'; // Import autoTable directly
 
 declare module 'jspdf' {
   interface jsPDF {
@@ -40,6 +40,7 @@ export function generateInvoicePDF(
 
   try {
     const doc = new jsPDF();
+    autoTable(doc, {}); // Initialize autoTable with the doc instance
 
     // Add logo
     if (business.logoUrl) {
@@ -98,7 +99,7 @@ function addPdfContent(
     color4: business.color4 || '#000000',
   };
   console.log("addPdfContent: colors object:", colors);
-  doc.setFont('Times-Roman'); // Set font to Times
+  doc.setFont('helvetica'); // Set font to Helvetica
 
   // Add header
   doc.setFillColor(colors.color1);
@@ -130,7 +131,7 @@ function addPdfContent(
 
   // Add services table
   const tableData = services.map(service => [service.name, service.description || '', `$${service.price}`]);
-  doc.autoTable({
+  autoTable(doc, { // Use autoTable directly
     startY: 85,
     head: [['Service', 'Description', 'Price']],
     body: tableData,
