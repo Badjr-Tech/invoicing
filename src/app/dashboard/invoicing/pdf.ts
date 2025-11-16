@@ -42,6 +42,11 @@ export function generateInvoicePDF(
     const doc = new jsPDF();
     autoTable(doc, {}); // Initialize autoTable with the doc instance
 
+    const logoWidth = 50;
+    const logoHeight = 20; // Adjusted logo height for better fit
+    const logoX = 10;
+    const logoY = 10;
+
     // Add logo
     if (business.logoUrl) {
       console.log("generateInvoicePDF: Attempting to add logo from URL:", business.logoUrl);
@@ -51,31 +56,29 @@ export function generateInvoicePDF(
         img.src = business.logoUrl;
         // Ensure image is loaded before adding to PDF
         img.onload = () => {
-          const imgWidth = 50;
-          const imgHeight = (img.height * imgWidth) / img.width;
-          doc.addImage(img, 'PNG', 10, 10, imgWidth, imgHeight);
+          doc.addImage(img, 'PNG', logoX, logoY, logoWidth, logoHeight);
           // Continue PDF generation after image is loaded
-          addPdfContent(doc, client, services, totalAmount, business, dueDate);
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5); // Pass logo bottom Y
           console.log("generateInvoicePDF: Logo added. Saving PDF.");
           doc.save('invoice.pdf'); // Force download
         };
         img.onerror = (error) => {
           console.error("generateInvoicePDF: Error loading logo image:", error);
           // Continue without logo if it fails to load
-          addPdfContent(doc, client, services, totalAmount, business, dueDate);
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5); // Pass logo bottom Y
           console.log("generateInvoicePDF: Logo failed to load. Saving PDF without logo.");
           doc.save('invoice.pdf'); // Force download
         };
       } catch (error) {
         console.error("generateInvoicePDF: Error in logo handling block:", error);
         // Continue without logo if an error occurs in the handling block
-        addPdfContent(doc, client, services, totalAmount, business, dueDate);
+        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5); // Pass logo bottom Y
         console.log("generateInvoicePDF: Error in logo handling. Saving PDF without logo.");
         doc.save('invoice.pdf'); // Force download
       }
     } else {
       console.log("generateInvoicePDF: No logo URL provided. Generating PDF without logo.");
-      addPdfContent(doc, client, services, totalAmount, business, dueDate);
+      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY); // Pass initial Y if no logo
       console.log("generateInvoicePDF: Saving PDF without logo.");
       doc.save('invoice.pdf'); // Force download
     }
@@ -91,6 +94,7 @@ function addPdfContent(
   totalAmount: number,
   business: Business,
   dueDate: Date | null,
+  contentStartAfterLogoY: number, // New parameter for dynamic content start
 ) {
   const colors = {
     color1: business.color1 || '#000000',
@@ -102,23 +106,25 @@ function addPdfContent(
   doc.setFont('Times-Roman'); // Set font to Times-Roman
 
   const startX = 15;
-  const startY = 15;
   const lineHeight = 7;
+
+  const headerBarHeight = 30;
+  const headerBarY = contentStartAfterLogoY + 5; // Start bar below logo + some margin
 
   // Header Background
   doc.setFillColor(colors.color1);
-  doc.rect(0, 0, 210, 40, 'F'); // Adjusted height for header
+  doc.rect(0, headerBarY, 210, headerBarHeight, 'F');
 
   // Invoice Title
-  doc.setFontSize(28); // Larger font size for title
+  doc.setFontSize(28);
   doc.setTextColor('#FFFFFF');
-  doc.text('INVOICE', startX, startY + 10);
+  doc.text('INVOICE', startX, headerBarY + (headerBarHeight / 2) + 5); // Centered vertically in bar
 
-  // Business Info (Top Right)
+  // Business Info (Top Right, within header bar)
   doc.setFontSize(10);
   doc.setTextColor('#FFFFFF');
   const businessInfoX = 200; // Right align
-  let currentY = startY + 5;
+  let currentY = headerBarY + 5;
   doc.text(business.businessName, businessInfoX, currentY, { align: 'right' });
   currentY += lineHeight;
   if (business.streetAddress) {
@@ -134,19 +140,19 @@ function addPdfContent(
     currentY += lineHeight;
   }
 
-  // Date (Below Business Info)
+  // Date (Below Business Info, within header bar)
   const date = new Date().toLocaleDateString();
   doc.setFontSize(10);
   doc.setTextColor('#FFFFFF');
-  doc.text(`Date: ${date}`, businessInfoX, currentY + 5, { align: 'right' }); // Add some space
+  doc.text(`Date: ${date}`, businessInfoX, currentY + 5, { align: 'right' });
 
-  // Client Info (Left, below header)
-  let contentY = 60; // Starting Y for main content
+  // Client Info (Left, below header bar)
+  let contentY = headerBarY + headerBarHeight + 10; // Start content below header bar + margin
   doc.setFontSize(12);
   doc.setTextColor(colors.color2);
   doc.text('Bill To:', startX, contentY);
   contentY += lineHeight;
-  doc.setFontSize(14); // Slightly larger for client name
+  doc.setFontSize(14);
   doc.text(client.name, startX, contentY);
   contentY += lineHeight;
   doc.setFontSize(12);
