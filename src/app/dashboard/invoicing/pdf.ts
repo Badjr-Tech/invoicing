@@ -34,9 +34,11 @@ export function generateInvoicePDF(
   totalAmount: number,
   business: Business,
   dueDate: Date | null,
+  invoiceNumber: string, // New parameter
+  notes: string | null, // New parameter
 ) {
   console.log("generateInvoicePDF: Function started.");
-  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate);
+  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate, "invoiceNumber:", invoiceNumber, "notes:", notes);
 
   try {
     const doc = new jsPDF();
@@ -58,27 +60,27 @@ export function generateInvoicePDF(
         img.onload = () => {
           doc.addImage(img, 'PNG', logoX, logoY, logoWidth, logoHeight);
           // Continue PDF generation after image is loaded
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5); // Pass logo bottom Y
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
           console.log("generateInvoicePDF: Logo added. Saving PDF.");
           doc.save('invoice.pdf'); // Force download
         };
         img.onerror = (error) => {
           console.error("generateInvoicePDF: Error loading logo image:", error);
           // Continue without logo if it fails to load
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5); // Pass logo bottom Y
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
           console.log("generateInvoicePDF: Logo failed to load. Saving PDF without logo.");
           doc.save('invoice.pdf'); // Force download
         };
       } catch (error) {
         console.error("generateInvoicePDF: Error in logo handling block:", error);
         // Continue without logo if an error occurs in the handling block
-        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5); // Pass logo bottom Y
+        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
         console.log("generateInvoicePDF: Error in logo handling. Saving PDF without logo.");
         doc.save('invoice.pdf'); // Force download
       }
     } else {
       console.log("generateInvoicePDF: No logo URL provided. Generating PDF without logo.");
-      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY); // Pass initial Y if no logo
+      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY, invoiceNumber, notes); // Pass initial Y if no logo, invoiceNumber, notes
       console.log("generateInvoicePDF: Saving PDF without logo.");
       doc.save('invoice.pdf'); // Force download
     }
@@ -95,6 +97,8 @@ function addPdfContent(
   business: Business,
   dueDate: Date | null,
   contentStartAfterLogoY: number, // New parameter for dynamic content start
+  invoiceNumber: string, // New parameter
+  notes: string | null, // New parameter
 ) {
   const colors = {
     color1: business.color1 || '#000000',
@@ -157,6 +161,12 @@ function addPdfContent(
   contentY += lineHeight;
   doc.setFontSize(12);
   doc.text(client.email, startX, contentY);
+  contentY += lineHeight; // Space after email
+
+  // Invoice Number
+  doc.setFontSize(12);
+  doc.setTextColor('#000000');
+  doc.text(`Invoice #: ${invoiceNumber}`, startX, contentY);
   contentY += (lineHeight * 2); // Extra space before table
 
   // Add services table
@@ -199,6 +209,18 @@ function addPdfContent(
     doc.setTextColor('#000000');
     doc.text(`Due Date: ${dueDate.toLocaleDateString()}`, businessInfoX, finalY, { align: 'right' });
     finalY += lineHeight;
+  }
+
+  // Notes Section
+  if (notes) {
+    finalY += lineHeight; // Space before notes
+    doc.setFontSize(12);
+    doc.setTextColor('#000000');
+    doc.text('Notes:', startX, finalY);
+    finalY += lineHeight;
+    doc.setFontSize(10);
+    doc.text(notes, startX, finalY, { maxWidth: 180 }); // Wrap notes text
+    finalY += (lineHeight * (notes.split('\n').length || 1)); // Adjust Y for multi-line notes
   }
 
   // Add footer
