@@ -129,28 +129,6 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
         </select>
       </div>
 
-      {/* New: Business Demographics Multi-select */}
-      <div>
-        <label htmlFor="demographicIds" className="block text-sm font-medium text-gray-700">
-          Business Demographics
-        </label>
-        <select
-          id="demographicIds"
-          name="demographicIds"
-          multiple
-          value={selectedDemographicIds.map(String)} // Convert numbers to strings for select value
-          onChange={handleDemographicChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-32" // Increased height for multi-select
-        >
-          {availableDemographics.map((demo) => (
-            <option key={demo.id} value={demo.id}>
-              {demo.name} ({demo.category})
-            </option>
-          ))}
-        </select>
-        <input type="hidden" name="selectedDemographicIds" value={JSON.stringify(selectedDemographicIds)} />
-      </div>
-
       {/* New: Business Primary Location Dropdown */}
       <div>
         <label htmlFor="locationId" className="block text-sm font-medium text-gray-700">
