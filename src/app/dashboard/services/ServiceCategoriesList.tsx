@@ -8,10 +8,9 @@ import EditCategoryModal from "./EditCategoryModal";
 
 type ServiceCategory = InferSelectModel<typeof serviceCategories> & {
   business?: { businessName: string } | null; // Include business relation
-  dba?: { dbaName: string } | null; // New: Include dba relation
 };
 
-export default function ServiceCategoriesList({ categories, businesses }: { categories: ServiceCategory[]; businesses: { id: number; businessName: string; dbas: { id: number; dbaName: string }[] }[] }) {
+export default function ServiceCategoriesList({ categories, businesses }: { categories: ServiceCategory[]; businesses: { id: number; businessName: string }[] }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<ServiceCategory | null>(null);
   const [collapsedBusinesses, setCollapsedBusinesses] = useState<Record<number, boolean>>({});
@@ -38,60 +37,35 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
     setCollapsedUnassigned(prevState => !prevState);
   };
 
-  const categoriesByEntity: { [key: string]: ServiceCategory[] } = {}; // Key will be `business-${id}` or `dba-${id}`
+  const categoriesByBusiness: { [key: number]: ServiceCategory[] } = {};
   const unassignedCategories: ServiceCategory[] = [];
 
   categories.forEach(category => {
-    if (category.dbaId && category.dba) {
-      const key = `dba-${category.dbaId}`;
-      if (!categoriesByEntity[key]) {
-        categoriesByEntity[key] = [];
+    if (category.businessId) {
+      if (!categoriesByBusiness[category.businessId]) {
+        categoriesByBusiness[category.businessId] = [];
       }
-      categoriesByEntity[key].push(category);
-    } else if (category.businessId && category.business) {
-      const key = `business-${category.businessId}`;
-      if (!categoriesByEntity[key]) {
-        categoriesByEntity[key] = [];
-      }
-      categoriesByEntity[key].push(category);
+      categoriesByBusiness[category.businessId].push(category);
     } else {
       unassignedCategories.push(category);
     }
   });
 
-  // Prepare a unified list of entities (businesses and their dbas) for rendering
-  const groupedEntities: { type: 'business' | 'dba'; id: number; name: string; categories: ServiceCategory[]; }[] = [];
-
-  businesses.forEach(business => {
-    groupedEntities.push({
-      type: 'business',
-      id: business.id,
-      name: business.businessName,
-      categories: categoriesByEntity[`business-${business.id}`] || [],
-    });
-    business.dbas.forEach(dba => {
-      groupedEntities.push({
-        type: 'dba',
-        id: dba.id,
-        name: dba.dbaName,
-        categories: categoriesByEntity[`dba-${dba.id}`] || [],
-      });
-    });
-  });
-
   return (
     <div className="col-span-full"> {/* Make it full width */}
       <ul className="space-y-4">
-        {groupedEntities.map(entity => (
-          <li key={`${entity.type}-${entity.id}`} className="bg-white p-4 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-gray-700 flex items-center cursor-pointer" onClick={() => toggleBusinessCollapse(entity.id)}>
-              <span className="mr-2">{collapsedBusinesses[entity.id] ? '▶' : '▼'}</span>
-              {entity.name} {entity.type === 'dba' ? '(DBA)' : ''} Categories
-            </h3>
-            {!collapsedBusinesses[entity.id] && (
+        {businesses.map(business => (
+          <li key={business.id} className="bg-white p-4 rounded-lg shadow">
+            <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleBusinessCollapse(business.id)}>
+              <h3 className="text-xl font-semibold text-gray-700 flex items-center">
+                <span className="mr-2">{collapsedBusinesses[business.id] ? '▶' : '▼'}</span>
+                {business.businessName} Categories
+              </h3>
+            </div>
+            {!collapsedBusinesses[business.id] && (
               <ul className="ml-6 mt-2 space-y-2">
-                {entity.categories.length > 0 ? (
-                  entity.categories.map(category => (
+                {categoriesByBusiness[business.id]?.length > 0 ? (
+                  categoriesByBusiness[business.id].map(category => (
                     <li key={category.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
                       <div>
                         <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
@@ -108,7 +82,7 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
                     </li>
                   ))
                 ) : (
-                  <p className="text-gray-500">No categories for this {entity.type}.</p>
+                  <p className="text-gray-500">No categories for this business.</p>
                 )}
               </ul>
             )}
@@ -117,10 +91,12 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
 
         {unassignedCategories.length > 0 && (
           <li className="bg-white p-4 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-gray-700 flex items-center cursor-pointer" onClick={toggleUnassignedCollapse}>
-              <span className="mr-2">{collapsedUnassigned ? '▶' : '▼'}</span>
-              Unassigned Categories
-            </h3>
+            <div className="flex items-center justify-between cursor-pointer" onClick={toggleUnassignedCollapse}>
+              <h3 className="text-xl font-semibold text-gray-700 flex items-center">
+                <span className="mr-2">{collapsedUnassigned ? '▶' : '▼'}</span>
+                Unassigned Categories
+              </h3>
+            </div>
             {!collapsedUnassigned && (
               <ul className="ml-6 mt-2 space-y-2">
                 {unassignedCategories.map(category => (
@@ -144,7 +120,7 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
           </li>
         )}
 
-        {groupedEntities.length === 0 && unassignedCategories.length === 0 && (
+        {businesses.length === 0 && unassignedCategories.length === 0 && (
           <p>No service categories found. Add one to get started!</p>
         )}
       </ul>

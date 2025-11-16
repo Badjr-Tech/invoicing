@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from "@/db";
-import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType, DBA, dbas } from "@/db/schema"; // Updated import
+import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
 import { eq, like, and, InferSelectModel } from "drizzle-orm";
 import { getSession, SessionPayload } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
@@ -11,9 +11,6 @@ import { InferInsertModel } from "drizzle-orm"; // Import InferInsertModel
 type FormState = {
   message: string;
   error: string;
-  success?: boolean; // New: Add success flag
-  updatedBusiness?: Business; // New: Add updated business object
-  updatedDba?: DBA; // New: Add updated DBA object
 } | undefined;
 
 type NewBusiness = InferInsertModel<typeof businesses>; // Define type for new business
@@ -28,13 +25,10 @@ export async function fetchSession(): Promise<SessionPayload | null> {
   return await getSession();
 }
 
-export async function getBusinessProfile(businessId: number): Promise<Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } & { dbas: DBA[] } | null> {
+export async function getBusinessProfile(businessId: number): Promise<Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
-      with: {
-        dbas: true, // Fetch associated DBAs
-      },
     });
     if (!profile) { return null; }
     return profile;
@@ -67,9 +61,6 @@ export async function getAllUserBusinesses(userId: number, searchQuery?: string,
     const allBusinesses = await db.query.businesses.findMany({
       where: and(...conditions),
       orderBy: (businesses, { asc, desc }) => [asc(businesses.isArchived), asc(businesses.businessName)],
-      with: { // New: Include associated DBAs
-        dbas: true,
-      },
     });
     return allBusinesses;
   } catch (error) {
@@ -215,7 +206,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const zipCode = formData.get("zipCode") as string;
     const phone = formData.get("phone") as string;
     const website = formData.get("website") as string;
-    const taxFullName = formData.get("taxFullName") as string; // New: Get taxFullName
     const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
     const logo = formData.get("logo") as File; // New: Get logo file
     const businessProfilePhoto = formData.get("businessProfilePhoto") as File; // New: Get business profile photo file
@@ -235,7 +225,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       zipCode,
       phone,
       website,
-      taxFullName, // New: Log taxFullName
       businessMaterials: businessMaterials ? businessMaterials.name : "no file",
       logo: logo ? logo.name : "no file",
       businessProfilePhoto: businessProfilePhoto ? businessProfilePhoto.name : "no file",
@@ -318,7 +307,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         zipCode,
         phone,
         website,
-        taxFullName, // New: Update taxFullName
         businessMaterialsUrl: businessMaterialsUrl || undefined, // Only update if new file uploaded
         logoUrl: logoUrl || undefined, // New: Update logoUrl
         businessProfilePhotoUrl: businessProfilePhotoUrl || undefined, // New: Update business profile photo url
@@ -340,17 +328,9 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         .where(eq(businesses.id, businessId));
       console.log("updateBusinessProfile: Business updated successfully.");
 
-      // Fetch the updated business to return it
-      const updatedBusiness = await db.query.businesses.findFirst({
-        where: eq(businesses.id, businessId),
-        with: {
-          dbas: true, // Ensure DBAs are also fetched
-        },
-      });
-
       revalidatePath("/dashboard/businesses");
       revalidatePath(`/dashboard/businesses/${businessId}`); // Revalidate specific business page
-      return { message: "Business profile updated successfully!", error: "", success: true, updatedBusiness: updatedBusiness || undefined };
+      return { message: "Business profile updated successfully!", error: "" };
     } catch (error: unknown) {
       console.error("Error updating business profile:", error);
       let errorMessage = "Failed to update business profile.";
@@ -449,9 +429,6 @@ export async function searchBusinesses(query: string): Promise<Business[]> {
   try {
     const allBusinesses = await db.query.businesses.findMany({
       where: like(businesses.businessName, `%${query}%`),
-      with: {
-        dbas: true, // Fetch associated DBAs
-      },
     });
     return allBusinesses;
   } catch (error) {
@@ -633,132 +610,6 @@ export async function updateBusinessDesign(prevState: FormState, formData: FormD
     let errorMessage = "Failed to update business design.";
     if (error instanceof Error) {
       errorMessage = `Failed to update business design: ${error.message}`;
-    }
-    return { message: "", error: errorMessage };
-  }
-}
-
-export async function getDBAsForBusiness(businessId: number) {
-  const userId = await getUserIdFromSession();
-
-  if (!userId) {
-    return [];
-  }
-
-  try {
-    const fetchedDbas = await db.query.dbas.findMany({
-      where: and(eq(dbas.businessId, businessId), eq(businesses.userId, userId)),
-      with: {
-        business: true,
-      }
-    });
-    return fetchedDbas;
-  } catch (error) {
-    console.error("Error fetching DBAs for business:", error);
-    return [];
-  }
-}
-
-export async function createDBA(prevState: FormState, formData: FormData): Promise<FormState> {
-  const userId = await getUserIdFromSession();
-
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
-
-  const businessId = parseInt(formData.get("businessId") as string);
-  const dbaName = formData.get("dbaName") as string;
-  const legalBusinessName = formData.get("legalBusinessName") as string;
-  const isPrimary = formData.get("isPrimary") === "on";
-
-  if (isNaN(businessId) || !dbaName) {
-    return { message: "", error: "Invalid business ID or DBA name missing." };
-  }
-
-  try {
-    const [newDba] = await db.insert(dbas).values({
-      businessId,
-      dbaName,
-      legalBusinessName: legalBusinessName || null,
-      isPrimary,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }).returning(); // Return the newly created DBA
-
-    revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "DBA created successfully!", error: "", success: true, updatedDba: newDba };
-  } catch (error: unknown) {
-    console.error("Error creating DBA:", error);
-    let errorMessage = "Failed to create DBA.";
-    if (error instanceof Error) {
-      errorMessage = `Failed to create DBA: ${error.message}`;
-    }
-    return { message: "", error: errorMessage };
-  }
-}
-
-export async function updateDBA(prevState: FormState, formData: FormData): Promise<FormState> {
-  const userId = await getUserIdFromSession();
-
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
-
-  const dbaId = parseInt(formData.get("dbaId") as string);
-  const businessId = parseInt(formData.get("businessId") as string);
-  const dbaName = formData.get("dbaName") as string;
-  const legalBusinessName = formData.get("legalBusinessName") as string;
-  const isPrimary = formData.get("isPrimary") === "on";
-
-  if (isNaN(dbaId) || isNaN(businessId) || !dbaName) {
-    return { message: "", error: "Invalid DBA ID, business ID, or DBA name missing." };
-  }
-
-  try {
-    const [updatedDba] = await db.update(dbas)
-      .set({
-        dbaName,
-        legalBusinessName: legalBusinessName || null,
-        isPrimary,
-        updatedAt: new Date(),
-      })
-      .where(and(eq(dbas.id, dbaId), eq(dbas.businessId, businessId)))
-      .returning(); // Return the updated DBA
-
-    revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "DBA updated successfully!", error: "", success: true, updatedDba: updatedDba };
-  } catch (error: unknown) {
-    console.error("Error updating DBA:", error);
-    let errorMessage = "Failed to update DBA.";
-    if (error instanceof Error) {
-      errorMessage = `Failed to update DBA: ${error.message}`;
-    }
-    return { message: "", error: errorMessage };
-  }
-}
-
-export async function deleteDBA(dbaId: number, businessId: number): Promise<FormState> {
-  const userId = await getUserIdFromSession();
-
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
-
-  if (isNaN(dbaId) || isNaN(businessId)) {
-    return { message: "", error: "Invalid DBA ID or business ID." };
-  }
-
-  try {
-    await db.delete(dbas)
-      .where(and(eq(dbas.id, dbaId), eq(dbas.businessId, businessId)));
-
-    revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "DBA deleted successfully!", error: "", success: true };
-  } catch (error: unknown) {
-    console.error("Error deleting DBA:", error);
-    let errorMessage = "Failed to delete DBA.";
-    if (error instanceof Error) {
-      errorMessage = `Failed to delete DBA: ${error.message}`;
     }
     return { message: "", error: errorMessage };
   }

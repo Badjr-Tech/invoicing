@@ -1,2 +1,0 @@
-ALTER TABLE "invoices" ADD COLUMN "dba_id" integer;--> statement-breakpoint
-ALTER TABLE "invoices" ADD CONSTRAINT "invoices_dba_id_dbas_id_fk" FOREIGN KEY ("dba_id") REFERENCES "public"."dbas"("id") ON DELETE no action ON UPDATE no action;

@@ -28,7 +28,6 @@ export type FormState = {
     dueDate: Date | null;
     invoiceNumber: string; // New
     notes: string | null; // New
-    dbaId?: number | null; // New: Add dbaId to invoice object
   };
 } | undefined;
 
@@ -40,17 +39,15 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
 
   const clientId = parseInt(formData.get("clientId") as string);
   const businessId = parseInt(formData.get("businessId") as string);
-  const dbaId = formData.get("dbaId") ? parseInt(formData.get("dbaId") as string) : null; // New: Get optional dbaId
   const services: Service[] = JSON.parse(formData.get("services") as string);
   const totalAmount = parseFloat(formData.get("totalAmount") as string);
-  const invoiceNumber = formData.get("invoiceNumber") as string; // Restore
   const notes = formData.get("notes") as string;
 
   const dueDateString = formData.get("dueDate") as string;
   const dueDate = dueDateString ? new Date(dueDateString) : null;
 
-  if (!clientId || !businessId || !services || services.length === 0 || !invoiceNumber) { // Restore !invoiceNumber
-    return { message: "", error: "Please select a client, a business, at least one service, and provide an invoice number." };
+  if (!clientId || !businessId || !services || services.length === 0) {
+    return { message: "", error: "Please select a client, a business, and at least one service." };
   }
 
   try {
@@ -70,10 +67,24 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
       return { message: "", error: "Business not found." };
     }
 
+    // Generate invoice number
+    const latestInvoice = await db.query.invoices.findFirst({
+      where: eq(invoices.businessId, businessId),
+      orderBy: (invoices, { desc }) => desc(invoices.createdAt),
+    });
+
+    let nextInvoiceNumber = 1;
+    if (latestInvoice && latestInvoice.invoiceNumber) {
+      const lastNumberMatch = latestInvoice.invoiceNumber.match(/INV-(\d{5})/);
+      if (lastNumberMatch) {
+        nextInvoiceNumber = parseInt(lastNumberMatch[1]) + 1;
+      }
+    }
+    const invoiceNumber = `INV-${String(nextInvoiceNumber).padStart(5, '0')}`;
+
     const invoiceData: InsertInvoice = {
       userId: session.user.id,
       businessId: business.id,
-      dbaId, // New: Include dbaId
       clientName: client.name,
       clientEmail: client.email,
       servicesJson: JSON.stringify(services),
@@ -97,7 +108,6 @@ export async function createInvoice(prevState: FormState, formData: FormData): P
         dueDate,
         invoiceNumber,
         notes,
-        dbaId, // New: Include dbaId
       },
     };
   } catch (error: unknown) {

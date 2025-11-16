@@ -1,6 +1,6 @@
 {
-  "id": "b0947ef4-18d3-4245-8502-79230172c4e8",
-  "prevId": "1d4f0cc6-7910-47c5-9e99-5d030090b578",
+  "id": "bbb72e87-6d4d-4d8b-894b-3c64302b421a",
+  "prevId": "2f290ccd-253f-468a-8549-3ebef6e65cd8",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -757,6 +757,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "dba_id": {
+          "name": "dba_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "client_name": {
           "name": "client_name",
           "type": "text",
@@ -843,6 +849,19 @@
           "tableTo": "businesses",
           "columnsFrom": [
             "business_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "invoices_dba_id_dbas_id_fk": {
+          "name": "invoices_dba_id_dbas_id_fk",
+          "tableFrom": "invoices",
+          "tableTo": "dbas",
+          "columnsFrom": [
+            "dba_id"
           ],
           "columnsTo": [
             "id"
@@ -1047,165 +1066,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.pitch_competition_events": {
-      "name": "pitch_competition_events",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "start_date": {
-          "name": "start_date",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "end_date": {
-          "name": "end_date",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "pitch_competition_events_created_by_id_users_id_fk": {
-          "name": "pitch_competition_events_created_by_id_users_id_fk",
-          "tableFrom": "pitch_competition_events",
-          "tableTo": "users",
-          "columnsFrom": [
-            "created_by_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.pitch_submissions": {
-      "name": "pitch_submissions",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "competition_event_id": {
-          "name": "competition_event_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "project_name": {
-          "name": "project_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "project_location": {
-          "name": "project_location",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "pitch_video_url": {
-          "name": "pitch_video_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "pitch_deck_url": {
-          "name": "pitch_deck_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "submitted_at": {
-          "name": "submitted_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "pitch_submissions_user_id_users_id_fk": {
-          "name": "pitch_submissions_user_id_users_id_fk",
-          "tableFrom": "pitch_submissions",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "pitch_submissions_competition_event_id_pitch_competition_events_id_fk": {
-          "name": "pitch_submissions_competition_event_id_pitch_competition_events_id_fk",
-          "tableFrom": "pitch_submissions",
-          "tableTo": "pitch_competition_events",
-          "columnsFrom": [
-            "competition_event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

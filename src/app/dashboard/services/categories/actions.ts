@@ -30,24 +30,22 @@ export async function createServiceCategory(prevState: FormState, formData: Form
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const customId = formData.get("customId") as string | null;
-  const businessId = parseInt(formData.get("businessId") as string);
-  const dbaId = formData.get("dbaId") ? parseInt(formData.get("dbaId") as string) : undefined; // New: Get optional dbaId
+  const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
 
   if (!name) {
     return { message: "", error: "Category name is required." };
   }
-  if (isNaN(businessId) && dbaId === undefined) { // Business or DBA must be selected
-    return { message: "", error: "Business or DBA selection is required." };
+  if (isNaN(businessId)) {
+    return { message: "", error: "Business selection is required." };
   }
 
   try {
     const categoryData: InsertServiceCategory = {
       userId,
+      businessId, // New: Include businessId
       name,
       description,
       customId: customId || null,
-      ...(businessId && { businessId }), // Conditionally add businessId
-      ...(dbaId && { dbaId }), // Conditionally add dbaId
     };
 
     await db.insert(serviceCategories).values(categoryData);
@@ -73,21 +71,11 @@ export async function getServiceCategories() {
 
   try {
     const categories = await db.query.serviceCategories.findMany({
-      where: and(
-        eq(serviceCategories.userId, userId),
-        // Categories can be associated with a business OR a DBA
-        // We need to fetch both to display correctly
-        // The actual filtering for display will happen in the UI
-      ),
-      with: { // Fetch related business and DBA information
+      where: eq(serviceCategories.userId, userId),
+      with: { // Fetch related business information
         business: {
           columns: {
             businessName: true,
-          },
-        },
-        dba: { // New: Fetch related DBA information
-          columns: {
-            dbaName: true,
           },
         },
       },
@@ -114,14 +102,6 @@ export async function getUserBusinesses() {
         id: true,
         businessName: true,
       },
-      with: { // New: Include associated DBAs
-        dbas: {
-          columns: {
-            id: true,
-            dbaName: true,
-          },
-        },
-      },
     });
     return userBusinesses;
   } catch (error) {
@@ -141,44 +121,18 @@ export async function updateServiceCategory(prevState: FormState, formData: Form
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const customId = formData.get("customId") as string | null;
-  const businessId = parseInt(formData.get("businessId") as string);
-  const dbaId = formData.get("dbaId") ? parseInt(formData.get("dbaId") as string) : undefined; // New: Get optional dbaId
+  const businessId = parseInt(formData.get("businessId") as string); // New: Get businessId
 
   if (isNaN(id) || !name) {
     return { message: "", error: "Invalid category ID or name." };
   }
-  if (isNaN(businessId) && dbaId === undefined) { // Business or DBA must be selected
-    return { message: "", error: "Business or DBA selection is required." };
+  if (isNaN(businessId)) {
+    return { message: "", error: "Business selection is required." };
   }
 
   try {
-    const updateData: {
-      name: string;
-      description: string | null;
-      customId: string | null;
-      businessId?: number | null;
-      dbaId?: number | null;
-      updatedAt: Date;
-    } = {
-      name,
-      description,
-      customId: customId || null,
-      updatedAt: new Date(),
-    };
-
-    if (businessId) {
-      updateData.businessId = businessId;
-      updateData.dbaId = null; // If businessId is set, dbaId should be null
-    } else if (dbaId) {
-      updateData.dbaId = dbaId;
-      updateData.businessId = null; // If dbaId is set, businessId should be null
-    } else {
-      updateData.businessId = null;
-      updateData.dbaId = null;
-    }
-
     await db.update(serviceCategories)
-      .set(updateData)
+      .set({ name, description, customId: customId || null, businessId, updatedAt: new Date() }) // New: Update customId and businessId
       .where(eq(serviceCategories.id, id));
 
     revalidatePath("/dashboard/services");

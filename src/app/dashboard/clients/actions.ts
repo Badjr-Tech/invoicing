@@ -57,11 +57,7 @@ export async function getClients() {
   const userClients = await db.query.clients.findMany({
     where: eq(clients.userId, session.user.id),
     with: {
-      business: {
-        with: {
-          dbas: true, // Include DBAs for the associated business
-        },
-      },
+      business: true, // Re-added: Include the associated business
     },
   });
 

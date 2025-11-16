@@ -6,7 +6,7 @@ import AddCategoryModal from "@/app/dashboard/components/AddCategoryModal";
 
 const ServiceCategoryForm = dynamic(() => import("./ServiceCategoryForm"), { ssr: false });
 
-export default function AddCategoryButtonAndModal({ businesses }: { businesses: { id: number; businessName: string; dbas: { id: number; dbaName: string }[] }[] }) {
+export default function AddCategoryButtonAndModal({ businesses }: { businesses: { id: number; businessName: string }[] }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Business } from "@/db/schema"; // Assuming Business type is available
 import Link from "next/link";
-import BusinessInfoForm from "./BusinessInfoForm"; // Import BusinessInfoForm
 
 interface EditBusinessProfileClientPageProps {
   initialBusiness: Business;
@@ -31,7 +30,8 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
         {activeTab === "info" && (
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-4">Business Information</h2>
-            <BusinessInfoForm initialBusiness={initialBusiness} />
+            {/* Placeholder for editable business info form */}
+            <p>Editable business information form will go here.</p>
           </div>
         )}
         {activeTab === "materials" && (

@@ -31,7 +31,6 @@ export const invoices = pgTable('invoices', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
   businessId: integer('business_id').notNull().references(() => businesses.id), // New foreign key
-  dbaId: integer('dba_id').references(() => dbas.id), // New optional foreign key for DBA
   clientName: text('client_name').notNull(),
   clientEmail: text('client_email').notNull(),
   servicesJson: text('services_json').notNull(), // Changed from serviceDescription
@@ -85,17 +84,6 @@ export const businesses = pgTable('businesses', {
   color2: text('color2'), // New optional column for business color scheme
   color3: text('color3'), // New optional column for business color scheme
   color4: text('color4'), // New optional column for business color scheme
-  taxFullName: text('tax_full_name'), // New optional column for tax full name
-});
-
-export const dbas = pgTable('dbas', {
-  id: serial('id').primaryKey(),
-  businessId: integer('business_id').notNull().references(() => businesses.id),
-  dbaName: text('dba_name').notNull(),
-  legalBusinessName: text('legal_business_name'), // Optional, if different from parent business
-  isPrimary: boolean('is_primary').notNull().default(false),
-  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const massMessages = pgTable('mass_messages', {
@@ -187,7 +175,6 @@ export const serviceCategories = pgTable('service_categories', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
   businessId: integer('business_id').references(() => businesses.id), // New optional foreign key
-  dbaId: integer('dba_id').references(() => dbas.id), // New optional foreign key for DBA
   name: text('name').notNull(),
   customId: text('custom_id'), // New optional column for custom identifier
   description: text('description'),
@@ -226,7 +213,7 @@ export interface LocationType {
 // --- Types for InferSelectModel ---
 export type Demographic = DemographicType;
 export type Location = LocationType;
-export type Business = InferSelectModel<typeof businesses> & { dbas: DBA[] };
+export type Business = InferSelectModel<typeof businesses>;
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
 export type BusinessWithDemographicAndLocation = InferSelectModel<typeof businesses> & { demographic: Demographic | null, location: Location | null };
@@ -237,7 +224,6 @@ export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
 export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // Re-added type
-export type DBA = InferSelectModel<typeof dbas>; // New type
 
 // --- Relations ---
 export const checklistItems = pgTable('checklist_items', {
@@ -272,10 +258,6 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
     fields: [invoices.businessId],
     references: [businesses.id],
   }),
-  dba: one(dbas, { // New relation for DBA
-    fields: [invoices.dbaId],
-    references: [dbas.id],
-  }),
 }));
 
 export const clientsRelations = relations(clients, ({ one }) => ({
@@ -298,10 +280,6 @@ export const serviceCategoriesRelations = relations(serviceCategories, ({ one, m
     fields: [serviceCategories.businessId],
     references: [businesses.id],
   }),
-  dba: one(dbas, { // New relation for DBA
-    fields: [serviceCategories.dbaId],
-    references: [dbas.id],
-  }),
   services: many(services), // New relation
 }));
 
@@ -316,18 +294,10 @@ export const servicesRelations = relations(services, ({ one }) => ({
   }),
 }));
 
-export const businessesRelations = relations(businesses, ({ one, many }) => ({
+export const businessesRelations = relations(businesses, ({ one }) => ({
   user: one(users, {
     fields: [businesses.userId],
     references: [users.id],
-  }),
-  dbas: many(dbas), // New relation
-}));
-
-export const dbasRelations = relations(dbas, ({ one }) => ({
-  business: one(businesses, {
-    fields: [dbas.businessId],
-    references: [businesses.id],
   }),
 }));
 
