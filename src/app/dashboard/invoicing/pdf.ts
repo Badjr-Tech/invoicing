@@ -202,9 +202,23 @@ function addPdfContent(
   }
 
   // Add footer
+  const bottomBarHeight = 15;
+  const bottomBarGap = 5;
+  const bottomBarY = doc.internal.pageSize.height - 20 - bottomBarHeight - bottomBarGap;
+
+  doc.setFillColor(colors.color2);
+  doc.rect(0, bottomBarY, 210, bottomBarHeight, 'F');
+
+  doc.setFontSize(10);
+  doc.setTextColor('#FFFFFF'); // White text on colored bar
+  doc.text('Thank you for your business!', doc.internal.pageSize.width / 2, bottomBarY + (bottomBarHeight / 2) + 2, { align: 'center' });
+
+  const finalFooterLineY = doc.internal.pageSize.height - 20;
+  const finalRemitTextY = doc.internal.pageSize.height - 10;
+
   doc.setDrawColor(colors.color1);
-  doc.line(startX, doc.internal.pageSize.height - 20, 200, doc.internal.pageSize.height - 20); // Horizontal line
+  doc.line(startX, finalFooterLineY, 200, finalFooterLineY); // Horizontal line
   doc.setFontSize(10);
   doc.setTextColor('#000000');
-  doc.text(`Please remit payment to: ${business.businessName}`, startX, doc.internal.pageSize.height - 10);
+  doc.text(`Please remit payment to: ${business.businessName}`, startX, finalRemitTextY);
 }
