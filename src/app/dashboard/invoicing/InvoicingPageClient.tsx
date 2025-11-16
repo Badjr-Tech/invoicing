@@ -64,21 +64,23 @@ export default function InvoicingPageClient({
     zipCode: string | null;
     phone: string | null;
     website: string | null;
+    dbas: { id: number; dbaName: string }[]; // New: Include dbas
   }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null);
-  const [invoiceNumber, setInvoiceNumber] = useState<string>(`INV-${Date.now()}`); // New state for invoice number
-  const [notes, setNotes] = useState<string>(''); // New state for notes
+  const [selectedDba, setSelectedDba] = useState<number | null>(null); // New state for selected DBA
+  const [invoiceNumber, setInvoiceNumber] = useState<string>('');
+  const [notes, setNotes] = useState<string>('');
 
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>(() => {
     const initialCollapsedState: Record<string, boolean> = {};
     categories.forEach(category => {
-      initialCollapsedState[category.name] = true; // Start all categories collapsed
+      initialCollapsedState[category.name] = true;
     });
-    initialCollapsedState["Uncategorized"] = true; // Also collapse uncategorized
+    initialCollapsedState["Uncategorized"] = true;
     return initialCollapsedState;
   });
 
@@ -92,6 +94,7 @@ export default function InvoicingPageClient({
   useEffect(() => {
     if (state?.message && state.invoice) {
       const business = businesses.find(b => b.id === selectedBusiness);
+      const dba = business?.dbas.find(d => d.id === selectedDba); // Find selected DBA
       if (business) {
         generateInvoicePDF(
           state.invoice.client,
@@ -99,17 +102,18 @@ export default function InvoicingPageClient({
           state.invoice.totalAmount,
           business,
           state.invoice.dueDate,
-          state.invoice.invoiceNumber, // Pass invoiceNumber
-          state.invoice.notes, // Pass notes
+          state.invoice.invoiceNumber,
+          state.invoice.notes,
+          dba, // Pass selected DBA to PDF generator
         );
       }
       const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice ${state.invoice.invoiceNumber}&body=Please find your invoice attached.`;
       window.location.href = mailtoLink;
     }
-  }, [state, businesses, selectedBusiness]);
+  }, [state, businesses, selectedBusiness, selectedDba]); // Add selectedDba to dependencies
 
   const handleAddService = (service: Service) => {
-    setSelectedServices([...selectedServices, { ...service, quantity: 1 }]); // Initialize quantity
+    setSelectedServices([...selectedServices, { ...service, quantity: 1 }]);
   };
 
   const handleQuantityChange = (index: number, quantity: number) => {
@@ -128,6 +132,8 @@ export default function InvoicingPageClient({
   // Add uncategorized services
   servicesByCategory["Uncategorized"] = services.filter(service => service.categoryId === null);
 
+  const currentBusiness = businesses.find(b => b.id === selectedBusiness);
+  const availableDbas = currentBusiness ? currentBusiness.dbas : [];
 
   return (
     <div className="p-6">
@@ -191,7 +197,11 @@ export default function InvoicingPageClient({
                   id="businessId"
                   name="businessId"
                   required
-                  onChange={(e) => setSelectedBusiness(parseInt(e.target.value))}
+                  value={selectedBusiness || ""}
+                  onChange={(e) => {
+                    setSelectedBusiness(parseInt(e.target.value));
+                    setSelectedDba(null); // Reset DBA when business changes
+                  }}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select your business</option>
@@ -203,6 +213,30 @@ export default function InvoicingPageClient({
                 </select>
               </div>
             </div>
+
+            {selectedBusiness && availableDbas.length > 0 && (
+              <div>
+                <label htmlFor="dbaId" className="block text-sm font-medium text-white">
+                  Invoice as DBA (Optional)
+                </label>
+                <div className="mt-1">
+                  <select
+                    id="dbaId"
+                    name="dbaId"
+                    value={selectedDba || ""}
+                    onChange={(e) => setSelectedDba(parseInt(e.target.value))}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">Select a DBA</option>
+                    {availableDbas.map((dba) => (
+                      <option key={dba.id} value={dba.id}>
+                        {dba.dbaName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
 
             <div>
               <label htmlFor="clientId" className="block text-sm font-medium text-white">
@@ -237,6 +271,7 @@ export default function InvoicingPageClient({
                   name="invoiceNumber"
                   value={invoiceNumber}
                   onChange={(e) => setInvoiceNumber(e.target.value)}
+                  placeholder="e.g., INV-00001"
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
@@ -252,7 +287,7 @@ export default function InvoicingPageClient({
                   id="dueDate"
                   name="dueDate"
                   defaultValue={new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -269,7 +304,7 @@ export default function InvoicingPageClient({
                         min="1"
                         value={service.quantity}
                         onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-                        className="w-16 text-white px-2 py-1 rounded-md mr-2"
+                        className="w-16 text-black px-2 py-1 rounded-md mr-2" // Changed text-white to text-black
                       />
                     )}
                     {service.designation === 'flat fee' && (
@@ -277,7 +312,7 @@ export default function InvoicingPageClient({
                         type="number"
                         value={1} // Flat fee services always have quantity 1
                         disabled
-                        className="w-16 text-white px-2 py-1 rounded-md mr-2 bg-gray-200"
+                        className="w-16 text-black px-2 py-1 rounded-md mr-2 bg-gray-200" // Changed text-white to text-black
                       />
                     )}
                     <p>${(parseFloat(service.price) * (service.quantity ?? 0)).toFixed(2)}</p>
@@ -313,6 +348,7 @@ export default function InvoicingPageClient({
             <input type="hidden" name="totalAmount" value={totalAmount} />
             <input type="hidden" name="invoiceNumber" value={invoiceNumber} />
             <input type="hidden" name="notes" value={notes} />
+            <input type="hidden" name="dbaId" value={selectedDba || ""} /> {/* New: Hidden input for dbaId */}
 
 
             {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}

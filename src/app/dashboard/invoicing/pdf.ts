@@ -28,6 +28,11 @@ type Business = {
   website: string | null;
 };
 
+type DBA = {
+  id: number;
+  dbaName: string;
+};
+
 export function generateInvoicePDF(
   client: { name: string; email: string },
   services: { name: string; price: string; description: string | null; quantity: number; type: 'hourly' | 'per_deliverable' | 'flat_fee' }[],
@@ -36,9 +41,10 @@ export function generateInvoicePDF(
   dueDate: Date | null,
   invoiceNumber: string,
   notes: string | null,
+  dba?: DBA | null, // New: Optional DBA object
 ) {
   console.log("generateInvoicePDF: Function started.");
-  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate, "invoiceNumber:", invoiceNumber, "notes:", notes);
+  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate, "invoiceNumber:", invoiceNumber, "notes:", notes, "dba:", dba);
 
   try {
     const doc = new jsPDF();
@@ -75,27 +81,27 @@ export function generateInvoicePDF(
           
           doc.addImage(img, 'PNG', logoX, logoY, scaledWidth, scaledHeight);
           // Continue PDF generation after image is loaded
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + scaledHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + scaledHeight + 5, invoiceNumber, notes, dba); // Pass logo bottom Y, invoiceNumber, notes, dba
           console.log("generateInvoicePDF: Logo added. Saving PDF.");
           doc.save('invoice.pdf'); // Force download
         };
         img.onerror = (error) => {
           console.error("generateInvoicePDF: Error loading logo image:", error);
           // Continue without logo if it fails to load
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes, dba); // Pass logo bottom Y, invoiceNumber, notes, dba
           console.log("generateInvoicePDF: Logo failed to load. Saving PDF without logo.");
           doc.save('invoice.pdf'); // Force download
         };
       } catch (error) {
         console.error("generateInvoicePDF: Error in logo handling block:", error);
         // Continue without logo if an error occurs in the handling block
-        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes, dba); // Pass logo bottom Y, invoiceNumber, notes, dba
         console.log("generateInvoicePDF: Error in logo handling. Saving PDF without logo.");
         doc.save('invoice.pdf'); // Force download
       }
     } else {
       console.log("generateInvoicePDF: No logo URL provided. Generating PDF without logo.");
-      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY, invoiceNumber, notes); // Pass initial Y if no logo, invoiceNumber, notes
+      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY, invoiceNumber, notes, dba); // Pass initial Y if no logo, invoiceNumber, notes, dba
       console.log("generateInvoicePDF: Saving PDF without logo.");
       doc.save('invoice.pdf'); // Force download
     }
@@ -114,6 +120,7 @@ function addPdfContent(
   contentStartAfterLogoY: number,
   invoiceNumber: string,
   notes: string | null,
+  dba?: DBA | null, // New: Optional DBA object
 ) {
   const colors = {
     color1: business.color1 || '#000000',
@@ -144,7 +151,9 @@ function addPdfContent(
   doc.setTextColor('#FFFFFF');
   const businessInfoX = 200; // Right align
   let currentY = headerBarY + 5;
-  doc.text(business.businessName, businessInfoX, currentY, { align: 'right' });
+  
+  const businessDisplayName = dba?.dbaName ? `${dba.dbaName} (DBA for ${business.businessName})` : business.businessName;
+  doc.text(businessDisplayName, businessInfoX, currentY, { align: 'right' });
   currentY += lineHeight;
   if (business.streetAddress) {
     doc.text(business.streetAddress, businessInfoX, currentY, { align: 'right' });
@@ -277,5 +286,5 @@ function addPdfContent(
   doc.line(startX, finalFooterLineY, 200, finalFooterLineY); // Horizontal line
   doc.setFontSize(10);
   doc.setTextColor('#000000');
-  doc.text(`Please remit payment to: ${business.businessName}`, startX, finalRemitTextY);
+  doc.text(`Please remit payment to: ${businessDisplayName}`, startX, finalRemitTextY);
 }

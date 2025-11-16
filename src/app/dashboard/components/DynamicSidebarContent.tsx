@@ -70,106 +70,39 @@ export default function DynamicSidebarContent() {
         >
           Home
         </Link>
-        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
+        
+        {/* Advice & Info Section - Now a direct link */}
+        <Link
+          href="/dashboard/advice-info" // Assuming this will be the landing page for Advice & Info
+          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs uppercase mt-4 mb-1"
+        >
           Advice & Info
-        </h2>
-        <Link
-          href="/dashboard/resources"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Resources
         </Link>
+
+        {/* Business Tools Section - Now a direct link */}
         <Link
-          href="/dashboard/agency-class"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+          href="/dashboard/business-tools" // Assuming this will be the landing page for Business Tools
+          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs uppercase mt-4 mb-1"
         >
-          Page 2
-        </Link>
-        <Link
-          href="/dashboard/business-checklist"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Business Checklist
-        </Link>
-        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
           Business Tools
-        </h2>
-        <Link
-          href="/dashboard/messages"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Messages
         </Link>
+
+        {/* Financial Tools Section - Now a direct link */}
         <Link
-          href="/dashboard/businesses"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+          href="/dashboard/financial-tools" // This is the Financial Tools landing page
+          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs uppercase mt-4 mb-1"
         >
-          Businesses
-        </Link>
-        {businesses.map((business) => (
-          <Link
-            key={business.id}
-            href={`/dashboard/businesses/${business.id}`}
-            className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
-          >
-            - {business.businessName}
-          </Link>
-        ))}
-        <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
           Financial Tools
-        </h2>
-        <Link
-          href="/dashboard/invoicing"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Invoicing
         </Link>
-        <Link
-          href="/dashboard/clients"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Clients
-        </Link>
-        <Link
-          href="/dashboard/services"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Services
-        </Link>
-        <Link
-          href="/dashboard/products"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-        >
-          Products
-        </Link>
+
         {isAdmin && (
           <>
-            <h2 className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1">
+            {/* Admin Tools Section - Now a direct link */}
+            <Link
+              href="/dashboard/admin" // Assuming this will be the landing page for Admin Tools
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs uppercase mt-4 mb-1"
+            >
               Admin Tools
-            </h2>
-            <Link
-              href="/dashboard/admin/businesses/manage"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Business search
-            </Link>
-            <Link
-              href="/dashboard/admin/users"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Admin Users
-            </Link>
-            <Link
-              href="/dashboard/admin/agency-class"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Admin AGENCY Class
-            </Link>
-            <Link
-              href="/dashboard/admin/records"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Admin Records
             </Link>
           </>
         )}

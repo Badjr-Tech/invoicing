@@ -2,21 +2,37 @@
 
 import { createServiceCategory } from "./categories/actions";
 import { useFormState } from "react-dom";
-import { useEffect } from "react"; // Import useEffect
+import { useEffect, useState } from "react"; // Import useEffect and useState
 
 export type FormState = {
   message: string;
   error: string;
 } | undefined;
 
-export default function ServiceCategoryForm({ onSubmissionSuccess, businesses }: { onSubmissionSuccess?: () => void; businesses: { id: number; businessName: string }[] }) {
+export default function ServiceCategoryForm({ onSubmissionSuccess, businesses }: { onSubmissionSuccess?: () => void; businesses: { id: number; businessName: string; dbas: { id: number; dbaName: string }[] }[] }) {
   const [state, formAction] = useFormState<FormState, FormData>(createServiceCategory, { message: "", error: "" });
+  const [selectedBusinessId, setSelectedBusinessId] = useState<number | null>(null);
+  const [selectedDbaId, setSelectedDbaId] = useState<number | null>(null);
 
   useEffect(() => {
     if (state?.message && onSubmissionSuccess) {
       onSubmissionSuccess();
     }
   }, [state, onSubmissionSuccess]);
+
+  const handleBusinessChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = parseInt(e.target.value);
+    setSelectedBusinessId(isNaN(id) ? null : id);
+    setSelectedDbaId(null); // Reset DBA selection when business changes
+  };
+
+  const handleDbaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = parseInt(e.target.value);
+    setSelectedDbaId(isNaN(id) ? null : id);
+  };
+
+  const selectedBusiness = businesses.find(b => b.id === selectedBusinessId);
+  const availableDbas = selectedBusiness ? selectedBusiness.dbas : [];
 
   return (
     <div>
@@ -30,7 +46,8 @@ export default function ServiceCategoryForm({ onSubmissionSuccess, businesses }:
             <select
               id="businessId"
               name="businessId"
-              required
+              value={selectedBusinessId || ""}
+              onChange={handleBusinessChange}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
               <option value="">Select a business</option>
@@ -42,6 +59,40 @@ export default function ServiceCategoryForm({ onSubmissionSuccess, businesses }:
             </select>
           </div>
         </div>
+
+        {selectedBusinessId && availableDbas.length > 0 && (
+          <div>
+            <label htmlFor="dbaId" className="block text-sm font-medium text-gray-700">
+              Assign to DBA (Optional)
+            </label>
+            <div className="mt-1">
+              <select
+                id="dbaId"
+                name="dbaId"
+                value={selectedDbaId || ""}
+                onChange={handleDbaChange}
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="">Select a DBA (or leave unassigned)</option>
+                {availableDbas.map((dba) => (
+                  <option key={dba.id} value={dba.id}>
+                    {dba.dbaName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
+
+        {/* Hidden inputs to ensure only one of businessId or dbaId is sent */}
+        {selectedDbaId ? (
+          <>
+            <input type="hidden" name="businessId" value="" /> {/* Clear businessId if DBA is selected */}
+            <input type="hidden" name="dbaId" value={selectedDbaId} />
+          </>
+        ) : (
+          <input type="hidden" name="businessId" value={selectedBusinessId || ""} />
+        )}
 
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
