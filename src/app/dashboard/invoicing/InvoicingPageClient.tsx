@@ -77,6 +77,13 @@ export default function InvoicingPageClient({
   const [invoiceNumber, setInvoiceNumber] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [invoiceBusinessDisplayName, setInvoiceBusinessDisplayName] = useState<string>('');
+  const [dueDate, setDueDate] = useState(''); // New state for due date
+
+  useEffect(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    setDueDate(date.toISOString().split('T')[0]);
+  }, []);
 
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>(() => {
     const initialCollapsedState: Record<string, boolean> = {};
@@ -310,7 +317,8 @@ export default function InvoicingPageClient({
                   type="date"
                   id="dueDate"
                   name="dueDate"
-                  defaultValue={new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
