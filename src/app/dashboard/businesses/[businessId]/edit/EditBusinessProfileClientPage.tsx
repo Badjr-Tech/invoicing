@@ -16,6 +16,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
   const [state, formAction] = useFormState(updateBusinessProfile, undefined);
   const router = useRouter();
   const [isDBA, setIsDBA] = useState(initialBusiness.isDBA || false);
+  const [showDBAFields, setShowDBAFields] = useState(initialBusiness.isDBA || false);
 
   useEffect(() => {
     if (state?.message === "Business profile updated successfully!") {
@@ -145,36 +146,52 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
               </select>
             </div>
 
-            {/* Is DBA Checkbox */}
-            <div className="flex items-center">
-              <input
-                id="isDBA"
-                name="isDBA"
-                type="checkbox"
-                checked={isDBA}
-                onChange={(e) => setIsDBA(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="isDBA" className="ml-2 block text-sm text-gray-900">
-                Is this business operating under a &quot;Doing Business As&quot; (DBA) name?
-              </label>
-            </div>
+            {/* Add DBA Button / DBA Fields */}
+            {!showDBAFields && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDBAFields(true);
+                  setIsDBA(true);
+                }}
+                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Add DBA Name
+              </button>
+            )}
 
-            {/* Legal Business Name (conditionally visible) */}
-            {isDBA && (
-              <div>
-                <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
-                  DBA Name (Legal Business Name for DBA)
-                </label>
-                <input
-                  type="text"
-                  id="legalBusinessName"
-                  name="legalBusinessName"
-                  required={isDBA}
-                  defaultValue={initialBusiness.legalBusinessName || ''}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
+            {showDBAFields && (
+              <>
+                <div className="flex items-center">
+                  <input
+                    id="isDBA"
+                    name="isDBA"
+                    type="checkbox"
+                    checked={isDBA}
+                    onChange={(e) => setIsDBA(e.target.checked)}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="isDBA" className="ml-2 block text-sm text-gray-900">
+                    Is this business operating under a &quot;Doing Business As&quot; (DBA) name?
+                  </label>
+                </div>
+
+                {isDBA && (
+                  <div>
+                    <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
+                      DBA Name (Legal Business Name for DBA)
+                    </label>
+                    <input
+                      type="text"
+                      id="legalBusinessName"
+                      name="legalBusinessName"
+                      required={isDBA}
+                      defaultValue={initialBusiness.legalBusinessName || ''}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                  </div>
+                )}
+              </>
             )}
 
             {/* Business Industry */}
