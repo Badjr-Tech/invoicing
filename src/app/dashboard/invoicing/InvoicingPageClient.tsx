@@ -78,6 +78,16 @@ export default function InvoicingPageClient({
   const [notes, setNotes] = useState<string>('');
   const [invoiceBusinessDisplayName, setInvoiceBusinessDisplayName] = useState<string>('');
   const [dueDate, setDueDate] = useState(''); // New state for due date
+  const [selectedBusinessForServices, setSelectedBusinessForServices] = useState<number | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const businessId = searchParams.get('businessId');
+    if (businessId) {
+      setSelectedBusinessForServices(parseInt(businessId));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const date = new Date();
@@ -160,12 +170,37 @@ export default function InvoicingPageClient({
 
   return (
     <div className="p-6">
-      <div className="flex justify-end mb-4">
-        <Link href="/dashboard/invoices" className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-          View Invoices
-        </Link>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-4xl font-bold text-gray-800">Create Invoice</h1>
+        <div className="flex items-center space-x-4">
+          <div>
+            <label htmlFor="businessForServices" className="block text-sm font-medium text-gray-700">
+              Filter Services by Business
+            </label>
+            <select
+              id="businessForServices"
+              name="businessForServices"
+              value={selectedBusinessForServices || ''}
+              onChange={(e) => {
+                const businessId = e.target.value;
+                setSelectedBusinessForServices(businessId ? parseInt(businessId) : null);
+                router.push(`/dashboard/invoicing?businessId=${businessId}`);
+              }}
+              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="">All Businesses</option>
+              {businesses.map((business) => (
+                <option key={business.id} value={business.id}>
+                  {business.businessName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Link href="/dashboard/invoices" className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            View Invoices
+          </Link>
+        </div>
       </div>
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Create Invoice</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add Services */}
         <div>
@@ -233,40 +268,31 @@ export default function InvoicingPageClient({
               </div>
             </div>
 
-            {selectedBusinessObject && selectedBusinessObject.isDBA && selectedBusinessObject.legalBusinessName && (
-              <div>
-                <label htmlFor="dbaSelection" className="block text-sm font-medium text-white">
-                  Display Business Name As:
-                </label>
-                <div className="mt-1">
-                  <select
-                    id="dbaSelection"
-                    name="dbaSelection"
-                    value={invoiceBusinessDisplayName}
-                    onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  >
-                    <option value={selectedBusinessObject.businessName}>{selectedBusinessObject.businessName}</option>
-                    <option value={selectedBusinessObject.legalBusinessName}>{selectedBusinessObject.legalBusinessName} (DBA)</option>
-                  </select>
-                </div>
-              </div>
-            )}
-
             <div>
               <label htmlFor="invoiceBusinessDisplayName" className="block text-sm font-medium text-white">
                 Business Name on Invoice
               </label>
               <div className="mt-1">
-                <input
-                  type="text"
+                <select
                   id="invoiceBusinessDisplayName"
                   name="invoiceBusinessDisplayName"
                   value={invoiceBusinessDisplayName}
-                  onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value === 'n/a') {
+                      setInvoiceBusinessDisplayName(selectedBusinessObject?.businessName || '');
+                    } else {
+                      setInvoiceBusinessDisplayName(e.target.value);
+                    }
+                  }}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   required
-                />
+                >
+                  <option value={selectedBusinessObject?.businessName}>{selectedBusinessObject?.businessName}</option>
+                  {selectedBusinessObject?.isDBA && selectedBusinessObject?.legalBusinessName && (
+                    <option value={selectedBusinessObject.legalBusinessName}>{selectedBusinessObject.legalBusinessName} (DBA)</option>
+                  )}
+                  <option value="n/a">n/a</option>
+                </select>
               </div>
             </div>
 

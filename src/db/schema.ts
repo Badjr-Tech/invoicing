@@ -172,6 +172,7 @@ export const serviceCategories = pgTable('service_categories', {
 export const services = pgTable('services', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').references(() => businesses.id),
   categoryId: integer('category_id').references(() => serviceCategories.id), // New foreign key
   name: text('name').notNull(),
   designation: serviceDesignationEnum('designation').notNull().default('flat fee'), // New column
@@ -271,6 +272,10 @@ export const servicesRelations = relations(services, ({ one }) => ({
   user: one(users, {
     fields: [services.userId],
     references: [users.id],
+  }),
+  business: one(businesses, {
+    fields: [services.businessId],
+    references: [businesses.id],
   }),
   category: one(serviceCategories, { // New relation
     fields: [services.categoryId],

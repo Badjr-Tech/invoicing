@@ -3,13 +3,20 @@ import Link from "next/link";
 import CategoryServicesList from "./CategoryServicesList"; // Import the new Client Component
 import { getServiceCategories } from "../categories/actions"; // Import server action for category
 import { getServices } from "../actions"; // Import server action for services
+import { getAllUserBusinesses } from "../../businesses/actions"; // Import server action for businesses
 import ServiceFormWrapper from "./ServiceFormWrapper"; // Import the new Client Component
 import { notFound } from "next/navigation"; // Import notFound
+import { getSession } from "@/app/login/actions";
 
 export default async function CategoryServicesPage(props: any) { // Changed props to any
   const { params, searchParams } = props; // Destructure params and searchParams from props
   const categoryId = parseInt(params.categoryId as string);
   console.log("CategoryServicesPage: categoryId", categoryId);
+
+  const session = await getSession();
+  if (!session || !session.user) {
+    notFound();
+  }
 
   // Fetch category details
   const allCategories = await getServiceCategories();
@@ -22,8 +29,11 @@ export default async function CategoryServicesPage(props: any) { // Changed prop
   }
 
   // Fetch services for this category
-  const services = await getServices(categoryId);
+  const services = await getServices({ categoryId });
   console.log("CategoryServicesPage: services for category", services);
+
+  // Fetch user's businesses
+  const businesses = await getAllUserBusinesses(session.user.id);
 
   return (
     <div className="flex-1 p-6">
@@ -39,7 +49,7 @@ export default async function CategoryServicesPage(props: any) { // Changed prop
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add New Service */}
-        <ServiceFormWrapper categoryId={categoryId} /> {/* Render the new wrapper */}
+        <ServiceFormWrapper categoryId={categoryId} businesses={businesses} /> {/* Render the new wrapper */}
 
         {/* Right Column: Services in this Category */}
         <CategoryServicesList category={category} services={services} /> {/* Pass category and services as props */}

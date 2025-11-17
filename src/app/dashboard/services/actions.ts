@@ -24,6 +24,7 @@ export async function createService(prevState: FormState, formData: FormData): P
   const description = formData.get("description") as string;
   const price = parseFloat(formData.get("price") as string);
   const categoryId = formData.get("categoryId") ? parseInt(formData.get("categoryId") as string) : undefined;
+  const businessId = formData.get("businessId") ? parseInt(formData.get("businessId") as string) : undefined;
   const designation = formData.get("designation") as typeof serviceDesignationEnum.enumValues[number]; // New: Get designation
   let serviceNumber = formData.get("serviceNumber") as string | undefined; // New: Get serviceNumber
 
@@ -45,6 +46,7 @@ export async function createService(prevState: FormState, formData: FormData): P
 
     const serviceData: InsertService = {
       userId: session.user.id,
+      businessId,
       categoryId,
       name,
       description,
@@ -70,7 +72,7 @@ export async function createService(prevState: FormState, formData: FormData): P
   }
 }
 
-export async function getServices(categoryId?: number) { // New: Accept optional categoryId
+export async function getServices({ categoryId, businessId }: { categoryId?: number, businessId?: number }) {
   const session = await getSession();
   if (!session || !session.user) {
     return [];
@@ -79,6 +81,9 @@ export async function getServices(categoryId?: number) { // New: Accept optional
   const conditions = [eq(services.userId, session.user.id)];
   if (categoryId !== undefined) {
     conditions.push(eq(services.categoryId, categoryId));
+  }
+  if (businessId !== undefined) {
+    conditions.push(eq(services.businessId, businessId));
   }
 
   const userServices = await db.query.services.findMany({

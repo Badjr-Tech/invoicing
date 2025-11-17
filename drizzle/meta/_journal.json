@@ -8,6 +8,13 @@
       "when": 1763393083713,
       "tag": "0000_fantastic_yellowjacket",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763394107578,
+      "tag": "0001_chemical_senator_kelly",
+      "breakpoints": true
     }
   ]
 }
