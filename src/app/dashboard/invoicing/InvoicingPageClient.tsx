@@ -12,6 +12,7 @@ interface Service {
   name: string;
   description: string | null;
   price: string; // Price is stored as string in Drizzle schema
+  businessId: number | null;
   categoryId: number | null;
   category?: {
     id: number;
@@ -26,6 +27,7 @@ interface ServiceCategory {
   id: number;
   name: string;
   description: string | null;
+  businessId: number | null;
 }
 
 export type FormState = {
@@ -80,15 +82,6 @@ export default function InvoicingPageClient({
   const [invoiceBusinessDisplayName, setInvoiceBusinessDisplayName] = useState<string>('');
   const [dueDate, setDueDate] = useState(''); // New state for due date
   const [selectedBusinessForServices, setSelectedBusinessForServices] = useState<number | null>(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const businessId = searchParams.get('businessId');
-    if (businessId) {
-      setSelectedBusinessForServices(parseInt(businessId));
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     const date = new Date();
@@ -160,13 +153,21 @@ export default function InvoicingPageClient({
 
   const totalAmount = selectedServices.reduce((acc, service) => acc + (parseFloat(service.price) * (service.quantity ?? 0)), 0);
 
+  const filteredServices = selectedBusinessForServices
+    ? services.filter(service => service.businessId === selectedBusinessForServices)
+    : services;
+
+  const filteredCategories = selectedBusinessForServices
+    ? categories.filter(category => category.businessId === selectedBusinessForServices)
+    : categories;
+
   // Group services by category
   const servicesByCategory: { [key: string]: Service[] } = {};
-  categories.forEach(category => {
-    servicesByCategory[category.name] = services.filter(service => service.categoryId === category.id);
+  filteredCategories.forEach(category => {
+    servicesByCategory[category.name] = filteredServices.filter(service => service.categoryId === category.id);
   });
   // Add uncategorized services
-  servicesByCategory["Uncategorized"] = services.filter(service => service.categoryId === null);
+  servicesByCategory["Uncategorized"] = filteredServices.filter(service => service.categoryId === null);
 
 
   return (
@@ -185,7 +186,6 @@ export default function InvoicingPageClient({
               onChange={(e) => {
                 const businessId = e.target.value;
                 setSelectedBusinessForServices(businessId ? parseInt(businessId) : null);
-                router.push(`/dashboard/invoicing?businessId=${businessId}`);
               }}
               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
