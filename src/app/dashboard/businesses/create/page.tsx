@@ -53,37 +53,6 @@ export default function CreateBusinessPage() {
             />
           </div>
 
-          {/* Is DBA Checkbox */}
-          <div className="flex items-center">
-            <input
-              id="isDBA"
-              name="isDBA"
-              type="checkbox"
-              checked={isDBA}
-              onChange={(e) => setIsDBA(e.target.checked)}
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label htmlFor="isDBA" className="ml-2 block text-sm text-gray-900">
-              Is this business operating under a &quot;Doing Business As&quot; (DBA) name?
-            </label>
-          </div>
-
-          {/* Legal Business Name (conditionally visible) */}
-          {isDBA && (
-            <div>
-              <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
-                DBA Name (Legal Business Name for DBA)
-              </label>
-              <input
-                type="text"
-                id="legalBusinessName"
-                name="legalBusinessName"
-                required={isDBA}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-          )}
-
           {/* Tax Full Name */}
           <div>
             <label htmlFor="taxFullName" className="block text-sm font-medium text-gray-700">

@@ -1,5 +1,5 @@
 {
-  "id": "2f829567-eedd-4af4-8aee-ecfe890ac509",
+  "id": "26d31a70-0fb7-4ebc-97c6-d64041ce16cd",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -250,6 +250,25 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "tax_full_name": {
+          "name": "tax_full_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_dba": {
+          "name": "is_dba",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "legal_business_name": {
+          "name": "legal_business_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -266,65 +285,58 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.checklist_items": {
+      "name": "checklist_items",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
         },
-        "businesses_location_id_locations_id_fk": {
-          "name": "businesses_location_id_locations_id_fk",
-          "tableFrom": "businesses",
-          "tableTo": "locations",
-          "columnsFrom": [
-            "location_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
         },
-        "businesses_owner_gender_id_demographics_id_fk": {
-          "name": "businesses_owner_gender_id_demographics_id_fk",
-          "tableFrom": "businesses",
-          "tableTo": "demographics",
-          "columnsFrom": [
-            "owner_gender_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
-        "businesses_owner_race_id_demographics_id_fk": {
-          "name": "businesses_owner_race_id_demographics_id_fk",
-          "tableFrom": "businesses",
-          "tableTo": "demographics",
-          "columnsFrom": [
-            "owner_race_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
-        "businesses_owner_religion_id_demographics_id_fk": {
-          "name": "businesses_owner_religion_id_demographics_id_fk",
-          "tableFrom": "businesses",
-          "tableTo": "demographics",
+        "is_checked": {
+          "name": "is_checked",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "checklist_items_user_id_users_id_fk": {
+          "name": "checklist_items_user_id_users_id_fk",
+          "tableFrom": "checklist_items",
+          "tableTo": "users",
           "columnsFrom": [
-            "owner_religion_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "businesses_owner_region_id_locations_id_fk": {
-          "name": "businesses_owner_region_id_locations_id_fk",
-          "tableFrom": "businesses",
-          "tableTo": "locations",
-          "columnsFrom": [
-            "owner_region_id"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -490,46 +502,6 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.demographics": {
-      "name": "demographics",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category": {
-          "name": "category",
-          "type": "demographic_category",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "demographics_name_unique": {
-          "name": "demographics_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        }
-      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -738,8 +710,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "service_description": {
-          "name": "service_description",
+        "invoice_business_display_name": {
+          "name": "invoice_business_display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "services_json": {
+          "name": "services_json",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -771,6 +749,24 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "due_date": {
+          "name": "due_date",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "invoice_number": {
+          "name": "invoice_number",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -875,47 +871,6 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.locations": {
-      "name": "locations",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category": {
-          "name": "category",
-          "type": "location_category",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'City'"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "locations_name_unique": {
-          "name": "locations_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        }
-      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1043,165 +998,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.pitch_competition_events": {
-      "name": "pitch_competition_events",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "start_date": {
-          "name": "start_date",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "end_date": {
-          "name": "end_date",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_by_id": {
-          "name": "created_by_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "pitch_competition_events_created_by_id_users_id_fk": {
-          "name": "pitch_competition_events_created_by_id_users_id_fk",
-          "tableFrom": "pitch_competition_events",
-          "tableTo": "users",
-          "columnsFrom": [
-            "created_by_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.pitch_submissions": {
-      "name": "pitch_submissions",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "competition_event_id": {
-          "name": "competition_event_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "project_name": {
-          "name": "project_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "project_location": {
-          "name": "project_location",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "pitch_video_url": {
-          "name": "pitch_video_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "pitch_deck_url": {
-          "name": "pitch_deck_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "submitted_at": {
-          "name": "submitted_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "pitch_submissions_user_id_users_id_fk": {
-          "name": "pitch_submissions_user_id_users_id_fk",
-          "tableFrom": "pitch_submissions",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "pitch_submissions_competition_event_id_pitch_competition_events_id_fk": {
-          "name": "pitch_submissions_competition_event_id_pitch_competition_events_id_fk",
-          "tableFrom": "pitch_submissions",
-          "tableTo": "pitch_competition_events",
-          "columnsFrom": [
-            "competition_event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.service_categories": {
       "name": "service_categories",
       "schema": "",
@@ -1217,6 +1013,12 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "business_id": {
+          "name": "business_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         },
         "name": {
           "name": "name",
@@ -1259,6 +1061,19 @@
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "service_categories_business_id_businesses_id_fk": {
+          "name": "service_categories_business_id_businesses_id_fk",
+          "tableFrom": "service_categories",
+          "tableTo": "businesses",
+          "columnsFrom": [
+            "business_id"
           ],
           "columnsTo": [
             "id"
@@ -1495,15 +1310,6 @@
         "agency-course"
       ]
     },
-    "public.demographic_category": {
-      "name": "demographic_category",
-      "schema": "public",
-      "values": [
-        "Race",
-        "Gender",
-        "Religion"
-      ]
-    },
     "public.enrollment_status": {
       "name": "enrollment_status",
       "schema": "public",
@@ -1522,14 +1328,6 @@
         "draft",
         "sent",
         "paid"
-      ]
-    },
-    "public.location_category": {
-      "name": "location_category",
-      "schema": "public",
-      "values": [
-        "City",
-        "Region"
       ]
     },
     "public.service_designation": {

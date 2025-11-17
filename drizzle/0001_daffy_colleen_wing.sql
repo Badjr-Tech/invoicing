@@ -1,1 +1,0 @@
-ALTER TABLE "invoices" ADD COLUMN "due_date" timestamp with time zone;
