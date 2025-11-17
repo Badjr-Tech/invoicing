@@ -1,11 +1,75 @@
-import Link from 'next/link';
-import { FileText, CheckCircle, DollarSign } from 'lucide-react';
-import { getOutstandingInvoices, getSuccessfulPayments, getIncomeMinusFees } from '../actions'; // Adjust path as needed
+"use client";
 
-export default async function FinancialsDashboardPage() {
-  const outstandingInvoices = await getOutstandingInvoices();
-  const successfulPayments = await getSuccessfulPayments();
-  const incomeMinusFees = await getIncomeMinusFees();
+import Link from 'next/link';
+import { FileText, CheckCircle, DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
+import { useEffect, useState } from 'react';
+import { getMonthlyRevenue, getMonthlyNetIncome, getIncomeMinusFees } from '../actions';
+
+interface MonthlyData {
+  month: string;
+  totalRevenue?: number;
+  netIncome?: number;
+}
+
+interface IncomeMinusFeesData {
+  totalIncome: number;
+  totalFees: number;
+  netIncome: number;
+}
+
+export default function FinancialsDashboardPage() {
+  const [monthlyRevenueData, setMonthlyRevenueData] = useState<MonthlyData[]>([]);
+  const [monthlyNetIncomeData, setMonthlyNetIncomeData] = useState<MonthlyData[]>([]);
+  const [incomeMinusFees, setIncomeMinusFees] = useState<IncomeMinusFeesData>({ totalIncome: 0, totalFees: 0, netIncome: 0 });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const revenue = await getMonthlyRevenue();
+        const netIncome = await getMonthlyNetIncome();
+        const incomeFees = await getIncomeMinusFees();
+
+        setMonthlyRevenueData(revenue);
+        setMonthlyNetIncomeData(netIncome);
+        setIncomeMinusFees(incomeFees);
+      } catch (err) {
+        console.error("Failed to fetch financial data:", err);
+        setError("Failed to load financial data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex-1 p-8 bg-gray-50 min-h-screen flex items-center justify-center">
+        <p className="text-xl text-gray-600">Loading financial data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex-1 p-8 bg-gray-50 min-h-screen flex items-center justify-center">
+        <p className="text-xl text-red-600">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 p-8 bg-gray-50 min-h-screen">
@@ -16,76 +80,82 @@ export default async function FinancialsDashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Outstanding Invoices Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        {/* Monthly Revenue Chart */}
         <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
           <div className="flex items-center mb-6">
-            <FileText className="w-10 h-10 text-indigo-500 mr-4" />
-            <h2 className="text-3xl font-bold text-indigo-700 border-b pb-4 mb-4 border-indigo-100 flex-grow">Outstanding Invoices</h2>
+            <TrendingUp className="w-10 h-10 text-indigo-500 mr-4" />
+            <h2 className="text-3xl font-bold text-indigo-700 border-b pb-4 mb-4 border-indigo-100 flex-grow">Monthly Revenue</h2>
           </div>
-          <p className="text-gray-700 text-xl mb-2">Total: <span className="text-3xl font-extrabold text-indigo-600">${outstandingInvoices.totalAmount.toFixed(2)}</span></p>
-          <p className="text-gray-600 mb-4">Number of invoices: <span className="font-semibold">{outstandingInvoices.count}</span></p>
-          {outstandingInvoices.invoices.length > 0 ? (
-            <ul className="mt-6 space-y-3">
-              {outstandingInvoices.invoices.map((invoice, index) => (
-                <li key={invoice.id} className={`flex justify-between items-center p-3 rounded-md ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
-                  <span className="text-gray-800 text-base">Invoice #{invoice.invoiceNumber}</span>
-                  <span className="font-semibold text-indigo-600">${parseFloat(invoice.amount).toFixed(2)}</span>
-                  <span className="text-gray-500 text-sm ml-2">(Client: {invoice.clientName})</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="mt-6 p-4 bg-gray-50 rounded-md text-gray-500 text-center">
-              No outstanding invoices.
-            </div>
-          )}
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <LineChart
+                data={monthlyRevenueData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+                <Legend />
+                <Line type="monotone" dataKey="totalRevenue" stroke="#8884d8" activeDot={{ r: 8 }} name="Revenue" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        {/* Successful Payments Section */}
+        {/* Monthly Net Income Chart */}
         <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
           <div className="flex items-center mb-6">
-            <CheckCircle className="w-10 h-10 text-green-500 mr-4" />
-            <h2 className="text-3xl font-bold text-green-700 border-b pb-4 mb-4 border-green-100 flex-grow">Successful Payments</h2>
+            <TrendingDown className="w-10 h-10 text-green-500 mr-4" />
+            <h2 className="text-3xl font-bold text-green-700 border-b pb-4 mb-4 border-green-100 flex-grow">Monthly Net Income</h2>
           </div>
-          <p className="text-gray-700 text-xl mb-2">Total: <span className="text-3xl font-extrabold text-green-600">${successfulPayments.totalAmount.toFixed(2)}</span></p>
-          <p className="text-gray-600 mb-4">Number of payments: <span className="font-semibold">{successfulPayments.count}</span></p>
-          {successfulPayments.invoices.length > 0 ? (
-            <ul className="mt-6 space-y-3">
-              {successfulPayments.invoices.map((invoice, index) => (
-                <li key={invoice.id} className={`flex justify-between items-center p-3 rounded-md ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
-                  <span className="text-gray-800 text-base">Invoice #{invoice.invoiceNumber}</span>
-                  <span className="font-semibold text-green-600">${parseFloat(invoice.amount).toFixed(2)}</span>
-                  <span className="text-gray-500 text-sm ml-2">(Client: {invoice.clientName})</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="mt-6 p-4 bg-gray-50 rounded-md text-gray-500 text-center">
-              No successful payments.
-            </div>
-          )}
+          <div style={{ width: '100%', height: 300 }}>
+            <ResponsiveContainer>
+              <LineChart
+                data={monthlyNetIncomeData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+                <Legend />
+                <Line type="monotone" dataKey="netIncome" stroke="#82ca9d" activeDot={{ r: 8 }} name="Net Income" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
+      </div>
 
-        {/* Income Minus Fees Section */}
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 col-span-full">
-          <div className="flex items-center mb-6">
-            <DollarSign className="w-10 h-10 text-purple-500 mr-4" />
-            <h2 className="text-3xl font-bold text-purple-700 border-b pb-4 mb-4 border-purple-100 flex-grow">Income Minus Fees</h2>
+      {/* Income Minus Fees Section (retained as a summary) */}
+      <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 col-span-full">
+        <div className="flex items-center mb-6">
+          <DollarSign className="w-10 h-10 text-purple-500 mr-4" />
+          <h2 className="text-3xl font-bold text-purple-700 border-b pb-4 mb-4 border-purple-100 flex-grow">Current Income Summary</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+          <div>
+            <p className="text-gray-700 text-lg">Total Income:</p>
+            <p className="text-3xl font-extrabold text-purple-600">${incomeMinusFees.totalIncome.toFixed(2)}</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-            <div>
-              <p className="text-gray-700 text-lg">Total Income:</p>
-              <p className="text-3xl font-extrabold text-purple-600">${incomeMinusFees.totalIncome.toFixed(2)}</p>
-            </div>
-            <div>
-              <p className="text-gray-700 text-lg">Total Fees:</p>
-              <p className="text-3xl font-extrabold text-red-600">${incomeMinusFees.totalFees.toFixed(2)}</p>
-            </div>
-            <div>
-              <p className="text-gray-700 text-lg">Net Income:</p>
-              <p className="text-3xl font-extrabold text-blue-600">${incomeMinusFees.netIncome.toFixed(2)}</p>
-            </div>
+          <div>
+            <p className="text-gray-700 text-lg">Total Fees:</p>
+            <p className="text-3xl font-extrabold text-red-600">${incomeMinusFees.totalFees.toFixed(2)}</p>
+          </div>
+          <div>
+            <p className="text-gray-700 text-lg">Net Income:</p>
+            <p className="text-3xl font-extrabold text-blue-600">${incomeMinusFees.netIncome.toFixed(2)}</p>
           </div>
         </div>
       </div>

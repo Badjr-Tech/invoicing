@@ -13,19 +13,21 @@ interface jsPDFWithAutoTable extends jsPDF {
   };
 }
 
-type Business = { 
-  id: number; 
-  businessName: string; 
-  color1: string | null; 
-  color2: string | null; 
-  color3: string | null; 
-  color4: string | null; 
+type Business = {
+  id: number;
+  businessName: string;
+  color1: string | null;
+  color2: string | null;
+  color3: string | null;
+  color4: string | null;
   logoUrl: string | null;
   streetAddress: string | null;
   city: string | null;
   state: string | null;
   zipCode: string | null;
   website: string | null;
+  isDBA: boolean; // Added isDBA
+  legalBusinessName: string | null; // Added legalBusinessName
 };
 
 export function generateInvoicePDF(
@@ -36,9 +38,10 @@ export function generateInvoicePDF(
   dueDate: Date | null,
   invoiceNumber: string,
   notes: string | null,
+  invoiceBusinessDisplayName: string, // New parameter
 ) {
   console.log("generateInvoicePDF: Function started.");
-  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate, "invoiceNumber:", invoiceNumber, "notes:", notes);
+  console.log("generateInvoicePDF: Inputs - client:", client, "services:", services, "totalAmount:", totalAmount, "business:", business, "dueDate:", dueDate, "invoiceNumber:", invoiceNumber, "notes:", notes, "invoiceBusinessDisplayName:", invoiceBusinessDisplayName);
 
   try {
     const doc = new jsPDF();
@@ -75,27 +78,27 @@ export function generateInvoicePDF(
           
           doc.addImage(img, 'PNG', logoX, logoY, scaledWidth, scaledHeight);
           // Continue PDF generation after image is loaded
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + scaledHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + scaledHeight + 5, invoiceNumber, notes, invoiceBusinessDisplayName); // Pass logo bottom Y, invoiceNumber, notes, invoiceBusinessDisplayName
           console.log("generateInvoicePDF: Logo added. Saving PDF.");
           doc.save('invoice.pdf'); // Force download
         };
         img.onerror = (error) => {
           console.error("generateInvoicePDF: Error loading logo image:", error);
           // Continue without logo if it fails to load
-          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+          addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes, invoiceBusinessDisplayName); // Pass logo bottom Y, invoiceNumber, notes, invoiceBusinessDisplayName
           console.log("generateInvoicePDF: Logo failed to load. Saving PDF without logo.");
           doc.save('invoice.pdf'); // Force download
         };
       } catch (error) {
         console.error("generateInvoicePDF: Error in logo handling block:", error);
         // Continue without logo if an error occurs in the handling block
-        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes); // Pass logo bottom Y, invoiceNumber, notes
+        addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY + logoHeight + 5, invoiceNumber, notes, invoiceBusinessDisplayName); // Pass logo bottom Y, invoiceNumber, notes, invoiceBusinessDisplayName
         console.log("generateInvoicePDF: Error in logo handling. Saving PDF without logo.");
         doc.save('invoice.pdf'); // Force download
       }
     } else {
       console.log("generateInvoicePDF: No logo URL provided. Generating PDF without logo.");
-      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY, invoiceNumber, notes); // Pass initial Y if no logo, invoiceNumber, notes
+      addPdfContent(doc, client, services, totalAmount, business, dueDate, logoY, invoiceNumber, notes, invoiceBusinessDisplayName); // Pass initial Y if no logo, invoiceNumber, notes, invoiceBusinessDisplayName
       console.log("generateInvoicePDF: Saving PDF without logo.");
       doc.save('invoice.pdf'); // Force download
     }
@@ -114,6 +117,7 @@ function addPdfContent(
   contentStartAfterLogoY: number,
   invoiceNumber: string,
   notes: string | null,
+  invoiceBusinessDisplayName: string, // New parameter
 ) {
   const colors = {
     color1: business.color1 || '#000000',
@@ -144,8 +148,12 @@ function addPdfContent(
   doc.setTextColor('#FFFFFF');
   const businessInfoX = 200; // Right align
   let currentY = headerBarY + 5;
-  doc.text(business.businessName, businessInfoX, currentY, { align: 'right' });
+  doc.text(invoiceBusinessDisplayName, businessInfoX, currentY, { align: 'right' }); // Use invoiceBusinessDisplayName
   currentY += lineHeight;
+  if (business.isDBA && business.legalBusinessName) {
+    doc.text(`DBA: ${business.legalBusinessName}`, businessInfoX, currentY, { align: 'right' });
+    currentY += lineHeight;
+  }
   if (business.streetAddress) {
     doc.text(business.streetAddress, businessInfoX, currentY, { align: 'right' });
     currentY += lineHeight;
@@ -277,5 +285,5 @@ function addPdfContent(
   doc.line(startX, finalFooterLineY, 200, finalFooterLineY); // Horizontal line
   doc.setFontSize(10);
   doc.setTextColor('#000000');
-  doc.text(`Please remit payment to: ${business.businessName}`, startX, finalRemitTextY);
+  doc.text(`Please remit payment to: ${invoiceBusinessDisplayName}`, startX, finalRemitTextY); // Use invoiceBusinessDisplayName
 }

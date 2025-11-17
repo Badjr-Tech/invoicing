@@ -50,6 +50,13 @@
       "when": 1763274065678,
       "tag": "0006_spicy_vin_gonzales",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1763275870020,
+      "tag": "0007_elite_iron_fist",
+      "breakpoints": true
     }
   ]
 }

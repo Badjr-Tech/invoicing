@@ -38,6 +38,7 @@ export type FormState = {
     dueDate: Date | null;
     invoiceNumber: string; // New field
     notes: string | null; // New field
+    invoiceBusinessDisplayName: string; // New field
   };
 } | undefined;
 
@@ -50,13 +51,13 @@ export default function InvoicingPageClient({
   clients: { id: number; name: string; email: string }[];
   services: Service[];
   categories: ServiceCategory[];
-  businesses: { 
-    id: number; 
-    businessName: string; 
-    color1: string | null; 
-    color2: string | null; 
-    color3: string | null; 
-    color4: string | null; 
+  businesses: {
+    id: number;
+    businessName: string;
+    color1: string | null;
+    color2: string | null;
+    color3: string | null;
+    color4: string | null;
     logoUrl: string | null;
     streetAddress: string | null;
     city: string | null;
@@ -64,21 +65,25 @@ export default function InvoicingPageClient({
     zipCode: string | null;
     phone: string | null;
     website: string | null;
+    isDBA: boolean;
+    legalBusinessName: string | null;
   }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [selectedClient, setSelectedClient] = useState<number | null>(null);
   const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null);
-  const [invoiceNumber, setInvoiceNumber] = useState<string>(`INV-${Date.now()}`); // New state for invoice number
-  const [notes, setNotes] = useState<string>(''); // New state for notes
+  const [selectedBusinessObject, setSelectedBusinessObject] = useState<typeof businesses[number] | null>(null); // New state for selected business object
+  const [invoiceNumber, setInvoiceNumber] = useState<string>('');
+  const [notes, setNotes] = useState<string>('');
+  const [invoiceBusinessDisplayName, setInvoiceBusinessDisplayName] = useState<string>('');
 
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>(() => {
     const initialCollapsedState: Record<string, boolean> = {};
     categories.forEach(category => {
-      initialCollapsedState[category.name] = true; // Start all categories collapsed
+      initialCollapsedState[category.name] = true;
     });
-    initialCollapsedState["Uncategorized"] = true; // Also collapse uncategorized
+    initialCollapsedState["Uncategorized"] = true;
     return initialCollapsedState;
   });
 
@@ -90,6 +95,22 @@ export default function InvoicingPageClient({
   };
 
   useEffect(() => {
+    const business = businesses.find(b => b.id === selectedBusiness);
+    setSelectedBusinessObject(business || null);
+
+    if (business) {
+      if (business.isDBA && business.legalBusinessName) {
+        // Default to DBA name if available
+        setInvoiceBusinessDisplayName(business.legalBusinessName);
+      } else {
+        setInvoiceBusinessDisplayName(business.businessName);
+      }
+    } else {
+      setInvoiceBusinessDisplayName('');
+    }
+  }, [selectedBusiness, businesses]);
+
+  useEffect(() => {
     if (state?.message && state.invoice) {
       const business = businesses.find(b => b.id === selectedBusiness);
       if (business) {
@@ -99,8 +120,9 @@ export default function InvoicingPageClient({
           state.invoice.totalAmount,
           business,
           state.invoice.dueDate,
-          state.invoice.invoiceNumber, // Pass invoiceNumber
-          state.invoice.notes, // Pass notes
+          state.invoice.invoiceNumber,
+          state.invoice.notes,
+          state.invoice.invoiceBusinessDisplayName,
         );
       }
       const mailtoLink = `mailto:${state.invoice.client.email}?subject=Invoice ${state.invoice.invoiceNumber}&body=Please find your invoice attached.`;
@@ -109,7 +131,7 @@ export default function InvoicingPageClient({
   }, [state, businesses, selectedBusiness]);
 
   const handleAddService = (service: Service) => {
-    setSelectedServices([...selectedServices, { ...service, quantity: 1 }]); // Initialize quantity
+    setSelectedServices([...selectedServices, { ...service, quantity: 1 }]);
   };
 
   const handleQuantityChange = (index: number, quantity: number) => {
@@ -197,10 +219,47 @@ export default function InvoicingPageClient({
                   <option value="">Select your business</option>
                   {businesses.map((business) => (
                     <option key={business.id} value={business.id}>
-                      {business.businessName}
+                      {business.businessName} {business.isDBA && business.legalBusinessName ? `(DBA: ${business.legalBusinessName})` : ''}
                     </option>
                   ))}
                 </select>
+              </div>
+            </div>
+
+            {selectedBusinessObject && selectedBusinessObject.isDBA && selectedBusinessObject.legalBusinessName && (
+              <div>
+                <label htmlFor="dbaSelection" className="block text-sm font-medium text-white">
+                  Display Business Name As:
+                </label>
+                <div className="mt-1">
+                  <select
+                    id="dbaSelection"
+                    name="dbaSelection"
+                    value={invoiceBusinessDisplayName}
+                    onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value={selectedBusinessObject.businessName}>{selectedBusinessObject.businessName}</option>
+                    <option value={selectedBusinessObject.legalBusinessName}>{selectedBusinessObject.legalBusinessName} (DBA)</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="invoiceBusinessDisplayName" className="block text-sm font-medium text-white">
+                Business Name on Invoice
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  id="invoiceBusinessDisplayName"
+                  name="invoiceBusinessDisplayName"
+                  value={invoiceBusinessDisplayName}
+                  onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  required
+                />
               </div>
             </div>
 
@@ -313,6 +372,7 @@ export default function InvoicingPageClient({
             <input type="hidden" name="totalAmount" value={totalAmount} />
             <input type="hidden" name="invoiceNumber" value={invoiceNumber} />
             <input type="hidden" name="notes" value={notes} />
+            <input type="hidden" name="invoiceBusinessDisplayName" value={invoiceBusinessDisplayName} />
 
 
             {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}

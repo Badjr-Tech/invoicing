@@ -106,6 +106,9 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const zipCode = formData.get("zipCode") as string;
   const phone = formData.get("phone") as string;
   const website = formData.get("website") as string;
+  const taxFullName = formData.get("taxFullName") as string; // New
+  const isDBA = formData.get("isDBA") === "on"; // New, convert checkbox value
+  const legalBusinessName = formData.get("legalBusinessName") as string; // New
   const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
 
   console.log("createBusinessProfile: formData fields:", {
@@ -123,6 +126,9 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
     zipCode,
     phone,
     website,
+    taxFullName, // New
+    isDBA, // New
+    legalBusinessName, // New
     businessMaterials: businessMaterials ? businessMaterials.name : "no file",
   });
 
@@ -158,6 +164,10 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
       phone,
       website,
       businessMaterialsUrl,
+      // New fields
+      taxFullName,
+      isDBA,
+      legalBusinessName: isDBA ? legalBusinessName : null, // Save legalBusinessName only if isDBA is true
     };
     console.log("createBusinessProfile: newBusinessData before insert:", newBusinessData);
 
@@ -206,6 +216,9 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const zipCode = formData.get("zipCode") as string;
     const phone = formData.get("phone") as string;
     const website = formData.get("website") as string;
+    const taxFullName = formData.get("taxFullName") as string; // New
+    const isDBA = formData.get("isDBA") === "on"; // New, convert checkbox value
+    const legalBusinessName = formData.get("legalBusinessName") as string; // New
     const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
     const logo = formData.get("logo") as File; // New: Get logo file
     const businessProfilePhoto = formData.get("businessProfilePhoto") as File; // New: Get business profile photo file
@@ -225,6 +238,9 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       zipCode,
       phone,
       website,
+      taxFullName, // New
+      isDBA, // New
+      legalBusinessName, // New
       businessMaterials: businessMaterials ? businessMaterials.name : "no file",
       logo: logo ? logo.name : "no file",
       businessProfilePhoto: businessProfilePhoto ? businessProfilePhoto.name : "no file",
@@ -310,6 +326,9 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         businessMaterialsUrl: businessMaterialsUrl || undefined, // Only update if new file uploaded
         logoUrl: logoUrl || undefined, // New: Update logoUrl
         businessProfilePhotoUrl: businessProfilePhotoUrl || undefined, // New: Update business profile photo url
+        taxFullName: taxFullName || undefined, // New
+        isDBA: isDBA, // New
+        legalBusinessName: isDBA ? legalBusinessName : null, // New, save legalBusinessName only if isDBA is true
       };
 
       // Apply material updates
