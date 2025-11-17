@@ -26,8 +26,7 @@ type Business = {
   state: string | null;
   zipCode: string | null;
   website: string | null;
-  isDBA: boolean; // Added isDBA
-  legalBusinessName: string | null; // Added legalBusinessName
+  dbas: { id: number; name: string; }[];
 };
 
 export function generateInvoicePDF(
@@ -150,9 +149,11 @@ function addPdfContent(
   let currentY = headerBarY + 5;
   doc.text(invoiceBusinessDisplayName, businessInfoX, currentY, { align: 'right' }); // Use invoiceBusinessDisplayName
   currentY += lineHeight;
-  if (business.isDBA && business.legalBusinessName) {
-    doc.text(`DBA: ${business.legalBusinessName}`, businessInfoX, currentY, { align: 'right' });
-    currentY += lineHeight;
+  if (business.dbas && business.dbas.length > 0) {
+    business.dbas.forEach(dba => {
+      doc.text(`DBA: ${dba.name}`, businessInfoX, currentY, { align: 'right' });
+      currentY += lineHeight;
+    });
   }
   if (business.streetAddress) {
     doc.text(business.streetAddress, businessInfoX, currentY, { align: 'right' });

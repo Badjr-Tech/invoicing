@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
-import { updateBusinessProfile } from "../actions";
+import { updateBusinessProfile, createDba, deleteDba } from "../actions";
 import { useFormState } from "react-dom";
 import Image from "next/image";
 

@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from "@/db";
-import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
+import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType, dbas } from "@/db/schema"; // Updated import
 import { eq, like, and, InferSelectModel } from "drizzle-orm";
 import { getSession, SessionPayload } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
@@ -632,7 +632,14 @@ export async function updateBusinessDesign(prevState: FormState, formData: FormD
     revalidatePath(`/dashboard/businesses/${businessId}`);
     return { message: "Business design updated successfully!", error: "" };
   } catch (error) {
-
+    console.error("Error updating business design:", error);
+    let errorMessage = "Failed to update business design.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update business design: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
 
 export async function createDba(prevState: FormState, formData: FormData): Promise<FormState> {
   const userId = await getUserIdFromSession();

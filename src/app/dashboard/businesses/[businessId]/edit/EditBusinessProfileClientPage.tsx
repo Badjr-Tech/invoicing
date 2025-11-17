@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Business } from "@/db/schema"; // Assuming Business type is available
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { updateBusinessProfile } from "../../../businesses/actions"; // Adjust path as needed
+import { updateBusinessProfile, createDba, deleteDba } from "../../../businesses/actions"; // Adjust path as needed
 import { useRouter } from "next/navigation";
 
 interface EditBusinessProfileClientPageProps {
