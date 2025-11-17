@@ -12,7 +12,7 @@ type FormState = {
 } | undefined;
 
 interface EditBusinessProfileFormProps {
-  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
+  initialBusiness: Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
   availableDemographics: DemographicType[];
   availableLocations: LocationType[];
 }
@@ -21,8 +21,10 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
   const [business, setBusiness] = useState(initialBusiness); // Updated type
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(business.logoUrl);
-  const [isDBA, setIsDBA] = useState(initialBusiness.isDBA || false);
-  const [showDBAFields, setShowDBAFields] = useState(initialBusiness.isDBA || false);
+  const [dbas, setDbas] = useState(initialBusiness.dbas || []);
+  const [newDba, setNewDba] = useState("");
+  const [createDbaState, createDbaAction] = useFormState(createDba, undefined);
+  const [deleteDbaState, deleteDbaAction] = useFormState(deleteDba, undefined);
 
   const [editState, editFormAction] = useFormState<FormState, FormData>(updateBusinessProfile, undefined);
 
@@ -131,53 +133,44 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
         </select>
       </div>
 
-      {/* Add DBA Button / DBA Fields */}
-      {!showDBAFields && (
-        <button
-          type="button"
-          onClick={() => {
-            setShowDBAFields(true);
-            setIsDBA(true);
-          }}
-          className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Add DBA Name
-        </button>
-      )}
-
-      {showDBAFields && (
-        <>
-          <div className="flex items-center">
-            <input
-              id="isDBA"
-              name="isDBA"
-              type="checkbox"
-              checked={isDBA}
-              onChange={(e) => setIsDBA(e.target.checked)}
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label htmlFor="isDBA" className="ml-2 block text-sm text-gray-900">
-              Is this business operating under a &quot;Doing Business As&quot; (DBA) name?
-            </label>
-          </div>
-
-          {isDBA && (
-            <div>
-              <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
-                DBA Name (Legal Business Name for DBA)
-              </label>
-              <input
-                type="text"
-                id="legalBusinessName"
-                name="legalBusinessName"
-                required={isDBA}
-                defaultValue={business.legalBusinessName || ''}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-foreground"
-              />
+      {/* DBA Management */}
+      <div>
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Doing Business As (DBA)</h2>
+        <div className="space-y-4">
+          {dbas.map((dba) => (
+            <div key={dba.id} className="flex items-center justify-between p-2 bg-gray-100 rounded-md">
+              <p>{dba.name}</p>
+              <form action={deleteDbaAction}>
+                <input type="hidden" name="id" value={dba.id} />
+                <button
+                  type="submit"
+                  className="text-red-600 hover:text-red-800"
+                >
+                  Delete
+                </button>
+              </form>
             </div>
-          )}
-        </>
-      )}
+          ))}
+        </div>
+        <form action={createDbaAction} className="mt-4 flex items-center">
+          <input type="hidden" name="businessId" value={initialBusiness.id} />
+          <input
+            type="text"
+            name="name"
+            value={newDba}
+            onChange={(e) => setNewDba(e.target.value)}
+            placeholder="Enter DBA name"
+            className="flex-grow border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+          />
+          <button
+            type="submit"
+            className="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Add DBA
+          </button>
+        </form>
+        {createDbaState?.error && <p className="text-red-600 text-sm mt-2">{createDbaState.error}</p>}
+      </div>
 
       {/* Business Description */}
       <div>

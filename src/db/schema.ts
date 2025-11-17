@@ -86,8 +86,12 @@ export const businesses = pgTable('businesses', {
   color3: text('color3'), // New optional column for business color scheme
   color4: text('color4'), // New optional column for business color scheme
   taxFullName: text('tax_full_name'), // New optional column for tax full name
-  isDBA: boolean('is_dba').notNull().default(false), // New optional column for DBA status
-  legalBusinessName: text('legal_business_name'), // New optional column for legal business name
+});
+
+export const dbas = pgTable('dbas', {
+  id: serial('id').primaryKey(),
+  businessId: integer('business_id').notNull().references(() => businesses.id),
+  name: text('name').notNull(),
 });
 
 export const massMessages = pgTable('mass_messages', {
@@ -283,11 +287,12 @@ export const servicesRelations = relations(services, ({ one }) => ({
   }),
 }));
 
-export const businessesRelations = relations(businesses, ({ one }) => ({
+export const businessesRelations = relations(businesses, ({ one, many }) => ({
   user: one(users, {
     fields: [businesses.userId],
     references: [users.id],
   }),
+  dbas: many(dbas),
 }));
 
 export const massMessagesRelations = relations(massMessages, ({ one }) => ({

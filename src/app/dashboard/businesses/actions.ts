@@ -25,10 +25,13 @@ export async function fetchSession(): Promise<SessionPayload | null> {
   return await getSession();
 }
 
-export async function getBusinessProfile(businessId: number): Promise<Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
+export async function getBusinessProfile(businessId: number): Promise<Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
+      with: {
+        dbas: true,
+      },
     });
     if (!profile) { return null; }
     return profile;
@@ -60,6 +63,9 @@ export async function getAllUserBusinesses(userId: number, searchQuery?: string,
 
     const allBusinesses = await db.query.businesses.findMany({
       where: and(...conditions),
+      with: {
+        dbas: true,
+      },
       orderBy: (businesses, { asc, desc }) => [asc(businesses.isArchived), asc(businesses.businessName)],
     });
     return allBusinesses;
@@ -107,8 +113,7 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const phone = formData.get("phone") as string;
   const website = formData.get("website") as string;
   const taxFullName = formData.get("taxFullName") as string; // New
-  const isDBA = formData.get("isDBA") === "on"; // New, convert checkbox value
-  const legalBusinessName = formData.get("legalBusinessName") as string; // New
+  const dbasString = formData.get("dbas") as string;
   const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
 
   console.log("createBusinessProfile: formData fields:", {
@@ -127,8 +132,7 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
     phone,
     website,
     taxFullName, // New
-    isDBA, // New
-    legalBusinessName, // New
+    dbas: dbasString,
     businessMaterials: businessMaterials ? businessMaterials.name : "no file",
   });
 
@@ -166,13 +170,22 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
       businessMaterialsUrl,
       // New fields
       taxFullName,
-      isDBA,
-      legalBusinessName: isDBA ? legalBusinessName : null, // Save legalBusinessName only if isDBA is true
     };
     console.log("createBusinessProfile: newBusinessData before insert:", newBusinessData);
 
-    await db.insert(businesses).values(newBusinessData);
+    const [newBusiness] = await db.insert(businesses).values(newBusinessData).returning();
     console.log("createBusinessProfile: Business inserted successfully.");
+
+    if (dbasString) {
+      const dbaNames = JSON.parse(dbasString) as string[];
+      if (Array.isArray(dbaNames) && dbaNames.length > 0) {
+        const dbaValues = dbaNames.map(name => ({
+          businessId: newBusiness.id,
+          name,
+        }));
+        await db.insert(dbas).values(dbaValues);
+      }
+    }
 
     revalidatePath("/dashboard/businesses");
     return { message: "Business profile created successfully!", error: "" };
@@ -217,8 +230,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const phone = formData.get("phone") as string;
     const website = formData.get("website") as string;
     const taxFullName = formData.get("taxFullName") as string; // New
-    const isDBA = formData.get("isDBA") === "on"; // New, convert checkbox value
-    const legalBusinessName = formData.get("legalBusinessName") as string; // New
     const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
     const logo = formData.get("logo") as File; // New: Get logo file
     const businessProfilePhoto = formData.get("businessProfilePhoto") as File; // New: Get business profile photo file
@@ -239,8 +250,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       phone,
       website,
       taxFullName, // New
-      isDBA, // New
-      legalBusinessName, // New
       businessMaterials: businessMaterials ? businessMaterials.name : "no file",
       logo: logo ? logo.name : "no file",
       businessProfilePhoto: businessProfilePhoto ? businessProfilePhoto.name : "no file",
@@ -327,8 +336,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         logoUrl: logoUrl || undefined, // New: Update logoUrl
         businessProfilePhotoUrl: businessProfilePhotoUrl || undefined, // New: Update business profile photo url
         taxFullName: taxFullName || undefined, // New
-        isDBA: isDBA, // New
-        legalBusinessName: isDBA ? legalBusinessName : null, // New, save legalBusinessName only if isDBA is true
       };
 
       // Apply material updates
@@ -625,11 +632,82 @@ export async function updateBusinessDesign(prevState: FormState, formData: FormD
     revalidatePath(`/dashboard/businesses/${businessId}`);
     return { message: "Business design updated successfully!", error: "" };
   } catch (error) {
-    console.error("Error updating business design:", error);
-    let errorMessage = "Failed to update business design.";
-    if (error instanceof Error) {
-      errorMessage = `Failed to update business design: ${error.message}`;
+
+
+export async function createDba(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const businessId = parseInt(formData.get("businessId") as string);
+  const name = formData.get("name") as string;
+
+  if (isNaN(businessId) || !name) {
+    return { message: "", error: "Invalid business ID or name." };
+  }
+
+  try {
+    await db.insert(dbas).values({ businessId, name });
+    revalidatePath(`/dashboard/businesses/${businessId}`);
+    return { message: "DBA created successfully!", error: "" };
+  } catch (error) {
+    console.error("Error creating DBA:", error);
+    return { message: "", error: "Failed to create DBA." };
+  }
+}
+
+export async function updateDba(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const id = parseInt(formData.get("id") as string);
+  const name = formData.get("name") as string;
+
+  if (isNaN(id) || !name) {
+    return { message: "", error: "Invalid DBA ID or name." };
+  }
+
+  try {
+    const dba = await db.query.dbas.findFirst({ where: eq(dbas.id, id) });
+    if (!dba) {
+      return { message: "", error: "DBA not found." };
     }
-    return { message: "", error: errorMessage };
+
+    await db.update(dbas).set({ name }).where(eq(dbas.id, id));
+    revalidatePath(`/dashboard/businesses/${dba.businessId}`);
+    return { message: "DBA updated successfully!", error: "" };
+  } catch (error) {
+    console.error("Error updating DBA:", error);
+    return { message: "", error: "Failed to update DBA." };
+  }
+}
+
+export async function deleteDba(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const id = parseInt(formData.get("id") as string);
+
+  if (isNaN(id)) {
+    return { message: "", error: "Invalid DBA ID." };
+  }
+
+  try {
+    const dba = await db.query.dbas.findFirst({ where: eq(dbas.id, id) });
+    if (!dba) {
+      return { message: "", error: "DBA not found." };
+    }
+
+    await db.delete(dbas).where(eq(dbas.id, id));
+    revalidatePath(`/dashboard/businesses/${dba.businessId}`);
+    return { message: "DBA deleted successfully!", error: "" };
+  } catch (error) {
+    console.error("Error deleting DBA:", error);
+    return { message: "", error: "Failed to delete DBA." };
   }
 }

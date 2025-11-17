@@ -68,8 +68,7 @@ export default function InvoicingPageClient({
     zipCode: string | null;
     phone: string | null;
     website: string | null;
-    isDBA: boolean;
-    legalBusinessName: string | null;
+    dbas: { id: number; name: string; }[];
   }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
@@ -110,12 +109,7 @@ export default function InvoicingPageClient({
     setSelectedBusinessObject(business || null);
 
     if (business) {
-      if (business.isDBA && business.legalBusinessName) {
-        // Default to DBA name if available
-        setInvoiceBusinessDisplayName(business.legalBusinessName);
-      } else {
-        setInvoiceBusinessDisplayName(business.businessName);
-      }
+      setInvoiceBusinessDisplayName(business.businessName);
     } else {
       setInvoiceBusinessDisplayName('');
     }
@@ -262,7 +256,7 @@ export default function InvoicingPageClient({
                   <option value="">Select your business</option>
                   {businesses.map((business) => (
                     <option key={business.id} value={business.id}>
-                      {business.businessName} {business.isDBA && business.legalBusinessName ? `(DBA: ${business.legalBusinessName})` : ''}
+                      {business.businessName}
                     </option>
                   ))}
                 </select>
@@ -278,21 +272,14 @@ export default function InvoicingPageClient({
                   id="invoiceBusinessDisplayName"
                   name="invoiceBusinessDisplayName"
                   value={invoiceBusinessDisplayName}
-                  onChange={(e) => {
-                    if (e.target.value === 'n/a') {
-                      setInvoiceBusinessDisplayName(selectedBusinessObject?.businessName || '');
-                    } else {
-                      setInvoiceBusinessDisplayName(e.target.value);
-                    }
-                  }}
+                  onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   required
                 >
                   <option value={selectedBusinessObject?.businessName}>{selectedBusinessObject?.businessName}</option>
-                  {selectedBusinessObject?.isDBA && selectedBusinessObject?.legalBusinessName && (
-                    <option value={selectedBusinessObject.legalBusinessName}>{selectedBusinessObject.legalBusinessName} (DBA)</option>
-                  )}
-                  <option value="n/a">n/a</option>
+                  {selectedBusinessObject?.dbas.map((dba) => (
+                    <option key={dba.id} value={dba.name}>{dba.name} (DBA)</option>
+                  ))}
                 </select>
               </div>
             </div>
