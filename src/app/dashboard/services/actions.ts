@@ -91,6 +91,7 @@ export async function getServices({ categoryId, businessId }: { categoryId?: num
     with: {
       category: true, // New: Fetch category details
     },
+    orderBy: (services, { asc }) => [asc(services.id)], // Sort by ID
   });
 
   return userServices;
