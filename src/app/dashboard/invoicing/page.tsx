@@ -5,14 +5,15 @@ import { getAllUserBusinesses } from "../businesses/actions"; // New import
 import InvoicingPageClient from "./InvoicingPageClient";
 import { getSession } from "@/app/login/actions"; // New import
 
-export default async function InvoicingPage({ searchParams }: { searchParams: { businessId?: string } }) {
+export default async function InvoicingPage({ searchParams }: { searchParams: Promise<{ businessId?: string }> }) {
   const session = await getSession();
   if (!session || !session.user) {
     // Handle unauthenticated user, e.g., redirect to login or return empty data
     return <InvoicingPageClient clients={[]} services={[]} categories={[]} businesses={[]} />;
   }
 
-  const businessId = searchParams.businessId ? parseInt(searchParams.businessId) : undefined;
+  const resolvedSearchParams = await searchParams;
+  const businessId = resolvedSearchParams.businessId ? parseInt(resolvedSearchParams.businessId) : undefined;
 
   const clients = await getClients();
   const services = await getServices({ businessId }); // getServices now fetches with category details
