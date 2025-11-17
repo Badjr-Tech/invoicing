@@ -137,29 +137,23 @@ export default function DynamicSidebarContent() {
             ))}
           </>
         )}
-        {/* Financial Tools Section */}
-        <h2 
-          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
-          onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
-        >
-          <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
-          Financial Tools
-        </h2>
-        {!financialToolsCollapsed && (
-          <>
-            <Link
-              href="/dashboard/financial-tools" // This is the Financial Tools landing page
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Financial Tools Landing
-            </Link>
-            <Link
-              href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Financials Dashboard
-            </Link>
-            <Link
+                {/* Financial Tools Section */}
+                <Link
+                  href="/dashboard/financial-tools"
+                  className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+                  onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
+                >
+                  <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
+                  Financial Tools
+                </Link>
+                {!financialToolsCollapsed && (
+                  <>
+                    <Link
+                      href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
+                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                    >
+                      Financials Dashboard
+                    </Link>            <Link
               href="/dashboard/invoicing"
               className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
             >

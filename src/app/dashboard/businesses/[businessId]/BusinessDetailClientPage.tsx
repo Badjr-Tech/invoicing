@@ -61,70 +61,78 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
       </div>
 
       {activeTab === 'business-profile' && (
-        <div className="mt-8">
-          <h1 className="text-3xl font-bold text-foreground">{business.businessName}</h1>
-          <div className="mb-6 flex justify-center">
-            {business.logoUrl ? (
-              <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className="rounded-md object-cover border-2 border-gray-300" />
-            ) : (
-              <div className="h-24 w-24 rounded-md bg-gray-200 flex items-center justify-center text-gray-500 text-4xl font-bold border-2 border-gray-300">
-                {business.businessName ? business.businessName[0].toUpperCase() : '?'}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Left Column: Business Profile Info */}
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">{business.businessName}</h1>
+            <div className="mb-6 flex justify-center">
+              {business.logoUrl ? (
+                <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className="rounded-md object-cover border-2 border-gray-300" />
+              ) : (
+                <div className="h-24 w-24 rounded-md bg-gray-200 flex items-center justify-center text-gray-500 text-4xl font-bold border-2 border-gray-300">
+                  {business.businessName ? business.businessName[0].toUpperCase() : '?'}
+                </div>
+              )}
+            </div>
+            {business.businessProfilePhotoUrl && (
+              <div className="mb-6 flex justify-center">
+                <Image src={business.businessProfilePhotoUrl} alt="Business Profile Photo" width={512} height={512} className="rounded-md object-cover border-2 border-gray-300" />
               </div>
             )}
+            <p className="mt-4 text-gray-700">Owner: {business.ownerName}</p>
+            <p className="mt-2 text-gray-700">Type: {business.businessType}</p>
+            <p className="mt-2 text-gray-700">Tax Status: {business.businessTaxStatus}</p>
+            {business.taxFullName && <p className="mt-2 text-gray-700">Tax Full Name: {business.taxFullName}</p>}
+            {business.isDBA && business.legalBusinessName && <p className="mt-2 text-gray-700">DBA Name: {business.legalBusinessName}</p>}
+            <p className="mt-2 text-gray-700">Industry: {business.businessIndustry}</p>
+            {business.businessDescription && <p className="mt-2 text-gray-700">Description: {business.businessDescription}</p>}
+            {business.streetAddress && <p className="mt-2 text-gray-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}
+            {business.phone && <p className="mt-2 text-gray-700">Phone: {business.phone}</p>}
+            {business.website && <p className="mt-2 text-gray-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{business.website}</a></p>}
           </div>
-          {business.businessProfilePhotoUrl && (
-            <div className="mb-6 flex justify-center">
-              <Image src={business.businessProfilePhotoUrl} alt="Business Profile Photo" width={512} height={512} className="rounded-md object-cover border-2 border-gray-300" />
-            </div>
-          )}
-          <p className="mt-4 text-gray-700">Owner: {business.ownerName}</p>
-          <p className="mt-2 text-gray-700">Type: {business.businessType}</p>
-          <p className="mt-2 text-gray-700">Tax Status: {business.businessTaxStatus}</p>
-          <p className="mt-2 text-gray-700">Industry: {business.businessIndustry}</p>
-          {business.businessDescription && <p className="mt-2 text-gray-700">Description: {business.businessDescription}</p>}
-          {business.streetAddress && <p className="mt-2 text-gray-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}
-          {business.phone && <p className="mt-2 text-gray-700">Phone: {business.phone}</p>}
-          {business.website && <p className="mt-2 text-gray-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{business.website}</a></p>}
 
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold">Business Documents</h2>
-            <ul>
-              {business.material1Url && (
-                <li>
-                  <a href={business.material1Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
-                    {business.material1Title || 'Document 1'}
-                  </a>
-                </li>
-              )}
-              {business.material2Url && (
-                <li>
-                  <a href={business.material2Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
-                    {business.material2Title || 'Document 2'}
-                  </a>
-                </li>
-              )}
-              {business.material3Url && (
-                <li>
-                  <a href={business.material3Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
-                    {business.material3Title || 'Document 3'}
-                  </a>
-                </li>
-              )}
-              {business.material4Url && (
-                <li>
-                  <a href={business.material4Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
-                    {business.material4Title || 'Document 4'}
-                  </a>
-                </li>
-              )}
-              {business.material5Url && (
-                <li>
-                  <a href={business.material5Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
-                    {business.material5Title || 'Document 5'}
-                  </a>
-                </li>
-              )}
-            </ul>
+          {/* Right Column: Business Documents */}
+          <div>
+            <div className="p-6 bg-white rounded-lg shadow-md">
+              <h2 className="text-2xl font-bold mb-4">Business Documents</h2>
+              <ul>
+                {business.material1Url && (
+                  <li>
+                    <a href={business.material1Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                      {business.material1Title || 'Document 1'}
+                    </a>
+                  </li>
+                )}
+                {business.material2Url && (
+                  <li>
+                    <a href={business.material2Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                      {business.material2Title || 'Document 2'}
+                    </a>
+                  </li>
+                )}
+                {business.material3Url && (
+                  <li>
+                    <a href={business.material3Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                      {business.material3Title || 'Document 3'}
+                    </a>
+                  </li>
+                )}
+                {business.material4Url && (
+                  <li>
+                    <a href={business.material4Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                      {business.material4Title || 'Document 4'}
+                    </a>
+                  </li>
+                )}
+                {business.material5Url && (
+                  <li>
+                    <a href={business.material5Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                      {business.material5Title || 'Document 5'}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
         </div>
       )}
