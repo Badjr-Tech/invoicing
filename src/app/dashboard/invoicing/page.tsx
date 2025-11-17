@@ -17,7 +17,7 @@ export default async function InvoicingPage({ searchParams }: { searchParams: Pr
 
   const clients = await getClients();
   const services = await getServices({ businessId }); // getServices now fetches with category details
-  const categories = await getServiceCategories(); // New: Fetch categories
+  const categories = await getServiceCategories({ businessId }); // New: Fetch categories
   const businesses = await getAllUserBusinesses(session.user.id); // New: Pass userId
 
   return <InvoicingPageClient clients={clients} services={services} categories={categories} businesses={businesses} />;

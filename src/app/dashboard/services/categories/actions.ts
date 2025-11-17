@@ -62,7 +62,7 @@ export async function createServiceCategory(prevState: FormState, formData: Form
   }
 }
 
-export async function getServiceCategories() {
+export async function getServiceCategories({ businessId }: { businessId?: number } = {}) {
   const userId = await getUserIdFromSession();
 
   if (!userId) {
@@ -70,8 +70,13 @@ export async function getServiceCategories() {
   }
 
   try {
+    const conditions = [eq(serviceCategories.userId, userId)];
+    if (businessId !== undefined) {
+      conditions.push(eq(serviceCategories.businessId, businessId));
+    }
+
     const categories = await db.query.serviceCategories.findMany({
-      where: eq(serviceCategories.userId, userId),
+      where: and(...conditions),
       with: { // Fetch related business information
         business: {
           columns: {
