@@ -42,7 +42,7 @@ export default function CreateBusinessPage() {
           {/* Business Name */}
           <div>
             <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
-              Business Name (Legal Name)
+              Business Name/Title
             </label>
             <input
               type="text"
