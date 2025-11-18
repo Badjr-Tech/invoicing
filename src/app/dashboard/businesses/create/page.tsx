@@ -9,27 +9,12 @@ import Link from "next/link";
 export default function CreateBusinessPage() {
   const [state, formAction] = useFormState(createBusinessProfile, undefined);
   const router = useRouter();
-  const [dbas, setDbas] = useState<string[]>([]);
-  const [newDba, setNewDba] = useState("");
 
   useEffect(() => {
     if (state?.message === "Business profile created successfully!") {
       router.push("/dashboard/businesses");
     }
   }, [state, router]);
-
-  const handleAddDba = () => {
-    if (newDba.trim() !== "") {
-      setDbas([...dbas, newDba.trim()]);
-      setNewDba("");
-    }
-  };
-
-  const handleDeleteDba = (index: number) => {
-    const updatedDbas = [...dbas];
-    updatedDbas.splice(index, 1);
-    setDbas(updatedDbas);
-  };
 
 
   return (
@@ -64,6 +49,19 @@ export default function CreateBusinessPage() {
               id="businessName"
               name="businessName"
               required
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+
+          {/* Legal Business Name */}
+          <div>
+            <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
+              Legal Business Name
+            </label>
+            <input
+              type="text"
+              id="legalBusinessName"
+              name="legalBusinessName"
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
@@ -148,43 +146,6 @@ export default function CreateBusinessPage() {
               <option value="Not Applicable">Not Applicable</option>
             </select>
           </div>
-
-          {/* DBA Management */}
-          <div>
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Doing Business As (DBA)</h2>
-            <div className="space-y-4">
-              {dbas.map((dba, index) => (
-                <div key={index} className="flex items-center justify-between p-2 bg-gray-100 rounded-md">
-                  <p>{dba}</p>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteDba(index)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 flex items-center">
-              <input
-                type="text"
-                value={newDba}
-                onChange={(e) => setNewDba(e.target.value)}
-                placeholder="Enter DBA name"
-                className="flex-grow border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-              />
-              <button
-                type="button"
-                onClick={handleAddDba}
-                className="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Add DBA
-              </button>
-            </div>
-          </div>
-
-          <input type="hidden" name="dbas" value={JSON.stringify(dbas)} />
 
           {/* Business Description */}
           <div>

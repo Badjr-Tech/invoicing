@@ -63,6 +63,20 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
         />
       </div>
 
+      {/* Legal Business Name */}
+      <div>
+        <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
+          Legal Business Name
+        </label>
+        <input
+          id="legalBusinessName"
+          name="legalBusinessName"
+          type="text"
+          defaultValue={business.legalBusinessName || ''}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+        />
+      </div>
+
       {/* Owner Name */}
       <div>
         <label htmlFor="ownerName" className="block text-sm font-medium text-gray-700">

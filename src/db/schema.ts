@@ -48,6 +48,7 @@ export const businesses = pgTable('businesses', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
   businessName: text('business_name').notNull(),
+  legalBusinessName: text('legal_business_name'), // New column
   ownerName: text('owner_name').notNull(),
   percentOwnership: numeric('percent_ownership').notNull(),
   businessType: businessTypeEnum('business_type').notNull(),
@@ -88,11 +89,7 @@ export const businesses = pgTable('businesses', {
   taxFullName: text('tax_full_name'), // New optional column for tax full name
 });
 
-export const dbas = pgTable('dbas', {
-  id: serial('id').primaryKey(),
-  businessId: integer('business_id').notNull().references(() => businesses.id),
-  name: text('name').notNull(),
-});
+
 
 export const massMessages = pgTable('mass_messages', {
   id: serial('id').primaryKey(),
@@ -205,11 +202,7 @@ export interface LocationType {
 export type Demographic = DemographicType;
 export type Location = LocationType;
 
-export type Dba = InferSelectModel<typeof dbas>; // Define Dba type
-
-export type Business = InferSelectModel<typeof businesses> & {
-  dbas?: Dba[]; // Make dbas an optional array of Dba
-};
+export type Business = InferSelectModel<typeof businesses>;
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
 export type BusinessWithDemographicAndLocation = InferSelectModel<typeof businesses> & { demographic: Demographic | null, location: Location | null };
@@ -296,15 +289,9 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
     fields: [businesses.userId],
     references: [users.id],
   }),
-  dbas: many(dbas),
 }));
 
-export const dbasRelations = relations(dbas, ({ one }) => ({
-  business: one(businesses, {
-    fields: [dbas.businessId],
-    references: [businesses.id],
-  }),
-}));
+
 
 export const massMessagesRelations = relations(massMessages, ({ one }) => ({
   admin: one(users, {

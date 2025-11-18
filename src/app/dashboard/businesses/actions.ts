@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from "@/db";
-import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType, dbas } from "@/db/schema"; // Updated import
+import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
 import { eq, like, and, InferSelectModel } from "drizzle-orm";
 import { getSession, SessionPayload } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
@@ -25,13 +25,10 @@ export async function fetchSession(): Promise<SessionPayload | null> {
   return await getSession();
 }
 
-export async function getBusinessProfile(businessId: number): Promise<Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
+export async function getBusinessProfile(businessId: number): Promise<Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
-      with: {
-        dbas: true,
-      },
     });
     if (!profile) { return null; }
     return profile;
@@ -61,12 +58,8 @@ export async function getAllUserBusinesses(userId: number, searchQuery?: string,
       conditions.push(eq(businesses.isArchived, filters.isArchived));
     }
 
-    console.log("getAllUserBusinesses: Attempting to fetch businesses with dbas relation.");
     const allBusinesses = await db.query.businesses.findMany({
       where: and(...conditions),
-      with: {
-        dbas: true,
-      },
       orderBy: (businesses, { asc, desc }) => [asc(businesses.isArchived), asc(businesses.businessName)],
     });
     return allBusinesses;
@@ -102,6 +95,7 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const ownerName = formData.get("ownerName") as string;
   const percentOwnership = parseFloat(formData.get("percentOwnership") as string);
   const businessName = formData.get("businessName") as string;
+  const legalBusinessName = formData.get("legalBusinessName") as string; // New
   const businessType = formData.get("businessType") as string;
   const businessTaxStatus = formData.get("businessTaxStatus") as string;
   const businessDescription = formData.get("businessDescription") as string;
@@ -114,7 +108,6 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const phone = formData.get("phone") as string;
   const website = formData.get("website") as string;
   const taxFullName = formData.get("taxFullName") as string; // New
-  const dbasString = formData.get("dbas") as string;
   const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
 
   console.log("createBusinessProfile: formData fields:", {
@@ -133,7 +126,6 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
     phone,
     website,
     taxFullName, // New
-    dbas: dbasString,
     businessMaterials: businessMaterials ? businessMaterials.name : "no file",
   });
 
@@ -157,6 +149,7 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
       ownerName,
       percentOwnership: percentOwnership.toString(),
       businessName,
+      legalBusinessName, // New
       businessType: businessType as typeof businessTypeEnum.enumValues[number],
       businessTaxStatus: businessTaxStatus as typeof businessTaxStatusEnum.enumValues[number],
       businessDescription,
@@ -176,17 +169,6 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
 
     const [newBusiness] = await db.insert(businesses).values(newBusinessData).returning();
     console.log("createBusinessProfile: Business inserted successfully.");
-
-    if (dbasString) {
-      const dbaNames = JSON.parse(dbasString) as string[];
-      if (Array.isArray(dbaNames) && dbaNames.length > 0) {
-        const dbaValues = dbaNames.map(name => ({
-          businessId: newBusiness.id,
-          name,
-        }));
-        await db.insert(dbas).values(dbaValues);
-      }
-    }
 
     revalidatePath("/dashboard/businesses");
     return { message: "Business profile created successfully!", error: "" };
@@ -219,6 +201,7 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const ownerName = formData.get("ownerName") as string;
     const percentOwnership = parseFloat(formData.get("percentOwnership") as string);
     const businessName = formData.get("businessName") as string;
+    const legalBusinessName = formData.get("legalBusinessName") as string; // New
     const businessType = formData.get("businessType") as string;
     const businessTaxStatus = formData.get("businessTaxStatus") as string;
     const businessDescription = formData.get("businessDescription") as string;
@@ -322,6 +305,7 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         ownerName,
         percentOwnership: percentOwnership.toString(),
         businessName,
+        legalBusinessName, // New
         businessType: businessType as typeof businessTypeEnum.enumValues[number],
         businessTaxStatus: businessTaxStatus as typeof businessTaxStatusEnum.enumValues[number],
         businessDescription,
@@ -642,80 +626,4 @@ export async function updateBusinessDesign(prevState: FormState, formData: FormD
   }
 }
 
-export async function createDba(prevState: FormState, formData: FormData): Promise<FormState> {
-  const userId = await getUserIdFromSession();
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
 
-  const businessId = parseInt(formData.get("businessId") as string);
-  const name = formData.get("name") as string;
-
-  if (isNaN(businessId) || !name) {
-    return { message: "", error: "Invalid business ID or name." };
-  }
-
-  try {
-    await db.insert(dbas).values({ businessId, name });
-    revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "DBA created successfully!", error: "" };
-  } catch (error) {
-    console.error("Error creating DBA:", error);
-    return { message: "", error: "Failed to create DBA." };
-  }
-}
-
-export async function updateDba(prevState: FormState, formData: FormData): Promise<FormState> {
-  const userId = await getUserIdFromSession();
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
-
-  const id = parseInt(formData.get("id") as string);
-  const name = formData.get("name") as string;
-
-  if (isNaN(id) || !name) {
-    return { message: "", error: "Invalid DBA ID or name." };
-  }
-
-  try {
-    const dba = await db.query.dbas.findFirst({ where: eq(dbas.id, id) });
-    if (!dba) {
-      return { message: "", error: "DBA not found." };
-    }
-
-    await db.update(dbas).set({ name }).where(eq(dbas.id, id));
-    revalidatePath(`/dashboard/businesses/${dba.businessId}`);
-    return { message: "DBA updated successfully!", error: "" };
-  } catch (error) {
-    console.error("Error updating DBA:", error);
-    return { message: "", error: "Failed to update DBA." };
-  }
-}
-
-export async function deleteDba(prevState: FormState, formData: FormData): Promise<FormState> {
-  const userId = await getUserIdFromSession();
-  if (!userId) {
-    return { message: "", error: "User not authenticated." };
-  }
-
-  const id = parseInt(formData.get("id") as string);
-
-  if (isNaN(id)) {
-    return { message: "", error: "Invalid DBA ID." };
-  }
-
-  try {
-    const dba = await db.query.dbas.findFirst({ where: eq(dbas.id, id) });
-    if (!dba) {
-      return { message: "", error: "DBA not found." };
-    }
-
-    await db.delete(dbas).where(eq(dbas.id, id));
-    revalidatePath(`/dashboard/businesses/${dba.businessId}`);
-    return { message: "DBA deleted successfully!", error: "" };
-  } catch (error) {
-    console.error("Error deleting DBA:", error);
-    return { message: "", error: "Failed to delete DBA." };
-  }
-}
