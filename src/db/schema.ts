@@ -89,7 +89,13 @@ export const businesses = pgTable('businesses', {
   taxFullName: text('tax_full_name'), // New optional column for tax full name
 });
 
-
+export const dbas = pgTable('dbas', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').notNull().references(() => businesses.id),
+  dbaName: text('dba_name').notNull(),
+  description: text('description'),
+});
 
 export const massMessages = pgTable('mass_messages', {
   id: serial('id').primaryKey(),
@@ -213,6 +219,8 @@ export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New
 export type Client = InferSelectModel<typeof clients>; // New type
 export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // Re-added type
 
+export type DBA = InferSelectModel<typeof dbas>; // New type
+
 // --- Relations ---
 export const checklistItems = pgTable('checklist_items', {
   id: serial('id').primaryKey(),
@@ -224,6 +232,7 @@ export const checklistItems = pgTable('checklist_items', {
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   businesses: many(businesses),
+  dbas: many(dbas), // New relation
   sentMessages: many(individualMessages, { relationName: 'sent_messages' }),
   receivedMessages: many(individualMessages, { relationName: 'received_messages' }),
   enrollments: many(enrollments),
@@ -288,6 +297,18 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
   user: one(users, {
     fields: [businesses.userId],
     references: [users.id],
+  }),
+  dbas: many(dbas), // New relation
+}));
+
+export const dbasRelations = relations(dbas, ({ one }) => ({
+  user: one(users, {
+    fields: [dbas.userId],
+    references: [users.id],
+  }),
+  business: one(businesses, {
+    fields: [dbas.businessId],
+    references: [businesses.id],
   }),
 }));
 
