@@ -292,7 +292,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
     fields: [businesses.userId],
     references: [users.id],
   }),
-  dbas: many(dbas, { relationName: 'business_dbas' }),
+  dbas: many(dbas),
 }));
 
 export const massMessagesRelations = relations(massMessages, ({ one }) => ({
