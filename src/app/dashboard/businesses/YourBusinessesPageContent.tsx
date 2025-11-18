@@ -57,7 +57,7 @@ export default function YourBusinessesPageContent() {
       <h1 className="text-3xl font-bold text-foreground">Your Businesses</h1>
       <p className="mt-4 text-foreground">
         To create a new business, click Create New Business and fill out the form with your details.
-        You’ll need to provide the owner name, current partnership (if applicable), business title,
+        You’ll need to provide the owner name, business title,
         business type, tax status, and legal business name. Your legal business name is the name
         you used when registering your business—if you’re a sole proprietor, it’s your personal name.
         For businesses with DBAs or trade names, the business title should reflect the DBA, while the
