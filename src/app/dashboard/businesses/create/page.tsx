@@ -19,9 +19,17 @@ export default function CreateBusinessPage() {
   }, [state, router]);
 
   const handleAddDba = () => {
+    console.log("handleAddDba called");
     if (newDba.trim() !== "") {
-      setDbas([...dbas, newDba.trim()]);
+      setDbas((prevDbas) => {
+        const updatedDbas = [...prevDbas, newDba.trim()];
+        console.log("DBAs after add:", updatedDbas);
+        return updatedDbas;
+      });
       setNewDba("");
+      console.log("newDba cleared");
+    } else {
+      console.log("newDba is empty, not adding.");
     }
   };
 
@@ -171,6 +179,12 @@ export default function CreateBusinessPage() {
                 type="text"
                 value={newDba}
                 onChange={(e) => setNewDba(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddDba(); // Call handleAddDba when Enter is pressed
+                  }
+                }}
                 placeholder="Enter DBA name"
                 className="flex-grow border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
