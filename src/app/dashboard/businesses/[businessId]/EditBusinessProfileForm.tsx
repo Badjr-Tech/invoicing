@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
-import { updateBusinessProfile, createDba, deleteDba } from "../actions";
+import { updateBusinessProfile } from "../actions";
 import { useFormState } from "react-dom";
 import Image from "next/image";
 
@@ -12,7 +12,7 @@ type FormState = {
 } | undefined;
 
 interface EditBusinessProfileFormProps {
-  initialBusiness: Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
+  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; }; // Updated type
   availableDemographics: DemographicType[];
   availableLocations: LocationType[];
 }
@@ -21,10 +21,6 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
   const [business, setBusiness] = useState(initialBusiness); // Updated type
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(business.logoUrl);
-  const [dbas, setDbas] = useState(initialBusiness.dbas || []);
-  const [newDba, setNewDba] = useState("");
-  const [createDbaState, createDbaAction] = useFormState(createDba, undefined);
-  const [deleteDbaState, deleteDbaAction] = useFormState(deleteDba, undefined);
 
   const [editState, editFormAction] = useFormState<FormState, FormData>(updateBusinessProfile, undefined);
 
@@ -145,45 +141,6 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           <option value="C-Corporation">C-Corporation</option>
           <option value="Not Applicable">Not Applicable</option>
         </select>
-      </div>
-
-      {/* DBA Management */}
-      <div>
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Doing Business As (DBA)</h2>
-        <div className="space-y-4">
-          {dbas.map((dba) => (
-            <div key={dba.id} className="flex items-center justify-between p-2 bg-gray-100 rounded-md">
-              <p>{dba.name}</p>
-              <form action={deleteDbaAction}>
-                <input type="hidden" name="id" value={dba.id} />
-                <button
-                  type="submit"
-                  className="text-red-600 hover:text-red-800"
-                >
-                  Delete
-                </button>
-              </form>
-            </div>
-          ))}
-        </div>
-        <form action={createDbaAction} className="mt-4 flex items-center">
-          <input type="hidden" name="businessId" value={initialBusiness.id} />
-          <input
-            type="text"
-            name="name"
-            value={newDba}
-            onChange={(e) => setNewDba(e.target.value)}
-            placeholder="Enter DBA name"
-            className="flex-grow border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-          <button
-            type="submit"
-            className="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Add DBA
-          </button>
-        </form>
-        {createDbaState?.error && <p className="text-red-600 text-sm mt-2">{createDbaState.error}</p>}
       </div>
 
       {/* Business Description */}
