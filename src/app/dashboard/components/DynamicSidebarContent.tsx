@@ -91,10 +91,10 @@ export default function DynamicSidebarContent() {
               Resources
             </Link>
             <Link
-              href="/dashboard/agency-class"
+              href="/dashboard/business-compliance"
               className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
             >
-              Page 2
+              Business Compliance
             </Link>
             <Link
               href="/dashboard/business-checklist"
