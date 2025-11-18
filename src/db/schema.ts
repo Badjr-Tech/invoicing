@@ -205,7 +205,11 @@ export interface LocationType {
 export type Demographic = DemographicType;
 export type Location = LocationType;
 
-export type Business = InferSelectModel<typeof businesses>;
+export type Dba = InferSelectModel<typeof dbas>; // Define Dba type
+
+export type Business = InferSelectModel<typeof businesses> & {
+  dbas?: Dba[]; // Make dbas an optional array of Dba
+};
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
 export type BusinessWithDemographicAndLocation = InferSelectModel<typeof businesses> & { demographic: Demographic | null, location: Location | null };
