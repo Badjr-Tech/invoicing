@@ -126,6 +126,12 @@ export default function DynamicSidebarContent() {
             >
               Businesses
             </Link>
+            <Link
+              href="/dashboard/business-tools/contractors"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Contractors
+            </Link>
             {businesses.map((business) => (
               <Link
                 key={business.id}
