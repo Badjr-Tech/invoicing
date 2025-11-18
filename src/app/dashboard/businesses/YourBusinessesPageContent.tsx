@@ -8,6 +8,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Business } from "@/db/schema"; // Import Business type from schema
 
+type FormState = {
+  message: string;
+  error: string;
+} | undefined;
+
 export default function YourBusinessesPageContent() {
   const router = useRouter();
   const [session, setSession] = useState<SessionPayload | null>(null);
