@@ -40,8 +40,7 @@ export default function YourBusinessesPageContent() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [loadingBusinesses, setLoadingBusinesses] = useState(true);
 
-  const [createState, createFormAction] = useFormState<FormState, FormData>(createBusinessProfile,
- undefined);
+  const [createState, createFormAction] = useFormState<FormState, FormData>(createBusinessProfile, undefined);
 
   useEffect(() => {
     async function fetchSessionAndBusinesses() {
@@ -81,9 +80,7 @@ export default function YourBusinessesPageContent() {
       <div className="mt-6">
         <button
           onClick={() => setShowCreateForm(!showCreateForm)}
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary py
--2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 
-focus:ring-primary focus:ring-offset-2"
+          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
           {showCreateForm ? "Cancel" : "Create New Business"}
         </button>
@@ -103,15 +100,13 @@ focus:ring-primary focus:ring-offset-2"
                 name="ownerName" // Added name
                 type="text" // Added type
                 required // Added required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pri
-mary focus:ring-primary text-foreground"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
               />
             </div>
 
             {/* Percent Ownership */}
             <div>
-              <label htmlFor="percentOwnership" className="block text-sm font-medium text-foregrou
-nd">
+              <label htmlFor="percentOwnership" className="block text-sm font-medium text-foreground">
                 Percent Ownership
               </label>
               <input
@@ -119,8 +114,7 @@ nd">
                 name="percentOwnership"
                 type="text"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pri
-mary focus:ring-primary text-foreground"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
               />
             </div>
 
@@ -134,8 +128,7 @@ mary focus:ring-primary text-foreground"
                 name="businessName"
                 type="text"
                 required
-className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-
-primary text-foreground"
+className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
               />
             </div>
 
@@ -148,30 +141,26 @@ primary text-foreground"
               id="businessType"
               name="businessType"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-prima
-ry focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
             >
               <option value="">Select Business Type</option>
               <option value="Sole Proprietorship">Sole Proprietorship</option>
               <option value="Partnership">Partnership</option>
-              <option value="Limited Liability Company (LLC)">Limited Liability Company (LLC)</opt
-ion>
+              <option value="Limited Liability Company (LLC)">Limited Liability Company (LLC)</option>
               <option value="Corporation">Corporation</option>
             </select>
           </div>
 
           {/* Business Tax Status */}
           <div>
-            <label htmlFor="businessTaxStatus" className="block text-sm font--medium text-foregrou
-nd">
+            <label htmlFor="businessTaxStatus" className="block text-sm font--medium text-foreground">
               Business Tax Status
             </label>
             <select
               id="businessTaxStatus"
               name="businessTaxStatus"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-prima
-ry focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
             >
               <option value="">Select Tax Status</option>
               <option value="S-Corporation">S-Corporation</option>
@@ -182,23 +171,20 @@ ry focus:ring-primary text-foreground"
 
           {/* Business Description */}
           <div>
-            <label htmlFor="businessDescription" className="block text-sm font-medium text-foregro
-und">
+            <label htmlFor="businessDescription" className="block text-sm font-medium text-foreground">
               Business Description
             </label>
             <textarea
               id="businessDescription"
               name="businessDescription"
               rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             ></textarea>
           </div>
 
           {/* Business Industry */}
           <div>
-            <label htmlFor="businessIndustry" className="block text-sm font-medium text-foreground
-">
+            <label htmlFor="businessIndustry" className="block text-sm font-medium text-foreground">
               Business Industry
             </label>
             <input
@@ -206,8 +192,7 @@ o-500 focus:ring-primary text-foreground"
               name="businessIndustry"
               type="text"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
@@ -220,8 +205,7 @@ o-500 focus:ring-primary text-foreground"
               id="streetAddress"
               name="streetAddress"
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
@@ -234,8 +218,7 @@ o-500 focus:ring-primary text-foreground"
               id="city"
               name="city"
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
@@ -249,8 +232,7 @@ o-500 focus:ring-primary text-foreground"
               name="state"
               type="text"
               maxLength={2}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
@@ -264,8 +246,7 @@ o-500 focus:ring-primary text-foreground"
               name="zipCode"
               type="text"
               maxLength={10}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
@@ -278,8 +259,7 @@ o-500 focus:ring-primary text-foreground"
               id="phone"
               name="phone"
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
@@ -292,15 +272,13 @@ o-500 focus:ring-primary text-foreground"
               id="website"
               name="website"
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indig
-o-500 focus:ring-primary text-foreground"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
             />
           </div>
 
           {/* Business Materials Upload */}
           <div>
-            <label htmlFor="businessMaterials" className="block text-sm font-medium text-foregroun
-d">
+            <label htmlFor="businessMaterials" className="block text-sm font-medium text-foreground">
               Business Materials
             </label>
             <input
@@ -326,9 +304,7 @@ d">
           <div>
             <button
               type="submit"
-              className="inline-flex justify-center rounded-md border border-transparent bg-primar
-y py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:rin
-g-2 focus:ring-primary focus:ring-offset-2"
+              className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               Create Business Profile
             </button>
@@ -340,23 +316,18 @@ g-2 focus:ring-primary focus:ring-offset-2"
       {/* Display existing businesses */}
       <div className="mt-8 flex flex-col space-y-4">
         {userBusinesses.length === 0 && !showCreateForm ? (
-          <p className="text-foreground">You don&apos;t have any businesses yet. Click &quot;Creat
-e New Business&quot; to get started!</p>
+          <p className="text-foreground">You don&apos;t have any businesses yet. Click &quot;Create New Business&quot; to get started!</p>
         ) : (
           userBusinesses.map((business) => (
             <button
               key={business.id}
               onClick={() => handleBusinessClick(business.id)}
-              className={`w-full text-left py-4 px-6 rounded-lg shadow-md transition-all duration-
-200 flex items-center space-x-4 ${business.isArchived ? 'bg-gray-200 text-gray-500 opacity-60' : '
-bg-background hover:shadow-lg'}`}
+              className={`w-full text-left py-4 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center space-x-4 ${business.isArchived ? 'bg-gray-200 text-gray-500 opacity-60' : 'bg-background hover:shadow-lg'}`}
             >
               {business.logoUrl ? (
-                <Image src={business.logoUrl} alt={`${business.businessName} Logo`} width={40} hei
-ght={40} className="rounded-full object-cover" />
+                <Image src={business.logoUrl} alt={`${business.businessName} Logo`} width={40} height={40} className="rounded-full object-cover" />
               ) : (
-                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-cente
-r text-gray-500 text-lg font-bold">
+                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-lg font-bold">
                   {business.businessName ? business.businessName[0].toUpperCase() : '?'}
                 </div>
               )}

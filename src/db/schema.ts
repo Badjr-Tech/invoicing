@@ -47,6 +47,7 @@ export const businesses = pgTable('businesses', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
   businessName: text('business_name').notNull(),
+  legalBusinessName: text('legal_business_name'),
   ownerName: text('owner_name').notNull(),
   percentOwnership: numeric('percent_ownership').notNull(),
   businessType: businessTypeEnum('business_type').notNull(),

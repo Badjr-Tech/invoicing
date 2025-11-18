@@ -25,10 +25,8 @@ export async function createDba(
 
   try {
     await db.insert(dbas).values({
-      userId: userId,
       businessId: parseInt(businessId),
-      dbaName: dbaName,
-      description: description || null,
+      name: dbaName,
     });
 
     revalidatePath("/dashboard/businesses");
