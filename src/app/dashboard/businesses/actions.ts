@@ -61,12 +61,10 @@ export async function getAllUserBusinesses(userId: number, searchQuery?: string,
       conditions.push(eq(businesses.isArchived, filters.isArchived));
     }
 
-    console.log("getAllUserBusinesses: Attempting to fetch businesses with dbas relation.");
+    console.log("getAllUserBusinesses: Attempting to fetch businesses without dbas relation for diagnosis.");
     const allBusinesses = await db.query.businesses.findMany({
       where: and(...conditions),
-      with: {
-        dbas: true,
-      },
+      // Temporarily removed 'with: { dbas: true }' for diagnosis
       orderBy: (businesses, { asc, desc }) => [asc(businesses.isArchived), asc(businesses.businessName)],
     });
     return allBusinesses;
