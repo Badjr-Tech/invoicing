@@ -1,7 +1,8 @@
 'use server';
 
 import { db } from "@/db";
-import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationType } from "@/db/schema"; // Updated import
+import { businesses, businessTypeEnum, businessTaxStatusEnum, Business, DemographicType, LocationT
+ype, dbas } from "@/db/schema"; // Updated import
 import { eq, like, and, InferSelectModel } from "drizzle-orm";
 import { getSession, SessionPayload } from "@/app/login/actions";
 import { revalidatePath } from "next/cache";
@@ -25,10 +26,16 @@ export async function fetchSession(): Promise<SessionPayload | null> {
   return await getSession();
 }
 
-export async function getBusinessProfile(businessId: number): Promise<Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
+export async function getBusinessProfile(businessId: number): Promise<Business & { dbas: { id: num
+ber; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | n
+ull; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; } & { color1?: str
+ing | null; color2?: string | null; color3?: string | null; color4?: string | null; } | null> {
   try {
     const profile = await db.query.businesses.findFirst({
       where: eq(businesses.id, businessId),
+      with: {
+        dbas: true,
+      },
     });
     if (!profile) { return null; }
     return profile;
@@ -38,7 +45,8 @@ export async function getBusinessProfile(businessId: number): Promise<Business &
   }
 }
 
-export async function getAllUserBusinesses(userId: number, searchQuery?: string, filters?: { businessType?: string; businessTaxStatus?: string; isArchived?: boolean; }) {
+export async function getAllUserBusinesses(userId: number, searchQuery?: string, filters?: { busin
+essType?: string; businessTaxStatus?: string; isArchived?: boolean; }) {
   try {
     const conditions = [eq(businesses.userId, userId)];
 
@@ -47,20 +55,27 @@ export async function getAllUserBusinesses(userId: number, searchQuery?: string,
     }
 
     if (filters?.businessType) {
-      conditions.push(eq(businesses.businessType, filters.businessType as typeof businessTypeEnum.enumValues[number]));
+      conditions.push(eq(businesses.businessType, filters.businessType as typeof businessTypeEnum.
+enumValues[number]));
     }
 
     if (filters?.businessTaxStatus) {
-      conditions.push(eq(businesses.businessTaxStatus, filters.businessTaxStatus as typeof businessTaxStatusEnum.enumValues[number]));
+      conditions.push(eq(businesses.businessTaxStatus, filters.businessTaxStatus as typeof busines
+sTaxStatusEnum.enumValues[number]));
     }
 
     if (filters?.isArchived !== undefined) {
       conditions.push(eq(businesses.isArchived, filters.isArchived));
     }
 
+    console.log("getAllUserBusinesses: Attempting to fetch businesses with dbas relation.");
     const allBusinesses = await db.query.businesses.findMany({
       where: and(...conditions),
-      orderBy: (businesses, { asc, desc }) => [asc(businesses.isArchived), asc(businesses.businessName)],
+      with: {
+        dbas: true,
+      },
+      orderBy: (businesses, { asc, desc }) => [asc(businesses.isArchived), asc(businesses.business
+Name)],
     });
     return allBusinesses;
   } catch (error) {
@@ -84,7 +99,8 @@ export async function getAllBusinesses() {
   }
 }
 
-export async function createBusinessProfile(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function createBusinessProfile(prevState: FormState, formData: FormData): Promise<For
+mState> {
   const userId = await getUserIdFromSession();
   console.log("createBusinessProfile: userId", userId);
 
@@ -95,7 +111,6 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const ownerName = formData.get("ownerName") as string;
   const percentOwnership = parseFloat(formData.get("percentOwnership") as string);
   const businessName = formData.get("businessName") as string;
-  const legalBusinessName = formData.get("legalBusinessName") as string; // New
   const businessType = formData.get("businessType") as string;
   const businessTaxStatus = formData.get("businessTaxStatus") as string;
   const businessDescription = formData.get("businessDescription") as string;
@@ -108,6 +123,7 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   const phone = formData.get("phone") as string;
   const website = formData.get("website") as string;
   const taxFullName = formData.get("taxFullName") as string; // New
+  const dbasString = formData.get("dbas") as string;
   const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
 
   console.log("createBusinessProfile: formData fields:", {
@@ -126,10 +142,12 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
     phone,
     website,
     taxFullName, // New
+    dbas: dbasString,
     businessMaterials: businessMaterials ? businessMaterials.name : "no file",
   });
 
-  if (!ownerName || isNaN(percentOwnership) || !businessName || !businessType || !businessTaxStatus || !businessIndustry) {
+  if (!ownerName || isNaN(percentOwnership) || !businessName || !businessType || !businessTaxStatu
+s || !businessIndustry) {
     console.error("createBusinessProfile: Required fields missing or invalid.");
     return { message: "", error: "Required fields are missing." };
   }
@@ -138,7 +156,8 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
     // Placeholder for file upload logic
     let businessMaterialsUrl: string | undefined;
     if (businessMaterials && businessMaterials.size > 0) {
-      // In a real application, you would upload this file to a storage service (e.g., S3, Vercel Blob)
+      // In a real application, you would upload this file to a storage service (e.g., S3, Vercel 
+Blob)
       // and get a URL. For now, we'll just log it.
       console.log("Attempting to upload file:", businessMaterials.name);
       businessMaterialsUrl = "https://example.com/placeholder-material.pdf"; // Placeholder URL
@@ -149,7 +168,6 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
       ownerName,
       percentOwnership: percentOwnership.toString(),
       businessName,
-      legalBusinessName, // New
       businessType: businessType as typeof businessTypeEnum.enumValues[number],
       businessTaxStatus: businessTaxStatus as typeof businessTaxStatusEnum.enumValues[number],
       businessDescription,
@@ -170,6 +188,17 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
     const [newBusiness] = await db.insert(businesses).values(newBusinessData).returning();
     console.log("createBusinessProfile: Business inserted successfully.");
 
+    if (dbasString) {
+      const dbaNames = JSON.parse(dbasString) as string[];
+      if (Array.isArray(dbaNames) && dbaNames.length > 0) {
+        const dbaValues = dbaNames.map(name => ({
+          businessId: newBusiness.id,
+          name,
+        }));
+        await db.insert(dbas).values(dbaValues);
+      }
+    }
+
     revalidatePath("/dashboard/businesses");
     return { message: "Business profile created successfully!", error: "" };
   } catch (error) {
@@ -182,7 +211,8 @@ export async function createBusinessProfile(prevState: FormState, formData: Form
   }
 }
 
-export async function updateBusinessProfile(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function updateBusinessProfile(prevState: FormState, formData: FormData): Promise<For
+mState> {
     const userId = await getUserIdFromSession();
     console.log("updateBusinessProfile: userId", userId);
 
@@ -201,7 +231,6 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const ownerName = formData.get("ownerName") as string;
     const percentOwnership = parseFloat(formData.get("percentOwnership") as string);
     const businessName = formData.get("businessName") as string;
-    const legalBusinessName = formData.get("legalBusinessName") as string; // New
     const businessType = formData.get("businessType") as string;
     const businessTaxStatus = formData.get("businessTaxStatus") as string;
     const businessDescription = formData.get("businessDescription") as string;
@@ -216,7 +245,8 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     const taxFullName = formData.get("taxFullName") as string; // New
     const businessMaterials = formData.get("businessMaterials") as File; // Placeholder for file
     const logo = formData.get("logo") as File; // New: Get logo file
-    const businessProfilePhoto = formData.get("businessProfilePhoto") as File; // New: Get business profile photo file
+    const businessProfilePhoto = formData.get("businessProfilePhoto") as File; // New: Get busines
+s profile photo file
 
     console.log("updateBusinessProfile: formData fields:", {
       ownerName,
@@ -240,7 +270,8 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
     });
 
     // New: Handle 5 material uploads and titles
-    const materialUpdates: { urlField: string; titleField: string; url?: string; title?: string; }[] = [];
+    const materialUpdates: { urlField: string; titleField: string; url?: string; title?: string; }
+[] = [];
     for (let i = 1; i <= 5; i++) {
       const materialFile = formData.get(`material${i}`) as File;
       const materialTitle = formData.get(`material${i}Title`) as string;
@@ -250,7 +281,8 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       };
 
       if (materialFile && materialFile.size > 0) {
-        const blob = await put(materialFile.name, materialFile, { access: 'public', allowOverwrite: true });
+        const blob = await put(materialFile.name, materialFile, { access: 'public', allowOverwrite
+: true });
         update.url = blob.url;
       }
       if (materialTitle) {
@@ -259,7 +291,8 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       materialUpdates.push(update);
     }
 
-    if (!ownerName || isNaN(percentOwnership) || !businessName || !businessType || !businessTaxStatus || !businessIndustry) {
+    if (!ownerName || isNaN(percentOwnership) || !businessName || !businessType || !businessTaxSta
+tus || !businessIndustry) {
       console.error("updateBusinessProfile: Required fields missing or invalid.");
       return { message: "", error: "Required fields are missing." };
     }
@@ -278,7 +311,8 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         console.log("updateBusinessProfile: Attempting to upload logo:", logo.name);
         try {
           const uniqueFilename = `${businessId}-${Date.now()}-${logo.name}`;
-          const blob = await put(uniqueFilename, logo, { access: 'public', allowOverwrite: true });
+          const blob = await put(uniqueFilename, logo, { access: 'public', allowOverwrite: true })
+;
           logoUrl = blob.url;
           console.log("updateBusinessProfile: Logo uploaded successfully:", logoUrl);
         } catch (uploadError) {
@@ -290,22 +324,26 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
       // New: Handle business profile photo upload
       let businessProfilePhotoUrl: string | undefined;
       if (businessProfilePhoto && businessProfilePhoto.size > 0) {
-        console.log("updateBusinessProfile: Attempting to upload business profile photo:", businessProfilePhoto.name);
+        console.log("updateBusinessProfile: Attempting to upload business profile photo:", busines
+sProfilePhoto.name);
         try {
-          const blob = await put(businessProfilePhoto.name, businessProfilePhoto, { access: 'public', allowOverwrite: true });
+          const blob = await put(businessProfilePhoto.name, businessProfilePhoto, { access: 'publi
+c', allowOverwrite: true });
           businessProfilePhotoUrl = blob.url;
-          console.log("updateBusinessProfile: Business profile photo uploaded successfully:", businessProfilePhotoUrl);
+          console.log("updateBusinessProfile: Business profile photo uploaded successfully:", busi
+nessProfilePhotoUrl);
         } catch (uploadError) {
-          console.error("updateBusinessProfile: Error uploading business profile photo:", uploadError);
+          console.error("updateBusinessProfile: Error uploading business profile photo:", uploadEr
+ror);
           // Optionally, return an error to the user or set a default photo
         }
       }
 
-      const updateData: Partial<InferInsertModel<typeof businesses>> & { [key: string]: string | number | boolean | undefined | null } = {
+      const updateData: Partial<InferInsertModel<typeof businesses>> & { [key: string]: string | n
+umber | boolean | undefined | null } = {
         ownerName,
         percentOwnership: percentOwnership.toString(),
         businessName,
-        legalBusinessName, // New
         businessType: businessType as typeof businessTypeEnum.enumValues[number],
         businessTaxStatus: businessTaxStatus as typeof businessTaxStatusEnum.enumValues[number],
         businessDescription,
@@ -317,9 +355,11 @@ export async function updateBusinessProfile(prevState: FormState, formData: Form
         zipCode,
         phone,
         website,
-        businessMaterialsUrl: businessMaterialsUrl || undefined, // Only update if new file uploaded
+        businessMaterialsUrl: businessMaterialsUrl || undefined, // Only update if new file upload
+ed
         logoUrl: logoUrl || undefined, // New: Update logoUrl
-        businessProfilePhotoUrl: businessProfilePhotoUrl || undefined, // New: Update business profile photo url
+        businessProfilePhotoUrl: businessProfilePhotoUrl || undefined, // New: Update business pro
+file photo url
         taxFullName: taxFullName || undefined, // New
       };
 
@@ -376,7 +416,8 @@ export async function archiveBusiness(businessId: number): Promise<FormState> {
 
 
 
-export async function updateBusinessMaterials(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function updateBusinessMaterials(prevState: FormState, formData: FormData): Promise<F
+ormState> {
   const userId = await getUserIdFromSession();
 
   if (!userId) {
@@ -390,7 +431,8 @@ export async function updateBusinessMaterials(prevState: FormState, formData: Fo
   }
 
   try {
-    const materialUpdates: { urlField: string; titleField: string; url?: string; title?: string; }[] = [];
+    const materialUpdates: { urlField: string; titleField: string; url?: string; title?: string; }
+[] = [];
     for (let i = 1; i <= 5; i++) {
       const materialFile = formData.get(`material${i}`) as File;
       const materialTitle = formData.get(`material${i}Title`) as string;
@@ -400,7 +442,8 @@ export async function updateBusinessMaterials(prevState: FormState, formData: Fo
       };
 
       if (materialFile && materialFile.size > 0) {
-        const blob = await put(materialFile.name, materialFile, { access: 'public', allowOverwrite: true });
+        const blob = await put(materialFile.name, materialFile, { access: 'public', allowOverwrite
+: true });
         update.url = blob.url;
       }
       if (materialTitle) {
@@ -409,7 +452,8 @@ export async function updateBusinessMaterials(prevState: FormState, formData: Fo
       materialUpdates.push(update);
     }
 
-    const updateData: Partial<InferInsertModel<typeof businesses>> & { [key: string]: string | number | boolean | undefined | null } = {};
+    const updateData: Partial<InferInsertModel<typeof businesses>> & { [key: string]: string | n
+umber | boolean | undefined | null } = {};
 
     // Apply material updates
     materialUpdates.forEach(update => {
@@ -506,7 +550,8 @@ export async function getLocationsByCategory(category: 'City' | 'Region') {
   return locations[category] || [];
 }
 
-export async function updateBusinessOwnerDetails(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function updateBusinessOwnerDetails(prevState: FormState, formData: FormData): Promis
+e<FormState> {
   const userId = await getUserIdFromSession();
 
   if (!userId) {
@@ -514,12 +559,18 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
   }
 
   const businessId = parseInt(formData.get("businessId") as string);
-  const ownerGenderId = formData.get("ownerGenderId") ? parseInt(formData.get("ownerGenderId") as string) : null;
-  const ownerRaceId = formData.get("ownerRaceId") ? parseInt(formData.get("ownerRaceId") as string) : null;
-  const ownerReligionId = formData.get("ownerReligionId") ? parseInt(formData.get("ownerReligionId") as string) : null;
-  const ownerRegionId = formData.get("ownerRegionId") ? parseInt(formData.get("ownerRegionId") as string) : null;
-  const selectedDemographicIdsString = formData.get("selectedDemographicIds") as string; // New: Get business demographic IDs
-  const locationId = formData.get("locationId") ? parseInt(formData.get("locationId") as string) : null; // New: Get business location ID
+  const ownerGenderId = formData.get("ownerGenderId") ? parseInt(formData.get("ownerGenderId") as 
+string) : null;
+  const ownerRaceId = formData.get("ownerRaceId") ? parseInt(formData.get("ownerRaceId") as string
+) : null;
+  const ownerReligionId = formData.get("ownerReligionId") ? parseInt(formData.get("ownerReligionId
+") as string) : null;
+  const ownerRegionId = formData.get("ownerRegionId") ? parseInt(formData.get("ownerRegionId") as 
+string) : null;
+  const selectedDemographicIdsString = formData.get("selectedDemographicIds") as string; // New: G
+et business demographic IDs
+  const locationId = formData.get("locationId") ? parseInt(formData.get("locationId") as string) :
+ null; // New: Get business location ID
 
   if (isNaN(businessId)) {
     return { message: "", error: "Invalid business ID." };
@@ -569,7 +620,8 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
       .where(eq(businesses.id, businessId));
 
     revalidatePath(`/dashboard/businesses/${businessId}`);
-    return { message: "Owner and business details updated successfully. Refresh to see changes.", error: "" };
+    return { message: "Owner and business details updated successfully. Refresh to see changes.", 
+error: "" };
   } catch (error) {
     console.error("Error updating business owner details:", error);
     let errorMessage = "Failed to update owner and business details.";
@@ -580,7 +632,8 @@ export async function updateBusinessOwnerDetails(prevState: FormState, formData:
   }
 }
 
-export async function updateBusinessDesign(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function updateBusinessDesign(prevState: FormState, formData: FormData): Promise<Form
+State> {
   const userId = await getUserIdFromSession();
 
   if (!userId) {
@@ -626,4 +679,80 @@ export async function updateBusinessDesign(prevState: FormState, formData: FormD
   }
 }
 
+export async function createDba(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
 
+  const businessId = parseInt(formData.get("businessId") as string);
+  const name = formData.get("name") as string;
+
+  if (isNaN(businessId) || !name) {
+    return { message: "", error: "Invalid business ID or name." };
+  }
+
+  try {
+    await db.insert(dbas).values({ businessId, name });
+    revalidatePath(`/dashboard/businesses/${businessId}`);
+    return { message: "DBA created successfully!", error: "" };
+  } catch (error) {
+    console.error("Error creating DBA:", error);
+    return { message: "", error: "Failed to create DBA." };
+  }
+}
+
+export async function updateDba(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const id = parseInt(formData.get("id") as string);
+  const name = formData.get("name") as string;
+
+  if (isNaN(id) || !name) {
+    return { message: "", error: "Invalid DBA ID or name." };
+  }
+
+  try {
+    const dba = await db.query.dbas.findFirst({ where: eq(dbas.id, id) });
+    if (!dba) {
+      return { message: "", error: "DBA not found." };
+    }
+
+    await db.update(dbas).set({ name }).where(eq(dbas.id, id));
+    revalidatePath(`/dashboard/businesses/${dba.businessId}`);
+    return { message: "DBA updated successfully!", error: "" };
+  } catch (error) {
+    console.error("Error updating DBA:", error);
+    return { message: "", error: "Failed to update DBA." };
+  }
+}
+
+export async function deleteDba(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const id = parseInt(formData.get("id") as string);
+
+  if (isNaN(id)) {
+    return { message: "", error: "Invalid DBA ID." };
+  }
+
+  try {
+    const dba = await db.query.dbas.findFirst({ where: eq(dbas.id, id) });
+    if (!dba) {
+      return { message: "", error: "DBA not found." };
+    }
+
+    await db.delete(dbas).where(eq(dbas.id, id));
+    revalidatePath(`/dashboard/businesses/${dba.businessId}`);
+    return { message: "DBA deleted successfully!", error: "" };
+  } catch (error) {
+    console.error("Error deleting DBA:", error);
+    return { message: "", error: "Failed to delete DBA." };
+  }
+}

@@ -1,1 +1,0 @@
-ALTER TABLE "service_categories" ADD COLUMN "custom_id" text;

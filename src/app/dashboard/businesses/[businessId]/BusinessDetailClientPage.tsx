@@ -10,7 +10,10 @@ import OwnerDetailsForm from "./OwnerDetailsForm";
 import BusinessDesignForm from "./BusinessDesignForm"; // New import
 
 interface BusinessDetailClientPageProps {
-  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; };
+  initialBusiness: Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: Demograp
+hicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerR
+egion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | nul
+l; color4?: string | null; };
   genders: DemographicType[];
   races: DemographicType[];
   religions: DemographicType[];
@@ -19,7 +22,8 @@ interface BusinessDetailClientPageProps {
   availableLocations: LocationType[]; // Re-added
 }
 
-export default function BusinessDetailClientPage({ initialBusiness, genders, races, religions, regions, availableDemographics, availableLocations }: BusinessDetailClientPageProps) {
+export default function BusinessDetailClientPage({ initialBusiness, genders, races, religions, reg
+ions, availableDemographics, availableLocations }: BusinessDetailClientPageProps) {
   const [business, setBusiness] = useState(initialBusiness);
   const [activeTab, setActiveTab] = useState('business-profile');
 
@@ -29,31 +33,41 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           <button
             onClick={() => setActiveTab('business-profile')}
-            className={`${activeTab === 'business-profile' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'business-profile' ? 'border-indigo-500 text-indigo-600' :
+ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap p
+y-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Profile
           </button>
           <button
             onClick={() => setActiveTab('owner-details')}
-            className={`${activeTab === 'owner-details' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'owner-details' ? 'border-indigo-500 text-indigo-600' : 'b
+order-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4
+ px-1 border-b-2 font-medium text-sm`}
           >
             Owner Details
           </button>
           <button
             onClick={() => setActiveTab('design')} // New tab for Design
-            className={`${activeTab === 'design' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'design' ? 'border-indigo-500 text-indigo-600' : 'border-t
+ransparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 b
+order-b-2 font-medium text-sm`}
           >
             Design
           </button>
           <button
             onClick={() => setActiveTab('business-materials')}
-            className={`${activeTab === 'business-materials' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'business-materials' ? 'border-indigo-500 text-indigo-600'
+ : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap
+ py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Materials
           </button>
           <button
             onClick={() => setActiveTab('edit')}
-            className={`${activeTab === 'edit' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'edit' ? 'border-indigo-500 text-indigo-600' : 'border-tra
+nsparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 bor
+der-b-2 font-medium text-sm`}
           >
             Edit
           </button>
@@ -67,26 +81,45 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
             <h1 className="text-3xl font-bold text-foreground">{business.businessName}</h1>
             <div className="mb-6 flex justify-center">
               {business.logoUrl ? (
-                <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className="rounded-md object-cover border-2 border-gray-300" />
+                <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className
+="rounded-md object-cover border-2 border-gray-300" />
               ) : (
-                <div className="h-24 w-24 rounded-md bg-gray-200 flex items-center justify-center text-gray-500 text-4xl font-bold border-2 border-gray-300">
+                <div className="h-24 w-24 rounded-md bg-gray-200 flex items-center justify-center 
+text-gray-500 text-4xl font-bold border-2 border-gray-300">
                   {business.businessName ? business.businessName[0].toUpperCase() : '?'}
                 </div>
               )}
             </div>
             {business.businessProfilePhotoUrl && (
               <div className="mb-6 flex justify-center">
-                <Image src={business.businessProfilePhotoUrl} alt="Business Profile Photo" width={512} height={512} className="rounded-md object-cover border-2 border-gray-300" />
+                <Image src={business.businessProfilePhotoUrl} alt="Business Profile Photo" width={
+512} height={512} className="rounded-md object-cover border-2 border-gray-300" />
               </div>
             )}
             <p className="mt-4 text-gray-700">Owner: {business.ownerName}</p>
             <p className="mt-2 text-gray-700">Type: {business.businessType}</p>
             <p className="mt-2 text-gray-700">Tax Status: {business.businessTaxStatus}</p>
+            {business.taxFullName && <p className="mt-2 text-gray-700">Tax Full Name: {business.ta
+xFullName}</p>}
+            {business.dbas && business.dbas.length > 0 && (
+              <div className="mt-2 text-gray-700">
+                <p className="font-semibold">DBAs:</p>
+                <ul className="list-disc list-inside">
+                  {business.dbas.map((dba) => (
+                    <li key={dba.id}>{dba.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <p className="mt-2 text-gray-700">Industry: {business.businessIndustry}</p>
-            {business.businessDescription && <p className="mt-2 text-gray-700">Description: {business.businessDescription}</p>}
-            {business.streetAddress && <p className="mt-2 text-gray-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}
+            {business.businessDescription && <p className="mt-2 text-gray-700">Description: {busin
+ess.businessDescription}</p>}
+            {business.streetAddress && <p className="mt-2 text-gray-700">Address: {business.street
+Address}, {business.city}, {business.state} {business.zipCode}</p>}
             {business.phone && <p className="mt-2 text-gray-700">Phone: {business.phone}</p>}
-            {business.website && <p className="mt-2 text-gray-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{business.website}</a></p>}
+            {business.website && <p className="mt-2 text-gray-700">Website: <a href={business.webs
+ite} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{busine
+ss.website}</a></p>}
           </div>
 
           {/* Right Column: Business Documents */}
@@ -96,35 +129,40 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
               <ul>
                 {business.material1Url && (
                   <li>
-                    <a href={business.material1Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                    <a href={business.material1Url} target="_blank" rel="noopener noreferrer" clas
+sName="text-indigo-600 hover:underline">
                       {business.material1Title || 'Document 1'}
                     </a>
                   </li>
                 )}
                 {business.material2Url && (
                   <li>
-                    <a href={business.material2Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                    <a href={business.material2Url} target="_blank" rel="noopener noreferrer" clas
+sName="text-indigo-600 hover:underline">
                       {business.material2Title || 'Document 2'}
                     </a>
                   </li>
                 )}
                 {business.material3Url && (
                   <li>
-                    <a href={business.material3Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                    <a href={business.material3Url} target="_blank" rel="noopener noreferrer" clas
+sName="text-indigo-600 hover:underline">
                       {business.material3Title || 'Document 3'}
                     </a>
                   </li>
                 )}
                 {business.material4Url && (
                   <li>
-                    <a href={business.material4Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                    <a href={business.material4Url} target="_blank" rel="noopener noreferrer" clas
+sName="text-indigo-600 hover:underline">
                       {business.material4Title || 'Document 4'}
                     </a>
                   </li>
                 )}
                 {business.material5Url && (
                   <li>
-                    <a href={business.material5Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                    <a href={business.material5Url} target="_blank" rel="noopener noreferrer" clas
+sName="text-indigo-600 hover:underline">
                       {business.material5Title || 'Document 5'}
                     </a>
                   </li>
@@ -175,7 +213,8 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
 
       {activeTab === 'edit' && (
         <div className="mt-8">
-          <EditBusinessProfileForm initialBusiness={business} availableDemographics={availableDemographics} availableLocations={availableLocations} />
+          <EditBusinessProfileForm initialBusiness={business} availableDemographics={availableDemo
+graphics} availableLocations={availableLocations} />
         </div>
       )}
     </div>

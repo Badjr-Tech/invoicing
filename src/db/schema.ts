@@ -1,7 +1,6 @@
 import { pgTable, serial, text, varchar, pgEnum, boolean, integer, numeric, timestamp, AnyPgColumn } from 'drizzle-orm/pg-core';
 import { relations, InferSelectModel } from 'drizzle-orm';
 
-// --- Enums ---
 export const userRole = pgEnum('user_role', ['admin', 'internal', 'external']);
 export const businessTypeEnum = pgEnum('business_type', ['Sole Proprietorship', 'Partnership', 'Limited Liability Company (LLC)', 'Corporation']);
 export const businessTaxStatusEnum = pgEnum('business_tax_status', ['S-Corporation', 'C-Corporation', 'Not Applicable']);
@@ -48,7 +47,6 @@ export const businesses = pgTable('businesses', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').notNull().references(() => users.id),
   businessName: text('business_name').notNull(),
-  legalBusinessName: text('legal_business_name'), // New column
   ownerName: text('owner_name').notNull(),
   percentOwnership: numeric('percent_ownership').notNull(),
   businessType: businessTypeEnum('business_type').notNull(),
@@ -91,10 +89,8 @@ export const businesses = pgTable('businesses', {
 
 export const dbas = pgTable('dbas', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id),
   businessId: integer('business_id').notNull().references(() => businesses.id),
-  dbaName: text('dba_name').notNull(),
-  description: text('description'),
+  name: text('name').notNull(),
 });
 
 export const massMessages = pgTable('mass_messages', {
@@ -208,7 +204,11 @@ export interface LocationType {
 export type Demographic = DemographicType;
 export type Location = LocationType;
 
-export type Business = InferSelectModel<typeof businesses>;
+export type Dba = InferSelectModel<typeof dbas>; // Define Dba type
+
+export type Business = InferSelectModel<typeof businesses> & {
+  dbas?: Dba[]; // Make dbas an optional array of Dba
+};
 export type BusinessWithDemographic = InferSelectModel<typeof businesses> & { demographic: Demographic | null };
 export type BusinessWithLocation = InferSelectModel<typeof businesses> & { location: Location | null };
 export type BusinessWithDemographicAndLocation = InferSelectModel<typeof businesses> & { demographic: Demographic | null, location: Location | null };
@@ -218,8 +218,6 @@ export type IndividualMessage = InferSelectModel<typeof individualMessages>;
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
 export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // Re-added type
-
-export type DBA = InferSelectModel<typeof dbas>; // New type
 
 // --- Relations ---
 export const checklistItems = pgTable('checklist_items', {
@@ -232,7 +230,6 @@ export const checklistItems = pgTable('checklist_items', {
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   businesses: many(businesses),
-  dbas: many(dbas), // New relation
   sentMessages: many(individualMessages, { relationName: 'sent_messages' }),
   receivedMessages: many(individualMessages, { relationName: 'received_messages' }),
   enrollments: many(enrollments),
@@ -298,21 +295,15 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
     fields: [businesses.userId],
     references: [users.id],
   }),
-  dbas: many(dbas), // New relation
+  dbas: many(dbas),
 }));
 
 export const dbasRelations = relations(dbas, ({ one }) => ({
-  user: one(users, {
-    fields: [dbas.userId],
-    references: [users.id],
-  }),
   business: one(businesses, {
     fields: [dbas.businessId],
     references: [businesses.id],
   }),
 }));
-
-
 
 export const massMessagesRelations = relations(massMessages, ({ one }) => ({
   admin: one(users, {
