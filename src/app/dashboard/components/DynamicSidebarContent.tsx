@@ -159,6 +159,12 @@ export default function DynamicSidebarContent() {
                       className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                     >
                       Financials Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/financial-tools/contracts"
+                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                    >
+                      Contracts
                     </Link>            <Link
               href="/dashboard/invoicing"
               className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
