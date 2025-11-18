@@ -58,9 +58,9 @@ export default function YourBusinessesPageContent() {
       <p className="mt-4 text-foreground">
         To create a new business, click Create New Business and fill out the form with your details.
         You’ll need to provide the owner name, business title,
-        business type, tax status, and legal business name. Your legal business name is the name
-        you used when registering your business—if you’re a sole proprietor, it’s your personal name.
-        For businesses with DBAs or trade names, the business title should reflect the DBA, while the
+        business type, tax status, and legal business name. **Your legal business name is the name
+        you used when registering your business**—if you’re a sole proprietor, it’s your personal name.
+        **For businesses with DBAs or trade names, the business title should reflect the DBA,** while the
         legal name stays as your original filing. If you operate multiple DBAs, be sure to create a
         separate business profile for each to keep everything organized.
       </p>
