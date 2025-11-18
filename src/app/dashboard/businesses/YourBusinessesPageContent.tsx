@@ -6,32 +6,7 @@ import { createBusinessProfile, getAllUserBusinesses } from "./actions";
 import { SessionPayload, fetchSession } from "@/app/login/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
-type FormState = {
-  message: string;
-  error: string;
-} | undefined;
-
-interface Business {
-  id: number;
-  userId: number;
-  businessName: string;
-  ownerName: string;
-  percentOwnership: string;
-  businessType: string;
-  businessTaxStatus: string;
-  businessDescription: string | null;
-  businessIndustry: string;
-  businessMaterialsUrl: string | null;
-  streetAddress: string | null;
-  city: string | null;
-  state: string | null;
-  zipCode: string | null;
-  phone: string | null;
-  website: string | null;
-  isArchived: boolean;
-  logoUrl: string | null;
-}
+import { Business } from "@/db/schema"; // Import Business type from schema
 
 export default function YourBusinessesPageContent() {
   const router = useRouter();
