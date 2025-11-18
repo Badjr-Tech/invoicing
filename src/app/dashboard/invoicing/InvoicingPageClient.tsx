@@ -242,7 +242,7 @@ export default function InvoicingPageClient({
           <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-lg shadow-md text-white">
             <div>
               <label htmlFor="businessId" className="block text-sm font-medium text-white">
-                Your Business
+                Business Name
               </label>
               <div className="mt-1">
                 <select
@@ -264,7 +264,7 @@ export default function InvoicingPageClient({
 
             <div>
               <label htmlFor="invoiceBusinessDisplayName" className="block text-sm font-medium text-white">
-                Business Name on Invoice
+                Business Line/DBA or Trade Name, if applicable
               </label>
               <div className="mt-1">
                 <select
@@ -275,7 +275,12 @@ export default function InvoicingPageClient({
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   required
                 >
-                  <option value={selectedBusinessObject?.businessName}>{selectedBusinessObject?.businessName}</option>
+                  <option value="">Select business name for invoice</option>
+                  {businesses.map((business) => (
+                    <option key={business.id} value={business.businessName}>
+                      {business.businessName}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
