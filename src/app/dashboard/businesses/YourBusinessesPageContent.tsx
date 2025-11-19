@@ -12,6 +12,12 @@ type FormState = {
   error: string;
 } | undefined;
 
+interface Dba {
+  id: number;
+  name: string;
+  businessId: number;
+}
+
 interface Business {
   id: number;
   userId: number;
@@ -31,12 +37,14 @@ interface Business {
   website: string | null;
   isArchived: boolean;
   logoUrl: string | null;
+  dbas: Dba[];
 }
 
 export default function YourBusinessesPageContent() {
   const router = useRouter();
   const [session, setSession] = useState<SessionPayload | null>(null);
   const [userBusinesses, setUserBusinesses] = useState<Business[]>([]);
+  const [allDbas, setAllDbas] = useState<Dba[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showDbaForm, setShowDbaForm] = useState(false);
   const [loadingBusinesses, setLoadingBusinesses] = useState(true);
@@ -53,6 +61,8 @@ export default function YourBusinessesPageContent() {
       if (currentSession && currentSession.user) {
         const businesses = await getAllUserBusinesses(currentSession.user.id);
         setUserBusinesses(businesses);
+        const dbas = businesses.flatMap((business) => business.dbas);
+        setAllDbas(dbas);
       }
       setLoadingBusinesses(false);
     }
@@ -74,6 +84,8 @@ export default function YourBusinessesPageContent() {
         if (session && session.user) {
           const businesses = await getAllUserBusinesses(session.user.id);
           setUserBusinesses(businesses);
+          const dbas = businesses.flatMap((business) => business.dbas);
+          setAllDbas(dbas);
         }
       }
       fetchBusinesses();
@@ -169,37 +181,53 @@ export default function YourBusinessesPageContent() {
             </form>
           </div>
         )}
+
+        {/* Display existing businesses */}
+        <div className="mt-8 flex flex-col space-y-4">
+          {userBusinesses.length === 0 && !showCreateForm ? (
+            <p className="text-foreground">You don&apos;t have any businesses yet. Click &quot;Create New Business&quot; to get started!</p>
+          ) : (
+            userBusinesses.map((business) => (
+              <button
+                key={business.id}
+                onClick={() => handleBusinessClick(business.id)}
+                className={`w-full text-left py-4 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center space-x-4 ${business.isArchived ? 'bg-gray-200 text-gray-500 opacity-60' : 'bg-background hover:shadow-lg'}`}
+              >
+                {business.logoUrl ? (
+                  <Image src={business.logoUrl} alt={`${business.businessName} Logo`} width={40} height={40} className="rounded-full object-cover" />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-lg font-bold">
+                    {business.businessName ? business.businessName[0].toUpperCase() : '?'}
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-xl font-bold text-white">{business.businessName}</h3>
+                  <p className="mt-2 text-sm text-white">Owner: {business.ownerName}</p>
+                  <p className="text-sm text-white">Type: {business.businessType}</p>
+                  {business.isArchived && (
+                    <p className="mt-2 text-sm font-semibold text-red-600">Archived</p>
+                  )}
+                </div>
+              </button>
+            ))
+          )}
+        </div>
       </div>
 
       {/* Display existing businesses */}
-      <div className="mt-8 flex flex-col space-y-4">
-        {userBusinesses.length === 0 && !showCreateForm ? (
-          <p className="text-foreground">You don&apos;t have any businesses yet. Click &quot;Create New Business&quot; to get started!</p>
-        ) : (
-          userBusinesses.map((business) => (
-            <button
-              key={business.id}
-              onClick={() => handleBusinessClick(business.id)}
-              className={`w-full text-left py-4 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center space-x-4 ${business.isArchived ? 'bg-gray-200 text-gray-500 opacity-60' : 'bg-background hover:shadow-lg'}`}
-            >
-              {business.logoUrl ? (
-                <Image src={business.logoUrl} alt={`${business.businessName} Logo`} width={40} height={40} className="rounded-full object-cover" />
-              ) : (
-                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-lg font-bold">
-                  {business.businessName ? business.businessName[0].toUpperCase() : '?'}
-                </div>
-              )}
-              <div>
-                <h3 className="text-xl font-bold text-white">{business.businessName}</h3>
-                <p className="mt-2 text-sm text-white">Owner: {business.ownerName}</p>
-                <p className="text-sm text-white">Type: {business.businessType}</p>
-                {business.isArchived && (
-                  <p className="mt-2 text-sm font-semibold text-red-600">Archived</p>
-                )}
+      <div>
+        <h2 className="text-3xl font-bold text-foreground">Your DBAs</h2>
+        <div className="mt-8 flex flex-col space-y-4">
+          {allDbas.length === 0 ? (
+            <p className="text-foreground">You don&apos;t have any DBAs yet.</p>
+          ) : (
+            allDbas.map((dba) => (
+              <div key={dba.id} className="bg-background p-4 rounded-lg shadow-md">
+                <h3 className="text-xl font-bold text-white">{dba.name}</h3>
               </div>
-            </button>
-          ))
-        )}
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
