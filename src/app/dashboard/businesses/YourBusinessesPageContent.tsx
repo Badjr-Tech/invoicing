@@ -38,6 +38,10 @@ interface Business {
   isArchived: boolean;
   logoUrl: string | null;
   dbas: Dba[];
+  color1: string | null;
+  color2: string | null;
+  color3: string | null;
+  color4: string | null;
 }
 
 export default function YourBusinessesPageContent() {
@@ -98,6 +102,10 @@ export default function YourBusinessesPageContent() {
 
   const handleBusinessClick = (businessId: number) => {
     router.push(`/dashboard/businesses/${businessId}`);
+  };
+
+  const handleDbaClick = (dbaId: number) => {
+    router.push(`/dashboard/businesses/dba/${dbaId}`);
   };
 
   return (
@@ -201,9 +209,9 @@ export default function YourBusinessesPageContent() {
                   </div>
                 )}
                 <div>
-                  <h3 className="text-xl font-bold text-white">{business.businessName}</h3>
-                  <p className="mt-2 text-sm text-white">Owner: {business.ownerName}</p>
-                  <p className="text-sm text-white">Type: {business.businessType}</p>
+                  <h3 className="text-xl font-bold text-foreground">{business.businessName}</h3>
+                  <p className="mt-2 text-sm text-foreground">Owner: {business.ownerName}</p>
+                  <p className="text-sm text-foreground">Type: {business.businessType}</p>
                   {business.isArchived && (
                     <p className="mt-2 text-sm font-semibold text-red-600">Archived</p>
                   )}
@@ -221,11 +229,15 @@ export default function YourBusinessesPageContent() {
           {allDbas.length === 0 ? (
             <p className="text-foreground">You don&apos;t have any DBAs yet.</p>
           ) : (
-            allDbas.map((dba) => (
-              <div key={dba.id} className="bg-background p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold text-white">{dba.name}</h3>
-              </div>
-            ))
+            allDbas.map((dba) => {
+              const parentBusiness = userBusinesses.find(b => b.id === dba.businessId);
+              const bgColor = parentBusiness?.color1 || 'bg-background';
+              return (
+                <button key={dba.id} onClick={() => handleDbaClick(dba.id)} className={`${bgColor} p-4 rounded-lg shadow-md w-full text-left`}>
+                  <h3 className="text-xl font-bold text-foreground">{dba.name}</h3>
+                </button>
+              );
+            })
           )}
         </div>
       </div>
