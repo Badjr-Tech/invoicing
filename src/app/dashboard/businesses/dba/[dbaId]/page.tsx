@@ -1,20 +1,17 @@
 import { notFound } from "next/navigation";
-import { getDbaProfile } from "../actions";
+import { getDbaProfile } from "../../actions";
 import DbaDetailClientPage from "./DbaDetailClientPage";
 
-type PageProps = {
-  params: { dbaId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
 
-export default async function DbaDetailsPage({ params }: PageProps) {
-  const dbaId = parseInt(params.dbaId);
+export default async function DbaDetailsPage({ params }: { params: Promise<{ dbaId: string }> }) {
+  const { dbaId } = await params;
+  const parsedDbaId = parseInt(dbaId);
 
-  if (isNaN(dbaId)) {
+  if (isNaN(parsedDbaId)) {
     notFound();
   }
 
-  const dba = await getDbaProfile(dbaId);
+  const dba = await getDbaProfile(parsedDbaId);
 
   if (!dba) {
     notFound();

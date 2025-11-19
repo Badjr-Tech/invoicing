@@ -2,22 +2,16 @@ import { notFound } from "next/navigation";
 import { getBusinessProfile, getDemographicsByCategory, getLocationsByCategory } from "../actions"; // Import getBusinessProfile and new actions
 import { Business, Demographic, Location } from "@/db/schema"; // Import necessary types
 import BusinessDetailClientPage from "./BusinessDetailClientPage"; // Import BusinessDetailClientPage
-import { db } from "@/db";
 
-type PageProps = {
-  params: { businessId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
+export default async function BusinessDetailPage({ params }: { params: Promise<{ businessId: string }> }) {
+  const { businessId } = await params;
+  const parsedBusinessId = parseInt(businessId);
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function BusinessDetailPage({ params }: PageProps) {
-  const businessId = parseInt(params.businessId);
-
-  if (isNaN(businessId)) {
+  if (isNaN(parsedBusinessId)) {
     notFound();
   }
 
-  const business = await getBusinessProfile(businessId); // Let TypeScript infer the type
+  const business = await getBusinessProfile(parsedBusinessId); // Let TypeScript infer the type
   const genders = await getDemographicsByCategory('Gender'); // Fetch genders
   const races = await getDemographicsByCategory('Race'); // Fetch races
   const religions = await getDemographicsByCategory('Religion'); // Fetch religions

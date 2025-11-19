@@ -2,7 +2,7 @@
 
 import { useFormState } from "react-dom";
 import { Dba } from "@/db/schema";
-import { updateDbaDetails } from "../actions";
+import { updateDbaDetails } from "../../actions";
 
 export default function DbaDetailsForm({ dba }: { dba: Dba }) {
   const [state, formAction] = useFormState(updateDbaDetails, { message: "", error: "" });
