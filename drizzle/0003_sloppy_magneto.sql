@@ -1,0 +1,1 @@
+ALTER TABLE "businesses" ADD COLUMN "legal_business_name" text;
