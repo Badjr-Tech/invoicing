@@ -4,8 +4,13 @@ import { Business, Demographic, Location } from "@/db/schema"; // Import necessa
 import BusinessDetailClientPage from "./BusinessDetailClientPage"; // Import BusinessDetailClientPage
 import { db } from "@/db";
 
+type PageProps = {
+  params: { businessId: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function BusinessDetailPage({ params }: { params: { businessId: string } & Promise<any> }) {
+export default async function BusinessDetailPage({ params }: PageProps) {
   const businessId = parseInt(params.businessId);
 
   if (isNaN(businessId)) {

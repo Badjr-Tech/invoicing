@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import { getDbaProfile } from "../actions";
 import DbaDetailClientPage from "./DbaDetailClientPage";
 
-export default async function DbaDetailsPage({ params }: { params: { dbaId: string } }) {
+type PageProps = {
+  params: { dbaId: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+export default async function DbaDetailsPage({ params }: PageProps) {
   const dbaId = parseInt(params.dbaId);
 
   if (isNaN(dbaId)) {
