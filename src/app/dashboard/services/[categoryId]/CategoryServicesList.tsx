@@ -10,7 +10,7 @@ import EditServiceModal from "@/app/dashboard/components/EditServiceModal";
 type ServiceCategory = InferSelectModel<typeof serviceCategories>;
 type Service = InferSelectModel<typeof servicesSchema>;
 
-export default function CategoryServicesList({ category, services }: { category: ServiceCategory, services: Service[] }) {
+export default function CategoryServicesList({ category, services, businesses }: { category: ServiceCategory, services: Service[], businesses: { id: number; businessName: string }[] }) {
   const [isPending, startTransition] = useTransition();
   const [editingService, setEditingService] = useState<Service | null>(null);
 
@@ -66,6 +66,7 @@ export default function CategoryServicesList({ category, services }: { category:
             // Optionally, you can add a success message here
             handleCloseModal();
           }}
+          businesses={businesses}
         />
       )}
     </div>

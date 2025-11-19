@@ -13,7 +13,7 @@ export type FormState = {
   error: string;
 } | undefined;
 
-export default function EditServiceModal({ service, onClose, onSubmissionSuccess }: { service: Service, onClose: () => void, onSubmissionSuccess?: () => void }) {
+export default function EditServiceModal({ service, onClose, onSubmissionSuccess, businesses }: { service: Service, onClose: () => void, onSubmissionSuccess?: () => void, businesses: { id: number; businessName: string }[] }) {
   const [state, formAction] = useFormState<FormState, FormData>(updateService.bind(null, service.id), { message: "", error: "" });
 
   useEffect(() => {
@@ -44,6 +44,26 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
                     defaultValue={service.name}
                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+                  Business
+                </label>
+                <div className="mt-1">
+                  <select
+                    id="businessId"
+                    name="businessId"
+                    defaultValue={service.businessId || ""}
+                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  >
+                    <option value="">Select a business</option>
+                    {businesses.map((business) => (
+                      <option key={business.id} value={business.id}>
+                        {business.businessName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div>

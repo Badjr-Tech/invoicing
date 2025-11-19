@@ -52,7 +52,7 @@ export default async function CategoryServicesPage(props: any) { // Changed prop
         <ServiceFormWrapper categoryId={categoryId} businesses={businesses} /> {/* Render the new wrapper */}
 
         {/* Right Column: Services in this Category */}
-        <CategoryServicesList category={category} services={services} /> {/* Pass category and services as props */}
+        <CategoryServicesList category={category} services={services} businesses={businesses} /> {/* Pass category and services as props */}
       </div>
     </div>
   );

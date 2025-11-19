@@ -125,6 +125,7 @@ export async function updateService(serviceId: number, prevState: FormState, for
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = parseFloat(formData.get("price") as string);
+  const businessId = formData.get("businessId") ? parseInt(formData.get("businessId") as string) : null;
 
   if (!name || isNaN(price)) {
     return { message: "", error: "Name and price are required." };
@@ -144,6 +145,7 @@ export async function updateService(serviceId: number, prevState: FormState, for
         name,
         description,
         price: price.toString(),
+        businessId,
       })
       .where(and(eq(services.id, serviceId), eq(services.userId, session.user.id)));
 
