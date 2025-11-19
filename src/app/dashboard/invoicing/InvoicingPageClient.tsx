@@ -68,6 +68,7 @@ export default function InvoicingPageClient({
     zipCode: string | null;
     phone: string | null;
     website: string | null;
+    dbas: { id: number; name: string }[];
   }[];
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
@@ -276,11 +277,18 @@ export default function InvoicingPageClient({
                   required
                 >
                   <option value="">Select business name for invoice</option>
-                  {businesses.map((business) => (
-                    <option key={business.id} value={business.businessName}>
-                      {business.businessName}
-                    </option>
-                  ))}
+                  {selectedBusinessObject && (
+                    <>
+                      <option value={selectedBusinessObject.businessName}>
+                        {selectedBusinessObject.businessName}
+                      </option>
+                      {selectedBusinessObject.dbas.map((dba) => (
+                        <option key={dba.id} value={dba.name}>
+                          {dba.name}
+                        </option>
+                      ))}
+                    </>
+                  )}
                 </select>
               </div>
             </div>
