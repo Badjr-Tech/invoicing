@@ -92,6 +92,14 @@ export const dbas = pgTable('dbas', {
   id: serial('id').primaryKey(),
   businessId: integer('business_id').notNull().references(() => businesses.id),
   name: text('name').notNull(),
+  description: text('description'),
+  color1: text('color1'),
+  color2: text('color2'),
+  color3: text('color3'),
+  color4: text('color4'),
+  upload1: text('upload1'),
+  upload2: text('upload2'),
+  upload3: text('upload3'),
 });
 
 export const massMessages = pgTable('mass_messages', {

@@ -44,6 +44,19 @@ export async function getBusinessProfile(businessId: number): Promise<Business &
   }
 }
 
+export async function getDbaProfile(dbaId: number): Promise<Dba | null> {
+  try {
+    const profile = await db.query.dbas.findFirst({
+      where: eq(dbas.id, dbaId),
+    });
+    if (!profile) { return null; }
+    return profile;
+  } catch (error) {
+    console.error("Error fetching dba profile:", error);
+    return null;
+  }
+}
+
 export async function getAllUserBusinesses(userId: number, searchQuery?: string, filters?: { businessType?: string; businessTaxStatus?: string; isArchived?: boolean; }) {
   try {
     const conditions = [eq(businesses.userId, userId)];
@@ -731,6 +744,129 @@ export async function updateDBA(prevState: FormState, formData: FormData): Promi
       errorMessage = `Failed to update DBA: ${error.message}`;
     }
     return { message: "", error: errorMessage };
+  }
+}
+
+export async function updateDbaDetails(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const dbaId = parseInt(formData.get("dbaId") as string);
+  const description = formData.get("description") as string;
+
+  if (isNaN(dbaId)) {
+    return { message: "", error: "Invalid DBA ID." };
+  }
+
+  try {
+    await db.update(dbas)
+      .set({
+        description,
+      })
+      .where(eq(dbas.id, dbaId));
+
+    revalidatePath(`/dashboard/businesses/dba/${dbaId}`);
+    return { message: "DBA details updated successfully!", error: "" };
+  } catch (error: unknown) {
+    console.error("Error updating DBA details:", error);
+    let errorMessage = "Failed to update DBA details.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update DBA details: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
+
+export async function updateDbaDesign(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const dbaId = parseInt(formData.get("dbaId") as string);
+  const color1 = formData.get("color1") as string;
+  const color2 = formData.get("color2") as string;
+  const color3 = formData.get("color3") as string;
+  const color4 = formData.get("color4") as string;
+
+  if (isNaN(dbaId)) {
+    return { message: "", error: "Invalid DBA ID." };
+  }
+
+  try {
+    await db.update(dbas)
+      .set({
+        color1,
+        color2,
+        color3,
+        color4,
+      })
+      .where(eq(dbas.id, dbaId));
+
+    revalidatePath(`/dashboard/businesses/dba/${dbaId}`);
+    return { message: "DBA design updated successfully!", error: "" };
+  } catch (error: unknown) {
+    console.error("Error updating DBA design:", error);
+    let errorMessage = "Failed to update DBA design.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to update DBA design: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
+  }
+}
+
+export async function updateDbaUploads(prevState: FormState, formData: FormData): Promise<FormState> {
+  const userId = await getUserIdFromSession();
+
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  const dbaId = parseInt(formData.get("dbaId") as string);
+
+  if (isNaN(dbaId)) {
+    return { message: "", error: "Invalid DBA ID." };
+  }
+
+  try {
+    const uploadUpdates: { urlField: string; url?: string; }[] = [];
+    for (let i = 1; i <= 3; i++) {
+      const uploadFile = formData.get(`upload${i}`) as File;
+      const update: { urlField: string; url?: string; } = {
+        urlField: `upload${i}`,
+      };
+
+      if (uploadFile && uploadFile.size > 0) {
+        const blob = await put(uploadFile.name, uploadFile, { access: 'public', allowOverwrite: true });
+        update.url = blob.url;
+      }
+      uploadUpdates.push(update);
+    }
+
+    const updateData: Partial<InferInsertModel<typeof dbas>> & { [key: string]: string | number | boolean | undefined | null } = {};
+
+    // Apply upload updates
+    uploadUpdates.forEach(update => {
+      if (update.url !== undefined) {
+        updateData[update.urlField] = update.url;
+      }
+    });
+
+    if (Object.keys(updateData).length > 0) {
+      await db.update(dbas)
+        .set(updateData)
+        .where(eq(dbas.id, dbaId));
+    }
+
+    revalidatePath(`/dashboard/businesses/dba/${dbaId}`);
+    return { message: "DBA uploads updated successfully!", error: "" };
+  } catch (error) {
+    console.error("Error updating DBA uploads:", error);
+    return { message: "", error: "Failed to update DBA uploads." };
   }
 }
 

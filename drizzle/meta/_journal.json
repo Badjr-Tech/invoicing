@@ -43,6 +43,13 @@
       "when": 1763482432295,
       "tag": "0005_worthless_wolf_cub",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1763591091648,
+      "tag": "0006_fearless_raider",
+      "breakpoints": true
     }
   ]
 }
