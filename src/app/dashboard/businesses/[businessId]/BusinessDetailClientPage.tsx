@@ -10,7 +10,7 @@ import OwnerDetailsForm from "./OwnerDetailsForm";
 import BusinessDesignForm from "./BusinessDesignForm"; // New import
 
 interface BusinessDetailClientPageProps {
-  initialBusiness: Business & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; };
+  initialBusiness: Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; };
   genders: DemographicType[];
   races: DemographicType[];
   religions: DemographicType[];
@@ -80,6 +80,17 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
           <p className="mt-4 text-gray-700">Owner: {business.ownerName}</p>
           <p className="mt-2 text-gray-700">Type: {business.businessType}</p>
           <p className="mt-2 text-gray-700">Tax Status: {business.businessTaxStatus}</p>
+          {business.taxFullName && <p className="mt-2 text-gray-700">Tax Full Name: {business.taxFullName}</p>}
+          {business.dbas && business.dbas.length > 0 && (
+            <div className="mt-2 text-gray-700">
+              <p className="font-semibold">DBAs:</p>
+              <ul className="list-disc list-inside">
+                {business.dbas.map((dba) => (
+                  <li key={dba.id}>{dba.name}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <p className="mt-2 text-gray-700">Industry: {business.businessIndustry}</p>
           {business.businessDescription && <p className="mt-2 text-gray-700">Description: {business.businessDescription}</p>}
           {business.streetAddress && <p className="mt-2 text-gray-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}

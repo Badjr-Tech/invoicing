@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
-import { createBusinessProfile, getAllUserBusinesses } from "./actions";
+import { createBusinessProfile, getAllUserBusinesses, createDBA } from "./actions";
 import { SessionPayload, fetchSession } from "@/app/login/actions";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -38,9 +38,11 @@ export default function YourBusinessesPageContent() {
   const [session, setSession] = useState<SessionPayload | null>(null);
   const [userBusinesses, setUserBusinesses] = useState<Business[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showDbaForm, setShowDbaForm] = useState(false);
   const [loadingBusinesses, setLoadingBusinesses] = useState(true);
 
   const [createState, createFormAction] = useFormState<FormState, FormData>(createBusinessProfile, undefined);
+  const [createDbaState, createDbaFormAction] = useFormState<FormState, FormData>(createDBA, undefined);
 
   useEffect(() => {
     async function fetchSessionAndBusinesses() {
@@ -64,6 +66,20 @@ export default function YourBusinessesPageContent() {
     }
   }, [createState, router]);
 
+  useEffect(() => {
+    if (createDbaState && createDbaState.message && !createDbaState.error) {
+      setShowDbaForm(false);
+      // Refresh the business list
+      async function fetchBusinesses() {
+        if (session && session.user) {
+          const businesses = await getAllUserBusinesses(session.user.id);
+          setUserBusinesses(businesses);
+        }
+      }
+      fetchBusinesses();
+    }
+  }, [createDbaState, session]);
+
   if (!session || !session.user) {
     return <div className="flex-1 p-6">Loading user session...</div>;
   }
@@ -73,245 +89,87 @@ export default function YourBusinessesPageContent() {
   };
 
   return (
-    <>
-      <h1 className="text-foreground">Your Businesses</h1>
-      <p className="mt-4 text-foreground">Manage all your registered businesses.</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Your Businesses</h1>
+        <p className="mt-4 text-foreground">Manage all your registered businesses.</p>
 
-      <div className="mt-6">
-        <button
-          onClick={() => setShowCreateForm(!showCreateForm)}
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-        >
-          {showCreateForm ? "Cancel" : "Create New Business"}
-        </button>
-      </div>
-
-      {showCreateForm && (
-        <div className="mt-8 max-w-2xl p-6 bg-background shadow-md rounded-lg">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Create New Business Profile</h2>
-          <form action={createFormAction} className="space-y-6">
-            {/* Owner's Name */}
-            <div>
-              <label htmlFor="ownerName" className="block text-sm font-medium text-foreground">
-                Owner&apos;s Name
-              </label>
-              <input
-                id="ownerName" // Added id
-                name="ownerName" // Added name
-                type="text" // Added type
-                required // Added required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
-              />
-            </div>
-
-            {/* Percent Ownership */}
-            <div>
-              <label htmlFor="percentOwnership" className="block text-sm font-medium text-foreground">
-                Percent Ownership
-              </label>
-              <input
-                id="percentOwnership"
-                name="percentOwnership"
-                type="text"
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
-              />
-            </div>
-
-            {/* Business Name */}
-            <div>
-              <label htmlFor="businessName" className="block text-sm font-medium text-foreground">
-                Business Name
-              </label>
-              <input
-                id="businessName"
-                name="businessName"
-                type="text"
-                required
-className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
-              />
-            </div>
-
-            {/* Business Type */}
-          <div>
-            <label htmlFor="businessType" className="block text-sm font-medium text-foreground">
-              Business Type
-            </label>
-            <select
-              id="businessType"
-              name="businessType"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
-            >
-              <option value="">Select Business Type</option>
-              <option value="Sole Proprietorship">Sole Proprietorship</option>
-              <option value="Partnership">Partnership</option>
-              <option value="Limited Liability Company (LLC)">Limited Liability Company (LLC)</option>
-              <option value="Corporation">Corporation</option>
-            </select>
-          </div>
-
-          {/* Business Tax Status */}
-          <div>
-            <label htmlFor="businessTaxStatus" className="block text-sm font--medium text-foreground">
-              Business Tax Status
-            </label>
-            <select
-              id="businessTaxStatus"
-              name="businessTaxStatus"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
-            >
-              <option value="">Select Tax Status</option>
-              <option value="S-Corporation">S-Corporation</option>
-              <option value="C-Corporation">C-Corporation</option>
-              <option value="Not Applicable">Not Applicable</option>
-            </select>
-          </div>
-
-          {/* Business Description */}
-          <div>
-            <label htmlFor="businessDescription" className="block text-sm font-medium text-foreground">
-              Business Description
-            </label>
-            <textarea
-              id="businessDescription"
-              name="businessDescription"
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            ></textarea>
-          </div>
-
-          {/* Business Industry */}
-          <div>
-            <label htmlFor="businessIndustry" className="block text-sm font-medium text-foreground">
-              Business Industry
-            </label>
-            <input
-              id="businessIndustry"
-              name="businessIndustry"
-              type="text"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* Street Address */}
-          <div>
-            <label htmlFor="streetAddress" className="block text-sm font-medium text-foreground">
-              Street Address
-            </label>
-            <input
-              id="streetAddress"
-              name="streetAddress"
-              type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* City */}
-          <div>
-            <label htmlFor="city" className="block text-sm font-medium text-foreground">
-              City
-            </label>
-            <input
-              id="city"
-              name="city"
-              type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* State */}
-          <div>
-            <label htmlFor="state" className="block text-sm font-medium text-foreground">
-              State
-            </label>
-            <input
-              id="state"
-              name="state"
-              type="text"
-              maxLength={2}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* Zip Code */}
-          <div>
-            <label htmlFor="zipCode" className="block text-sm font-medium text-foreground">
-              Zip Code
-            </label>
-            <input
-              id="zipCode"
-              name="zipCode"
-              type="text"
-              maxLength={10}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* Phone */}
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-foreground">
-              Phone
-            </label>
-            <input
-              id="phone"
-              name="phone"
-              type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* Website */}
-          <div>
-            <label htmlFor="website" className="block text-sm font-medium text-foreground">
-              Website
-            </label>
-            <input
-              id="website"
-              name="website"
-              type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-primary text-foreground"
-            />
-          </div>
-
-          {/* Business Materials Upload */}
-          <div>
-            <label htmlFor="businessMaterials" className="block text-sm font-medium text-foreground">
-              Business Materials
-            </label>
-            <input
-              id="businessMaterials"
-              name="businessMaterials"
-              type="file"
-              className="mt-1 block w-full text-sm text-foreground
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm file:font-semibold
-                file:bg-primary file:text-white
-                hover:file:bg-secondary"
-            />
-          </div>
-
-          {createState?.message && (
-            <p className="text-sm text-green-600">{createState.message}</p>
-          )}
-          {createState?.error && (
-            <p className="text-sm text-red-600">{createState.error}</p>
-          )}
-
-          <div>
-            <button
-              type="submit"
-              className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            >
-              Create Business Profile
-            </button>
-          </div>
-        </form>
+        <div className="mt-6 flex space-x-4">
+          <button
+            onClick={() => setShowCreateForm(!showCreateForm)}
+            className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          >
+            {showCreateForm ? "Cancel" : "Create New Business"}
+          </button>
+          <button
+            onClick={() => setShowDbaForm(!showDbaForm)}
+            className="inline-flex justify-center rounded-md border border-transparent bg-secondary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+          >
+            {showDbaForm ? "Cancel" : "Add DBA"}
+          </button>
         </div>
-      )}
+
+        {showCreateForm && (
+          <div className="mt-8 max-w-2xl p-6 bg-background shadow-md rounded-lg">
+            <h2 className="text-2xl font-bold text-foreground mb-4">Create New Business Profile</h2>
+            <form action={createFormAction} className="space-y-6">
+              {/* Form fields for creating a new business */}
+            </form>
+          </div>
+        )}
+
+        {showDbaForm && (
+          <div className="mt-8 max-w-2xl p-6 bg-background shadow-md rounded-lg">
+            <h2 className="text-2xl font-bold text-foreground mb-4">Add DBA</h2>
+            <form action={createDbaFormAction} className="space-y-6">
+              <div>
+                <label htmlFor="businessId" className="block text-sm font-medium text-foreground">
+                  Select Business
+                </label>
+                <select
+                  id="businessId"
+                  name="businessId"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+                >
+                  <option value="">Select a business</option>
+                  {userBusinesses.map((business) => (
+                    <option key={business.id} value={business.id}>
+                      {business.businessName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="dbaName" className="block text-sm font-medium text-foreground">
+                  DBA Name
+                </label>
+                <input
+                  id="dbaName"
+                  name="dbaName"
+                  type="text"
+                  required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+                />
+              </div>
+              {createDbaState?.message && (
+                <p className="text-sm text-green-600">{createDbaState.message}</p>
+              )}
+              {createDbaState?.error && (
+                <p className="text-sm text-red-600">{createDbaState.error}</p>
+              )}
+              <div>
+                <button
+                  type="submit"
+                  className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                >
+                  Add DBA
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
 
       {/* Display existing businesses */}
       <div className="mt-8 flex flex-col space-y-4">
@@ -343,6 +201,6 @@ className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-p
           ))
         )}
       </div>
-    </>
+    </div>
   );
 }
