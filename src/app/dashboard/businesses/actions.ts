@@ -792,19 +792,43 @@ export async function updateDbaDesign(prevState: FormState, formData: FormData):
   const color2 = formData.get("color2") as string;
   const color3 = formData.get("color3") as string;
   const color4 = formData.get("color4") as string;
+  const logo = formData.get("logo") as File; // New: Get logo file
 
   if (isNaN(dbaId)) {
     return { message: "", error: "Invalid DBA ID." };
   }
 
   try {
+    let logoUrl: string | undefined;
+    if (logo && logo.size > 0) {
+      console.log("updateDbaDesign: Attempting to upload logo:", logo.name);
+      try {
+        const uniqueFilename = `${dbaId}-${Date.now()}-${logo.name}`;
+        const blob = await put(uniqueFilename, logo, { access: 'public', allowOverwrite: true });
+        logoUrl = blob.url;
+        console.log("updateDbaDesign: Logo uploaded successfully:", logoUrl);
+      } catch (uploadError) {
+        console.error("updateDbaDesign: Error uploading logo:", uploadError);
+        // Optionally, return an error to the user or set a default logo
+      }
+    }
+
+    const updateData: {
+      color1?: string | null;
+      color2?: string | null;
+      color3?: string | null;
+      color4?: string | null;
+      logoUrl?: string | null; // New: Add logoUrl
+    } = {};
+
+    if (color1) updateData.color1 = color1; else updateData.color1 = null;
+    if (color2) updateData.color2 = color2; else updateData.color2 = null;
+    if (color3) updateData.color3 = color3; else updateData.color3 = null;
+    if (color4) updateData.color4 = color4; else updateData.color4 = null;
+    if (logoUrl) updateData.logoUrl = logoUrl; else if (logo && logo.size === 0) updateData.logoUrl = null; // Allow clearing logo
+
     await db.update(dbas)
-      .set({
-        color1,
-        color2,
-        color3,
-        color4,
-      })
+      .set(updateData)
       .where(eq(dbas.id, dbaId));
 
     revalidatePath(`/dashboard/businesses/dba/${dbaId}`);

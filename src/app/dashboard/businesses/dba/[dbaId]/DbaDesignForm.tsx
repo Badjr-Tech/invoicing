@@ -1,81 +1,157 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
 import { Dba } from "@/db/schema";
 import { updateDbaDesign } from "../../actions";
+import Image from "next/image";
+
+export type FormState = {
+  message: string;
+  error: string;
+} | undefined;
 
 export default function DbaDesignForm({ dba }: { dba: Dba }) {
-  const [state, formAction] = useFormState(updateDbaDesign, { message: "", error: "" });
+  const [state, formAction] = useFormState<FormState, FormData>(updateDbaDesign, undefined);
+  const [color1, setColor1] = useState(dba.color1 || '');
+  const [color2, setColor2] = useState(dba.color2 || '');
+  const [color3, setColor3] = useState(dba.color3 || '');
+  const [color4, setColor4] = useState(dba.color4 || '');
+
+  useEffect(() => {
+    if (state?.message === "DBA design updated successfully!") {
+      // Optionally, show a success message or revalidate data
+    }
+  }, [state]);
+
+  const isValidHex = (hex: string) => /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex) || hex === '';
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form action={formAction} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
       <input type="hidden" name="dbaId" value={dba.id} />
-      <div>
-        <label htmlFor="color1" className="block text-sm font-medium text-gray-700">
-          Color 1
-        </label>
-        <div className="mt-1">
+
+      <h3 className="text-lg font-medium leading-6 text-gray-900">DBA Color Scheme</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Color 1 */}
+        <div>
+          <label htmlFor="color1" className="block text-sm font-medium text-gray-700">
+            Color 1 (Hex Code)
+          </label>
           <input
-            id="color1"
+            type="text"
             name="color1"
-            type="text"
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            defaultValue={dba.color1 || ""}
+            id="color1"
+            value={color1}
+            onChange={(e) => setColor1(e.target.value)}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color1) ? 'border-red-500' : ''}`}
+            placeholder="#RRGGBB"
           />
+          {!isValidHex(color1) && color1 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
         </div>
-      </div>
-      <div>
-        <label htmlFor="color2" className="block text-sm font-medium text-gray-700">
-          Color 2
-        </label>
-        <div className="mt-1">
+        <div className="flex items-center justify-center">
+          {isValidHex(color1) && color1 !== '' && (
+            <div className="h-12 w-12 rounded-full border border-gray-300" style={{ backgroundColor: color1 }}></div>
+          )}
+        </div>
+        {/* Color 2 */}
+        <div>
+          <label htmlFor="color2" className="block text-sm font-medium text-gray-700">
+            Color 2 (Hex Code)
+          </label>
           <input
-            id="color2"
+            type="text"
             name="color2"
-            type="text"
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            defaultValue={dba.color2 || ""}
+            id="color2"
+            value={color2}
+            onChange={(e) => setColor2(e.target.value)}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color2) ? 'border-red-500' : ''}`}
+            placeholder="#RRGGBB"
           />
+          {!isValidHex(color2) && color2 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
         </div>
-      </div>
-      <div>
-        <label htmlFor="color3" className="block text-sm font-medium text-gray-700">
-          Color 3
-        </label>
-        <div className="mt-1">
+        <div className="flex items-center justify-center">
+          {isValidHex(color2) && color2 !== '' && (
+            <div className="h-12 w-12 rounded-full border border-gray-300" style={{ backgroundColor: color2 }}></div>
+          )}
+        </div>
+        {/* Color 3 */}
+        <div>
+          <label htmlFor="color3" className="block text-sm font-medium text-gray-700">
+            Color 3 (Hex Code)
+          </label>
           <input
-            id="color3"
+            type="text"
             name="color3"
-            type="text"
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            defaultValue={dba.color3 || ""}
+            id="color3"
+            value={color3}
+            onChange={(e) => setColor3(e.target.value)}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color3) ? 'border-red-500' : ''}`}
+            placeholder="#RRGGBB"
           />
+          {!isValidHex(color3) && color3 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
         </div>
-      </div>
-      <div>
-        <label htmlFor="color4" className="block text-sm font-medium text-gray-700">
-          Color 4
-        </label>
-        <div className="mt-1">
+        <div className="flex items-center justify-center">
+          {isValidHex(color3) && color3 !== '' && (
+            <div className="h-12 w-12 rounded-full border border-gray-300" style={{ backgroundColor: color3 }}></div>
+          )}
+        </div>
+        {/* Color 4 */}
+        <div>
+          <label htmlFor="color4" className="block text-sm font-medium text-gray-700">
+            Color 4 (Hex Code)
+          </label>
           <input
-            id="color4"
-            name="color4"
             type="text"
-            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            defaultValue={dba.color4 || ""}
+            name="color4"
+            id="color4"
+            value={color4}
+            onChange={(e) => setColor4(e.target.value)}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color4) ? 'border-red-500' : ''}`}
+            placeholder="#RRGGBB"
+          />
+          {!isValidHex(color4) && color4 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
+        </div>
+        <div className="flex items-center justify-center">
+          {isValidHex(color4) && color4 !== '' && (
+            <div className="h-12 w-12 rounded-full border border-gray-300" style={{ backgroundColor: color4 }}></div>
+          )}
+        </div>
+      </div>
+
+      {/* Logo Upload */}
+      <div>
+        <label htmlFor="logo" className="block text-sm font-medium text-gray-700">
+          DBA Logo
+        </label>
+        <div className="mt-1 flex items-center space-x-4">
+          {dba.logoUrl && (
+            <Image src={dba.logoUrl} alt="DBA Logo" width={80} height={80} className="h-20 w-20 rounded-full object-cover" />
+          )}
+          <input
+            id="logo"
+            name="logo"
+            type="file"
+            className="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-md file:border-0
+              file:text-sm file:font-semibold
+              file:bg-indigo-50 file:text-indigo-600
+              hover:file:bg-indigo-100"
           />
         </div>
       </div>
-      <div>
+
+      {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
+      {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
+
+      <div className="mt-4">
         <button
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
-          Save
+          Save Design
         </button>
       </div>
-      {state?.message && <p className="text-green-500">{state.message}</p>}
-      {state?.error && <p className="text-red-500">{state.error}</p>}
     </form>
   );
 }

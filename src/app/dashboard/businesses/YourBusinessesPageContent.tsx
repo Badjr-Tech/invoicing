@@ -209,9 +209,9 @@ export default function YourBusinessesPageContent() {
                   </div>
                 )}
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">{business.businessName}</h3>
-                  <p className="mt-2 text-sm text-foreground">Owner: {business.ownerName}</p>
-                  <p className="text-sm text-foreground">Type: {business.businessType}</p>
+                  <h3 className="text-xl font-bold text-white">{business.businessName}</h3>
+                  <p className="mt-2 text-sm text-white">Owner: {business.ownerName}</p>
+                  <p className="text-sm text-white">Type: {business.businessType}</p>
                   {business.isArchived && (
                     <p className="mt-2 text-sm font-semibold text-red-600">Archived</p>
                   )}
@@ -234,7 +234,7 @@ export default function YourBusinessesPageContent() {
               const bgColor = parentBusiness?.color1 || 'bg-background';
               return (
                 <button key={dba.id} onClick={() => handleDbaClick(dba.id)} className={`${bgColor} p-4 rounded-lg shadow-md w-full text-left`}>
-                  <h3 className="text-xl font-bold text-foreground">{dba.name}</h3>
+                  <h3 className="text-xl font-bold text-white">{dba.name}</h3>
                 </button>
               );
             })

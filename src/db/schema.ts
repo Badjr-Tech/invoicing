@@ -97,6 +97,7 @@ export const dbas = pgTable('dbas', {
   color2: text('color2'),
   color3: text('color3'),
   color4: text('color4'),
+  logoUrl: text('logo_url'),
   upload1: text('upload1'),
   upload2: text('upload2'),
   upload3: text('upload3'),
