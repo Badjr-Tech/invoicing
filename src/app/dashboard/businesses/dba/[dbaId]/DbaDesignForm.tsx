@@ -124,9 +124,6 @@ export default function DbaDesignForm({ dba }: { dba: Dba }) {
           DBA Logo
         </label>
         <div className="mt-1 flex items-center space-x-4">
-          {dba.logoUrl && (
-            <Image src={dba.logoUrl} alt="DBA Logo" width={80} height={80} className="h-20 w-20 rounded-full object-cover" />
-          )}
           <input
             id="logo"
             name="logo"
@@ -138,6 +135,9 @@ export default function DbaDesignForm({ dba }: { dba: Dba }) {
               file:bg-indigo-50 file:text-indigo-600
               hover:file:bg-indigo-100"
           />
+          {dba.logoUrl && (
+            <Image src={dba.logoUrl} alt="DBA Logo" width={80} height={80} className="h-20 w-20 rounded-full object-cover" />
+          )}
         </div>
       </div>
 
