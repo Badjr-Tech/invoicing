@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { sendMessage, sendMassMessage, getIndividualMessages } from "./actions";
-import { searchBusinesses } from "../businesses/actions";
-import { Business } from "@/db/schema";
 import { useFormState } from "react-dom";
 
 interface Message {
@@ -43,10 +41,7 @@ interface Demographic {
   name: string;
 }
 
-interface PendingRequest extends Message {
-  sender: { id: number; name: string; email: string };
-  recipient: { id: number; name: string; email: string };
-}
+
 
 type FormState = {
   message: string;
@@ -73,27 +68,13 @@ export default function MessagesPage({
     const [selectedRecipientId, setSelectedRecipientId] = useState<number | null>(null);
     const [recipient, setRecipient] = useState("admin");
     const [messageContent, setMessageContent] = useState("");
-    const [activeTab, setActiveTab] = useState(isAdmin ? "mass-messages" : "correspondence");
+    const [activeTab, setActiveTab] = useState(isAdmin ? "mass-messages" : "individual-messages");
     const [individualMessages, setIndividualMessages] = useState<Message[]>(initialIndividualMessages);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [searchResults, setSearchResults] = useState<Business[]>([]);
     const [excludeOptedOut, setExcludeOptedOut] = useState(true);
   
     // Use initial props for data
     const users = initialInternalUsers;
     const massMessages = initialMassMessages;
-    const pendingRequests: PendingRequest[] = []; // Assuming pending requests are not yet implemented or fetched here
-  
-    useEffect(() => {
-      if (searchQuery.length > 2) {
-        searchBusinesses(searchQuery).then(setSearchResults);
-      }
-    }, [searchQuery]);
-  
-    const handleCreateCollaborationRequest = async (formData: FormData) => {
-      // Implement collaboration request logic here
-      console.log("Collaboration request created:", formData);
-    };
   
     const handleSendMessage = async (formData: FormData) => {
       // Implement send message logic here
@@ -124,8 +105,7 @@ export default function MessagesPage({
               onChange={(e) => setActiveTab(e.target.value)}
             >
               <option value="mass-messages">Mass Messages</option>
-              <option value="correspondence">Correspondence</option>
-              <option value="pending-requests">Pending Requests</option>
+              <option value="individual-messages">Individual Messages</option>
             </select>
           </div>
           <div className="hidden sm:block">
@@ -137,72 +117,33 @@ export default function MessagesPage({
                 Mass Messages
               </button>
               <button
-                onClick={() => setActiveTab('correspondence')}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'correspondence' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+                onClick={() => setActiveTab('individual-messages')}
+                className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'individual-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
               >
-                Correspondence
-              </button>
-              <button
-                onClick={() => setActiveTab('pending-requests')}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'pending-requests' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
-              >
-                Pending Requests
+                Individual Messages
               </button>
             </nav>
           </div>
         </div>
   
         <div className="mt-8">
-          {activeTab === 'correspondence' && (
+          {activeTab === 'individual-messages' && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Create Collaboration Request</h2>
-              <form action={handleCreateCollaborationRequest} className="space-y-4">
-                <div>
-                  <label htmlFor="recipientId" className="block text-sm font-medium text-foreground">Recipient</label>
-                  <select
-                    id="recipientId"
-                    name="recipientId"
-                    required
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-light-gray focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-                  >
-                    {users.map(user => (
-                      <option key={user.id} value={user.id}>{user.name} ({user.email})</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={3}
-                    required
-                    className="shadow-sm focus:ring-primary focus:border-primary mt-1 block w-full sm:text-sm border border-light-gray rounded-md"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-ring-offset-2"
-                >
-                  Send Request
-                </button>
-              </form>
-  
-              <h2 className="text-2xl font-bold text-foreground mb-4 mt-8">Pending Requests</h2>
-              {pendingRequests.length === 0 ? (
-                <p className="text-foreground">No pending collaboration requests.</p>
+              <h2 className="text-2xl font-bold text-foreground mb-4">Individual Messages</h2>
+              {individualMessages.length === 0 ? (
+                <p className="text-foreground">No individual messages yet.</p>
               ) : (
                 <ul className="space-y-4">
-                  {pendingRequests.map(request => (
-                    <li key={request.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
-                      <p className="text-sm font-semibold">{request.senderId === currentUserId ? "You" : "User"} to {request.senderId === currentUserId ? "User" : "You"}:</p>
-                      <p className="text-foreground">{request.content}</p>
-                      <p className="text-xs text-foreground text-right">{request.timestamp.toLocaleString()}</p>
+                  {individualMessages.map(msg => (
+                    <li key={msg.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
+                      <p className="text-sm font-semibold">{msg.sender.name} to {msg.recipient.name}:</p>
+                      <p className="text-foreground">{msg.content}</p>
+                      <p className="text-xs text-foreground text-right">{msg.timestamp.toLocaleString()}</p>
                     </li>
                   ))}
                 </ul>
               )}
-  
+
               <h2 className="text-2xl font-bold text-foreground mb-4 mt-8">New Message</h2>
               <form action={handleSendMessage} className="space-y-4">
                 <div>
@@ -298,50 +239,7 @@ export default function MessagesPage({
             </div>
           )}
   
-          {activeTab === 'pending-requests' && (
-            <div className="mt-8">
-              <div className="mb-8 p-6 bg-background shadow-md rounded-lg">
-                <h2 className="text-2xl font-bold text-foreground mb-4">Create Collaboration Request</h2>
-                <form action={async (formData) => {
-                  const selectedBusinessId = formData.get("business-id");
-                  console.log("Collaboration request created for business:", selectedBusinessId);
-                }}>
-                  <div className="flex items-center">
-                    <input
-                      type="search"
-                      name="business-search"
-                      placeholder="Search for a business..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
-                    />
-                    <button
-                      type="submit"
-                      className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-secondary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-secondary"
-                    >
-                      Send Request
-                    </button>
-                  </div>
-                  {searchResults.length > 0 && (
-                    <ul className="mt-4 border border-gray-200 rounded-md">
-                      {searchResults.map((business) => (
-                        <li key={business.id} className="p-2 border-b border-gray-200">
-                          <label className="flex items-center">
-                            <input type="radio" name="business-id" value={business.id} className="mr-2" />
-                            {business.businessName}
-                          </label>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </form>
-              </div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Pending Requests</h2>
-              <div className="p-6 bg-background shadow-md rounded-lg h-96 overflow-y-auto">
-                <p className="text-gray-500">This feature is coming soon.</p>
-              </div>
-            </div>
-          )}
+
         </div>
       </div>
     </>
