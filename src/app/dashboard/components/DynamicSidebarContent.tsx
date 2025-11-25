@@ -141,6 +141,12 @@ export default function DynamicSidebarContent() {
             >
               Contractors
             </Link>
+            <Link
+              href="/dashboard/products"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Products
+            </Link>
           </>
         )}
                 {/* Financial Tools Section */}
@@ -183,12 +189,7 @@ export default function DynamicSidebarContent() {
             >
               Services
             </Link>
-            <Link
-              href="/dashboard/products"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Products
-            </Link>
+
           </>
         )}
         {isAdmin && (
