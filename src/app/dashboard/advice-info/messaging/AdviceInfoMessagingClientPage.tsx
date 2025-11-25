@@ -1,15 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { useFormState } from "react-dom";
+import { submitHelpRequest } from "./actions";
+import { HelpRequest, Referral } from "@/db/schema";
 
 interface AdviceInfoMessagingClientPageProps {
   isAdmin: boolean;
   isExternal: boolean;
   currentUserId: number | null;
+  initialHelpRequests: HelpRequest[];
+  initialReferrals: Referral[];
 }
 
-export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, currentUserId }: AdviceInfoMessagingClientPageProps) {
+type FormState = {
+  message: string;
+  error: string;
+} | undefined;
+
+export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, currentUserId, initialHelpRequests, initialReferrals }: AdviceInfoMessagingClientPageProps) {
   const [activeTab, setActiveTab] = useState("help-requests");
+  const [helpRequestState, helpRequestAction] = useFormState<FormState, FormData>(submitHelpRequest, undefined);
 
   return (
     <div className="p-4 md:p-8">
@@ -53,7 +64,60 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-4">Help Requests</h2>
             {isExternal ? (
-              <p className="text-foreground">External user view for Help Requests.</p>
+              <>
+                <div className="mb-8 p-6 bg-background shadow-md rounded-lg">
+                  <h3 className="text-xl font-bold text-foreground mb-4">Submit a New Help Request</h3>
+                  <form action={helpRequestAction} className="space-y-4">
+                    <div>
+                      <label htmlFor="subject" className="block text-sm font-medium text-foreground">Subject</label>
+                      <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        required
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="description" className="block text-sm font-medium text-foreground">Description</label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        rows={4}
+                        required
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                      ></textarea>
+                    </div>
+                    {helpRequestState?.message && (
+                      <p className="text-sm text-green-600 mt-2">{helpRequestState.message}</p>
+                    )}
+                    {helpRequestState?.error && (
+                      <p className="text-sm text-red-600 mt-2">{helpRequestState.error}</p>
+                    )}
+                    <button
+                      type="submit"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                      Submit Request
+                    </button>
+                  </form>
+                </div>
+
+                <h3 className="text-xl font-bold text-foreground mb-4 mt-8">Your Previous Requests</h3>
+                {initialHelpRequests.length === 0 ? (
+                  <p className="text-foreground">You have not submitted any help requests yet.</p>
+                ) : (
+                  <ul className="space-y-4">
+                    {initialHelpRequests.map(request => (
+                      <li key={request.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
+                        <p className="text-sm font-semibold">Subject: {request.subject}</p>
+                        <p className="text-foreground">Status: {request.status}</p>
+                        <p className="text-xs text-foreground text-right">{request.timestamp.toLocaleString()}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             ) : (
               <p className="text-foreground">Internal/Admin user view for Help Requests.</p>
             )}
@@ -64,7 +128,22 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
           <div>
             <h2 className="text-2xl font-bold text-foreground mb-4">Referrals</h2>
             {isExternal ? (
-              <p className="text-foreground">External user view for Referrals.</p>
+              <>
+                <h3 className="text-xl font-bold text-foreground mb-4">Referrals from Admins</h3>
+                {initialReferrals.length === 0 ? (
+                  <p className="text-foreground">No referrals from admins yet.</p>
+                ) : (
+                  <ul className="space-y-4">
+                    {initialReferrals.map(referral => (
+                      <li key={referral.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
+                        <p className="text-sm font-semibold">Admin Referral:</p>
+                        <p className="text-foreground">{referral.content}</p>
+                        <p className="text-xs text-foreground text-right">{referral.timestamp.toLocaleString()}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             ) : (
               <p className="text-foreground">Internal/Admin user view for Referrals.</p>
             )}

@@ -1,0 +1,2 @@
+ALTER TABLE "pitch_competition_events" ADD COLUMN "created_by_id" integer NOT NULL;--> statement-breakpoint
+ALTER TABLE "pitch_competition_events" ADD CONSTRAINT "pitch_competition_events_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;

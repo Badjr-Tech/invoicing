@@ -4,7 +4,7 @@ import { relations, InferSelectModel } from 'drizzle-orm';
 export const userRole = pgEnum('user_role', ['admin', 'internal', 'external']);
 export const businessTypeEnum = pgEnum('business_type', ['Sole Proprietorship', 'Partnership', 'Limited Liability Company (LLC)', 'Corporation']);
 export const businessTaxStatusEnum = pgEnum('business_tax_status', ['S-Corporation', 'C-Corporation', 'Not Applicable']);
-export const classTypeEnum = pgEnum('class_type', ['pre-course', 'agency-course']);
+export const classTypeEnum = pgEnum('class_type', ['pre-course', 'agency-course', 'hth-course']);
 export const enrollmentStatusEnum = pgEnum('enrollment_status', ['enrolled', 'completed', 'dropped', 'pending', 'rejected']);
 export const invoiceStatus = pgEnum('invoice_status', ['draft', 'sent', 'paid']);
 export const serviceDesignationEnum = pgEnum('service_designation', ['hourly', 'per deliverable', 'flat fee']); // New Enum
@@ -122,6 +122,45 @@ export const individualMessages = pgTable('individual_messages', {
   replyToMessageId: integer('reply_to_message_id').references((): AnyPgColumn => individualMessages.id),
 });
 
+export const helpRequestStatus = pgEnum('help_request_status', ['pending', 'resolved', 'closed']);
+
+export const helpRequests = pgTable('help_requests', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  subject: text('subject').notNull(),
+  description: text('description').notNull(),
+  status: helpRequestStatus('status').notNull().default('pending'),
+  timestamp: timestamp('timestamp', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const referrals = pgTable('referrals', {
+  id: serial('id').primaryKey(),
+  senderId: integer('sender_id').notNull().references(() => users.id), // Admin user
+  recipientId: integer('recipient_id').notNull().references(() => users.id), // External user
+  content: text('content').notNull(),
+  timestamp: timestamp('timestamp', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const pitchCompetitionEvents = pgTable('pitch_competition_events', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  description: text('description'),
+  date: timestamp('date', { withTimezone: true }).notNull(),
+  createdById: integer('created_by_id').notNull().references(() => users.id), // New column
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(), // New column
+});
+
+export const pitchSubmissions = pgTable('pitch_submissions', {
+  id: serial('id').primaryKey(),
+  eventId: integer('event_id').notNull().references(() => pitchCompetitionEvents.id),
+  userId: integer('user_id').notNull().references(() => users.id),
+  title: text('title').notNull(), // New column for project title
+  pitchUrl: text('pitch_url').notNull(),
+  submittedAt: timestamp('submitted_at', { withTimezone: true }).notNull().defaultNow(), // New column
+  location: text('location'), // New column for project location
+  pitchVideoUrl: text('pitch_video_url'), // New column for pitch video URL
+});
+
 
 
 
@@ -224,6 +263,10 @@ export type BusinessWithLocation = InferSelectModel<typeof businesses> & { locat
 export type BusinessWithDemographicAndLocation = InferSelectModel<typeof businesses> & { demographic: Demographic | null, location: Location | null };
 export type MassMessage = InferSelectModel<typeof massMessages>;
 export type IndividualMessage = InferSelectModel<typeof individualMessages>;
+export type HelpRequest = InferSelectModel<typeof helpRequests>;
+export type Referral = InferSelectModel<typeof referrals>;
+export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEvents>;
+export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
 
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
@@ -336,6 +379,41 @@ export const individualMessagesRelations = relations(individualMessages, ({ one 
   replyToMessage: one(individualMessages, {
     fields: [individualMessages.replyToMessageId],
     references: [individualMessages.id],
+  }),
+}));
+
+export const helpRequestsRelations = relations(helpRequests, ({ one }) => ({
+  user: one(users, {
+    fields: [helpRequests.userId],
+    references: [users.id],
+  }),
+}));
+
+export const referralsRelations = relations(referrals, ({ one }) => ({
+  sender: one(users, {
+    fields: [referrals.senderId],
+    references: [users.id],
+    relationName: 'sent_referrals',
+  }),
+  recipient: one(users, {
+    fields: [referrals.recipientId],
+    references: [users.id],
+    relationName: 'received_referrals',
+  }),
+}));
+
+export const pitchCompetitionEventsRelations = relations(pitchCompetitionEvents, ({ many }) => ({
+  submissions: many(pitchSubmissions),
+}));
+
+export const pitchSubmissionsRelations = relations(pitchSubmissions, ({ one }) => ({
+  event: one(pitchCompetitionEvents, {
+    fields: [pitchSubmissions.eventId],
+    references: [pitchCompetitionEvents.id],
+  }),
+  user: one(users, {
+    fields: [pitchSubmissions.userId],
+    references: [users.id],
   }),
 }));
 

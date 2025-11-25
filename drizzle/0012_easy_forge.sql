@@ -1,0 +1,1 @@
+ALTER TABLE "pitch_submissions" ADD COLUMN "location" text;

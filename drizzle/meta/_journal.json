@@ -57,6 +57,62 @@
       "when": 1763651431753,
       "tag": "0007_violet_korvac",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1764025508963,
+      "tag": "0008_superb_rhodey",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1764025774655,
+      "tag": "0009_exotic_peter_parker",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1764028145987,
+      "tag": "0010_flashy_zaran",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1764028497865,
+      "tag": "0011_demonic_sunspot",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1764028602066,
+      "tag": "0012_easy_forge",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1764028658687,
+      "tag": "0013_quick_reptil",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1764028697745,
+      "tag": "0014_overrated_romulus",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1764028776105,
+      "tag": "0015_sour_impossible_man",
+      "breakpoints": true
     }
   ]
 }
