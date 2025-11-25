@@ -41,7 +41,11 @@ interface Demographic {
   name: string;
 }
 
-
+interface Conversation {
+  id: string; // e.g., "userId1_userId2"
+  otherParticipant: User;
+  messages: Message[];
+}
 
 type FormState = {
   message: string;
@@ -71,10 +75,48 @@ export default function MessagesPage({
     const [activeTab, setActiveTab] = useState(isAdmin ? "mass-messages" : "individual-messages");
     const [individualMessages, setIndividualMessages] = useState<Message[]>(initialIndividualMessages);
     const [excludeOptedOut, setExcludeOptedOut] = useState(true);
+    const [conversations, setConversations] = useState<Conversation[]>([]);
+    const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   
     // Use initial props for data
     const users = initialInternalUsers;
     const massMessages = initialMassMessages;
+
+    useEffect(() => {
+      if (!currentUserId) return;
+
+      const groupedConversations: { [key: string]: Conversation } = {};
+
+      initialIndividualMessages.forEach(message => {
+        const participantIds = [message.senderId, message.recipientId].sort();
+        const conversationId = participantIds.join('_');
+
+        const otherParticipantId = message.senderId === currentUserId ? message.recipientId : message.senderId;
+        const otherParticipant = users.find(user => user.id === otherParticipantId);
+
+        if (!otherParticipant) {
+          console.warn(`Other participant not found for message ID: ${message.id}`);
+          return;
+        }
+
+        if (!groupedConversations[conversationId]) {
+          groupedConversations[conversationId] = {
+            id: conversationId,
+            otherParticipant: otherParticipant,
+            messages: [],
+          };
+        }
+        groupedConversations[conversationId].messages.push(message);
+      });
+
+      // Sort messages within each conversation by timestamp
+      Object.values(groupedConversations).forEach(conversation => {
+        conversation.messages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+      });
+
+      setConversations(Object.values(groupedConversations));
+      console.log("Grouped Conversations:", Object.values(groupedConversations));
+    }, [initialIndividualMessages, currentUserId, users]);
   
     const handleSendMessage = async (formData: FormData) => {
       // Implement send message logic here
@@ -128,60 +170,80 @@ export default function MessagesPage({
   
         <div className="mt-8">
           {activeTab === 'individual-messages' && (
-            <div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Individual Messages</h2>
-              {individualMessages.length === 0 ? (
-                <p className="text-foreground">No individual messages yet.</p>
-              ) : (
-                <ul className="space-y-4">
-                  {individualMessages.map(msg => (
-                    <li key={msg.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
-                      <p className="text-sm font-semibold">{msg.sender.name} to {msg.recipient.name}:</p>
-                      <p className="text-foreground">{msg.content}</p>
-                      <p className="text-xs text-foreground text-right">{msg.timestamp.toLocaleString()}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <h2 className="text-2xl font-bold text-foreground mb-4 mt-8">New Message</h2>
-              <form action={handleSendMessage} className="space-y-4">
-                <div>
-                  <label htmlFor="recipient" className="block text-sm font-medium text-foreground">Recipient</label>
-                  <select
-                    id="recipient"
-                    name="recipient"
-                    required
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-light-gray focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-                  >
-                    {users.map(user => (
-                      <option key={user.id} value={user.id}>{user.name} ({user.email})</option>
+            <div className="flex h-[calc(100vh-200px)]"> {/* Adjust height as needed */}
+              {/* Left Column: Conversation List */}
+              <div className="w-1/4 border-r border-gray-200 bg-white overflow-y-auto">
+                <h2 className="text-xl font-bold text-foreground p-4 border-b border-gray-200">Conversations</h2>
+                {conversations.length === 0 ? (
+                  <p className="text-foreground p-4">No conversations yet.</p>
+                ) : (
+                  <ul>
+                    {conversations.map(conversation => (
+                      <li
+                        key={conversation.id}
+                        className={`p-4 cursor-pointer hover:bg-gray-100 ${selectedConversationId === conversation.id ? 'bg-gray-100' : ''}`}
+                        onClick={() => setSelectedConversationId(conversation.id)}
+                      >
+                        <p className="font-semibold">{conversation.otherParticipant.name}</p>
+                        <p className="text-sm text-gray-500 truncate">{conversation.messages[conversation.messages.length - 1]?.content}</p>
+                      </li>
                     ))}
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={3}
-                    required
-                    className="shadow-sm focus:ring-primary focus:border-primary mt-1 block w-full sm:text-sm border border-light-gray rounded-md"
-                  ></textarea>
-                </div>
-                {sendState?.message && (
-                  <p className="text-sm text-green-600 mt-2">{sendState.message}</p>
+                  </ul>
                 )}
-                {sendState?.error && (
-                  <p className="text-sm text-red-600 mt-2">{sendState.error}</p>
+              </div>
+
+              {/* Right Column: Chat Window */}
+              <div className="flex-1 flex flex-col bg-white">
+                {selectedConversationId ? (
+                  <div className="flex-1 p-4 overflow-y-auto">
+                    {/* Chat messages will go here */}
+                    <h2 className="text-xl font-bold text-foreground mb-4">
+                      Chat with {conversations.find(c => c.id === selectedConversationId)?.otherParticipant.name}
+                    </h2>
+                    <div className="space-y-4">
+                      {conversations.find(c => c.id === selectedConversationId)?.messages.map(msg => (
+                        <div
+                          key={msg.id}
+                          className={`flex ${msg.senderId === currentUserId ? 'justify-end' : 'justify-start'}`}
+                        >
+                          <div
+                            className={`max-w-xs px-4 py-2 rounded-lg ${msg.senderId === currentUserId ? 'bg-primary text-white' : 'bg-gray-200 text-foreground'}`}
+                          >
+                            <p>{msg.content}</p>
+                            <p className="text-xs text-right mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center text-gray-500">
+                    Select a conversation to start chatting.
+                  </div>
                 )}
-                <button
-                  type="submit"
-                  className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Send Message
-                </button>
-              </form>
+
+                {/* New Message Form */}
+                {selectedConversationId && (
+                  <div className="border-t border-gray-200 p-4">
+                    <form action={handleSendMessage} className="flex space-x-2">
+                      <input type="hidden" name="recipient" value={conversations.find(c => c.id === selectedConversationId)?.otherParticipant.id} />
+                      <textarea
+                        name="messageContent"
+                        rows={1}
+                        required
+                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+                        placeholder="Type your message..."
+                      ></textarea>
+                      <button
+                        type="submit"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
+                        Send
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
             </div>
           )}
   
