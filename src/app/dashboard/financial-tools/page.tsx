@@ -23,6 +23,9 @@ export default function FinancialToolsPage() {
         <Link href="/dashboard/financial-tools/reporting" className="aspect-square border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-invoice-blue hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-invoice-blue flex flex-col items-center justify-center text-center">
           Reporting
         </Link>
+        <Link href="/dashboard/financial-tools/budget" className="aspect-square border border-transparent rounded-md shadow-sm text-lg font-medium text-primary-foreground bg-primary hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-accent flex flex-col items-center justify-center text-center">
+          Budget
+        </Link>
       </div>
     </div>
   );
