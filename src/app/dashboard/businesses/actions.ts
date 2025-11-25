@@ -831,8 +831,13 @@ export async function updateDbaDesign(prevState: FormState, formData: FormData):
       .set(updateData)
       .where(eq(dbas.id, dbaId));
 
+    // Fetch the updated DBA to return it
+    const updatedDba = await db.query.dbas.findFirst({
+      where: eq(dbas.id, dbaId),
+    });
+
     revalidatePath(`/dashboard/businesses/dba/${dbaId}`);
-    return { message: "DBA design updated successfully!", error: "" };
+    return { message: "DBA design updated successfully!", error: "", success: true, updatedDba: updatedDba || undefined };
   } catch (error: unknown) {
     console.error("Error updating DBA design:", error);
     let errorMessage = "Failed to update DBA design.";

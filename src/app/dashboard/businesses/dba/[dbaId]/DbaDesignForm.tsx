@@ -9,18 +9,21 @@ import Image from "next/image";
 export type FormState = {
   message: string;
   error: string;
+  success?: boolean;
+  updatedDba?: Dba;
 } | undefined;
 
 export default function DbaDesignForm({ dba }: { dba: Dba }) {
   const [state, formAction] = useFormState<FormState, FormData>(updateDbaDesign, undefined);
-  const [color1, setColor1] = useState(dba.color1 || '');
-  const [color2, setColor2] = useState(dba.color2 || '');
-  const [color3, setColor3] = useState(dba.color3 || '');
-  const [color4, setColor4] = useState(dba.color4 || '');
+  const [currentDba, setCurrentDba] = useState<Dba>(dba); // State to hold DBA data
+  const [color1, setColor1] = useState(currentDba.color1 || '');
+  const [color2, setColor2] = useState(currentDba.color2 || '');
+  const [color3, setColor3] = useState(currentDba.color3 || '');
+  const [color4, setColor4] = useState(currentDba.color4 || '');
 
   useEffect(() => {
-    if (state?.message === "DBA design updated successfully!") {
-      // Optionally, show a success message or revalidate data
+    if (state?.success && state.updatedDba) {
+      setCurrentDba(state.updatedDba); // Update local state with the new DBA data
     }
   }, [state]);
 
@@ -28,7 +31,7 @@ export default function DbaDesignForm({ dba }: { dba: Dba }) {
 
   return (
     <form action={formAction} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
-      <input type="hidden" name="dbaId" value={dba.id} />
+      <input type="hidden" name="dbaId" value={currentDba.id} />
 
       <h3 className="text-lg font-medium leading-6 text-gray-900">DBA Color Scheme</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -135,8 +138,8 @@ export default function DbaDesignForm({ dba }: { dba: Dba }) {
               file:bg-indigo-50 file:text-indigo-600
               hover:file:bg-indigo-100"
           />
-          {dba.logoUrl && (
-            <Image src={dba.logoUrl} alt="DBA Logo" width={80} height={80} className="h-20 w-20 rounded-full object-cover" />
+          {currentDba.logoUrl && (
+            <Image src={currentDba.logoUrl} alt="DBA Logo" width={80} height={80} className="h-20 w-20 rounded-full object-cover" />
           )}
         </div>
       </div>
