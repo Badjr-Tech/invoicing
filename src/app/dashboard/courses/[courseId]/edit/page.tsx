@@ -3,11 +3,15 @@ import { getCourse } from "../../actions";
 import { redirect } from "next/navigation";
 import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PagePropsWithPromiseParams = {
+  params: { courseId: string } & Promise<any>; // Combine with Promise<any> to satisfy the compiler
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
 export default async function EditCoursePage({
   params,
   searchParams,
-}: any) {
+}: PagePropsWithPromiseParams) {
   const session = await getSession();
   const creatorId = session?.user?.id;
 
