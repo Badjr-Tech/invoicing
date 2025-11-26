@@ -9,12 +9,11 @@ type FormState = {
   error: string;
 } | undefined;
 
-interface PageProps {
-  params: { productId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default function ProductDescriptionPage({ params, searchParams }: PageProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function ProductDescriptionPage({
+  params,
+  searchParams,
+}: any) {
   const { productId } = params;
   const [state, formAction] = useFormState<FormState, FormData>(addProduct, undefined);
 
