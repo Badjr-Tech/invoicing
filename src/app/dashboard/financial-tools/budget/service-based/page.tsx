@@ -13,7 +13,7 @@ export default function ServiceBasedBudgetCreationPage() {
       </ol>
       <div className="aspect-w-16 aspect-h-9">
         <iframe
-          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8F7R-D-3B6a-2Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J-3Z1J/pubhtml?widget=true&amp;headers=false"
+          src="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy" // NOTE: This might not display correctly if it's not a "publish to web" link.
           width="100%"
           height="600"
           frameBorder="0"
