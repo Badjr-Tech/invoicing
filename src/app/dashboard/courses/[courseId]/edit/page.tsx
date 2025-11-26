@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
 type PagePropsWithPromiseParams = {
-  params: { courseId: string } & Promise<any>; // Combine with Promise<any> to satisfy the compiler
+  params: { courseId: string } & Promise<any>; // eslint-disable-next-line @typescript-eslint/no-explicit-any // Combine with Promise<any> to satisfy the compiler
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
