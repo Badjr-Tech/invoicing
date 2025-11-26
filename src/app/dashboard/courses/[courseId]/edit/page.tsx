@@ -3,13 +3,11 @@ import { getCourse } from "../../actions";
 import { redirect } from "next/navigation";
 import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function EditCoursePage({
   params,
   searchParams,
-}: {
-  params: { courseId: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+}: any) {
   const session = await getSession();
   const creatorId = session?.user?.id;
 
