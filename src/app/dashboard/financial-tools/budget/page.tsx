@@ -13,10 +13,10 @@ export default function BudgetPage() {
 
       {/* Budget Type Selection Buttons */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <Link href="/dashboard/financial-tools/budget/service-based" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-center">
+        <Link href="/dashboard/financial-tools/budget/service-based" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-primary-foreground bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-center">
           Service-Based Budget
         </Link>
-        <Link href="/dashboard/financial-tools/budget/product-based" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-center">
+        <Link href="/dashboard/financial-tools/budget/product-based" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary text-center">
           Product-Based Budget
         </Link>
       </div>
@@ -33,10 +33,10 @@ export default function BudgetPage() {
       <div>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Pricing Tools</h2>
         <div className="bg-white p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link href="/dashboard/financial-tools/budget/pricing-tools/product" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-center">
+          <Link href="/dashboard/financial-tools/budget/pricing-tools/product" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-invoice-blue hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-invoice-blue text-center">
             How to Price Your Product
           </Link>
-          <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-center">
+          <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary-accent hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-accent text-center">
             How to Price Your Service
           </Link>
         </div>
