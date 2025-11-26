@@ -17,8 +17,6 @@
     "@neondatabase/serverless": "^1.0.2",
     "@types/nodemailer": "^7.0.4",
     "@vercel/blob": "^2.0.0",
-    "bcrypt": "^6.0.0",
-    "drizzle-kit": "^0.31.5",
     "drizzle-orm": "^0.44.5",
     "jose": "^6.1.0",
     "jspdf": "^3.0.3",
@@ -31,8 +29,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "19.1.1",
     "recharts": "^3.4.1",
-    "uuid": "^13.0.0",
-    "xlsx": "^0.18.5"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -43,6 +40,7 @@
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.22",
     "dotenv": "^17.2.3",
+    "drizzle-kit": "^0.31.5",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "postcss": "^8.5.6",

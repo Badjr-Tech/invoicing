@@ -4,11 +4,10 @@ import { redirect } from "next/navigation";
 import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
 interface EditCoursePageProps {
-  params: Promise<{ courseId: string }>;
+  params: { courseId: string };
 }
 
-export default async function EditCoursePage({ params: paramsPromise }: EditCoursePageProps) {
-  const params = await paramsPromise;
+export default async function EditCoursePage({ params }: EditCoursePageProps) {
   const session = await getSession();
   const creatorId = session?.user?.id;
 

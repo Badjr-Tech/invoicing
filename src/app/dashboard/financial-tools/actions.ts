@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { invoices, invoiceStatus } from "@/db/schema";
 import { getSession } from "@/app/login/actions";
 import { and, eq, sum, sql } from "drizzle-orm"; // Added sql import
-import jsPDF from "jspdf";
+// import jsPDF from "jspdf"; // Remove direct import
 
 type FormState = {
   message: string;
@@ -171,6 +171,7 @@ export async function getMonthlyNetIncome() {
 
 export async function generatePdf(prevState: FormState, formData: FormData): Promise<FormState> {
   try {
+    const { default: jsPDF } = await import('jspdf');
     const doc = new jsPDF();
 
     doc.text("Hello world!", 10, 10);
