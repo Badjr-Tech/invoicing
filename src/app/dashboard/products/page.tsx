@@ -86,12 +86,6 @@ export default function ProductsPage() {
                 <Laptop size={48} />
                 <span className="mt-2">Product 3.4</span>
               </button>
-              <Link href="/dashboard/financial-tools/reporting">
-                <button className="aspect-square border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex flex-col items-center justify-center text-center p-4">
-                  <Book size={48} />
-                  <span className="mt-2">Reporting</span>
-                </button>
-              </Link>
             </div>
           </div>
         </div>

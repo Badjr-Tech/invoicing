@@ -4,6 +4,13 @@ import { db } from "@/db";
 import { invoices, invoiceStatus } from "@/db/schema";
 import { getSession } from "@/app/login/actions";
 import { and, eq, sum, sql } from "drizzle-orm"; // Added sql import
+import jsPDF from "jspdf";
+
+type FormState = {
+  message: string;
+  error: string;
+  pdfData?: string;
+} | undefined;
 
 // Helper function to get user ID from session
 async function getUserIdFromSession(): Promise<number | undefined> {
@@ -159,5 +166,27 @@ export async function getMonthlyNetIncome() {
   } catch (error) {
     console.error("Error fetching monthly net income:", error);
     return [];
+  }
+}
+
+export async function generatePdf(prevState: FormState, formData: FormData): Promise<FormState> {
+  try {
+    const doc = new jsPDF();
+
+    doc.text("Hello world!", 10, 10);
+    const pdfData = doc.output('datauristring');
+
+    return {
+      message: "PDF generated successfully!",
+      error: "",
+      pdfData: pdfData.split(',')[1], // remove the prefix
+    };
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    let errorMessage = "Failed to generate PDF.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to generate PDF: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
   }
 }
