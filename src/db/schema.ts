@@ -8,6 +8,7 @@ export const classTypeEnum = pgEnum('class_type', ['pre-course', 'agency-course'
 export const enrollmentStatusEnum = pgEnum('enrollment_status', ['enrolled', 'completed', 'dropped', 'pending', 'rejected']);
 export const invoiceStatus = pgEnum('invoice_status', ['draft', 'sent', 'paid']);
 export const serviceDesignationEnum = pgEnum('service_designation', ['hourly', 'per deliverable', 'flat fee']); // New Enum
+export const courseStatus = pgEnum('course_status', ['draft', 'published']); // New Enum for course status
 
 // --- Tables ---
 export const users = pgTable('users', {
@@ -161,6 +162,43 @@ export const pitchSubmissions = pgTable('pitch_submissions', {
   pitchVideoUrl: text('pitch_video_url'), // New column for pitch video URL
 });
 
+export const courses = pgTable('courses', {
+  id: serial('id').primaryKey(),
+  creatorId: integer('creator_id').notNull().references(() => users.id),
+  title: text('title').notNull(),
+  description: text('description'),
+  status: courseStatus('status').notNull().default('draft'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const courseLessons = pgTable('course_lessons', {
+  id: serial('id').primaryKey(),
+  courseId: integer('course_id').notNull().references(() => courses.id),
+  title: text('title').notNull(),
+  content: text('content'),
+  videoUrl: text('video_url'),
+  order: integer('order').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const lessonMaterials = pgTable('lesson_materials', {
+  id: serial('id').primaryKey(),
+  lessonId: integer('lesson_id').notNull().references(() => lessons.id),
+  fileName: text('file_name').notNull(),
+  fileUrl: text('file_url').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const externalCourseAccess = pgTable('external_course_access', {
+  id: serial('id').primaryKey(),
+  courseId: integer('course_id').notNull().references(() => courses.id),
+  externalUserId: text('external_user_id').notNull().unique(), // e.g., email or generated unique ID
+  accessKey: text('access_key').notNull(), // Password or token
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 
 
 
@@ -267,6 +305,10 @@ export type HelpRequest = InferSelectModel<typeof helpRequests>;
 export type Referral = InferSelectModel<typeof referrals>;
 export type PitchCompetitionEvent = InferSelectModel<typeof pitchCompetitionEvents>;
 export type PitchSubmission = InferSelectModel<typeof pitchSubmissions>;
+export type Course = InferSelectModel<typeof courses>;
+export type CourseLesson = InferSelectModel<typeof courseLessons>;
+export type LessonMaterial = InferSelectModel<typeof lessonMaterials>;
+export type ExternalCourseAccess = InferSelectModel<typeof externalCourseAccess>;
 
 export type ServiceCategory = InferSelectModel<typeof serviceCategories>; // New type
 export type Client = InferSelectModel<typeof clients>; // New type
@@ -448,5 +490,36 @@ export const passwordResetTokensRelations = relations(passwordResetTokens, ({ on
   user: one(users, {
     fields: [passwordResetTokens.userId],
     references: [users.id],
+  }),
+}));
+
+export const coursesRelations = relations(courses, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [courses.creatorId],
+    references: [users.id],
+  }),
+  lessons: many(courseLessons),
+  externalAccesses: many(externalCourseAccess),
+}));
+
+export const courseLessonsRelations = relations(courseLessons, ({ one, many }) => ({
+  course: one(courses, {
+    fields: [courseLessons.courseId],
+    references: [courses.id],
+  }),
+  materials: many(lessonMaterials),
+}));
+
+export const lessonMaterialsRelations = relations(lessonMaterials, ({ one }) => ({
+  lesson: one(courseLessons, {
+    fields: [lessonMaterials.lessonId],
+    references: [courseLessons.id],
+  }),
+}));
+
+export const externalCourseAccessRelations = relations(externalCourseAccess, ({ one }) => ({
+  course: one(courses, {
+    fields: [externalCourseAccess.courseId],
+    references: [courses.id],
   }),
 }));
