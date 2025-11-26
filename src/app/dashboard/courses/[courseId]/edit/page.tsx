@@ -3,16 +3,13 @@ import { getCourse } from "../../actions";
 import { redirect } from "next/navigation";
 import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
-interface PageProps {
-  params: {
-    courseId: string;
-  };
-  searchParams?: {
-    [key: string]: string | string[] | undefined;
-  };
-}
-
-export default async function EditCoursePage({ params, searchParams }: PageProps) {
+export default async function EditCoursePage({
+  params,
+  searchParams,
+}: {
+  params: { courseId: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const session = await getSession();
   const creatorId = session?.user?.id;
 
