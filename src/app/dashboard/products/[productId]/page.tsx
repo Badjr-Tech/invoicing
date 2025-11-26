@@ -10,7 +10,7 @@ type FormState = {
 } | undefined;
 
 type PagePropsWithPromiseParams = {
-  params: { productId: string } & Promise<any>; // eslint-disable-next-line @typescript-eslint/no-explicit-any // Combine with Promise<any> to satisfy the compiler
+  params: { productId: string } & Promise<any>; // eslint-disable-next-line @typescript-eslint/no-explicit-any
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
