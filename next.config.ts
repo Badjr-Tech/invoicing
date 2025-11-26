@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   eslint: {
-    ignoreDuringBuilds: true, // Temporarily ignore ESLint errors during build
+    ignoreDuringBuilds: false, // Re-enable ESLint errors during build
   },
   outputFileTracingRoot: __dirname, // Explicitly set the project root for file tracing
 };
