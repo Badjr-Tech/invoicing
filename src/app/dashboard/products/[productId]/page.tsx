@@ -9,7 +9,14 @@ type FormState = {
   error: string;
 } | undefined;
 
-export default function ProductDescriptionPage({ params }: { params: { productId: string } }) {
+// Define the props type for a client component page
+interface ClientPageProps {
+  params: {
+    productId: string;
+  };
+}
+
+export default function ProductDescriptionPage({ params }: ClientPageProps) {
   const { productId } = params;
   const [state, formAction] = useFormState<FormState, FormData>(addProduct, undefined);
 
