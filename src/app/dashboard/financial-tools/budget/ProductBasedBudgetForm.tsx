@@ -118,7 +118,7 @@ export default function ProductBasedBudgetForm() {
       </div>
 
       {productsList.length > 0 && (
-        <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+        <div className="bg-white p-6 rounded-lg shadow-md mt-6 max-h-96 overflow-y-auto">
           <h3 className="text-xl font-bold text-gray-900 mb-4">Added Products</h3>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">

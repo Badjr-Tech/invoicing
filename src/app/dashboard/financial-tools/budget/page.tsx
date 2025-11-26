@@ -32,8 +32,13 @@ export default function BudgetPage() {
       {/* Pricing Tools Section */}
       <div>
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Pricing Tools</h2>
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <p className="text-gray-700">Pricing tools content will go here.</p>
+        <div className="bg-white p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link href="/dashboard/financial-tools/budget/pricing-tools/product" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-center">
+            How to Price Your Product
+          </Link>
+          <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="flex-1 py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-center">
+            How to Price Your Service
+          </Link>
         </div>
       </div>
     </div>
