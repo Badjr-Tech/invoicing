@@ -3,6 +3,7 @@ import { getCourse } from "../../actions";
 import { redirect } from "next/navigation";
 import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function EditCoursePage({
   params,
   searchParams,
