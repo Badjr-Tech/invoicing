@@ -334,6 +334,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   services: many(services),
   serviceCategories: many(serviceCategories), // New relation
   checklistItems: many(checklistItems),
+  userProducts: many(userProducts),
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
@@ -521,5 +522,19 @@ export const externalCourseAccessRelations = relations(externalCourseAccess, ({ 
   course: one(courses, {
     fields: [externalCourseAccess.courseId],
     references: [courses.id],
+  }),
+}));
+
+export const userProducts = pgTable('user_products', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  productId: text('product_id').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const userProductsRelations = relations(userProducts, ({ one }) => ({
+  user: one(users, {
+    fields: [userProducts.userId],
+    references: [users.id],
   }),
 }));

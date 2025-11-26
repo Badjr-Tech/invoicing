@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getSession } from "@/app/login/actions";
 import { getAllUserBusinesses } from "../businesses/actions";
+import { getUserProducts } from "../products/actions";
 import LogoutButton from "@/app/components/LogoutButton";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,6 +12,11 @@ import { redirect } from "next/navigation";
 interface Business {
   id: number;
   businessName: string;
+}
+
+interface UserProduct {
+  id: number;
+  productId: string;
 }
 
 interface UserSession {
@@ -23,11 +29,13 @@ interface UserSession {
 export default function DynamicSidebarContent() {
   const [session, setSession] = useState<UserSession | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [userProducts, setUserProducts] = useState<UserProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [adviceInfoCollapsed, setAdviceInfoCollapsed] = useState(true);
   const [businessToolsCollapsed, setBusinessToolsCollapsed] = useState(true);
   const [financialToolsCollapsed, setFinancialToolsCollapsed] = useState(true);
   const [adminToolsCollapsed, setAdminToolsCollapsed] = useState(true);
+  const [productsCollapsed, setProductsCollapsed] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -40,6 +48,10 @@ export default function DynamicSidebarContent() {
 
       const userBusinesses = await getAllUserBusinesses(userSession.user.id);
       setBusinesses(userBusinesses);
+
+      const userProducts = await getUserProducts(userSession.user.id);
+      setUserProducts(userProducts);
+
       setLoading(false);
     }
     fetchData();
@@ -147,6 +159,27 @@ export default function DynamicSidebarContent() {
             >
               Products
             </Link>
+          </>
+        )}
+        {/* Products Section */}
+        <h2 
+          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          onClick={() => setProductsCollapsed(!productsCollapsed)}
+        >
+          <span className="mr-2">{productsCollapsed ? '▶' : '▼'}</span>
+          My Products
+        </h2>
+        {!productsCollapsed && (
+          <>
+            {userProducts.map((product) => (
+              <Link
+                key={product.id}
+                href={`/dashboard/products/${product.productId}`}
+                className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+              >
+                - {product.productId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
+              </Link>
+            ))}
           </>
         )}
                 {/* Financial Tools Section */}
