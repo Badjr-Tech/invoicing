@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
-    serverComponentsExternalPackages: ['bcrypt'], // Explicitly externalize bcrypt for server components
   },
+  serverExternalPackages: ['bcrypt'], // Explicitly externalize bcrypt for server components
   images: {
     remotePatterns: [
       {
