@@ -5,6 +5,7 @@ import CourseBuilderClientPage from "./CourseBuilderClientPage";
 
 interface EditCoursePageProps {
   params: { courseId: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export default async function EditCoursePage({ params }: EditCoursePageProps) {
