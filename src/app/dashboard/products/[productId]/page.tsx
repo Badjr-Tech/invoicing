@@ -9,14 +9,8 @@ type FormState = {
   error: string;
 } | undefined;
 
-// Define the props type for a client component page
-interface ClientPageProps {
-  params: {
-    productId: string;
-  };
-}
-
-export default function ProductDescriptionPage({ params }: ClientPageProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function ProductDescriptionPage({ params }: any) {
   const { productId } = params;
   const [state, formAction] = useFormState<FormState, FormData>(addProduct, undefined);
 
