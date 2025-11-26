@@ -9,12 +9,13 @@ type FormState = {
   error: string;
 } | undefined;
 
-interface PageProps {
+export default function ProductDescriptionPage({
+  params,
+  searchParams,
+}: {
   params: { productId: string };
   searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default function ProductDescriptionPage({ params, searchParams }: PageProps) {
+}) {
   const { productId } = params;
   const [state, formAction] = useFormState<FormState, FormData>(addProduct, undefined);
 
