@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
+    serverComponentsExternalPackages: ['bcrypt'], // Explicitly externalize bcrypt for server components
   },
   images: {
     remotePatterns: [
@@ -17,7 +18,8 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.externals.push('bcrypt');
+      // Remove the old externals push if it's redundant or causing conflicts
+      // config.externals.push('bcrypt');
     }
     return config;
   },
