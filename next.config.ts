@@ -18,14 +18,14 @@ const nextConfig: NextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
-      // Remove the old externals push if it's redundant or causing conflicts
-      // config.externals.push('bcrypt');
+      config.externals.push('bcrypt'); // Re-add webpack externals
     }
     return config;
   },
   eslint: {
     ignoreDuringBuilds: true, // Temporarily ignore ESLint errors during build
   },
+  outputFileTracingRoot: __dirname, // Explicitly set the project root for file tracing
 };
 
 export default nextConfig;
