@@ -15,7 +15,7 @@ export default function ProductDescriptionPage({ params }: any) {
   const [state, formAction] = useFormState<FormState, FormData>(addProduct, undefined);
 
   // In a real app, you would fetch the product details based on the productId
-  const productName = productId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  const productName = productId.replace(/-/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase());
 
   useEffect(() => {
     if (state?.message) {
