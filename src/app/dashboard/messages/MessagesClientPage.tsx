@@ -77,10 +77,33 @@ export default function MessagesPage({
     const [excludeOptedOut, setExcludeOptedOut] = useState(true);
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+    const [showNewMessageModal, setShowNewMessageModal] = useState(false);
   
     // Use initial props for data
     const users = initialInternalUsers;
     const massMessages = initialMassMessages;
+
+    const handleSelectUser = (user: User) => {
+      if (!currentUserId) return;
+  
+      const participantIds = [currentUserId, user.id].sort();
+      const conversationId = participantIds.join('_');
+  
+      const existingConversation = conversations.find(c => c.id === conversationId);
+  
+      if (existingConversation) {
+        setSelectedConversationId(existingConversation.id);
+      } else {
+        const newConversation: Conversation = {
+          id: conversationId,
+          otherParticipant: user,
+          messages: [],
+        };
+        setConversations(prev => [...prev, newConversation]);
+        setSelectedConversationId(newConversation.id);
+      }
+      setShowNewMessageModal(false);
+    };
 
     useEffect(() => {
       if (!currentUserId) return;
@@ -173,7 +196,15 @@ export default function MessagesPage({
             <div className="flex h-[calc(100vh-200px)]"> {/* Adjust height as needed */}
               {/* Left Column: Conversation List */}
               <div className="w-1/4 border-r border-gray-200 bg-white overflow-y-auto">
-                <h2 className="text-xl font-bold text-foreground p-4 border-b border-gray-200">Conversations</h2>
+                <div className="flex justify-between items-center p-4 border-b border-gray-200">
+                  <h2 className="text-xl font-bold text-foreground">Conversations</h2>
+                  <button
+                    onClick={() => setShowNewMessageModal(true)}
+                    className="inline-flex justify-center rounded-md border border-transparent bg-primary py-1 px-2 text-xs font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    New
+                  </button>
+                </div>
                 {conversations.length === 0 ? (
                   <p className="text-foreground p-4">No conversations yet.</p>
                 ) : (
@@ -300,10 +331,32 @@ export default function MessagesPage({
               </form>
             </div>
           )}
-  
-
         </div>
       </div>
+      {showNewMessageModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
+            <h2 className="text-2xl font-bold text-foreground mb-4">Start a new conversation</h2>
+            <ul className="space-y-2">
+              {users.map(user => (
+                <li
+                  key={user.id}
+                  className="p-2 cursor-pointer hover:bg-gray-100 rounded-md"
+                  onClick={() => handleSelectUser(user)}
+                >
+                  {user.name}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => setShowNewMessageModal(false)}
+              className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
