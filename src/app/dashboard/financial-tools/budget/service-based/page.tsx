@@ -38,7 +38,11 @@ export default function ServiceBasedBudgetCreationPage() {
           </p>
           {/* Placeholder for the actual file upload component */}
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500">
-            [File Upload Component will go here]
+            <input type="file" id="budget-upload" className="hidden" />
+            <label htmlFor="budget-upload" className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 cursor-pointer">
+              Upload Your Budget File
+            </label>
+            <p className="text-sm text-gray-500 mt-2">Accepted formats: .xlsx, .xls</p>
           </div>
         </div>
       </div>
