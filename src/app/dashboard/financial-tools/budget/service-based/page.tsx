@@ -1,37 +1,46 @@
 export default function ServiceBasedBudgetCreationPage() {
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Service-Based Budget</h1>
-      <p className="mb-4">
-        This is an embedded Google Drive document. To embed your own Google Sheet, please follow these steps:
-      </p>
-      <ol className="list-decimal list-inside mb-6">
-        <li>Open your Google Sheet.</li>
-        <li>Click on `File` {'>'} `Share` {'>'} `Publish to web`.</li>
-        <li>In the `Embed` tab, click `Publish`.</li>
-        <li>Copy the `src` attribute from the iframe code and replace the placeholder below.</li>
-      </ol>
-      <div className="aspect-w-16 aspect-h-9 mb-6"> {/* Added mb-6 for spacing */}
-        <iframe
-          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSqtpjh5bhqfVtMK7Oo6kTMfEVs-IgwZhyq1ts898jDVN-P5pqvBqNyKPw5qp3ojkpRQtIDkDXpkkOJ/pubhtml?widget=true&amp;headers=false"
-          width="100%"
-          height="600"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
-      </div>
-      <div className="mb-6">
-        <p className="text-lg text-gray-700">
-          Alternatively, click the button below to directly make a copy of the Service-Based Budget Spreadsheet:
-        </p>
-        <a
-          href="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block mt-4 px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-        >
-          Make a Copy of the Spreadsheet
-        </a>
+      <h1 className="text-4xl font-bold text-gray-800 mb-6">Service-Based Budget Calculator</h1>
+
+      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">How It Works:</h2>
+
+        {/* Step 1: Copy the Template */}
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">Step 1: Get Your Budget Template</h3>
+          <p className="text-lg text-gray-700 mb-4">
+            Click the button below to get your own editable copy of the Service-Based Budget Spreadsheet template. This will open in a new tab.
+          </p>
+          <a
+            href="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            Copy Budget Template
+          </a>
+        </div>
+
+        {/* Step 2: Fill it Out */}
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">Step 2: Fill Out Your Spreadsheet</h3>
+          <p className="text-lg text-gray-700">
+            Open your copied spreadsheet and fill in your income, expenses, and other relevant financial data. Make sure to save your changes.
+          </p>
+        </div>
+
+        {/* Step 3: Upload for Calculations */}
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">Step 3: Upload for Calculations</h3>
+          <p className="text-lg text-gray-700 mb-4">
+            Once you've filled out your budget, upload the Excel file below to see your profit calculations and a detailed breakdown.
+          </p>
+          {/* Placeholder for the actual file upload component */}
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500">
+            [File Upload Component will go here]
+          </div>
+        </div>
       </div>
     </div>
   );
