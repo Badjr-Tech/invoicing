@@ -11,18 +11,14 @@ export default function ServiceBasedBudgetCreationPage() {
         <li>In the `Embed` tab, click `Publish`.</li>
         <li>Copy the `src` attribute from the iframe code and replace the placeholder below.</li>
       </ol>
-      <div className="mb-6">
-        <p className="text-lg text-gray-700">
-          To get your own editable copy of the Service-Based Budget Spreadsheet, click the link below:
-        </p>
-        <a
-          href="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block mt-4 px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
-        >
-          Copy Service-Based Budget Spreadsheet
-        </a>
+      <div className="aspect-w-16 aspect-h-9">
+        <iframe
+          src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSqtpjh5bhqfVtMK7Oo6kTMfEVs-IgwZhyq1ts898jDVN-P5pqvBqNyKPw5qp3ojkpRQtIDkDXpkkOJ/pubhtml?widget=true&amp;headers=false"
+          width="100%"
+          height="600"
+          frameBorder="0"
+          allowFullScreen
+        ></iframe>
       </div>
     </div>
   );
