@@ -12,7 +12,10 @@ type PageProps = {
 export default async function EditCoursePage({
   params,
   searchParams,
-}: PageProps) {
+}: PageProps as {
+  params: { courseId: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const session = await getSession();
   const creatorId = session?.user?.id;
 
