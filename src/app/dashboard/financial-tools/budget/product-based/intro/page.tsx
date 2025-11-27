@@ -6,6 +6,14 @@ export default function ProductBasedBudgetIntroPage() {
     <div className="flex-1 p-6">
       <h1 className="text-4xl font-bold text-gray-800 mb-6">Product-Based Budget Calculator</h1>
 
+      {/* How to Price Your Product Button */}
+      <div className="mb-8 bg-white p-6 rounded-lg shadow-md"> {/* Changed mt-8 to mb-8 for spacing */}
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Need help pricing your products?</h2>
+        <Link href="/dashboard/financial-tools/budget/pricing-tools/product" className="inline-block px-6 py-3 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-invoice-blue hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-invoice-blue">
+          How to Price Your Product
+        </Link>
+      </div>
+
       {/* Short Description - Placeholder for user input */}
       <p className="text-lg text-gray-700 mb-8">
         This section helps product-based businesses create a comprehensive budget, track inventory costs, sales revenue, and calculate profitability for their products. Follow the steps below to get started.
