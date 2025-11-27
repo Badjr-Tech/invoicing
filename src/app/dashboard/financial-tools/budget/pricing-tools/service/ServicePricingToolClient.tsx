@@ -17,8 +17,8 @@ export default function ServicePricingToolClient() {
   const [estimatedHours, setEstimatedHours] = useState<number | string>('');
   const [adminHours, setAdminHours] = useState<number | string>('');
   const [yourHourlyRate, setYourHourlyRate] = useState<number | string>('');
-  const [isRecurring, setIsRecurring] = useState<boolean>(false);
-  const [numberOfMonths, setNumberOfMonths] = useState<number | string>('');
+  const [pricingModel, setPricingModel] = useState<'one-time' | 'monthly' | 'package'>('one-time'); // Updated default
+  const [packageDuration, setPackageDuration] = useState<number | string>(''); // New state for package duration
 
   // Step 2: Additional Costs
   const [costItems, setCostItems] = useState<CostItem[]>([]);
@@ -27,6 +27,7 @@ export default function ServicePricingToolClient() {
   // Step 3: Operational Costs
   const [operationalCostItems, setOperationalCostItems] = useState<CostItem[]>([]);
   const [nextOperationalCostItemId, setNextOperationalCostItemId] = useState(0);
+  const [servicesInSixMonths, setServicesInSixMonths] = useState<number | string>(''); // New state
 
   // Step 4: Profit & Calculation (now part of results)
   const [markupMargin, setMarkupMargin] = useState<number | string>(1.25); // Default to 1.25 as requested
@@ -77,16 +78,23 @@ export default function ServicePricingToolClient() {
     const adminHoursValue = parseFloat(adminHours as string);
     const yourHourlyRateValue = parseFloat(yourHourlyRate as string);
     const markupMarginValue = parseFloat(markupMargin as string);
-    const numberOfMonthsValue = isRecurring ? parseFloat(numberOfMonths as string) : 1;
+    const packageDurationValue = parseFloat(packageDuration as string) || 1; // Default to 1 for package
+    const servicesInSixMonthsValue = parseFloat(servicesInSixMonths as string) || 1; // Default to 1 to avoid division by zero
 
     // Validate Step 1 inputs
     if (
       !serviceName ||
       isNaN(estimatedHoursValue) || isNaN(adminHoursValue) || isNaN(yourHourlyRateValue) ||
       estimatedHoursValue < 0 || adminHoursValue < 0 || yourHourlyRateValue < 0 ||
-      (isRecurring && numberOfMonthsValue <= 0)
+      (pricingModel === 'package' && packageDurationValue <= 0)
     ) {
       alert("Please fill all required fields in Step 1 with valid non-negative numbers.");
+      return;
+    }
+
+    // Validate Step 3 inputs
+    if (isNaN(servicesInSixMonthsValue) || servicesInSixMonthsValue <= 0) {
+      alert("Please enter a valid positive number for 'Number of Services Provided in a 6-Month Period' in Step 3.");
       return;
     }
 
@@ -98,21 +106,39 @@ export default function ServicePricingToolClient() {
 
     // Calculate dynamic costs
     const totalAdditionalCosts = costItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
-    const totalOperationalCosts = operationalCostItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
+    let totalOperationalCostsSum = operationalCostItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
+
+    // Divide total operational costs by the number of services in 6 months to get per-service operational cost
+    const perServiceOperationalCost = totalOperationalCostsSum / servicesInSixMonthsValue;
 
     const totalHoursPerService = estimatedHoursValue + adminHoursValue;
     const laborCostPerService = (totalHoursPerService * yourHourlyRateValue);
 
     // Total cost per service
-    const totalCostPerService = laborCostPerService + totalAdditionalCosts + totalOperationalCosts;
+    const totalCostPerService = laborCostPerService + totalAdditionalCosts + perServiceOperationalCost;
 
-    const sellingPricePerService = totalCostPerService * markupMarginValue;
+    let sellingPricePerService = totalCostPerService * markupMarginValue;
+
+    // Adjust selling price based on pricing model if it's a package
+    if (pricingModel === 'package') {
+      sellingPricePerService = sellingPricePerService * packageDurationValue;
+    }
+
 
     // Initial calculation for 1 client for display, actual projection will use projectedClients
     const initialProjectedClients = parseFloat(projectedClients as string) || 1; // Default to 1 for initial calculation
 
-    const totalRevenueCalculated = sellingPricePerService * initialProjectedClients * numberOfMonthsValue;
-    const totalCostCalculated = totalCostPerService * initialProjectedClients * numberOfMonthsValue;
+    let totalRevenueCalculated = sellingPricePerService * initialProjectedClients;
+    let totalCostCalculated = totalCostPerService * initialProjectedClients;
+
+    if (pricingModel === 'monthly' || pricingModel === 'package') { // Apply packageDurationValue for both monthly and package
+      const duration = parseFloat(packageDuration as string) || 1;
+      totalRevenueCalculated = totalRevenueCalculated * duration;
+      totalCostCalculated = totalCostCalculated * duration;
+    }
+    // For 'one-time', no additional multiplication by duration is needed as it's a single instance.
+
+
     const totalProfitCalculated = totalRevenueCalculated - totalCostCalculated;
 
     setCalculatedPrice(sellingPricePerService); // This is now price per service
@@ -121,7 +147,7 @@ export default function ServicePricingToolClient() {
     setTotalProfit(totalProfitCalculated);
     setLaborCostBreakdown(laborCostPerService);
     setAdditionalCostBreakdown(totalAdditionalCosts);
-    setOperationalCostBreakdown(totalOperationalCosts);
+    setOperationalCostBreakdown(perServiceOperationalCost); // Display per-service operational cost
 
     setStep(2); // Move to results step
   };
@@ -202,30 +228,58 @@ export default function ServicePricingToolClient() {
                     placeholder="e.g., 50.00"
                   />
                 </div>
-                <div className="flex items-center">
-                  <input
-                    id="isRecurring"
-                    type="checkbox"
-                    checked={isRecurring}
-                    onChange={(e) => setIsRecurring(e.target.checked)}
-                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="isRecurring" className="ml-2 block text-sm text-gray-900">
-                    Recurring Service
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Service Pricing Model
                   </label>
+                  <div className="mt-1 flex space-x-4">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        className="form-radio"
+                        name="pricingModel"
+                        value="one-time"
+                        checked={pricingModel === 'one-time'}
+                        onChange={() => setPricingModel('one-time')}
+                      />
+                      <span className="ml-2 text-sm text-gray-900">One-Time Fee</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        className="form-radio"
+                        name="pricingModel"
+                        value="monthly"
+                        checked={pricingModel === 'monthly'}
+                        onChange={() => setPricingModel('monthly')}
+                      />
+                      <span className="ml-2 text-sm text-gray-900">Monthly Fee</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        className="form-radio"
+                        name="pricingModel"
+                        value="package"
+                        checked={pricingModel === 'package'}
+                        onChange={() => setPricingModel('package')}
+                      />
+                      <span className="ml-2 text-sm text-gray-900">Package</span>
+                    </label>
+                  </div>
                 </div>
-                {isRecurring && (
+                {pricingModel === 'package' && (
                   <div>
-                    <label htmlFor="numberOfMonths" className="block text-sm font-medium text-gray-700">
-                      Number of Months for Recurring Package (optional, default 1)
+                    <label htmlFor="packageDuration" className="block text-sm font-medium text-gray-700">
+                      Number of Months/Instances in Package
                     </label>
                     <input
                       type="number"
-                      id="numberOfMonths"
-                      value={numberOfMonths}
-                      onChange={(e) => setNumberOfMonths(e.target.value)}
+                      id="packageDuration"
+                      value={packageDuration}
+                      onChange={(e) => setPackageDuration(e.target.value)}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      placeholder="e.g., 6"
+                      placeholder="e.g., 3 (for 3 months) or 5 (for 5 instances)"
                     />
                   </div>
                 )}
@@ -234,7 +288,7 @@ export default function ServicePricingToolClient() {
 
             {/* Step 2: Additional Costs */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 2: Additional Costs (per client)</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 2: Additional Non-Operational Costs (specific to the service)</h2>
               <div className="space-y-4">
                 {costItems.map((item, index) => (
                   <div key={item.id} className="flex space-x-2 items-end">
@@ -283,8 +337,21 @@ export default function ServicePricingToolClient() {
 
             {/* Step 3: Operational Costs */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 3: Operational Costs (per client)</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 3: Operational Costs</h2>
               <div className="space-y-4">
+                <div>
+                  <label htmlFor="servicesInSixMonths" className="block text-sm font-medium text-gray-700">
+                    Number of Services Provided in a 6-Month Period
+                  </label>
+                  <input
+                    type="number"
+                    id="servicesInSixMonths"
+                    value={servicesInSixMonths}
+                    onChange={(e) => setServicesInSixMonths(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    placeholder="e.g., 100"
+                  />
+                </div>
                 {operationalCostItems.map((item, index) => (
                   <div key={item.id} className="flex space-x-2 items-end">
                     <div className="flex-grow">
@@ -345,68 +412,62 @@ export default function ServicePricingToolClient() {
             <div className="space-y-4">
               {/* Costs Breakdown */}
               <div className="p-4 bg-gray-50 rounded-md">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Costs Breakdown (per client):</h3>
-                <p className="text-sm text-gray-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
-                {costItems.length > 0 && (
-                  <>
-                    <p className="text-sm text-gray-700 font-medium mt-2">Additional Costs:</p>
-                    {costItems.map(item => (
-                      <p key={item.id} className="text-sm text-gray-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
-                    ))}
-                  </>
-                )}
-                {operationalCostItems.length > 0 && (
-                  <>
-                    <p className="text-sm text-gray-700 font-medium mt-2">Operational Costs:</p>
-                    {operationalCostItems.map(item => (
-                      <p key={item.id} className="text-sm text-gray-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
-                    ))}
-                  </>
-                )}
-                <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Client: ${totalCost?.toFixed(2)}</p>
-              </div>
-
-              {/* Margin Input */}
-              <div>
-                <label htmlFor="markupMargin" className="block text-sm font-medium text-gray-700">
-                  Markup Margin (e.g., 1.25 for 25% markup)
-                </label>
-                <input
-                  type="number"
-                  id="markupMargin"
-                  value={markupMargin}
-                  onChange={(e) => setMarkupMargin(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="e.g., 1.25"
-                />
-              </div>
-
-              {/* Projected Clients Input */}
-              <div>
-                <label htmlFor="projectedClients" className="block text-sm font-medium text-gray-700">
-                  Projected Number of Clients
-                </label>
-                <input
-                  type="number"
-                  id="projectedClients"
-                  value={projectedClients}
-                  onChange={(e) => setProjectedClients(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="e.g., 5"
-                />
-              </div>
-
-              {/* Final Calculation */}
-              <div className="mt-4 p-4 bg-green-50 rounded-md space-y-2">
-                <h3 className="text-lg font-medium text-green-800">Calculated Price per Client: ${calculatedPrice.toFixed(2)}</h3>
-                <p className="text-sm text-green-700">Total Estimated Revenue: ${totalRevenue?.toFixed(2)}</p>
-                <p className="text-sm text-green-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
-                <p className="text-sm text-green-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
-                <p className="text-sm text-green-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
-                <p className="text-sm text-green-700">Additional Costs: ${additionalCostBreakdown?.toFixed(2)}</p>
-                <p className="text-sm text-green-700">Operational Costs: ${operationalCostBreakdown?.toFixed(2)}</p>
-              </div>
-
+                              <h3 className="text-lg font-medium text-gray-800 mb-2">Costs Breakdown (per service):</h3>
+                              <p className="text-sm text-gray-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
+                              {costItems.length > 0 && (
+                                <>
+                                  <p className="text-sm text-gray-700 font-medium mt-2">Additional Costs:</p>
+                                  {costItems.map(item => (
+                                    <p key={item.id} className="text-sm text-gray-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
+                                  ))}
+                                </>
+                              )}
+                              {operationalCostBreakdown !== null && (
+                                <p className="text-sm text-gray-700 font-medium mt-2">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
+                              )}
+                              <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Service: ${totalCost?.toFixed(2)}</p>
+                            </div>
+                
+                            {/* Margin Input */}
+                            <div>
+                              <label htmlFor="markupMargin" className="block text-sm font-medium text-gray-700">
+                                Markup Margin (e.g., 1.25 for 25% markup)
+                              </label>
+                              <input
+                                type="number"
+                                id="markupMargin"
+                                value={markupMargin}
+                                onChange={(e) => setMarkupMargin(e.target.value)}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                placeholder="e.g., 1.25"
+                              />
+                            </div>
+                
+                            {/* Projected Clients Input */}
+                            <div>
+                              <label htmlFor="projectedClients" className="block text-sm font-medium text-gray-700">
+                                Projected Number of Clients
+                              </label>
+                              <input
+                                type="number"
+                                id="projectedClients"
+                                value={projectedClients}
+                                onChange={(e) => setProjectedClients(e.target.value)}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                placeholder="e.g., 5"
+                              />
+                            </div>
+                
+                            {/* Final Calculation */}
+                            <div className="mt-4 p-4 bg-green-50 rounded-md space-y-2">
+                              <h3 className="text-lg font-medium text-green-800">Calculated Price per Service: ${calculatedPrice.toFixed(2)}</h3>
+                              <p className="text-sm text-green-700">Total Estimated Revenue: ${totalRevenue?.toFixed(2)}</p>
+                              <p className="text-sm text-green-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
+                              <p className="text-sm text-green-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
+                              <p className="text-sm text-green-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
+                              <p className="text-sm text-green-700">Additional Costs: ${additionalCostBreakdown?.toFixed(2)}</p>
+                              <p className="text-sm text-green-700">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
+                            </div>
               <button
                 onClick={() => setStep(1)}
                 className="inline-flex justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
