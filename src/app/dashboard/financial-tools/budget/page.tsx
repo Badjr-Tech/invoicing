@@ -30,7 +30,7 @@ export default function BudgetPage() {
           <p className="text-gray-700 mb-4">
             Develop a comprehensive budget for your product-based business. Analyze costs, sales, and profitability for physical or digital products.
           </p>
-          <Link href="/dashboard/financial-tools/budget/product-based/intro" className="block w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary hover:opacity-90 focus:outline-none focus:ring-2 focus="ring-offset-2 focus:ring-secondary text-center">
+          <Link href="/dashboard/financial-tools/budget/product-based/intro" className="block w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary text-center">
             Go to Product-Based Budget
           </Link>
         </div>
@@ -38,9 +38,18 @@ export default function BudgetPage() {
 
       {/* User's Created Budgets List */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Budgets</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-800">Your Budgets</h2>
+          <button
+            // onClick={() => openUploadModal()} // Placeholder for modal logic
+            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          >
+            Add New Budget
+          </button>
+        </div>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <p className="text-gray-700">List of user&#39;s created budgets will go here.</p>
+          {/* This section will eventually list the uploaded budgets */}
         </div>
       </div>
 
