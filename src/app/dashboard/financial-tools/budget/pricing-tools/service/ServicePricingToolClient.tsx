@@ -13,9 +13,10 @@ export default function ServicePricingToolClient() {
 
   // Step 1: Service Details
   const [serviceName, setServiceName] = useState<string>('');
-  const [baseServiceCost, setBaseServiceCost] = useState<number | string>('');
+  const [currentServicePrice, setCurrentServicePrice] = useState<number | string>(''); // New
   const [estimatedHours, setEstimatedHours] = useState<number | string>('');
   const [adminHours, setAdminHours] = useState<number | string>('');
+  const [yourHourlyRate, setYourHourlyRate] = useState<number | string>(''); // New
   const [expectedClients, setExpectedClients] = useState<number | string>('');
   const [isRecurring, setIsRecurring] = useState<boolean>(false);
   const [numberOfMonths, setNumberOfMonths] = useState<number | string>('');
@@ -69,9 +70,10 @@ export default function ServicePricingToolClient() {
 
 
   const handleProceedToCalculation = () => {
-    const baseCostValue = parseFloat(baseServiceCost as string);
+    const currentServicePriceValue = parseFloat(currentServicePrice as string); // New
     const estimatedHoursValue = parseFloat(estimatedHours as string);
     const adminHoursValue = parseFloat(adminHours as string);
+    const yourHourlyRateValue = parseFloat(yourHourlyRate as string); // New
     const expectedClientsValue = parseFloat(expectedClients as string);
     const markupMarginValue = parseFloat(markupMargin as string);
     const numberOfMonthsValue = isRecurring ? parseFloat(numberOfMonths as string) : 1;
@@ -79,9 +81,9 @@ export default function ServicePricingToolClient() {
     // Validate Step 1 inputs
     if (
       !serviceName ||
-      isNaN(baseCostValue) || isNaN(estimatedHoursValue) || isNaN(adminHoursValue) ||
+      isNaN(estimatedHoursValue) || isNaN(adminHoursValue) || isNaN(yourHourlyRateValue) || // Updated validation
       isNaN(expectedClientsValue) ||
-      baseCostValue < 0 || estimatedHoursValue < 0 || adminHoursValue < 0 ||
+      estimatedHoursValue < 0 || adminHoursValue < 0 || yourHourlyRateValue < 0 || // Updated validation
       expectedClientsValue < 0 || (isRecurring && numberOfMonthsValue <= 0)
     ) {
       alert("Please fill all required fields in Step 1 with valid non-negative numbers.");
@@ -98,14 +100,11 @@ export default function ServicePricingToolClient() {
     const totalAdditionalCosts = costItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
     const totalOperationalCosts = operationalCostItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
 
-    // Assuming an internal hourly cost for estimated and admin hours
-    const internalHourlyCost = 25; // This could also be an input field later
-
     const totalHoursPerClient = estimatedHoursValue + adminHoursValue;
-    const laborCost = (totalHoursPerClient * internalHourlyCost);
+    const laborCost = (totalHoursPerClient * yourHourlyRateValue); // Use yourHourlyRateValue
 
     // Total cost per client for the service
-    const totalCostPerClient = laborCost + baseCostValue + totalAdditionalCosts + totalOperationalCosts;
+    const totalCostPerClient = laborCost + totalAdditionalCosts + totalOperationalCosts; // Removed baseServiceCost
 
     const sellingPricePerClient = totalCostPerClient * markupMarginValue;
 
@@ -149,16 +148,16 @@ export default function ServicePricingToolClient() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="baseServiceCost" className="block text-sm font-medium text-gray-700">
-                    Base Service Cost ($) (e.g., software, external fees per client)
+                  <label htmlFor="currentServicePrice" className="block text-sm font-medium text-gray-700">
+                    Current Service Price ($) (if applicable)
                   </label>
                   <input
                     type="number"
-                    id="baseServiceCost"
-                    value={baseServiceCost}
-                    onChange={(e) => setBaseServiceCost(e.target.value)}
+                    id="currentServicePrice"
+                    value={currentServicePrice}
+                    onChange={(e) => setCurrentServicePrice(e.target.value)}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    placeholder="e.g., 100.00"
+                    placeholder="e.g., 500.00"
                   />
                 </div>
                 <div>
@@ -188,16 +187,16 @@ export default function ServicePricingToolClient() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="expectedClients" className="block text-sm font-medium text-gray-700">
-                    Expected Number of Clients per Month
+                  <label htmlFor="yourHourlyRate" className="block text-sm font-medium text-gray-700">
+                    Your Hourly Rate ($)
                   </label>
                   <input
                     type="number"
-                    id="expectedClients"
-                    value={expectedClients}
-                    onChange={(e) => setExpectedClients(e.target.value)}
+                    id="yourHourlyRate"
+                    value={yourHourlyRate}
+                    onChange={(e) => setYourHourlyRate(e.target.value)}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    placeholder="e.g., 5"
+                    placeholder="e.g., 50.00"
                   />
                 </div>
                 <div className="flex items-center">
@@ -227,6 +226,19 @@ export default function ServicePricingToolClient() {
                     />
                   </div>
                 )}
+                <div>
+                  <label htmlFor="expectedClients" className="block text-sm font-medium text-gray-700">
+                    Expected Number of Clients per Month
+                  </label>
+                  <input
+                    type="number"
+                    id="expectedClients"
+                    value={expectedClients}
+                    onChange={(e) => setExpectedClients(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    placeholder="e.g., 5"
+                  />
+                </div>
               </div>
             </div>
 
@@ -344,7 +356,6 @@ export default function ServicePricingToolClient() {
               {/* Costs Breakdown */}
               <div className="p-4 bg-gray-50 rounded-md">
                 <h3 className="text-lg font-medium text-gray-800 mb-2">Costs Breakdown (per client):</h3>
-                <p className="text-sm text-gray-700">Base Service Cost: ${parseFloat(baseServiceCost as string).toFixed(2)}</p>
                 <p className="text-sm text-gray-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
                 {costItems.length > 0 && (
                   <>
