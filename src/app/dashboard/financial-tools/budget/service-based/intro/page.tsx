@@ -46,9 +46,30 @@ export default function ServiceBasedBudgetIntroPage() {
             Once you've filled out your budget, upload the Excel file below to see your profit calculations and a detailed breakdown.
           </p>
           <FileUpload
-            onFileUpload={(file) => {
-              console.log("File uploaded:", file.name);
-              // TODO: Implement actual upload logic to API route
+            onFileUpload={async (file) => {
+              const formData = new FormData();
+              formData.append('file', file);
+
+              try {
+                const response = await fetch('/api/upload-budget', {
+                  method: 'POST',
+                  body: formData,
+                });
+
+                if (response.ok) {
+                  const result = await response.json();
+                  console.log('Upload successful:', result);
+                  alert('File uploaded successfully!');
+                  // TODO: Handle successful upload, e.g., redirect to display page
+                } else {
+                  const errorData = await response.json();
+                  console.error('Upload failed:', errorData);
+                  alert(`Upload failed: ${errorData.error}`);
+                }
+              } catch (error) {
+                console.error('Error during file upload:', error);
+                alert('Error during file upload.');
+              }
             }}
             buttonText="Upload Your Budget File"
             descriptionText="Accepted formats: .xlsx, .xls"
@@ -61,6 +82,12 @@ export default function ServiceBasedBudgetIntroPage() {
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Need help pricing your services?</h2>
         <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="inline-block px-6 py-3 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary-accent hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-accent">
           How to Price Your Service
+        </Link>
+      </div>
+      {/* Proceed to Budget Button */}
+      <div className="mt-8 text-center">
+        <Link href="/dashboard/financial-tools/budget/service-based" className="inline-block px-8 py-4 border border-transparent text-xl font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Proceed to Service-Based Budget
         </Link>
       </div>
     </div>
