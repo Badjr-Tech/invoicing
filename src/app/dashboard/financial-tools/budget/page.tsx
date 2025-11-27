@@ -19,7 +19,7 @@ export default function BudgetPage() {
           <p className="text-gray-700 mb-4">
             Create a detailed budget for your service-based business. This tool helps you track income, expenses, and calculate profit margins specific to services.
           </p>
-          <Link href="/dashboard/financial-tools/budget/service-based" className="block w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-primary-foreground bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-center">
+          <Link href="/dashboard/financial-tools/budget/service-based/intro" className="block w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-primary-foreground bg-primary hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-center">
             Go to Service-Based Budget
           </Link>
         </div>
@@ -30,7 +30,7 @@ export default function BudgetPage() {
           <p className="text-gray-700 mb-4">
             Develop a comprehensive budget for your product-based business. Analyze costs, sales, and profitability for physical or digital products.
           </p>
-          <Link href="/dashboard/financial-tools/budget/product-based" className="block w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary hover:opacity-90 focus:outline-none focus:ring-2 focus="ring-offset-2 focus:ring-secondary text-center">
+          <Link href="/dashboard/financial-tools/budget/product-based/intro" className="block w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-secondary hover:opacity-90 focus:outline-none focus:ring-2 focus="ring-offset-2 focus:ring-secondary text-center">
             Go to Product-Based Budget
           </Link>
         </div>
