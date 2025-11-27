@@ -36,23 +36,28 @@ export default function BudgetPage() {
         </div>
       </div>
 
-      {/* User's Created Budgets List */}
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Your Budgets</h2>
-          <button
-            // onClick={() => openUploadModal()} // Placeholder for modal logic
-            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Add New Budget
-          </button>
-        </div>
+      </div>
+
+      {/* Operating Expenses Section */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Other Financial Tools</h2>
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <p className="text-gray-700">List of user&#39;s created budgets will go here.</p>
-          {/* This section will eventually list the uploaded budgets */}
+          <Link href="/dashboard/financial-tools/budget/operating-expenses" className="inline-flex justify-center rounded-md border border-transparent bg-purple-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+            Calculate Operating Expenses
+          </Link>
         </div>
       </div>
 
+      {/* Your Budgets Section */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Budgets</h2>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <p className="text-gray-700 mb-4">No budgets created yet. Start by creating a new budget.</p>
+          <button className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Add New Budget
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
