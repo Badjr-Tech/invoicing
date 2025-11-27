@@ -36,8 +36,6 @@ export default function BudgetPage() {
         </div>
       </div>
 
-      </div>
-
       {/* Operating Expenses Section */}
       <div className="mt-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Other Financial Tools</h2>
