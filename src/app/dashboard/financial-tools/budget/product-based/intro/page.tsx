@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import FileUpload from "@/app/dashboard/components/FileUpload"; // Add import
+
 export default function ProductBasedBudgetIntroPage() {
   return (
     <div className="flex-1 p-6">
@@ -43,14 +45,14 @@ export default function ProductBasedBudgetIntroPage() {
           <p className="text-lg text-gray-700 mb-4">
             Once you've filled out your budget, upload the Excel file below to see your profit calculations and a detailed breakdown.
           </p>
-          {/* Placeholder for the actual file upload component */}
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500">
-            <input type="file" id="budget-upload" className="hidden" />
-            <label htmlFor="budget-upload" className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 cursor-pointer">
-              Upload Your Budget File
-            </label>
-            <p className="text-sm text-gray-500 mt-2">Accepted formats: .xlsx, .xls</p>
-          </div>
+          <FileUpload
+            onFileUpload={(file) => {
+              console.log("File uploaded:", file.name);
+              // TODO: Implement actual upload logic to API route
+            }}
+            buttonText="Upload Your Budget File"
+            descriptionText="Accepted formats: .xlsx, .xls"
+          />
         </div>
       </div>
 
