@@ -13,11 +13,10 @@ export default function ServicePricingToolClient() {
 
   // Step 1: Service Details
   const [serviceName, setServiceName] = useState<string>('');
-  const [currentServicePrice, setCurrentServicePrice] = useState<number | string>(''); // New
+  const [currentServicePrice, setCurrentServicePrice] = useState<number | string>('');
   const [estimatedHours, setEstimatedHours] = useState<number | string>('');
   const [adminHours, setAdminHours] = useState<number | string>('');
-  const [yourHourlyRate, setYourHourlyRate] = useState<number | string>(''); // New
-  const [expectedClients, setExpectedClients] = useState<number | string>('');
+  const [yourHourlyRate, setYourHourlyRate] = useState<number | string>('');
   const [isRecurring, setIsRecurring] = useState<boolean>(false);
   const [numberOfMonths, setNumberOfMonths] = useState<number | string>('');
 
@@ -38,6 +37,9 @@ export default function ServicePricingToolClient() {
   const [laborCostBreakdown, setLaborCostBreakdown] = useState<number | null>(null);
   const [additionalCostBreakdown, setAdditionalCostBreakdown] = useState<number | null>(null);
   const [operationalCostBreakdown, setOperationalCostBreakdown] = useState<number | null>(null);
+
+  // New state for expected clients in results section
+  const [projectedClients, setProjectedClients] = useState<number | string>('');
 
 
   // Handlers for dynamic cost items
@@ -70,21 +72,19 @@ export default function ServicePricingToolClient() {
 
 
   const handleProceedToCalculation = () => {
-    const currentServicePriceValue = parseFloat(currentServicePrice as string); // New
+    const currentServicePriceValue = parseFloat(currentServicePrice as string);
     const estimatedHoursValue = parseFloat(estimatedHours as string);
     const adminHoursValue = parseFloat(adminHours as string);
-    const yourHourlyRateValue = parseFloat(yourHourlyRate as string); // New
-    const expectedClientsValue = parseFloat(expectedClients as string);
+    const yourHourlyRateValue = parseFloat(yourHourlyRate as string);
     const markupMarginValue = parseFloat(markupMargin as string);
     const numberOfMonthsValue = isRecurring ? parseFloat(numberOfMonths as string) : 1;
 
     // Validate Step 1 inputs
     if (
       !serviceName ||
-      isNaN(estimatedHoursValue) || isNaN(adminHoursValue) || isNaN(yourHourlyRateValue) || // Updated validation
-      isNaN(expectedClientsValue) ||
-      estimatedHoursValue < 0 || adminHoursValue < 0 || yourHourlyRateValue < 0 || // Updated validation
-      expectedClientsValue < 0 || (isRecurring && numberOfMonthsValue <= 0)
+      isNaN(estimatedHoursValue) || isNaN(adminHoursValue) || isNaN(yourHourlyRateValue) ||
+      estimatedHoursValue < 0 || adminHoursValue < 0 || yourHourlyRateValue < 0 ||
+      (isRecurring && numberOfMonthsValue <= 0)
     ) {
       alert("Please fill all required fields in Step 1 with valid non-negative numbers.");
       return;
@@ -100,23 +100,26 @@ export default function ServicePricingToolClient() {
     const totalAdditionalCosts = costItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
     const totalOperationalCosts = operationalCostItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
 
-    const totalHoursPerClient = estimatedHoursValue + adminHoursValue;
-    const laborCost = (totalHoursPerClient * yourHourlyRateValue); // Use yourHourlyRateValue
+    const totalHoursPerService = estimatedHoursValue + adminHoursValue;
+    const laborCostPerService = (totalHoursPerService * yourHourlyRateValue);
 
-    // Total cost per client for the service
-    const totalCostPerClient = laborCost + totalAdditionalCosts + totalOperationalCosts; // Removed baseServiceCost
+    // Total cost per service
+    const totalCostPerService = laborCostPerService + totalAdditionalCosts + totalOperationalCosts;
 
-    const sellingPricePerClient = totalCostPerClient * markupMarginValue;
+    const sellingPricePerService = totalCostPerService * markupMarginValue;
 
-    const totalRevenueCalculated = sellingPricePerClient * expectedClientsValue * numberOfMonthsValue;
-    const totalCostCalculated = totalCostPerClient * expectedClientsValue * numberOfMonthsValue;
+    // Initial calculation for 1 client for display, actual projection will use projectedClients
+    const initialProjectedClients = parseFloat(projectedClients as string) || 1; // Default to 1 for initial calculation
+
+    const totalRevenueCalculated = sellingPricePerService * initialProjectedClients * numberOfMonthsValue;
+    const totalCostCalculated = totalCostPerService * initialProjectedClients * numberOfMonthsValue;
     const totalProfitCalculated = totalRevenueCalculated - totalCostCalculated;
 
-    setCalculatedPrice(sellingPricePerClient);
+    setCalculatedPrice(sellingPricePerService); // This is now price per service
     setTotalRevenue(totalRevenueCalculated);
     setTotalCost(totalCostCalculated);
     setTotalProfit(totalProfitCalculated);
-    setLaborCostBreakdown(laborCost);
+    setLaborCostBreakdown(laborCostPerService);
     setAdditionalCostBreakdown(totalAdditionalCosts);
     setOperationalCostBreakdown(totalOperationalCosts);
 
@@ -162,7 +165,7 @@ export default function ServicePricingToolClient() {
                 </div>
                 <div>
                   <label htmlFor="estimatedHours" className="block text-sm font-medium text-gray-700">
-                    Estimated Hours Required to Deliver Service (per client)
+                    Estimated Hours Required to Deliver Service
                   </label>
                   <input
                     type="number"
@@ -175,7 +178,7 @@ export default function ServicePricingToolClient() {
                 </div>
                 <div>
                   <label htmlFor="adminHours" className="block text-sm font-medium text-gray-700">
-                    Additional Admin Hours (prep, communication, revisions per client)
+                    Additional Admin Hours (prep, communication, revisions)
                   </label>
                   <input
                     type="number"
@@ -226,19 +229,6 @@ export default function ServicePricingToolClient() {
                     />
                   </div>
                 )}
-                <div>
-                  <label htmlFor="expectedClients" className="block text-sm font-medium text-gray-700">
-                    Expected Number of Clients per Month
-                  </label>
-                  <input
-                    type="number"
-                    id="expectedClients"
-                    value={expectedClients}
-                    onChange={(e) => setExpectedClients(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    placeholder="e.g., 5"
-                  />
-                </div>
               </div>
             </div>
 
@@ -388,6 +378,21 @@ export default function ServicePricingToolClient() {
                   onChange={(e) => setMarkupMargin(e.target.value)}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   placeholder="e.g., 1.25"
+                />
+              </div>
+
+              {/* Projected Clients Input */}
+              <div>
+                <label htmlFor="projectedClients" className="block text-sm font-medium text-gray-700">
+                  Projected Number of Clients
+                </label>
+                <input
+                  type="number"
+                  id="projectedClients"
+                  value={projectedClients}
+                  onChange={(e) => setProjectedClients(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  placeholder="e.g., 5"
                 />
               </div>
 
