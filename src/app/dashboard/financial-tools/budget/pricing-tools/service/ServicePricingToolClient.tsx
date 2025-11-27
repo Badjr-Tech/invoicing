@@ -362,7 +362,7 @@ export default function ServicePricingToolClient() {
                     ))}
                   </>
                 )}
-                <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Client: ${totalCostBreakdown?.toFixed(2)}</p>
+                <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Client: ${totalCost?.toFixed(2)}</p>
               </div>
 
               {/* Margin Input */}
