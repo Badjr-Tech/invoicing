@@ -1,6 +1,5 @@
 import Link from "next/link";
-
-import FileUpload from "@/app/dashboard/components/FileUpload"; // Add import
+import BudgetFileUploadClient from "@/app/dashboard/components/BudgetFileUploadClient"; // Add import
 
 export default function ServiceBasedBudgetIntroPage() {
   return (
@@ -45,35 +44,7 @@ export default function ServiceBasedBudgetIntroPage() {
           <p className="text-lg text-gray-700 mb-4">
             Once you've filled out your budget, upload the Excel file below to see your profit calculations and a detailed breakdown.
           </p>
-          <FileUpload
-            onFileUpload={async (file) => {
-              const formData = new FormData();
-              formData.append('file', file);
-
-              try {
-                const response = await fetch('/api/upload-budget', {
-                  method: 'POST',
-                  body: formData,
-                });
-
-                if (response.ok) {
-                  const result = await response.json();
-                  console.log('Upload successful:', result);
-                  alert('File uploaded successfully!');
-                  // TODO: Handle successful upload, e.g., redirect to display page
-                } else {
-                  const errorData = await response.json();
-                  console.error('Upload failed:', errorData);
-                  alert(`Upload failed: ${errorData.error}`);
-                }
-              } catch (error) {
-                console.error('Error during file upload:', error);
-                alert('Error during file upload.');
-              }
-            }}
-            buttonText="Upload Your Budget File"
-            descriptionText="Accepted formats: .xlsx, .xls"
-          />
+          <BudgetFileUploadClient />
         </div>
       </div>
 
