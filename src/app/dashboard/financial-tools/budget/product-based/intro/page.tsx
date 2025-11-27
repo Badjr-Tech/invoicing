@@ -1,9 +1,5 @@
-import Link from "next/link";
-
-import FileUpload from "@/app/dashboard/components/FileUpload"; // Add import
-
-import Link from "next/link";
 import BudgetFileUploadClient from "@/app/dashboard/components/BudgetFileUploadClient"; // Add import
+import Link from "next/link"; // Keep this import
 
 export default function ProductBasedBudgetIntroPage() {
   return (
