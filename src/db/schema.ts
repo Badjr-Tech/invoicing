@@ -87,6 +87,9 @@ export const businesses = pgTable('businesses', {
   color3: text('color3'), // New optional column for business color scheme
   color4: text('color4'), // New optional column for business color scheme
   taxFullName: text('tax_full_name'), // New optional column for tax full name
+  ein: varchar('ein', { length: 9 }),
+  foundingState: varchar('founding_state', { length: 2 }),
+  domainName: text('domain_name'),
 });
 
 export const dbas = pgTable('dbas', {
@@ -394,6 +397,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
   }),
   dbas: many(dbas),
   contractors: many(contractors), // New relation
+  complianceChecklist: many(businessComplianceChecklist),
 }));
 
 export const dbasRelations = relations(dbas, ({ one }) => ({
@@ -569,6 +573,20 @@ export const contractorsRelations = relations(contractors, ({ one }) => ({
   }),
   business: one(businesses, {
     fields: [contractors.businessId],
+    references: [businesses.id],
+  }),
+}));
+
+export const businessComplianceChecklist = pgTable('business_compliance_checklist', {
+  id: serial('id').primaryKey(),
+  businessId: integer('business_id').notNull().references(() => businesses.id),
+  itemId: text('item_id').notNull(),
+  isChecked: boolean('is_checked').notNull().default(false),
+});
+
+export const businessComplianceChecklistRelations = relations(businessComplianceChecklist, ({ one }) => ({
+  business: one(businesses, {
+    fields: [businessComplianceChecklist.businessId],
     references: [businesses.id],
   }),
 }));

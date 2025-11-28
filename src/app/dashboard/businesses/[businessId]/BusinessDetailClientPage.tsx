@@ -10,7 +10,7 @@ import OwnerDetailsForm from "./OwnerDetailsForm";
 import BusinessDesignForm from "./BusinessDesignForm"; // New import
 
 interface BusinessDetailClientPageProps {
-  initialBusiness: Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; };
+  initialBusiness: Business & { dbas: { id: number; name: string; }[] } & { ownerGender?: DemographicType | null; ownerRace?: DemographicType | null; ownerReligion?: DemographicType | null; ownerRegion?: LocationType | null; color1?: string | null; color2?: string | null; color3?: string | null; color4?: string | null; ein?: string | null; foundingState?: string | null; domainName?: string | null; };
   genders: DemographicType[];
   races: DemographicType[];
   religions: DemographicType[];
@@ -81,6 +81,9 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
           <p className="mt-2 text-gray-700">Type: {business.businessType}</p>
           <p className="mt-2 text-gray-700">Tax Status: {business.businessTaxStatus}</p>
           {business.taxFullName && <p className="mt-2 text-gray-700">Tax Full Name: {business.taxFullName}</p>}
+          {business.ein && <p className="mt-2 text-gray-700">EIN: {business.ein}</p>}
+          {business.foundingState && <p className="mt-2 text-gray-700">Founding State: {business.foundingState}</p>}
+          {business.domainName && <p className="mt-2 text-gray-700">Domain Name: {business.domainName}</p>}
           {business.dbas && business.dbas.length > 0 && (
             <div className="mt-2 text-gray-700">
               <p className="font-semibold">DBAs:</p>
