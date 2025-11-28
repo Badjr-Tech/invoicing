@@ -25,8 +25,10 @@ export default function ServicePricingToolClient() {
   const [nextCostItemId, setNextCostItemId] = useState(0);
 
   // Step 3: Operational Costs
-  const [operationalCostItems, setOperationalCostItems] = useState<CostItem[]>([]);
-  const [nextOperationalCostItemId, setNextOperationalCostItemId] = useState(0);
+  const [operationalCostItems, setOperationalCostItems] = useState<CostItem[]>([
+    { id: 0, name: 'AGENCY FEE', amount: '' } // Default agency fee
+  ]);
+  const [nextOperationalCostItemId, setNextOperationalCostItemId] = useState(1); // Start from 1 for next custom item
   const [servicesInSixMonths, setServicesInSixMonths] = useState<number | string>(''); // New state
 
   // Step 4: Profit & Calculation (now part of results)
@@ -106,13 +108,29 @@ export default function ServicePricingToolClient() {
 
     // Calculate dynamic costs
     const totalAdditionalCosts = costItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
-    let totalOperationalCostsSum = operationalCostItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
-
-    // Divide total operational costs by the number of services in 6 months to get per-service operational cost
-    const perServiceOperationalCost = totalOperationalCostsSum / servicesInSixMonthsValue;
 
     const totalHoursPerService = estimatedHoursValue + adminHoursValue;
     const laborCostPerService = (totalHoursPerService * yourHourlyRateValue);
+
+    // Calculate Agency Fee (5% of labor cost * markup margin)
+    const agencyFeeAmount = laborCostPerService * markupMarginValue * 0.05;
+
+    // Update the AGENCY FEE item in operationalCostItems
+    const updatedOperationalCostItems = operationalCostItems.map(item => {
+      if (item.name === 'AGENCY FEE') {
+        return { ...item, amount: agencyFeeAmount.toFixed(2) }; // Set the calculated amount
+      }
+      return item;
+    });
+    setOperationalCostItems(updatedOperationalCostItems); // Update the state
+
+    // Sum up operational costs, including the dynamic agency fee
+    let totalOperationalCostsSum = updatedOperationalCostItems.reduce((sum, item) => {
+      return sum + (parseFloat(item.amount as string) || 0);
+    }, 0);
+
+    // Divide total operational costs by the number of services in 6 months to get per-service operational cost
+    const perServiceOperationalCost = totalOperationalCostsSum / servicesInSixMonthsValue;
 
     // Total cost per service
     const totalCostPerService = laborCostPerService + totalAdditionalCosts + perServiceOperationalCost;
@@ -362,9 +380,10 @@ export default function ServicePricingToolClient() {
                         type="text"
                         id={`opCostName-${item.id}`}
                         value={item.name}
-                        onChange={(e) => updateOperationalCostItem(item.id, 'name', e.target.value)}
+                        onChange={(e) => item.name !== 'AGENCY FEE' && updateOperationalCostItem(item.id, 'name', e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="e.g., Contractor Fee"
+                        readOnly={item.name === 'AGENCY FEE'}
                       />
                     </div>
                     <div className="flex-grow">
@@ -375,14 +394,16 @@ export default function ServicePricingToolClient() {
                         type="number"
                         id={`opCostAmount-${item.id}`}
                         value={item.amount}
-                        onChange={(e) => updateOperationalCostItem(item.id, 'amount', e.target.value)}
+                        onChange={(e) => item.name !== 'AGENCY FEE' && updateOperationalCostItem(item.id, 'amount', e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="e.g., 50.00"
+                        readOnly={item.name === 'AGENCY FEE'}
                       />
                     </div>
                     <button
                       onClick={() => removeOperationalCostItem(item.id)}
                       className="px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+                      disabled={item.name === 'AGENCY FEE'}
                     >
                       Remove
                     </button>
