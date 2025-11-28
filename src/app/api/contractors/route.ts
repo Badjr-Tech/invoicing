@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { name, role, monthlyPayment, businessId, taxId, address, city, state, zipCode } = body;
+    const { name, role, monthlyPayment, businessId } = body;
 
     // Basic validation
     if (!name || !monthlyPayment || !businessId) {
@@ -26,11 +26,7 @@ export async function POST(request: Request) {
       name: name,
       role: role,
       monthlyPayment: parseFloat(monthlyPayment),
-      taxId: taxId,
-      address: address,
-      city: city,
-      state: state,
-      zipCode: zipCode,
+      // Removed 1099 fields
     }).returning();
 
     return NextResponse.json(newContractor[0], { status: 201 });

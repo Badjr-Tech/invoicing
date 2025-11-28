@@ -134,6 +134,13 @@
       "when": 1764309384151,
       "tag": "0018_fancy_mulholland_black",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1764310422128,
+      "tag": "0019_smart_silhouette",
+      "breakpoints": true
     }
   ]
 }

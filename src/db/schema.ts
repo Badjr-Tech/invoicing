@@ -548,11 +548,15 @@ export const contractors = pgTable('contractors', {
   name: text('name').notNull(),
   role: text('role'),
   monthlyPayment: numeric('monthly_payment', { precision: 10, scale: 2 }).notNull(),
-  taxId: varchar('tax_id', { length: 20 }), // SSN or EIN
-  address: text('address'),
-  city: text('city'),
-  state: varchar('state', { length: 2 }),
-  zipCode: varchar('zip_code', { length: 10 }),
+  invitationToken: text('invitation_token').unique(), // Unique token for onboarding link
+  invitationSentAt: timestamp('invitation_sent_at', { withTimezone: true }),
+  onboardedAt: timestamp('onboarded_at', { withTimezone: true }), // When contractor completed onboarding
+  w9Url: text('w9_url'), // URL to the uploaded W-9 form
+  contractorTaxId: varchar('contractor_tax_id', { length: 20 }), // Contractor's SSN or EIN
+  contractorAddress: text('contractor_address'),
+  contractorCity: text('contractor_city'),
+  contractorState: varchar('contractor_state', { length: 2 }),
+  contractorZipCode: varchar('contractor_zip_code', { length: 10 }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });

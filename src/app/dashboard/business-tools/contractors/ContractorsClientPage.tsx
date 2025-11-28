@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-// import { useAuth } from '@clerk/nextjs'; // Removed
+import { getAllUserBusinesses } from '@/app/dashboard/businesses/actions';
+import { getSession } from '@/app/login/actions';
 
 interface Business {
   id: number;
@@ -14,17 +15,18 @@ interface Contractor {
   role: string | null;
   monthlyPayment: number;
   businessId: number;
-  taxId: string | null;
-  address: string | null;
-  city: string | null;
-  state: string | null;
-  zipCode: string | null;
+  invitationToken: string | null;
+  invitationSentAt: string | null; // Date string
+  onboardedAt: string | null; // Date string
+  w9Url: string | null;
+  contractorTaxId: string | null;
+  contractorAddress: string | null;
+  contractorCity: string | null;
+  contractorState: string | null;
+  contractorZipCode: string | null;
 }
 
 export default function ContractorsClientPage() {
-  // TODO: Implement proper authentication and get the actual userId
-  const userId = 1; // Placeholder userId for now
-  // const { userId } = useAuth(); // Removed
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [contractors, setContractors] = useState<Contractor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,29 +37,22 @@ export default function ContractorsClientPage() {
   const [role, setRole] = useState('');
   const [monthlyPayment, setMonthlyPayment] = useState<string>('');
   const [selectedBusinessId, setSelectedBusinessId] = useState<string>('');
-  const [taxId, setTaxId] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [zipCode, setZipCode] = useState('');
   const [editingContractor, setEditingContractor] = useState<Contractor | null>(null);
 
   useEffect(() => {
-    // if (userId) { // Removed check
-      fetchData();
-    // }
-  }, [userId]);
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      // Fetch businesses
-      const businessesRes = await fetch('/api/businesses');
-      if (!businessesRes.ok) {
-        throw new Error(`Failed to fetch businesses: ${businessesRes.statusText}`);
+      const session = await getSession();
+      if (!session?.user?.id) {
+        throw new Error("User not authenticated.");
       }
-      const businessesData: Business[] = await businessesRes.json();
+      // Fetch businesses
+      const businessesData = await getAllUserBusinesses(session.user.id);
       setBusinesses(businessesData);
 
       // Fetch contractors
@@ -90,11 +85,6 @@ export default function ContractorsClientPage() {
       role: role || null,
       monthlyPayment: parseFloat(monthlyPayment),
       businessId: parseInt(selectedBusinessId),
-      taxId: taxId || null,
-      address: address || null,
-      city: city || null,
-      state: state || null,
-      zipCode: zipCode || null,
     };
 
     try {
@@ -135,11 +125,6 @@ export default function ContractorsClientPage() {
     setRole(contractor.role || '');
     setMonthlyPayment(contractor.monthlyPayment.toString());
     setSelectedBusinessId(contractor.businessId.toString());
-    setTaxId(contractor.taxId || '');
-    setAddress(contractor.address || '');
-    setCity(contractor.city || '');
-    setState(contractor.state || '');
-    setZipCode(contractor.zipCode || '');
   };
 
   const handleDelete = async (id: number) => {
@@ -168,11 +153,6 @@ export default function ContractorsClientPage() {
     setRole('');
     setMonthlyPayment('');
     setSelectedBusinessId('');
-    setTaxId('');
-    setAddress('');
-    setCity('');
-    setState('');
-    setZipCode('');
     setEditingContractor(null);
   };
 
@@ -240,58 +220,6 @@ export default function ContractorsClientPage() {
             </select>
           </div>
 
-          <h3 className="text-lg font-semibold mt-6 mb-2">1099 Information (Optional)</h3>
-          <div>
-            <label htmlFor="taxId" className="block text-sm font-medium text-gray-700">Tax ID (SSN/EIN)</label>
-            <input
-              type="text"
-              id="taxId"
-              value={taxId}
-              onChange={(e) => setTaxId(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-            <input
-              type="text"
-              id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700">City</label>
-            <input
-              type="text"
-              id="city"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
-            <input
-              type="text"
-              id="state"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">Zip Code</label>
-            <input
-              type="text"
-              id="zipCode"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
           <div className="flex space-x-4">
             <button
               type="submit"
@@ -326,11 +254,19 @@ export default function ContractorsClientPage() {
                   <p className="text-sm text-gray-600">
                     Monthly Payment: ${contractor.monthlyPayment.toFixed(2)} - Assigned to: {businesses.find(b => b.id === contractor.businessId)?.businessName || 'N/A'}
                   </p>
-                  {contractor.taxId && (
-                    <p className="text-xs text-gray-500">Tax ID: {contractor.taxId}</p>
+                  {contractor.contractorTaxId && (
+                    <p className="text-xs text-gray-500">Tax ID: {contractor.contractorTaxId}</p>
                   )}
-                  {contractor.address && (
-                    <p className="text-xs text-gray-500">Address: {contractor.address}, {contractor.city}, {contractor.state} {contractor.zipCode}</p>
+                  {contractor.contractorAddress && (
+                    <p className="text-xs text-gray-500">Address: {contractor.contractorAddress}, {contractor.contractorCity}, {contractor.contractorState} {contractor.contractorZipCode}</p>
+                  )}
+                  {contractor.onboardedAt ? (
+                    <p className="text-xs text-green-600">Onboarded: {new Date(contractor.onboardedAt).toLocaleDateString()}</p>
+                  ) : (
+                    <p className="text-xs text-yellow-600">Onboarding Pending</p>
+                  )}
+                  {contractor.w9Url && (
+                    <p className="text-xs text-blue-600">W-9: <a href={contractor.w9Url} target="_blank" rel="noopener noreferrer" className="underline">View</a></p>
                   )}
                 </div>
                 <div className="flex space-x-2">
@@ -353,6 +289,14 @@ export default function ContractorsClientPage() {
                   >
                     Record Payment
                   </button>
+                  {!contractor.onboardedAt && (
+                    <button
+                      onClick={() => handleInviteContractor(contractor.id)}
+                      className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                    >
+                      Invite to Onboard
+                    </button>
+                  )}
                 </div>
               </li>
             ))}
