@@ -168,6 +168,14 @@ export default function DynamicSidebarContent() {
                 Professional Email
               </Link>
             )}
+            {userProducts.some(product => product.productId === "website") && (
+              <Link
+                href="/dashboard/products/website"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              >
+                Website
+              </Link>
+            )}
           </>
         )}
         {/* Products Section */}

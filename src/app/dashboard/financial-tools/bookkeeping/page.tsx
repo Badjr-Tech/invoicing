@@ -28,9 +28,9 @@ export default function BookkeepingPage() {
         <h1 className="text-4xl font-bold text-gray-800 ml-4">Bookkeeping Product</h1>
       </div>
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Streamline Your Finances</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Simplified Bookkeeping</h2>
         <p className="text-lg text-gray-600 mb-6">
-          Our bookkeeping product helps you keep track of your income and expenses, manage invoices, and prepare for tax season with ease. Get a clear view of your financial health and make informed decisions for your business.
+          Keep your finances under control without getting overwhelmed. We’ll set up a simple system to track your income and expenses, so you always know where your money is going. It’s perfect for staying organized, making smart decisions, and being ready for taxes—without all the confusing accounting stuff.
         </p>
         <form action={formAction}>
           <input type="hidden" name="productId" value="bookkeeping" />
