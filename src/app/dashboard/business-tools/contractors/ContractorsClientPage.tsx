@@ -315,22 +315,14 @@ export default function ContractorsClientPage() {
                       Invite to Onboard
                     </button>
                   )}
-                  <a
-                    href={(() => {
-                      const businessName = businesses.find(b => b.id === contractor.businessId)?.businessName || 'Your Business';
-                      const userName = session?.user?.name || 'User'; // Get user name from session
-
-                      const subject = encodeURIComponent("Please Fill Out Your Contractor Info to Get Paid");
-                      const body = encodeURIComponent(`You’ve been added as a contractor in our system! When you get a chance, please fill out your W-9 information using the link below. This helps us keep everything compliant and ensures we have what we need to process any future payments.
-
-Thank you — we appreciate your time. ${businessName}, ${userName}`);
-
-                      return `mailto:${contractor.email}?subject=${subject}&body=${body}`;
-                    })()}
-                    className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
-                  >
-                    Send Email
-                  </a>
+                  {contractor.email && (
+                    <a
+                      href={`mailto:${contractor.email}?subject=${encodeURIComponent("Please Fill Out Your Contractor Info to Get Paid")}&body=${encodeURIComponent(`You’ve been added as a contractor in our system! When you get a chance, please fill out your W-9 information using the link below. This helps us keep everything compliant and ensures we have what we need to process any future payments.\n\nThank you — we appreciate your time.\n${businesses.find(b => b.id === contractor.businessId)?.businessName || 'Your Business'}, ${session?.user?.name || 'User'}`)}`}
+                      className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                    >
+                      Send Email
+                    </a>
+                  )}
                 </div>
               </li>
             ))}

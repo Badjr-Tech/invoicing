@@ -20,7 +20,7 @@ export default async function DashboardLayout({
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col text-foreground p-6">
+      <main className="flex-1 flex flex-col text-foreground p-6 overflow-x-hidden">
         {children}
         <footer className="mt-auto py-4 text-center text-sm text-foreground">
           Tech By Badjr

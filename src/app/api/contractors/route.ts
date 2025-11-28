@@ -59,7 +59,7 @@ export async function GET(request: Request) {
 
     const contractorsWithNumericPayment = fetchedContractors.map(c => ({
       ...c,
-      monthlyPayment: parseFloat(c.monthlyPayment),
+      monthlyPayment: c.monthlyPayment ? parseFloat(c.monthlyPayment) : 0,
     }));
 
     return NextResponse.json(contractorsWithNumericPayment, { status: 200 });
