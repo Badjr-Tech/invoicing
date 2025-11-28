@@ -335,6 +335,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   serviceCategories: many(serviceCategories), // New relation
   checklistItems: many(checklistItems),
   userProducts: many(userProducts),
+  contractors: many(contractors), // New relation
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
@@ -392,6 +393,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
     references: [users.id],
   }),
   dbas: many(dbas),
+  contractors: many(contractors), // New relation
 }));
 
 export const dbasRelations = relations(dbas, ({ one }) => ({
@@ -536,5 +538,32 @@ export const userProductsRelations = relations(userProducts, ({ one }) => ({
   user: one(users, {
     fields: [userProducts.userId],
     references: [users.id],
+  }),
+}));
+
+export const contractors = pgTable('contractors', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').notNull().references(() => businesses.id),
+  name: text('name').notNull(),
+  role: text('role'),
+  monthlyPayment: numeric('monthly_payment', { precision: 10, scale: 2 }).notNull(),
+  taxId: varchar('tax_id', { length: 20 }), // SSN or EIN
+  address: text('address'),
+  city: text('city'),
+  state: varchar('state', { length: 2 }),
+  zipCode: varchar('zip_code', { length: 10 }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const contractorsRelations = relations(contractors, ({ one }) => ({
+  user: one(users, {
+    fields: [contractors.userId],
+    references: [users.id],
+  }),
+  business: one(businesses, {
+    fields: [contractors.businessId],
+    references: [businesses.id],
   }),
 }));
