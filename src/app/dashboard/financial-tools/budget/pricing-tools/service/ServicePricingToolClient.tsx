@@ -106,16 +106,39 @@ export default function ServicePricingToolClient() {
       return;
     }
 
+    // Calculate total hours per service
+    const totalHoursPerService = estimatedHoursValue + adminHoursValue;
+
+    const laborCostPerService = (totalHoursPerService * yourHourlyRateValue);
+
     // Calculate dynamic costs
     const totalAdditionalCosts = costItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
 
-    const totalHoursPerService = estimatedHoursValue + adminHoursValue;
-    const laborCostPerService = (totalHoursPerService * yourHourlyRateValue);
+    // Sum up operational costs (excluding agency fee for now)
+    let totalOperationalCostsSumExcludingAgencyFee = operationalCostItems.reduce((sum, item) => {
+      if (item.name === 'AGENCY FEE') {
+        return sum; // Exclude agency fee from this sum
+      }
+      return sum + (parseFloat(item.amount as string) || 0);
+    }, 0);
 
-    // Calculate Agency Fee (5% of labor cost * markup margin)
-    const agencyFeeAmount = laborCostPerService * markupMarginValue * 0.05;
+    // Divide total operational costs (excluding agency fee) by the number of services in 6 months
+    const perServiceOperationalCostExcludingAgencyFee = totalOperationalCostsSumExcludingAgencyFee / servicesInSixMonthsValue;
 
-    // Update the AGENCY FEE item in operationalCostItems
+    // Total cost per service (excluding agency fee)
+    const totalCostPerServiceExcludingAgencyFee = laborCostPerService + totalAdditionalCosts + perServiceOperationalCostExcludingAgencyFee;
+
+    let sellingPricePerService = totalCostPerServiceExcludingAgencyFee * markupMarginValue;
+
+    // Adjust selling price based on pricing model if it's a package
+    if (pricingModel === 'package') {
+      sellingPricePerService = sellingPricePerService * packageDurationValue;
+    }
+
+    // Now calculate Agency Fee (5% of sellingPricePerService)
+    const agencyFeeAmount = sellingPricePerService * 0.05;
+
+    // Update the AGENCY FEE item in operationalCostItems with the new calculated amount
     const updatedOperationalCostItems = operationalCostItems.map(item => {
       if (item.name === 'AGENCY FEE') {
         return { ...item, amount: agencyFeeAmount.toFixed(2) }; // Set the calculated amount
@@ -124,20 +147,21 @@ export default function ServicePricingToolClient() {
     });
     setOperationalCostItems(updatedOperationalCostItems); // Update the state
 
-    // Sum up operational costs, including the dynamic agency fee
+    // Recalculate total operational costs sum including the new agency fee
     let totalOperationalCostsSum = updatedOperationalCostItems.reduce((sum, item) => {
       return sum + (parseFloat(item.amount as string) || 0);
     }, 0);
 
-    // Divide total operational costs by the number of services in 6 months to get per-service operational cost
+    // Recalculate per-service operational cost including agency fee
     const perServiceOperationalCost = totalOperationalCostsSum / servicesInSixMonthsValue;
 
-    // Total cost per service
+    // Recalculate total cost per service including agency fee
     const totalCostPerService = laborCostPerService + totalAdditionalCosts + perServiceOperationalCost;
 
-    let sellingPricePerService = totalCostPerService * markupMarginValue;
+    // Recalculate selling price per service with the final totalCostPerService
+    sellingPricePerService = totalCostPerService * markupMarginValue;
 
-    // Adjust selling price based on pricing model if it's a package
+    // Adjust selling price based on pricing model if it's a package (again, to ensure final value is correct)
     if (pricingModel === 'package') {
       sellingPricePerService = sellingPricePerService * packageDurationValue;
     }
