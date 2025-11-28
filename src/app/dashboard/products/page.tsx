@@ -9,7 +9,7 @@ export default function ProductsPage() {
         {/* Example Category 1 */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">internal: business branding</h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto pb-4">
             <div className="grid grid-flow-col auto-cols-[10rem] gap-4"> {/* Products horizontally in a grid */}
               <Link href="/dashboard/products/website">
                 <button className="w-40 h-40 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex flex-col items-center justify-center text-center p-4">
@@ -54,7 +54,7 @@ export default function ProductsPage() {
         {/* Example Category 2 */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Your Expertise</h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto pb-4">
             <div className="grid grid-flow-col auto-cols-[10rem] gap-4"> {/* Products horizontally in a grid */}
               <Link href="/dashboard/courses/create">
                 <button className="w-40 h-40 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 flex flex-col items-center justify-center text-center p-4">
@@ -90,7 +90,7 @@ export default function ProductsPage() {
         {/* Example Category 3 */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Products</h2>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto pb-4">
             <div className="grid grid-flow-col auto-cols-[10rem] gap-4"> {/* Products horizontally in a grid */}
               <Link href="/dashboard/products/book-me">
                 <button className="w-40 h-40 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex flex-col items-center justify-center text-center p-4">
