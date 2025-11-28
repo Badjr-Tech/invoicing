@@ -12,6 +12,7 @@ interface Business {
 interface Contractor {
   id: number;
   name: string;
+  email: string;
   role: string | null;
   monthlyPayment: number;
   businessId: number;
@@ -31,9 +32,11 @@ export default function ContractorsClientPage() {
   const [contractors, setContractors] = useState<Contractor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [session, setSession] = useState<any | null>(null); // Add session state
 
   // Form states for adding/editing a contractor
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
   const [monthlyPayment, setMonthlyPayment] = useState<string>('');
   const [selectedBusinessId, setSelectedBusinessId] = useState<string>('');
@@ -47,12 +50,13 @@ export default function ContractorsClientPage() {
     setLoading(true);
     setError(null);
     try {
-      const session = await getSession();
-      if (!session?.user?.id) {
+      const currentSession = await getSession(); // Get the session
+      setSession(currentSession); // Set the session state
+      if (!currentSession?.user?.id) {
         throw new Error("User not authenticated.");
       }
       // Fetch businesses
-      const businessesData = await getAllUserBusinesses(session.user.id);
+      const businessesData = await getAllUserBusinesses(currentSession.user.id);
       setBusinesses(businessesData);
 
       // Fetch contractors
@@ -75,13 +79,14 @@ export default function ContractorsClientPage() {
     e.preventDefault();
     setError(null);
 
-    if (!name || !monthlyPayment || !selectedBusinessId) {
+    if (!name || !email || !monthlyPayment || !selectedBusinessId) {
       setError('Please fill in all required fields.');
       return;
     }
 
     const payload = {
       name,
+      email,
       role: role || null,
       monthlyPayment: parseFloat(monthlyPayment),
       businessId: parseInt(selectedBusinessId),
@@ -122,6 +127,7 @@ export default function ContractorsClientPage() {
   const handleEdit = (contractor: Contractor) => {
     setEditingContractor(contractor);
     setName(contractor.name);
+    setEmail(contractor.email);
     setRole(contractor.role || '');
     setMonthlyPayment(contractor.monthlyPayment.toString());
     setSelectedBusinessId(contractor.businessId.toString());
@@ -150,6 +156,7 @@ export default function ContractorsClientPage() {
 
   const resetForm = () => {
     setName('');
+    setEmail('');
     setRole('');
     setMonthlyPayment('');
     setSelectedBusinessId('');
@@ -176,6 +183,17 @@ export default function ContractorsClientPage() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
             />
@@ -297,6 +315,22 @@ export default function ContractorsClientPage() {
                       Invite to Onboard
                     </button>
                   )}
+                  <a
+                    href={(() => {
+                      const businessName = businesses.find(b => b.id === contractor.businessId)?.businessName || 'Your Business';
+                      const userName = session?.user?.name || 'User'; // Get user name from session
+
+                      const subject = encodeURIComponent("Please Fill Out Your Contractor Info to Get Paid");
+                      const body = encodeURIComponent(`You’ve been added as a contractor in our system! When you get a chance, please fill out your W-9 information using the link below. This helps us keep everything compliant and ensures we have what we need to process any future payments.
+
+Thank you — we appreciate your time. ${businessName}, ${userName}`);
+
+                      return `mailto:${contractor.email}?subject=${subject}&body=${body}`;
+                    })()}
+                    className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+                  >
+                    Send Email
+                  </a>
                 </div>
               </li>
             ))}

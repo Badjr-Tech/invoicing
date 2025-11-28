@@ -546,6 +546,7 @@ export const contractors = pgTable('contractors', {
   userId: integer('user_id').notNull().references(() => users.id),
   businessId: integer('business_id').notNull().references(() => businesses.id),
   name: text('name').notNull(),
+  email: text('email').notNull(),
   role: text('role'),
   monthlyPayment: numeric('monthly_payment', { precision: 10, scale: 2 }).notNull(),
   invitationToken: text('invitation_token').unique(), // Unique token for onboarding link

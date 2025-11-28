@@ -13,10 +13,10 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { name, role, monthlyPayment, businessId } = body;
+    const { name, email, role, monthlyPayment, businessId } = body;
 
     // Basic validation
-    if (!name || !monthlyPayment || !businessId) {
+    if (!name || !email || !monthlyPayment || !businessId) {
       return new NextResponse('Missing required fields', { status: 400 });
     }
 
@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       userId: userId,
       businessId: businessId,
       name: name,
+      email: email,
       role: role,
       monthlyPayment: parseFloat(monthlyPayment),
       // Removed 1099 fields
@@ -56,7 +57,12 @@ export async function GET(request: Request) {
     // Then, fetch contractors associated with these businesses
     const fetchedContractors = await db.select().from(contractors).where(inArray(contractors.businessId, businessIds));
 
-    return NextResponse.json(fetchedContractors, { status: 200 });
+    const contractorsWithNumericPayment = fetchedContractors.map(c => ({
+      ...c,
+      monthlyPayment: parseFloat(c.monthlyPayment),
+    }));
+
+    return NextResponse.json(contractorsWithNumericPayment, { status: 200 });
   } catch (error) {
     console.error('Error fetching contractors:', error);
     return new NextResponse('Internal Server Error', { status: 500 });

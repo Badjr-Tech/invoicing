@@ -1,0 +1,1 @@
+ALTER TABLE "contractors" ADD COLUMN "email" text NOT NULL;
