@@ -409,72 +409,79 @@ export default function ServicePricingToolClient() {
         {step === 2 && calculatedPrice !== null && (
           <>
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Calculation Results</h2>
-            <div className="space-y-4">
-              {/* Costs Breakdown */}
-              <div className="p-4 bg-gray-50 rounded-md">
-                              <h3 className="text-lg font-medium text-gray-800 mb-2">Costs Breakdown (per service):</h3>
-                              <p className="text-sm text-gray-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
-                              {costItems.length > 0 && (
-                                <>
-                                  <p className="text-sm text-gray-700 font-medium mt-2">Additional Costs:</p>
-                                  {costItems.map(item => (
-                                    <p key={item.id} className="text-sm text-gray-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
-                                  ))}
-                                </>
-                              )}
-                              {operationalCostBreakdown !== null && (
-                                <p className="text-sm text-gray-700 font-medium mt-2">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
-                              )}
-                              <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Service: ${totalCost?.toFixed(2)}</p>
-                            </div>
-                
-                            {/* Margin Input */}
-                            <div>
-                              <label htmlFor="markupMargin" className="block text-sm font-medium text-gray-700">
-                                Markup Margin (e.g., 1.25 for 25% markup)
-                              </label>
-                              <input
-                                type="number"
-                                id="markupMargin"
-                                value={markupMargin}
-                                onChange={(e) => setMarkupMargin(e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="e.g., 1.25"
-                              />
-                            </div>
-                
-                            {/* Projected Clients Input */}
-                            <div>
-                              <label htmlFor="projectedClients" className="block text-sm font-medium text-gray-700">
-                                Projected Number of Clients
-                              </label>
-                              <input
-                                type="number"
-                                id="projectedClients"
-                                value={projectedClients}
-                                onChange={(e) => setProjectedClients(e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="e.g., 5"
-                              />
-                            </div>
-                
-                            {/* Final Calculation */}
-                            <div className="mt-4 p-4 bg-green-50 rounded-md space-y-2">
-                              <h3 className="text-lg font-medium text-green-800">Calculated Price per Service: ${calculatedPrice.toFixed(2)}</h3>
-                              <p className="text-sm text-green-700">Total Estimated Revenue: ${totalRevenue?.toFixed(2)}</p>
-                              <p className="text-sm text-green-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
-                              <p className="text-sm text-green-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
-                              <p className="text-sm text-green-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
-                              <p className="text-sm text-green-700">Additional Costs: ${additionalCostBreakdown?.toFixed(2)}</p>
-                              <p className="text-sm text-green-700">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
-                            </div>
-              <button
-                onClick={() => setStep(1)}
-                className="inline-flex justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-              >
-                Back to Inputs
-              </button>
+            <div className="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0">
+              {/* Left Side: Costs Breakdown */}
+              <div className="md:w-1/2 p-4 bg-gray-50 rounded-md space-y-2">
+                <h3 className="text-lg font-medium text-gray-800 mb-2">Costs Breakdown (per service):</h3>
+                <p className="text-sm text-gray-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
+                {costItems.length > 0 && (
+                  <>
+                    <p className="text-sm text-gray-700 font-medium mt-2">Additional Costs:</p>
+                    {costItems.map(item => (
+                      <p key={item.id} className="text-sm text-gray-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
+                    ))}
+                  </>
+                )}
+                {operationalCostBreakdown !== null && (
+                  <p className="text-sm text-gray-700 font-medium mt-2">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
+                )}
+                <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Service: ${totalCost?.toFixed(2)}</p>
+              </div>
+
+              {/* Right Side: Final Calculation & Recommended Price */}
+              <div className="md:w-1/2 flex flex-col space-y-4">
+                {/* Margin Input */}
+                <div className="p-4 bg-white rounded-md shadow-sm">
+                  <label htmlFor="markupMargin" className="block text-sm font-medium text-gray-700">
+                    Markup Margin (e.g., 1.25 for 25% markup)
+                  </label>
+                  <input
+                    type="number"
+                    id="markupMargin"
+                    value={markupMargin}
+                    onChange={(e) => setMarkupMargin(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    placeholder="e.g., 1.25"
+                  />
+                </div>
+
+                {/* Projected Clients Input */}
+                <div className="p-4 bg-white rounded-md shadow-sm">
+                  <label htmlFor="projectedClients" className="block text-sm font-medium text-gray-700">
+                    Projected Number of Clients
+                  </label>
+                  <input
+                    type="number"
+                    id="projectedClients"
+                    value={projectedClients}
+                    onChange={(e) => setProjectedClients(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    placeholder="e.g., 5"
+                  />
+                </div>
+
+                {/* Simplified Final Calculation */}
+                <div className="p-4 bg-green-50 rounded-md space-y-2">
+                  <h3 className="text-lg font-medium text-green-800">Calculated Price per Service:</h3>
+                  <p className="text-sm text-green-700">Total Estimated Revenue: ${totalRevenue?.toFixed(2)}</p>
+                  <p className="text-sm text-green-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
+                  <p className="text-sm text-green-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
+                  <p className="text-sm text-green-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
+                </div>
+
+                {/* Recommended Price */}
+                <div className="p-4 bg-indigo-100 rounded-md text-right">
+                  <p className="text-xl font-bold text-indigo-800">Recommended Price: ${Math.ceil(calculatedPrice).toFixed(2)}</p>
+                </div>
+              </div>
             </div>
+
+            <button
+              onClick={() => setStep(1)}
+              className="mt-6 inline-flex justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              Back to Inputs
+            </button>
           </>
         )}
       </div>
