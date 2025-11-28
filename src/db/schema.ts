@@ -9,6 +9,7 @@ export const enrollmentStatusEnum = pgEnum('enrollment_status', ['enrolled', 'co
 export const invoiceStatus = pgEnum('invoice_status', ['draft', 'sent', 'paid']);
 export const serviceDesignationEnum = pgEnum('service_designation', ['hourly', 'per deliverable', 'flat fee']); // New Enum
 export const courseStatus = pgEnum('course_status', ['draft', 'published']); // New Enum for course status
+export const transactionType = pgEnum('transaction_type', ['income', 'expense']);
 
 // --- Tables ---
 export const users = pgTable('users', {
@@ -90,6 +91,7 @@ export const businesses = pgTable('businesses', {
   ein: varchar('ein', { length: 9 }),
   foundingState: varchar('founding_state', { length: 2 }),
   domainName: text('domain_name'),
+  adminFee: numeric('admin_fee', { precision: 5, scale: 2 }),
 });
 
 export const dbas = pgTable('dbas', {
@@ -375,7 +377,7 @@ export const serviceCategoriesRelations = relations(serviceCategories, ({ one, m
   services: many(services), // New relation
 }));
 
-export const servicesRelations = relations(services, ({ one }) => ({
+export const servicesRelations = relations(services, ({ one, many }) => ({
   user: one(users, {
     fields: [services.userId],
     references: [users.id],
@@ -388,6 +390,7 @@ export const servicesRelations = relations(services, ({ one }) => ({
     fields: [services.categoryId],
     references: [serviceCategories.id],
   }),
+  transactions: many(transactions),
 }));
 
 export const businessesRelations = relations(businesses, ({ one, many }) => ({
@@ -398,6 +401,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
   dbas: many(dbas),
   contractors: many(contractors), // New relation
   complianceChecklist: many(businessComplianceChecklist),
+  transactions: many(transactions),
 }));
 
 export const dbasRelations = relations(dbas, ({ one }) => ({
@@ -588,5 +592,27 @@ export const businessComplianceChecklistRelations = relations(businessCompliance
   business: one(businesses, {
     fields: [businessComplianceChecklist.businessId],
     references: [businesses.id],
+  }),
+}));
+
+export const transactions = pgTable('transactions', {
+  id: serial('id').primaryKey(),
+  businessId: integer('business_id').notNull().references(() => businesses.id),
+  serviceId: integer('service_id').references(() => services.id),
+  description: text('description').notNull(),
+  amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
+  type: transactionType('type').notNull(),
+  date: timestamp('date', { withTimezone: true }).notNull().defaultNow(),
+  notes: text('notes'),
+});
+
+export const transactionsRelations = relations(transactions, ({ one }) => ({
+  business: one(businesses, {
+    fields: [transactions.businessId],
+    references: [businesses.id],
+  }),
+  service: one(services, {
+    fields: [transactions.serviceId],
+    references: [services.id],
   }),
 }));

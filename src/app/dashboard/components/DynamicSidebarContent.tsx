@@ -259,7 +259,7 @@ export default function DynamicSidebarContent() {
                     </Link>
                                 {userProducts.some(product => product.productId === "bookkeeping") && (
                                   <Link
-                                    href="/dashboard/financial-tools/bookkeeping"
+                                    href="/dashboard/products/bookkeeping"
                                     className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                                   >
                                     Bookkeeping
@@ -301,6 +301,12 @@ export default function DynamicSidebarContent() {
                   className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                 >
                   Admin Records
+                </Link>
+                <Link
+                  href="/dashboard/admin/agency-setup"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Admin Agency Set Up
                 </Link>
               </>
             )}
