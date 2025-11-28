@@ -1,4 +1,4 @@
-import { Package, Shirt, Car, Laptop, Book, AppWindow, AtSign, Brush, LaptopMinimal, BadgeCheck, BookMarked, CalendarCheck2, CalendarClock, Combine, CopyPlus, BadgePlus, HandCoins } from 'lucide-react';
+import { Package, Shirt, Car, Laptop, Book, AppWindow, AtSign, Brush, LaptopMinimal, BadgeCheck, BookMarked, CalendarCheck2, CalendarClock, Combine, CopyPlus, BadgePlus, HandCoins, MailCheck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ProductsPage() {
@@ -27,6 +27,12 @@ export default function ProductsPage() {
                 <button className="w-40 h-40 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex flex-col items-center justify-center text-center p-4">
                   <HandCoins size={48} />
                   <span className="mt-2">BookKeeping</span>
+                </button>
+              </Link>
+              <Link href="/dashboard/products/professional-email">
+                <button className="w-40 h-40 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex flex-col items-center justify-center text-center p-4">
+                  <MailCheck size={48} />
+                  <span className="mt-2">Professional Email</span>
                 </button>
               </Link>
               <Link href="/dashboard/products/portfolio">

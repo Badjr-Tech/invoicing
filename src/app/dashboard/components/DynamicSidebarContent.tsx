@@ -34,6 +34,7 @@ export default function DynamicSidebarContent() {
   const [adviceInfoCollapsed, setAdviceInfoCollapsed] = useState(true);
   const [businessToolsCollapsed, setBusinessToolsCollapsed] = useState(true);
   const [financialToolsCollapsed, setFinancialToolsCollapsed] = useState(true);
+  const [invoicingCollapsed, setInvoicingCollapsed] = useState(true);
   const [adminToolsCollapsed, setAdminToolsCollapsed] = useState(true);
   const [productsCollapsed, setProductsCollapsed] = useState(true);
 
@@ -159,6 +160,14 @@ export default function DynamicSidebarContent() {
             >
               Products
             </Link>
+            {userProducts.some(product => product.productId === "professional-email") && (
+              <Link
+                href="/dashboard/products/professional-email"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              >
+                Professional Email
+              </Link>
+            )}
           </>
         )}
         {/* Products Section */}
@@ -204,34 +213,52 @@ export default function DynamicSidebarContent() {
                       className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                     >
                       Contracts
-                    </Link>            <Link
-              href="/dashboard/invoicing"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Invoicing
-            </Link>
-            <Link
-              href="/dashboard/clients"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Clients
-            </Link>
-            <Link
-              href="/dashboard/services"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Services
-            </Link>
-            <Link
-              href="/dashboard/financial-tools/budget"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-            >
-              Budget
-            </Link>
-
-          </>
-        )}
-        {isAdmin && (
+                    </Link>
+                    <div 
+                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs cursor-pointer"
+                      onClick={() => setInvoicingCollapsed(!invoicingCollapsed)}
+                    >
+                      <span className="mr-2">{invoicingCollapsed ? '▶' : '▼'}</span>
+                      Invoicing
+                    </div>
+                    {!invoicingCollapsed && (
+                      <div className="pl-4">
+                        <Link
+                          href="/dashboard/invoicing"
+                          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                        >
+                          Invoices
+                        </Link>
+                        <Link
+                          href="/dashboard/clients"
+                          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                        >
+                          Clients
+                        </Link>
+                        <Link
+                          href="/dashboard/services"
+                          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                        >
+                          Services
+                        </Link>
+                      </div>
+                    )}
+                    <Link
+                      href="/dashboard/financial-tools/budget"
+                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                    >
+                      Budget
+                    </Link>
+                                {userProducts.some(product => product.productId === "bookkeeping") && (
+                                  <Link
+                                    href="/dashboard/financial-tools/bookkeeping"
+                                    className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                                  >
+                                    Bookkeeping
+                                  </Link>
+                                )}
+                      </>
+                    )}        {isAdmin && (
           <>
             {/* Admin Tools Section */}
             <h2 

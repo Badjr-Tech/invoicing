@@ -14,18 +14,18 @@ const checklistItems = [
     id: 'ein',
     label: 'EIN',
     link: 'https://sa.www4.irs.gov/applyein/legalStructure',
-    description: "An EIN is free and protects your identity. It's mandatory for LLCs but just good to have for sole proprietors."
+    description: "An EIN is free and protects your identity. It's mandatory for LLCs but just good to have for sole proprietors. But you can start making sales after you have an EIN."
   },
   {
     id: 'bank-account',
     label: 'Business Bank Account',
     link: 'https://www.americanexpress.com/en-us/business/checking/?eep=79266&utm_source=go&utm_campaign=bca-br&utm_medium=se&utm_term=american+express+business+account_3495823104_161616706515&utm_content=e&refid=amex_search_bca_go_br_pro|CjwKCAiAraXJBhBJEiwAjz7MZUK2ZMY8X5y-V-oqPQVb9k8TvVB7I3oprUE0cTfjEWkrxef36MOV6RoC1IsQAvD_BwE&gclsrc=aw.ds&gad_source=1&gad_campaignid=18543565565&gbraid=0AAAAADq2FFrtgsc-sNo5arWorXld15YAv&gclid=CjwKCAiAraXJBhBJEiwAjz7MZUK2ZMY8X5y-V-oqPQVb9k8TvVB7I3oprUE0cTfjEWkrxef36MOV6RoC1IsQAvD_BwE',
-    description: 'Placeholder description for Business Bank Account.'
+    description: 'You cannot apply for a business bank account until your entity is fully formed and approved by the state.'
   },
   {
     id: 'pricing',
     label: 'Product & Service Pricing Completed',
-    link: '/dashboard/financial-tools/budget/pricing-tools/product',
+    link: '/dashboard/financial-tools/budget',
     description: 'Placeholder description for Product & Service Pricing.'
   },
   {
@@ -37,19 +37,19 @@ const checklistItems = [
   {
     id: 'bookkeeping',
     label: 'Bookkeeping System Set Up',
-    link: '#',
+    link: '/dashboard/financial-tools/bookkeeping',
     description: 'Placeholder description for Bookkeeping System.'
   },
   {
     id: 'website',
     label: 'Website Live',
-    link: '#',
+    link: '/dashboard/products/website',
     description: 'Placeholder description for Website.'
   },
   {
     id: 'email',
     label: 'Professional Email Created',
-    link: '#',
+    link: '/dashboard/products/professional-email',
     description: 'Placeholder description for Professional Email.'
   },
 ];
@@ -80,6 +80,16 @@ export default function ComplianceChecklist() {
   return (
     <div className="mt-8 p-6 bg-white shadow-md rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Compliance Checklist</h2>
+      <div className="mb-8">
+        <h3 className="text-lg font-medium text-gray-800">Progress</h3>
+        <div className="mt-2 bg-gray-200 rounded-full h-4">
+          <div
+            className="bg-blue-600 h-4 rounded-full"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+        <p className="mt-2 text-sm text-gray-600">{Math.round(progress)}% Complete</p>
+      </div>
       <div className="space-y-4">
         {checklistItems.map((item) => (
           <div key={item.id}>
@@ -107,16 +117,6 @@ export default function ComplianceChecklist() {
             )}
           </div>
         ))}
-      </div>
-      <div className="mt-8">
-        <h3 className="text-lg font-medium text-gray-800">Progress</h3>
-        <div className="mt-2 bg-gray-200 rounded-full h-4">
-          <div
-            className="bg-blue-600 h-4 rounded-full"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <p className="mt-2 text-sm text-gray-600">{Math.round(progress)}% Complete</p>
       </div>
     </div>
   );
