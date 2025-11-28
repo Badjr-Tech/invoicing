@@ -25,10 +25,8 @@ export default function ServicePricingToolClient() {
   const [nextCostItemId, setNextCostItemId] = useState(0);
 
   // Step 3: Operational Costs
-  const [operationalCostItems, setOperationalCostItems] = useState<CostItem[]>([
-    { id: 0, name: 'AGENCY FEE', amount: '' } // Default agency fee
-  ]);
-  const [nextOperationalCostItemId, setNextOperationalCostItemId] = useState(1); // Start from 1 for next custom item
+  const [operationalCostItems, setOperationalCostItems] = useState<CostItem[]>([]); // No default agency fee
+  const [nextOperationalCostItemId, setNextOperationalCostItemId] = useState(0); // Start from 0 for next custom item
   const [servicesInSixMonths, setServicesInSixMonths] = useState<number | string>(''); // New state
 
   // Step 4: Profit & Calculation (now part of results)
@@ -40,6 +38,7 @@ export default function ServicePricingToolClient() {
   const [laborCostBreakdown, setLaborCostBreakdown] = useState<number | null>(null);
   const [additionalCostBreakdown, setAdditionalCostBreakdown] = useState<number | null>(null);
   const [operationalCostBreakdown, setOperationalCostBreakdown] = useState<number | null>(null);
+  const [agencyFeeBreakdown, setAgencyFeeBreakdown] = useState<number | null>(null); // New state for agency fee breakdown
 
   // New state for expected clients in results section
   const [projectedClients, setProjectedClients] = useState<number | string>('');
@@ -114,21 +113,18 @@ export default function ServicePricingToolClient() {
     // Calculate dynamic costs
     const totalAdditionalCosts = costItems.reduce((sum, item) => sum + (parseFloat(item.amount as string) || 0), 0);
 
-    // Sum up operational costs (excluding agency fee for now)
-    let totalOperationalCostsSumExcludingAgencyFee = operationalCostItems.reduce((sum, item) => {
-      if (item.name === 'AGENCY FEE') {
-        return sum; // Exclude agency fee from this sum
-      }
+    // Sum up operational costs (no agency fee here)
+    let totalOperationalCostsSum = operationalCostItems.reduce((sum, item) => {
       return sum + (parseFloat(item.amount as string) || 0);
     }, 0);
 
-    // Divide total operational costs (excluding agency fee) by the number of services in 6 months
-    const perServiceOperationalCostExcludingAgencyFee = totalOperationalCostsSumExcludingAgencyFee / servicesInSixMonthsValue;
+    // Divide total operational costs by the number of services in 6 months
+    const perServiceOperationalCost = totalOperationalCostsSum / servicesInSixMonthsValue;
 
-    // Total cost per service (excluding agency fee)
-    const totalCostPerServiceExcludingAgencyFee = laborCostPerService + totalAdditionalCosts + perServiceOperationalCostExcludingAgencyFee;
+    // Total cost per service (before agency fee)
+    const totalCostPerServiceBeforeAgencyFee = laborCostPerService + totalAdditionalCosts + perServiceOperationalCost;
 
-    let sellingPricePerService = totalCostPerServiceExcludingAgencyFee * markupMarginValue;
+    let sellingPricePerService = totalCostPerServiceBeforeAgencyFee * markupMarginValue;
 
     // Adjust selling price based on pricing model if it's a package
     if (pricingModel === 'package') {
@@ -138,49 +134,24 @@ export default function ServicePricingToolClient() {
     // Now calculate Agency Fee (5% of sellingPricePerService)
     const agencyFeeAmount = sellingPricePerService * 0.05;
 
-    // Update the AGENCY FEE item in operationalCostItems with the new calculated amount
-    const updatedOperationalCostItems = operationalCostItems.map(item => {
-      if (item.name === 'AGENCY FEE') {
-        return { ...item, amount: agencyFeeAmount.toFixed(2) }; // Set the calculated amount
-      }
-      return item;
-    });
-    setOperationalCostItems(updatedOperationalCostItems); // Update the state
-
-    // Recalculate total operational costs sum including the new agency fee
-    let totalOperationalCostsSum = updatedOperationalCostItems.reduce((sum, item) => {
-      return sum + (parseFloat(item.amount as string) || 0);
-    }, 0);
-
-    // Recalculate per-service operational cost including agency fee
-    const perServiceOperationalCost = totalOperationalCostsSum / servicesInSixMonthsValue;
-
-    // Recalculate total cost per service including agency fee
-    const totalCostPerService = laborCostPerService + totalAdditionalCosts + perServiceOperationalCost;
-
-    // Recalculate selling price per service with the final totalCostPerService
-    sellingPricePerService = totalCostPerService * markupMarginValue;
-
-    // Adjust selling price based on pricing model if it's a package (again, to ensure final value is correct)
-    if (pricingModel === 'package') {
-      sellingPricePerService = sellingPricePerService * packageDurationValue;
-    }
-
+    // Set agency fee breakdown
+    setAgencyFeeBreakdown(agencyFeeAmount);
 
     // Initial calculation for 1 client for display, actual projection will use projectedClients
     const initialProjectedClients = parseFloat(projectedClients as string) || 1; // Default to 1 for initial calculation
 
+    // Adjust total revenue and profit by subtracting the agency fee
     let totalRevenueCalculated = sellingPricePerService * initialProjectedClients;
-    let totalCostCalculated = totalCostPerService * initialProjectedClients;
+    let totalCostCalculated = totalCostPerServiceBeforeAgencyFee * initialProjectedClients; // Use cost before agency fee
 
-    if (pricingModel === 'monthly' || pricingModel === 'package') { // Apply packageDurationValue for both monthly and package
+    if (pricingModel === 'monthly' || pricingModel === 'package') {
       const duration = parseFloat(packageDuration as string) || 1;
       totalRevenueCalculated = totalRevenueCalculated * duration;
       totalCostCalculated = totalCostCalculated * duration;
     }
-    // For 'one-time', no additional multiplication by duration is needed as it's a single instance.
 
-
+    // Subtract agency fee from revenue and profit
+    totalRevenueCalculated -= (agencyFeeAmount * initialProjectedClients);
     const totalProfitCalculated = totalRevenueCalculated - totalCostCalculated;
 
     setCalculatedPrice(sellingPricePerService); // This is now price per service
@@ -512,6 +483,9 @@ export default function ServicePricingToolClient() {
                   <p className="text-sm text-green-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
                   <p className="text-sm text-green-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
                   <p className="text-sm text-green-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
+                  {agencyFeeBreakdown !== null && (
+                    <p className="text-sm text-green-700">Agency Fee: ${agencyFeeBreakdown?.toFixed(2)}</p>
+                  )}
                 </div>
 
                 {/* Recommended Price */}
