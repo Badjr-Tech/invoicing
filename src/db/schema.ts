@@ -91,7 +91,6 @@ export const businesses = pgTable('businesses', {
   ein: varchar('ein', { length: 9 }),
   foundingState: varchar('founding_state', { length: 2 }),
   domainName: text('domain_name'),
-  adminFee: numeric('admin_fee', { precision: 5, scale: 2 }),
 });
 
 export const dbas = pgTable('dbas', {
@@ -616,3 +615,8 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
     references: [services.id],
   }),
 }));
+
+export const platformSettings = pgTable('platform_settings', {
+  id: serial('id').primaryKey(),
+  adminFee: numeric('admin_fee', { precision: 5, scale: 2 }),
+});

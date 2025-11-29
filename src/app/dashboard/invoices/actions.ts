@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { invoices, transactions, businesses } from "@/db/schema";
+import { invoices, transactions, platformSettings } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -23,13 +23,12 @@ export async function updateInvoiceStatus(invoiceId: number, status: 'draft' | '
         notes: `From invoice #${updatedInvoice.invoiceNumber}`,
       });
 
-      // Get business to calculate admin fee
-      const business = await db.query.businesses.findFirst({
-        where: eq(businesses.id, updatedInvoice.businessId),
-      });
+      // Get platform admin fee
+      const platform = await db.query.platformSettings.findFirst();
+      const adminFeePercentage = platform?.adminFee ? parseFloat(platform.adminFee) : 0;
 
-      if (business && business.adminFee) {
-        const adminFeeAmount = parseFloat(updatedInvoice.amount) * (parseFloat(business.adminFee) / 100);
+      if (adminFeePercentage > 0) {
+        const adminFeeAmount = parseFloat(updatedInvoice.amount) * (adminFeePercentage / 100);
         // Create expense transaction for admin fee
         await db.insert(transactions).values({
           businessId: updatedInvoice.businessId,
@@ -37,7 +36,7 @@ export async function updateInvoiceStatus(invoiceId: number, status: 'draft' | '
           amount: adminFeeAmount.toString(),
           type: 'expense',
           date: new Date(),
-          notes: `Admin fee (${business.adminFee}%) for invoice #${updatedInvoice.invoiceNumber}`,
+          notes: `Admin fee (${adminFeePercentage}%) for invoice #${updatedInvoice.invoiceNumber}`,
         });
       }
     }
