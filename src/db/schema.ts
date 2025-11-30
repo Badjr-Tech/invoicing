@@ -393,6 +393,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
   contractors: many(contractors), // New relation
   userChecklistProgress: many(userChecklistProgress),
   transactions: many(transactions),
+  recurringTransactions: many(recurringTransactions),
 }));
 
 export const dbasRelations = relations(dbas, ({ one }) => ({
@@ -607,10 +608,32 @@ export const userChecklistProgressRelations = relations(userChecklistProgress, (
   }),
 }));
 
+export const transactionCategories = pgTable('transaction_categories', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
+  businessId: integer('business_id').references(() => businesses.id),
+  name: text('name').notNull(),
+  type: pgEnum('transaction_category_type', ['income', 'expense'])('type').notNull(),
+});
+
+export const transactionCategoriesRelations = relations(transactionCategories, ({ one, many }) => ({
+  user: one(users, {
+    fields: [transactionCategories.userId],
+    references: [users.id],
+  }),
+  business: one(businesses, {
+    fields: [transactionCategories.businessId],
+    references: [businesses.id],
+  }),
+  transactions: many(transactions),
+  recurringTransactions: many(recurringTransactions),
+}));
+
 export const transactions = pgTable('transactions', {
   id: serial('id').primaryKey(),
   businessId: integer('business_id').notNull().references(() => businesses.id),
   serviceId: integer('service_id').references(() => services.id),
+  categoryId: integer('category_id').references(() => transactionCategories.id),
   description: text('description').notNull(),
   amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
   type: transactionType('type').notNull(),
@@ -628,6 +651,19 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
     references: [services.id],
   }),
 }));
+
+export const recurringTransactions = pgTable('recurring_transactions', {
+  id: serial('id').primaryKey(),
+  businessId: integer('business_id').notNull().references(() => businesses.id),
+  description: text('description').notNull(),
+  amount: numeric('amount', { precision: 10, scale: 2 }).notNull(),
+  type: transactionType('type').notNull(),
+  categoryId: integer('category_id').references(() => transactionCategories.id),
+  frequency: pgEnum('recurring_frequency', ['daily', 'weekly', 'monthly', 'yearly'])('frequency').notNull(),
+  startDate: timestamp('start_date', { withTimezone: true }).notNull(),
+  endDate: timestamp('end_date', { withTimezone: true }),
+  isConfirmed: boolean('is_confirmed').notNull().default(false),
+});
 
 export const platformSettings = pgTable('platform_settings', {
   id: serial('id').primaryKey(),

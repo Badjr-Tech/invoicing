@@ -214,14 +214,13 @@ export default function DynamicSidebarContent() {
           </>
         )}
         {/* Financial Tools Section */}
-        <Link
-          href="/dashboard/financial-tools"
+        <div 
           className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
           onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
         >
           <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
           Financial Tools
-        </Link>
+        </div>
         {!financialToolsCollapsed && (
           <>
             <Link
@@ -272,12 +271,32 @@ export default function DynamicSidebarContent() {
               Budget
             </Link>
             {userProducts.some(product => product.productId === "bookkeeping") && (
-              <Link
-                href="/dashboard/products/bookkeeping"
-                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-              >
-                Bookkeeping
-              </Link>
+              <>
+                <Link
+                  href="/dashboard/products/bookkeeping"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Bookkeeping
+                </Link>
+                <Link
+                  href="/dashboard/financial-tools/bookkeeping/categories"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                >
+                  - Categories
+                </Link>
+                <Link
+                  href="/dashboard/financial-tools/bookkeeping/recurring"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                >
+                  - Recurring
+                </Link>
+                <Link
+                  href="/dashboard/financial-tools/bookkeeping/reports"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                >
+                  - Reports
+                </Link>
+              </>
             )}
           </>
         )}
