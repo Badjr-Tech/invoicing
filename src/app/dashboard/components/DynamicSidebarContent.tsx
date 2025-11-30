@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getSession } from "@/app/login/actions";
+import { fetchSession } from "@/app/login/actions";
 import { getAllUserBusinesses } from "../businesses/actions";
 import { deleteUserProduct, getUserProducts } from "../products/actions";
 import LogoutButton from "@/app/components/LogoutButton";
@@ -40,7 +40,7 @@ export default function DynamicSidebarContent() {
 
   useEffect(() => {
     async function fetchData() {
-      const userSession = await getSession();
+      const userSession = await fetchSession();
       if (!userSession || !userSession.user) {
         redirect("/login");
         return;
