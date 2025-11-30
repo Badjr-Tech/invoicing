@@ -1,9 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { getSession } from "@/app/login/actions";
-import { getAllUserBusinesses } from "../businesses/actions";
-import { getUserProducts } from "../products/actions";
+import { deleteUserProduct, getUserProducts } from "../products/actions";
 import LogoutButton from "@/app/components/LogoutButton";
 import Link from "next/link";
 import Image from "next/image";
@@ -58,6 +53,12 @@ export default function DynamicSidebarContent() {
     fetchData();
   }, []);
 
+  const handleDeleteProduct = async (productId: string) => {
+    if (window.confirm("Are you sure you want to remove this product?")) {
+      await deleteUserProduct(productId);
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-4 text-center text-gray-400">Loading sidebar...</div>
@@ -110,10 +111,10 @@ export default function DynamicSidebarContent() {
               Business Compliance
             </Link>
             <Link
-              href="/dashboard/business-checklist"
+              href="/dashboard/scaling-your-business"
               className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
             >
-              Business Checklist
+              Scaling Your Business
             </Link>
           </>
         )}
@@ -189,84 +190,93 @@ export default function DynamicSidebarContent() {
         {!productsCollapsed && (
           <>
             {userProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/dashboard/products/${product.productId}`}
-                className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
-              >
-                - {product.productId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
-              </Link>
+              <div key={product.id} className="flex items-center justify-between group">
+                <Link
+                  href={`/dashboard/products/${product.productId}`}
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary flex-grow"
+                >
+                  - {product.productId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
+                </Link>
+                <button
+                  onClick={() => handleDeleteProduct(product.productId)}
+                  className="text-red-500 hover:text-red-700 px-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Remove product"
+                >
+                  x
+                </button>
+              </div>
             ))}
           </>
         )}
-                {/* Financial Tools Section */}
+        {/* Financial Tools Section */}
+        <Link
+          href="/dashboard/financial-tools"
+          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
+        >
+          <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
+          Financial Tools
+        </Link>
+        {!financialToolsCollapsed && (
+          <>
+            <Link
+              href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Financials Dashboard
+            </Link>
+            <Link
+              href="/dashboard/financial-tools/contracts"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Contracts
+            </Link>
+            <div 
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs cursor-pointer"
+              onClick={() => setInvoicingCollapsed(!invoicingCollapsed)}
+            >
+              <span className="mr-2">{invoicingCollapsed ? '▶' : '▼'}</span>
+              Invoicing
+            </div>
+            {!invoicingCollapsed && (
+              <div className="pl-4">
                 <Link
-                  href="/dashboard/financial-tools"
-                  className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
-                  onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
+                  href="/dashboard/invoicing"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                 >
-                  <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
-                  Financial Tools
+                  Invoices
                 </Link>
-                {!financialToolsCollapsed && (
-                  <>
-                    <Link
-                      href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
-                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                    >
-                      Financials Dashboard
-                    </Link>
-                    <Link
-                      href="/dashboard/financial-tools/contracts"
-                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                    >
-                      Contracts
-                    </Link>
-                    <div 
-                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs cursor-pointer"
-                      onClick={() => setInvoicingCollapsed(!invoicingCollapsed)}
-                    >
-                      <span className="mr-2">{invoicingCollapsed ? '▶' : '▼'}</span>
-                      Invoicing
-                    </div>
-                    {!invoicingCollapsed && (
-                      <div className="pl-4">
-                        <Link
-                          href="/dashboard/invoicing"
-                          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                        >
-                          Invoices
-                        </Link>
-                        <Link
-                          href="/dashboard/clients"
-                          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                        >
-                          Clients
-                        </Link>
-                        <Link
-                          href="/dashboard/services"
-                          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                        >
-                          Services
-                        </Link>
-                      </div>
-                    )}
-                    <Link
-                      href="/dashboard/financial-tools/budget"
-                      className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                    >
-                      Budget
-                    </Link>
-                                {userProducts.some(product => product.productId === "bookkeeping") && (
-                                  <Link
-                                    href="/dashboard/products/bookkeeping"
-                                    className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
-                                  >
-                                    Bookkeeping
-                                  </Link>
-                                )}
-                      </>
-                    )}        {isAdmin && (
+                <Link
+                  href="/dashboard/clients"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Clients
+                </Link>
+                <Link
+                  href="/dashboard/services"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Services
+                </Link>
+              </div>
+            )}
+            <Link
+              href="/dashboard/financial-tools/budget"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+            >
+              Budget
+            </Link>
+            {userProducts.some(product => product.productId === "bookkeeping") && (
+              <Link
+                href="/dashboard/products/bookkeeping"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              >
+                Bookkeeping
+              </Link>
+            )}
+          </>
+        )}
+        {isAdmin && (
           <>
             {/* Admin Tools Section */}
             <h2 
@@ -307,6 +317,12 @@ export default function DynamicSidebarContent() {
                   className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                 >
                   Admin Agency Set Up
+                </Link>
+                <Link
+                  href="/dashboard/admin/checklist-management"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                >
+                  Checklist Management
                 </Link>
               </>
             )}

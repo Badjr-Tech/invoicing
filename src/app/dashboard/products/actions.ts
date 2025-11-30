@@ -30,7 +30,7 @@ export async function addProduct(prevState: FormState, formData: FormData): Prom
       productId,
     });
 
-    revalidatePath("/dashboard"); // Revalidate the dashboard layout to update the sidebar
+    revalidatePath("/"); // Revalidate the root layout to update the sidebar
 
     return { message: "Product added successfully!", error: "" };
   } catch (error) {
@@ -52,5 +52,29 @@ export async function getUserProducts(userId: number) {
   } catch (error) {
     console.error("Error fetching user products:", error);
     return [];
+  }
+}
+
+export async function deleteUserProduct(productId: string): Promise<FormState> {
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+  if (!userId) {
+    return { message: "", error: "User not authenticated." };
+  }
+
+  try {
+    await db.delete(userProducts).where(and(eq(userProducts.userId, userId), eq(userProducts.productId, productId)));
+
+    revalidatePath("/"); // Revalidate the root layout to update the sidebar
+
+    return { message: "Product removed successfully!", error: "" };
+  } catch (error) {
+    console.error("Error removing product:", error);
+    let errorMessage = "Failed to remove product.";
+    if (error instanceof Error) {
+      errorMessage = `Failed to remove product: ${error.message}`;
+    }
+    return { message: "", error: errorMessage };
   }
 }

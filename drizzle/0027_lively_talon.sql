@@ -1,0 +1,1 @@
+ALTER TABLE "admin_checklist_items" ADD CONSTRAINT "admin_checklist_items_item_id_unique" UNIQUE("item_id");

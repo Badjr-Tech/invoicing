@@ -319,14 +319,6 @@ export type Client = InferSelectModel<typeof clients>; // New type
 export type ClientWithBusiness = InferSelectModel<typeof clients> & { business: Business | null }; // Re-added type
 
 // --- Relations ---
-export const checklistItems = pgTable('checklist_items', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id),
-  category: text('category').notNull(),
-  text: text('text').notNull(),
-  isChecked: boolean('is_checked').notNull().default(false),
-});
-
 export const usersRelations = relations(users, ({ one, many }) => ({
   businesses: many(businesses),
   sentMessages: many(individualMessages, { relationName: 'sent_messages' }),
@@ -337,9 +329,9 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   clients: many(clients),
   services: many(services),
   serviceCategories: many(serviceCategories), // New relation
-  checklistItems: many(checklistItems),
   userProducts: many(userProducts),
   contractors: many(contractors), // New relation
+  userChecklistProgress: many(userChecklistProgress),
 }));
 
 export const invoicesRelations = relations(invoices, ({ one }) => ({
@@ -399,7 +391,7 @@ export const businessesRelations = relations(businesses, ({ one, many }) => ({
   }),
   dbas: many(dbas),
   contractors: many(contractors), // New relation
-  complianceChecklist: many(businessComplianceChecklist),
+  userChecklistProgress: many(userChecklistProgress),
   transactions: many(transactions),
 }));
 
@@ -580,17 +572,38 @@ export const contractorsRelations = relations(contractors, ({ one }) => ({
   }),
 }));
 
-export const businessComplianceChecklist = pgTable('business_compliance_checklist', {
+export const adminChecklistItems = pgTable('admin_checklist_items', {
   id: serial('id').primaryKey(),
+  itemId: text('item_id').notNull().unique(),
+  category: text('category').notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  link: text('link'),
+});
+
+export const adminChecklistItemsRelations = relations(adminChecklistItems, () => ({
+}));
+
+export const userChecklistProgress = pgTable('user_checklist_progress', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').notNull().references(() => users.id),
   businessId: integer('business_id').notNull().references(() => businesses.id),
-  itemId: text('item_id').notNull(),
+  itemId: text('item_id').notNull().references(() => adminChecklistItems.itemId),
   isChecked: boolean('is_checked').notNull().default(false),
 });
 
-export const businessComplianceChecklistRelations = relations(businessComplianceChecklist, ({ one }) => ({
+export const userChecklistProgressRelations = relations(userChecklistProgress, ({ one }) => ({
+  user: one(users, {
+    fields: [userChecklistProgress.userId],
+    references: [users.id],
+  }),
   business: one(businesses, {
-    fields: [businessComplianceChecklist.businessId],
+    fields: [userChecklistProgress.businessId],
     references: [businesses.id],
+  }),
+  item: one(adminChecklistItems, {
+    fields: [userChecklistProgress.itemId],
+    references: [adminChecklistItems.itemId],
   }),
 }));
 
