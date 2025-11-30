@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useState } from 'react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ReportPDF from './ReportPDF';
 
 export default function ReportsPage() {
   const [reportType, setReportType] = useState('profit-and-loss');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [showPdf, setShowPdf] = useState(false);
 
   const handleGenerateReport = () => {
     // This is where you would fetch the data and generate the report.
@@ -15,6 +18,7 @@ export default function ReportsPage() {
       startDate,
       endDate,
     });
+    setShowPdf(true);
   };
 
   return (
@@ -44,6 +48,13 @@ export default function ReportsPage() {
             <button onClick={handleGenerateReport} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark">
               Generate Report
             </button>
+            {showPdf && (
+              <PDFDownloadLink document={<ReportPDF />} fileName="report.pdf">
+                {({ blob, url, loading, error }) =>
+                  loading ? 'Loading document...' : 'Download PDF'
+                }
+              </PDFDownloadLink>
+            )}
           </div>
         </div>
       </div>
