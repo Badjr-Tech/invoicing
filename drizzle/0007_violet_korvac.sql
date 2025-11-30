@@ -1,1 +1,0 @@
-ALTER TABLE "dbas" ADD COLUMN "logo_url" text;

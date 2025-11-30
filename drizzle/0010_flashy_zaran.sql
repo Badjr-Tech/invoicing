@@ -1,1 +1,0 @@
-ALTER TABLE "pitch_submissions" ADD COLUMN "title" text NOT NULL;

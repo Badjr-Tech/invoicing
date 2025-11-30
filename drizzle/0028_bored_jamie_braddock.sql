@@ -1,1 +1,0 @@
-DROP TABLE "checklist_items" CASCADE;

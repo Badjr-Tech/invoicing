@@ -1,1 +1,0 @@
-ALTER TABLE "classes" ADD COLUMN "syllabus_url" text;

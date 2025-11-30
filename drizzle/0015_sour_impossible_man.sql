@@ -1,1 +1,0 @@
-ALTER TABLE "pitch_competition_events" ADD COLUMN "created_at" timestamp with time zone DEFAULT now() NOT NULL;

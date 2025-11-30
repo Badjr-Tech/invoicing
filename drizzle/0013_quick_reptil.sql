@@ -1,1 +1,0 @@
-ALTER TABLE "pitch_submissions" ADD COLUMN "pitch_video_url" text;
