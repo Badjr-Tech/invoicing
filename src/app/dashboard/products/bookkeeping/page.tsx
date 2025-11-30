@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { getSession } from '@/app/login/actions';
 import { getAllUserBusinesses } from '@/app/dashboard/businesses/actions';
 import { getTransactions, addTransaction } from './actions';
+import { getServices } from '@/app/dashboard/services/actions';
 import { Business, Service, transactions } from '@/db/schema';
 import { useFormState } from 'react-dom';
 
@@ -44,9 +45,7 @@ export default function BookkeepingProductPage() {
   useEffect(() => {
     if (selectedBusinessId) {
       getTransactions(selectedBusinessId).then(setTransactions);
-      // Here you would also fetch the services for the selected business
-      // For now, we will use a placeholder
-      setServices([]);
+      getServices(selectedBusinessId).then(setServices);
     }
   }, [selectedBusinessId, addTransactionState]);
 
