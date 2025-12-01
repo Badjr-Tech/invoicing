@@ -3,58 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 
-const checklistItems = [
-  {
-    id: 'llc',
-    label: 'LLC or Business Formation',
-    link: '#',
-    description: 'Placeholder description for LLC or Business Formation.'
-  },
-  {
-    id: 'ein',
-    label: 'EIN',
-    link: 'https://sa.www4.irs.gov/applyein/legalStructure',
-    description: "An EIN is free and protects your identity. It's mandatory for LLCs but just good to have for sole proprietors. But you can start making sales after you have an EIN."
-  },
-  {
-    id: 'bank-account',
-    label: 'Business Bank Account',
-    link: 'https://www.americanexpress.com/en-us/business/checking/?eep=79266&utm_source=go&utm_campaign=bca-br&utm_medium=se&utm_term=american+express+business+account_3495823104_161616706515&utm_content=e&refid=amex_search_bca_go_br_pro|CjwKCAiAraXJBhBJEiwAjz7MZUK2ZMY8X5y-V-oqPQVb9k8TvVB7I3oprUE0cTfjEWkrxef36MOV6RoC1IsQAvD_BwE&gclsrc=aw.ds&gad_source=1&gad_campaignid=18543565565&gbraid=0AAAAADq2FFrtgsc-sNo5arWorXld15YAv&gclid=CjwKCAiAraXJBhBJEiwAjz7MZUK2ZMY8X5y-V-oqPQVb9k8TvVB7I3oprUE0cTfjEWkrxef36MOV6RoC1IsQAvD_BwE',
-    description: 'You cannot apply for a business bank account until your entity is fully formed and approved by the state.'
-  },
-  {
-    id: 'pricing',
-    label: 'Product & Service Pricing Completed',
-    link: '/dashboard/financial-tools/budget',
-    description: 'Placeholder description for Product & Service Pricing.'
-  },
-  {
-    id: 'cashflow',
-    label: '6-Month Cashflow Budget Completed',
-    link: '/dashboard/financial-tools/budget',
-    description: 'Placeholder description for 6-Month Cashflow Budget.'
-  },
-  {
-    id: 'bookkeeping',
-    label: 'Bookkeeping System Set Up',
-    link: '/dashboard/financial-tools/bookkeeping',
-    description: 'Placeholder description for Bookkeeping System.'
-  },
-  {
-    id: 'website',
-    label: 'Website Live',
-    link: '/dashboard/products/website',
-    description: 'Placeholder description for Website.'
-  },
-  {
-    id: 'email',
-    label: 'Professional Email Created',
-    link: '/dashboard/products/professional-email',
-    description: 'Placeholder description for Professional Email.'
-  },
-];
-
-export default function ComplianceChecklist() {
+export default function ComplianceChecklist({ checklistItems }) {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
@@ -75,7 +24,7 @@ export default function ComplianceChecklist() {
   const progress = useMemo(() => {
     const checkedCount = Object.values(checkedItems).filter(Boolean).length;
     return (checkedCount / checklistItems.length) * 100;
-  }, [checkedItems]);
+  }, [checkedItems, checklistItems]);
 
   return (
     <div className="mt-8 p-6 bg-white shadow-md rounded-lg">
@@ -96,16 +45,16 @@ export default function ComplianceChecklist() {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                id={item.id}
-                checked={checkedItems[item.id] || false}
-                onChange={() => handleCheckboxChange(item.id)}
+                id={item.itemId}
+                checked={checkedItems[item.itemId] || false}
+                onChange={() => handleCheckboxChange(item.itemId)}
                 className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <button onClick={() => toggleExpand(item.id)} className="ml-3 text-lg text-gray-700 text-left flex-grow">
-                {item.label}
+              <button onClick={() => toggleExpand(item.itemId)} className="ml-3 text-lg text-gray-700 text-left flex-grow">
+                {item.title}
               </button>
             </div>
-            {expandedItems[item.id] && (
+            {expandedItems[item.itemId] && (
               <div className="mt-2 ml-8 p-4 bg-gray-50 rounded-lg">
                 <p className="text-gray-600">{item.description}</p>
                 {item.link && (

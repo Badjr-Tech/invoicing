@@ -343,7 +343,7 @@ export default function DynamicSidebarContent() {
                   Admin Agency Set Up
                 </Link>
                 <Link
-                  href="/dashboard/admin/checklist-management"
+                  href="/dashboard/admin/agency-setup/checklist-management"
                   className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
                 >
                   Checklist Management

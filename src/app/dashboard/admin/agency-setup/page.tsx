@@ -52,6 +52,16 @@ export default function AdminAgencySetUpPage() {
           {updateFeeState?.error && <p className="text-red-600 mt-2">{updateFeeState.error}</p>}
         </form>
       </div>
+
+      <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Checklist Management</h2>
+        <p className="text-gray-600 mb-4">
+          Manage the items in the "Business Compliance" and "Scaling Your Business" checklists.
+        </p>
+        <Link href="/dashboard/admin/agency-setup/checklist-management" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          Go to Checklist Management
+        </Link>
+      </div>
     </div>
   );
 }
