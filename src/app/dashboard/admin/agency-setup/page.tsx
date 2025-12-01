@@ -30,6 +30,18 @@ export default function AdminAgencySetUpPage() {
     <div className="flex-1 p-6">
       <h1 className="text-3xl font-bold text-foreground mb-6">Admin Agency Set Up</h1>
 
+      <div className="flex space-x-4 mb-6">
+        <Link href="/dashboard/admin/agency-setup/checklist-management" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          Checklist Management
+        </Link>
+        <button className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Placeholder Button 1
+        </button>
+        <button className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Placeholder Button 2
+        </button>
+      </div>
+
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Platform Admin Fee</h2>
         <form action={updateFeeFormAction} className="space-y-4">
@@ -51,16 +63,6 @@ export default function AdminAgencySetUpPage() {
           {updateFeeState?.message && <p className="text-green-600 mt-2">{updateFeeState.message}</p>}
           {updateFeeState?.error && <p className="text-red-600 mt-2">{updateFeeState.error}</p>}
         </form>
-      </div>
-
-      <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Checklist Management</h2>
-        <p className="text-gray-600 mb-4">
-          Manage the items in the "Business Compliance" and "Scaling Your Business" checklists.
-        </p>
-        <Link href="/dashboard/admin/agency-setup/checklist-management" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-          Go to Checklist Management
-        </Link>
       </div>
     </div>
   );
