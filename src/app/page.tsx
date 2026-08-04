@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pt-20">
       <Image
-        src="/green.png"
-        alt="Badjr Logo"
+        src="/agency-logo.png"
+        alt="AGENCY"
         width={200}
         height={200}
         className="mb-4" // Reduce margin below the logo

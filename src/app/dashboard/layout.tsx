@@ -34,7 +34,7 @@ export default async function DashboardLayout({
         )}
         <div className="flex-1 p-6 lg:p-8">{children}</div>
         <footer className="mt-auto py-6 text-center text-xs text-clay-500">
-          Tech By Badjr
+          AGENCY — DakJen Creative LLC
         </footer>
       </main>
     </div>
