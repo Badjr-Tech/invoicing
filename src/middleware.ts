@@ -52,24 +52,20 @@ export async function middleware(request: NextRequest) {
 
   // A member past the trial with onboarding unfinished can still look at
   // everything — that is how they see what they are signing up for. What they
-  // cannot do is change anything, so only writes are checked, and only once
-  // the cheap checks above have passed.
+  // cannot do is change anything.
   //
-  // Onboarding routes are exempt: those writes are how the member gets out of
-  // the gate in the first place.
+  // Only REST routes are gated here. Server actions cannot be gated by method:
+  // they are all POSTs, including read-only ones like the sidebar's session
+  // and product lookups, so blocking POST to /dashboard blanks the UI for the
+  // very member the gate is trying to persuade. Mutating server actions call
+  // requireUnlocked() individually instead.
+  //
+  // Onboarding routes are exempt either way: those writes are how a member
+  // gets out of the gate in the first place.
   const isWrite = !SAFE_METHODS.has(request.method);
-  const isOnboardingRoute =
-    pathname.startsWith("/onboarding") || pathname.startsWith("/api/onboarding");
+  const isOnboardingRoute = pathname.startsWith("/api/onboarding");
 
-  if (isWrite && !isOnboardingRoute && (await isGated(session.user.id))) {
-    if (isApi) {
-      return NextResponse.json(
-        { error: "Finish setting up your account to make changes." },
-        { status: 403 },
-      );
-    }
-    // Server actions post back to the page they live on, so a redirect here
-    // would be swallowed. A 403 surfaces as an error the form can show.
+  if (isApi && isWrite && !isOnboardingRoute && (await isGated(session.user.id))) {
     return NextResponse.json(
       { error: "Finish setting up your account to make changes." },
       { status: 403 },

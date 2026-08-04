@@ -11,6 +11,25 @@ import { evaluateAccess, type AccessState } from '@/lib/onboarding';
  * flip charges_enabled at any moment) and a stale cookie must never be what
  * decides whether the tools are unlocked.
  */
+/**
+ * Refuse a mutation when the member is past the trial with onboarding unfinished.
+ *
+ * Call this at the top of any server action that writes. It cannot live in
+ * middleware: server actions are all POSTs, including read-only ones, so
+ * gating by HTTP method blanks the UI instead of just blocking writes.
+ *
+ * Returns an error message to show, or null when the caller may proceed.
+ */
+export async function lockedReason(userId: number): Promise<string | null> {
+  const access = await loadAccessState(userId);
+  if (!access?.gated) return null;
+
+  const remaining = access.steps.filter((step) => !step.complete).length;
+  return remaining === 1
+    ? 'Your trial has ended. Finish the last setup step to make changes.'
+    : `Your trial has ended. Finish the ${remaining} remaining setup steps to make changes.`;
+}
+
 export async function loadAccessState(userId: number): Promise<AccessState | null> {
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
