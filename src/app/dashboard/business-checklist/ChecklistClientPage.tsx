@@ -46,14 +46,14 @@ export default function ChecklistClientPage({ initialItems }: { initialItems: Ch
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Business Checklist</h1>
+      <h1 className="font-display text-3xl font-semibold text-clay-800 mb-6">Business Checklist</h1>
       <div className="w-full bg-gray-200 rounded-full h-2.5 mb-6">
-        <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
+        <div className="bg-ember-600 h-2.5 rounded-full" style={{ width: `${progress}%` }}></div>
       </div>
       <div className="space-y-6">
         {Object.entries(itemsByCategory).map(([categoryName, categoryItems]) => (
-          <div key={categoryName} className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4 cursor-pointer" onClick={() => toggleCategory(categoryName)}>
+          <div key={categoryName} className="bg-white p-6 rounded-card shadow-card">
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4 cursor-pointer" onClick={() => toggleCategory(categoryName)}>
               {categoryName}
             </h2>
             {!collapsedCategories[categoryName] && (
@@ -64,9 +64,9 @@ export default function ChecklistClientPage({ initialItems }: { initialItems: Ch
                       type="checkbox"
                       checked={item.isChecked}
                       onChange={(e) => handleCheckboxChange(item.id, e.target.checked)}
-                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="h-4 w-4 text-sage-700 border-clay-200 rounded focus:ring-sage-300"
                     />
-                    <span className="ml-3 text-gray-700">{item.text}</span>
+                    <span className="ml-3 text-clay-700">{item.text}</span>
                   </li>
                 ))}
               </ul>

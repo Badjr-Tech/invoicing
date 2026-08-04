@@ -25,7 +25,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
   return (
     <div className="p-4 md:p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Advice & Info Messaging</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground">Advice & Info Messaging</h1>
       </div>
       <div className="mt-6">
         <div className="sm:hidden">
@@ -33,7 +33,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
           <select
             id="tabs"
             name="tabs"
-            className="block w-full focus:ring-primary focus:border-primary border-light-gray rounded-md"
+            className="block w-full focus:ring-primary focus:border-primary border-light-gray rounded-control"
             defaultValue={activeTab}
             onChange={(e) => setActiveTab(e.target.value)}
           >
@@ -45,13 +45,13 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('help-requests')}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'help-requests' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+              className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'help-requests' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
             >
               Help Requests
             </button>
             <button
               onClick={() => setActiveTab('referrals')}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'referrals' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+              className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'referrals' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
             >
               Referrals
             </button>
@@ -62,10 +62,10 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
       <div className="mt-8">
         {activeTab === 'help-requests' && (
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Help Requests</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Help Requests</h2>
             {isExternal ? (
               <>
-                <div className="mb-8 p-6 bg-background shadow-md rounded-lg">
+                <div className="mb-8 p-6 bg-background shadow-card rounded-card">
                   <h3 className="text-xl font-bold text-foreground mb-4">Submit a New Help Request</h3>
                   <form action={helpRequestAction} className="space-y-4">
                     <div>
@@ -75,7 +75,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
                         id="subject"
                         name="subject"
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                       />
                     </div>
                     <div>
@@ -85,18 +85,18 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
                         name="description"
                         rows={4}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                       ></textarea>
                     </div>
                     {helpRequestState?.message && (
-                      <p className="text-sm text-green-600 mt-2">{helpRequestState.message}</p>
+                      <p className="text-sm text-sage-700 mt-2">{helpRequestState.message}</p>
                     )}
                     {helpRequestState?.error && (
                       <p className="text-sm text-red-600 mt-2">{helpRequestState.error}</p>
                     )}
                     <button
                       type="submit"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Submit Request
                     </button>
@@ -109,7 +109,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
                 ) : (
                   <ul className="space-y-4">
                     {initialHelpRequests.map(request => (
-                      <li key={request.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
+                      <li key={request.id} className="bg-light-gray shadow overflow-hidden sm:rounded-card p-4">
                         <p className="text-sm font-semibold">Subject: {request.subject}</p>
                         <p className="text-foreground">Status: {request.status}</p>
                         <p className="text-xs text-foreground text-right">{request.timestamp.toLocaleString()}</p>
@@ -126,7 +126,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
 
         {activeTab === 'referrals' && (
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Referrals</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Referrals</h2>
             {isExternal ? (
               <>
                 <h3 className="text-xl font-bold text-foreground mb-4">Referrals from Admins</h3>
@@ -135,7 +135,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
                 ) : (
                   <ul className="space-y-4">
                     {initialReferrals.map(referral => (
-                      <li key={referral.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
+                      <li key={referral.id} className="bg-light-gray shadow overflow-hidden sm:rounded-card p-4">
                         <p className="text-sm font-semibold">Admin Referral:</p>
                         <p className="text-foreground">{referral.content}</p>
                         <p className="text-xs text-foreground text-right">{referral.timestamp.toLocaleString()}</p>

@@ -40,11 +40,11 @@ export default function PermissionsManagementClientPage({ initialUsers }: Permis
   return (
     <div className="flex flex-col md:flex-row gap-6">
       {/* User Selection */}
-      <div className="md:w-1/3 p-4 bg-background shadow-md rounded-lg">
+      <div className="md:w-1/3 p-4 bg-background shadow-card rounded-card">
         <h2 className="text-xl font-bold text-foreground mb-4">Select User</h2>
         <select
           onChange={(e) => handleUserSelect(parseInt(e.target.value))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
           defaultValue=""
         >
           <option value="" disabled>Select a user</option>
@@ -55,7 +55,7 @@ export default function PermissionsManagementClientPage({ initialUsers }: Permis
       </div>
 
       {/* Permissions Form */}
-      <div className="md:w-2/3 p-4 bg-background shadow-md rounded-lg">
+      <div className="md:w-2/3 p-4 bg-background shadow-card rounded-card">
         <h2 className="text-xl font-bold text-foreground mb-4">Manage Permissions</h2>
         {selectedUser ? (
           <form action={permissionsFormAction} className="space-y-4">
@@ -71,13 +71,13 @@ export default function PermissionsManagementClientPage({ initialUsers }: Permis
                   className="form-checkbox h-5 w-5 text-[#910000]"
                   // You would pre-fill this based on existing permissions
                 />
-                <span className="ml-2 text-gray-700">Can Message Admins</span>
+                <span className="ml-2 text-clay-700">Can Message Admins</span>
               </label>
             </div>
             {/* Add more permission checkboxes here */}
 
             {permissionsState?.message && (
-              <p className="text-sm text-green-600 mt-2">{permissionsState.message}</p>
+              <p className="text-sm text-sage-700 mt-2">{permissionsState.message}</p>
             )}
             {permissionsState?.error && (
               <p className="text-sm text-red-600 mt-2">{permissionsState.error}</p>
@@ -85,13 +85,13 @@ export default function PermissionsManagementClientPage({ initialUsers }: Permis
 
             <button
               type="submit"
-              className="inline-flex justify-center rounded-md border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Save Permissions
             </button>
           </form>
         ) : (
-          <p className="text-gray-500">Select a user to manage their permissions.</p>
+          <p className="text-clay-500">Select a user to manage their permissions.</p>
         )}
       </div>
     </div>

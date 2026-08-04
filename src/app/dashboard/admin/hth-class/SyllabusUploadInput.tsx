@@ -66,13 +66,13 @@ export default function SyllabusUploadInput({ onUploadSuccess, initialUrl }: Syl
         type="button"
         onClick={handleUpload}
         disabled={!file || uploading}
-        className="ml-2 inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="ml-2 inline-flex justify-center py-1 px-2 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
       >
         {uploading ? 'Uploading...' : 'Upload Syllabus'}
       </button>
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
       {uploadedUrl && (
-        <p className="text-green-600 text-sm mt-1">
+        <p className="text-sage-700 text-sm mt-1">
           Syllabus uploaded: <a href={uploadedUrl} target="_blank" rel="noopener noreferrer" className="underline">{uploadedUrl}</a>
         </p>
       )}

@@ -138,7 +138,7 @@ export default function BusinessSearchAndFilter() {
   };
 
   return (
-    <div className="mt-6 p-4 bg-background shadow-md rounded-lg">
+    <div className="mt-6 p-4 bg-background shadow-card rounded-card">
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         {/* Search Bar */}
         <div className="flex-1">
@@ -149,7 +149,7 @@ export default function BusinessSearchAndFilter() {
             placeholder="Search by business name..."
             defaultValue={searchQuery}
             onChange={handleSearchChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
           />
         </div>
 
@@ -160,7 +160,7 @@ export default function BusinessSearchAndFilter() {
             id="businessTypeFilter"
             defaultValue={businessTypeFilter}
             onChange={(e) => handleFilterChange("businessType", e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
           >
             <option value="">All Types</option>
             <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -177,7 +177,7 @@ export default function BusinessSearchAndFilter() {
             id="businessTaxStatusFilter"
             defaultValue={businessTaxStatusFilter}
             onChange={(e) => handleFilterChange("businessTaxStatus", e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
           >
             <option value="">All Tax Statuses</option>
             <option value="S-Corporation">S-Corporation</option>
@@ -195,7 +195,7 @@ export default function BusinessSearchAndFilter() {
             type="checkbox"
             checked={isArchivedFilter}
             onChange={handleArchivedToggle}
-            className="h-4 w-4 text-[#910000] focus:ring-[#910000] border-gray-300 rounded"
+            className="h-4 w-4 text-[#910000] focus:ring-[#910000] border-clay-200 rounded"
           />
           <label htmlFor="isArchivedFilter" className="ml-2 block text-sm text-foreground">
             Show Archived Businesses
@@ -207,7 +207,7 @@ export default function BusinessSearchAndFilter() {
             type="checkbox"
             checked={includeOptedOutFilter}
             onChange={handleOptedOutToggle}
-            className="h-4 w-4 text-[#910000] focus:ring-[#910000] border-gray-300 rounded"
+            className="h-4 w-4 text-[#910000] focus:ring-[#910000] border-clay-200 rounded"
           />
           <label htmlFor="includeOptedOutFilter" className="ml-2 block text-sm text-foreground">
             Include Opted-Out Users
@@ -216,31 +216,31 @@ export default function BusinessSearchAndFilter() {
       </div>
 
       {loadingBusinesses ? (
-        <p className="mt-4 text-gray-700">Loading businesses...</p>
+        <p className="mt-4 text-clay-700">Loading businesses...</p>
       ) : (
         <div className="mt-8 flex flex-col space-y-4">
           {allBusinesses.length === 0 ? (
-            <p className="text-gray-700">No businesses found matching your criteria.</p>
+            <p className="text-clay-700">No businesses found matching your criteria.</p>
           ) : (
             allBusinesses.map(({ business, userEmail }) => (
               <div key={business.id} className="flex items-center space-x-4">
                 <button
                   onClick={() => handleBusinessClick(business.id)}
-                  className={`flex-1 text-left py-4 px-6 rounded-lg shadow-md transition-all duration-200 flex items-center space-x-4
-                    ${business.isArchived ? 'bg-gray-200 text-gray-500 opacity-60' : 'bg-white hover:shadow-lg'}`}
+                  className={`flex-1 text-left py-4 px-6 rounded-card shadow-card transition-all duration-200 flex items-center space-x-4
+                    ${business.isArchived ? 'bg-gray-200 text-clay-500 opacity-60' : 'bg-white hover:shadow-lg'}`}
                 >
                   {business.logoUrl ? (
                     <Image src={business.logoUrl} alt={`${business.businessName} Logo`} width={40} height={40} className="rounded-full object-cover" />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-lg font-bold">
+                    <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-clay-500 text-lg font-bold">
                       {business.businessName ? business.businessName[0].toUpperCase() : '?'}
                     </div>
                   )}
                   <div>
                     <h3 className="text-xl font-bold text-foreground">{business.businessName}</h3>
-                    <p className="mt-2 text-sm text-gray-600">User: {userEmail}</p>
-                    <p className="text-sm text-gray-600">Owner: {business.ownerName}</p>
-                    <p className="text-sm text-gray-600">Type: {business.businessType}</p>
+                    <p className="mt-2 text-sm text-clay-600">User: {userEmail}</p>
+                    <p className="text-sm text-clay-600">Owner: {business.ownerName}</p>
+                    <p className="text-sm text-clay-600">Type: {business.businessType}</p>
                     {business.isArchived && (
                       <p className="mt-2 text-sm font-semibold text-red-600">Archived</p>
                     )}
@@ -248,8 +248,8 @@ export default function BusinessSearchAndFilter() {
                 </button>
                 <button
                   onClick={() => handleToggleArchive(business.id, business.isArchived)}
-                  className={`py-2 px-4 rounded-md text-sm font-medium text-white
-                    ${business.isArchived ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}
+                  className={`py-2 px-4 rounded-control text-sm font-medium text-white
+                    ${business.isArchived ? 'bg-sage-600 hover:bg-sage-700' : 'bg-red-600 hover:bg-red-700'}`}
                 >
                   {business.isArchived ? 'Unarchive' : 'Archive'}
                 </button>

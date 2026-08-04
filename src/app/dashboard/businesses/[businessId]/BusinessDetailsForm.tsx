@@ -38,12 +38,12 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
 
   return (
     <form action={updateFormAction}>
-      <h2 className="text-2xl font-bold">Owner Details</h2>
+      <h2 className="font-display text-xl font-semibold">Owner Details</h2>
       <input type="hidden" name="businessId" value={initialBusiness.id} />
       <input type="hidden" name="selectedDemographicIds" value={JSON.stringify(selectedDemographicIds)} />
 
       <div className="mt-4">
-        <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="gender" className="block text-sm font-medium text-clay-700">
           Gender
         </label>
         <select
@@ -52,7 +52,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
           multiple
           value={selectedDemographicIds.filter(id => genderDemographics.some(d => d.id === id)).map(String)}
           onChange={handleDemographicChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
         >
           <option value="">Select Gender</option>
           {genderDemographics.map(demographic => (
@@ -64,7 +64,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
       </div>
 
       <div className="mt-4">
-        <label htmlFor="race" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="race" className="block text-sm font-medium text-clay-700">
           Race
         </label>
         <select
@@ -73,7 +73,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
           multiple
           value={selectedDemographicIds.filter(id => raceDemographics.some(d => d.id === id)).map(String)}
           onChange={handleDemographicChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
         >
           <option value="">Select Race</option>
           {raceDemographics.map(demographic => (
@@ -85,7 +85,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
       </div>
 
       <div className="mt-4">
-        <label htmlFor="religion" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="religion" className="block text-sm font-medium text-clay-700">
           Religion
         </label>
         <select
@@ -94,7 +94,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
           multiple
           value={selectedDemographicIds.filter(id => religionDemographics.some(d => d.id === id)).map(String)}
           onChange={handleDemographicChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
         >
           <option value="">Select Religion</option>
           {religionDemographics.map(demographic => (
@@ -105,10 +105,10 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
         </select>
       </div>
 
-      <h2 className="text-2xl font-bold mt-8">Business Details</h2>
+      <h2 className="font-display text-xl font-semibold mt-8">Business Details</h2>
 
       <div className="mt-4">
-        <label htmlFor="locationId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="locationId" className="block text-sm font-medium text-clay-700">
           Location (City)
         </label>
         <select
@@ -116,7 +116,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
           name="locationId"
           value={selectedLocationId}
           onChange={(e) => setSelectedLocationId(parseInt(e.target.value))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
         >
           <option value="">Select City</option>
           {cityLocations.map(location => (
@@ -128,7 +128,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
       </div>
 
       <div className="mt-4">
-        <label htmlFor="regionId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="regionId" className="block text-sm font-medium text-clay-700">
           Location (Region)
         </label>
         <select
@@ -136,7 +136,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
           name="regionId"
           value={selectedLocationId}
           onChange={(e) => setSelectedLocationId(parseInt(e.target.value))}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
         >
           <option value="">Select Region</option>
           {regionLocations.map(location => (
@@ -148,7 +148,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
       </div>
 
       {updateState?.message && (
-        <p className="text-sm text-green-600 mt-2">{updateState.message}</p>
+        <p className="text-sm text-sage-700 mt-2">{updateState.message}</p>
       )}
       {updateState?.error && (
         <p className="text-sm text-red-600 mt-2">{updateState.error}</p>
@@ -157,7 +157,7 @@ export default function BusinessDetailsForm({ initialBusiness, availableDemograp
       <div className="mt-6">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Save Changes
         </button>

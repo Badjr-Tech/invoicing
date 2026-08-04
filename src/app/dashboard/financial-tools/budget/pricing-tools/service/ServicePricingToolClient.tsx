@@ -201,17 +201,17 @@ export default function ServicePricingToolClient() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Service Pricing Tool</h1>
-      <div className="bg-white p-6 rounded-lg shadow-md space-y-6"> {/* Increased space-y for steps */}
+      <h1 className="font-display text-3xl font-semibold text-clay-800 mb-6">Service Pricing Tool</h1>
+      <div className="bg-white p-6 rounded-card shadow-card space-y-6"> {/* Increased space-y for steps */}
 
         {step === 1 && (
           <>
             {/* Step 1: Service Details */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 1: Service Details</h2>
+              <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Step 1: Service Details</h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="serviceName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="serviceName" className="block text-sm font-medium text-clay-700">
                     Service Name
                   </label>
                   <input
@@ -219,12 +219,12 @@ export default function ServicePricingToolClient() {
                     id="serviceName"
                     value={serviceName}
                     onChange={(e) => setServiceName(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., Social Media Management"
                   />
                 </div>
                 <div>
-                  <label htmlFor="currentServicePrice" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="currentServicePrice" className="block text-sm font-medium text-clay-700">
                     Current Service Price ($) (if applicable)
                   </label>
                   <input
@@ -232,12 +232,12 @@ export default function ServicePricingToolClient() {
                     id="currentServicePrice"
                     value={currentServicePrice}
                     onChange={(e) => setCurrentServicePrice(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 500.00"
                   />
                 </div>
                 <div>
-                  <label htmlFor="estimatedHours" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="estimatedHours" className="block text-sm font-medium text-clay-700">
                     Estimated Hours Required to Deliver Service
                   </label>
                   <input
@@ -245,12 +245,12 @@ export default function ServicePricingToolClient() {
                     id="estimatedHours"
                     value={estimatedHours}
                     onChange={(e) => setEstimatedHours(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 10"
                   />
                 </div>
                 <div>
-                  <label htmlFor="adminHours" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="adminHours" className="block text-sm font-medium text-clay-700">
                     Additional Admin Hours (prep, communication, revisions)
                   </label>
                   <input
@@ -258,12 +258,12 @@ export default function ServicePricingToolClient() {
                     id="adminHours"
                     value={adminHours}
                     onChange={(e) => setAdminHours(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 2"
                   />
                 </div>
                 <div>
-                  <label htmlFor="yourHourlyRate" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="yourHourlyRate" className="block text-sm font-medium text-clay-700">
                     Your Hourly Rate ($)
                   </label>
                   <input
@@ -271,12 +271,12 @@ export default function ServicePricingToolClient() {
                     id="yourHourlyRate"
                     value={yourHourlyRate}
                     onChange={(e) => setYourHourlyRate(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 50.00"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-clay-700 mb-1">
                     Service Pricing Model
                   </label>
                   <div className="mt-1 flex space-x-4">
@@ -289,7 +289,7 @@ export default function ServicePricingToolClient() {
                         checked={pricingModel === 'one-time'}
                         onChange={() => setPricingModel('one-time')}
                       />
-                      <span className="ml-2 text-sm text-gray-900">One-Time Fee</span>
+                      <span className="ml-2 text-sm text-clay-900">One-Time Fee</span>
                     </label>
                     <label className="inline-flex items-center">
                       <input
@@ -300,7 +300,7 @@ export default function ServicePricingToolClient() {
                         checked={pricingModel === 'monthly'}
                         onChange={() => setPricingModel('monthly')}
                       />
-                      <span className="ml-2 text-sm text-gray-900">Monthly Fee</span>
+                      <span className="ml-2 text-sm text-clay-900">Monthly Fee</span>
                     </label>
                     <label className="inline-flex items-center">
                       <input
@@ -311,13 +311,13 @@ export default function ServicePricingToolClient() {
                         checked={pricingModel === 'package'}
                         onChange={() => setPricingModel('package')}
                       />
-                      <span className="ml-2 text-sm text-gray-900">Package</span>
+                      <span className="ml-2 text-sm text-clay-900">Package</span>
                     </label>
                   </div>
                 </div>
                 {pricingModel === 'package' && (
                   <div>
-                    <label htmlFor="packageDuration" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="packageDuration" className="block text-sm font-medium text-clay-700">
                       Number of Months/Instances in Package
                     </label>
                     <input
@@ -325,7 +325,7 @@ export default function ServicePricingToolClient() {
                       id="packageDuration"
                       value={packageDuration}
                       onChange={(e) => setPackageDuration(e.target.value)}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       placeholder="e.g., 3 (for 3 months) or 5 (for 5 instances)"
                     />
                   </div>
@@ -335,12 +335,12 @@ export default function ServicePricingToolClient() {
 
             {/* Step 2: Additional Costs */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 2: Additional Non-Operational Costs (specific to the service)</h2>
+              <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Step 2: Additional Non-Operational Costs (specific to the service)</h2>
               <div className="space-y-4">
                 {costItems.map((item, index) => (
                   <div key={item.id} className="flex space-x-2 items-end">
                     <div className="flex-grow">
-                      <label htmlFor={`costName-${item.id}`} className="block text-sm font-medium text-gray-700">
+                      <label htmlFor={`costName-${item.id}`} className="block text-sm font-medium text-clay-700">
                         Cost Item Name
                       </label>
                       <input
@@ -348,12 +348,12 @@ export default function ServicePricingToolClient() {
                         id={`costName-${item.id}`}
                         value={item.name}
                         onChange={(e) => updateCostItem(item.id, 'name', e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="e.g., Software License"
                       />
                     </div>
                     <div className="flex-grow">
-                      <label htmlFor={`costAmount-${item.id}`} className="block text-sm font-medium text-gray-700">
+                      <label htmlFor={`costAmount-${item.id}`} className="block text-sm font-medium text-clay-700">
                         Amount ($)
                       </label>
                       <input
@@ -361,13 +361,13 @@ export default function ServicePricingToolClient() {
                         id={`costAmount-${item.id}`}
                         value={item.amount}
                         onChange={(e) => updateCostItem(item.id, 'amount', e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="e.g., 15.00"
                       />
                     </div>
                     <button
                       onClick={() => removeCostItem(item.id)}
-                      className="px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+                      className="px-3 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
                     >
                       Remove
                     </button>
@@ -375,7 +375,7 @@ export default function ServicePricingToolClient() {
                 ))}
                 <button
                   onClick={addCostItem}
-                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500"
                 >
                   Add Additional Cost
                 </button>
@@ -384,10 +384,10 @@ export default function ServicePricingToolClient() {
 
             {/* Step 3: Operational Costs */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 3: Operational Costs</h2>
+              <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Step 3: Operational Costs</h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="servicesInSixMonths" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="servicesInSixMonths" className="block text-sm font-medium text-clay-700">
                     Number of Services Provided in a 6-Month Period
                   </label>
                   <input
@@ -395,14 +395,14 @@ export default function ServicePricingToolClient() {
                     id="servicesInSixMonths"
                     value={servicesInSixMonths}
                     onChange={(e) => setServicesInSixMonths(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 100"
                   />
                 </div>
                 {operationalCostItems.map((item, index) => (
                   <div key={item.id} className="flex space-x-2 items-end">
                     <div className="flex-grow">
-                      <label htmlFor={`opCostName-${item.id}`} className="block text-sm font-medium text-gray-700">
+                      <label htmlFor={`opCostName-${item.id}`} className="block text-sm font-medium text-clay-700">
                         Operational Cost Item Name
                       </label>
                       <input
@@ -410,13 +410,13 @@ export default function ServicePricingToolClient() {
                         id={`opCostName-${item.id}`}
                         value={item.name}
                         onChange={(e) => item.name !== 'AGENCY FEE' && updateOperationalCostItem(item.id, 'name', e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="e.g., Contractor Fee"
                         readOnly={item.name === 'AGENCY FEE'}
                       />
                     </div>
                     <div className="flex-grow">
-                      <label htmlFor={`opCostAmount-${item.id}`} className="block text-sm font-medium text-gray-700">
+                      <label htmlFor={`opCostAmount-${item.id}`} className="block text-sm font-medium text-clay-700">
                         Amount ($)
                       </label>
                       <input
@@ -424,14 +424,14 @@ export default function ServicePricingToolClient() {
                         id={`opCostAmount-${item.id}`}
                         value={item.amount}
                         onChange={(e) => item.name !== 'AGENCY FEE' && updateOperationalCostItem(item.id, 'amount', e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="e.g., 50.00"
                         readOnly={item.name === 'AGENCY FEE'}
                       />
                     </div>
                     <button
                       onClick={() => removeOperationalCostItem(item.id)}
-                      className="px-3 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+                      className="px-3 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
                       disabled={item.name === 'AGENCY FEE'}
                     >
                       Remove
@@ -440,7 +440,7 @@ export default function ServicePricingToolClient() {
                 ))}
                 <button
                   onClick={addOperationalCostItem}
-                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500"
                 >
                   Add Operational Cost
                 </button>
@@ -449,7 +449,7 @@ export default function ServicePricingToolClient() {
 
             <button
               onClick={handleProceedToCalculation}
-              className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               Proceed to Calculation
             </button>
@@ -458,31 +458,31 @@ export default function ServicePricingToolClient() {
 
         {step === 2 && calculatedPrice !== null && (
           <>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Calculation Results</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Calculation Results</h2>
             <div className="flex flex-col md:flex-row md:space-x-8 space-y-4 md:space-y-0">
               {/* Left Side: Costs Breakdown */}
-              <div className="md:w-1/2 p-4 bg-gray-50 rounded-md space-y-2">
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Costs Breakdown (per service):</h3>
-                <p className="text-sm text-gray-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
+              <div className="md:w-1/2 p-4 bg-clay-50 rounded-control space-y-2">
+                <h3 className="text-lg font-medium text-clay-800 mb-2">Costs Breakdown (per service):</h3>
+                <p className="text-sm text-clay-700">Labor Cost (Estimated + Admin Hours): ${laborCostBreakdown?.toFixed(2)}</p>
                 {costItems.length > 0 && (
                   <>
-                    <p className="text-sm text-gray-700 font-medium mt-2">Additional Costs:</p>
+                    <p className="text-sm text-clay-700 font-medium mt-2">Additional Costs:</p>
                     {costItems.map(item => (
-                      <p key={item.id} className="text-sm text-gray-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
+                      <p key={item.id} className="text-sm text-clay-700 ml-4">{item.name}: ${parseFloat(item.amount as string).toFixed(2)}</p>
                     ))}
                   </>
                 )}
                 {operationalCostBreakdown !== null && (
-                  <p className="text-sm text-gray-700 font-medium mt-2">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
+                  <p className="text-sm text-clay-700 font-medium mt-2">Operational Costs (per service): ${operationalCostBreakdown?.toFixed(2)}</p>
                 )}
-                <p className="text-md font-semibold text-gray-800 mt-2">Total Cost per Service: ${totalCost?.toFixed(2)}</p>
+                <p className="text-md font-semibold text-clay-800 mt-2">Total Cost per Service: ${totalCost?.toFixed(2)}</p>
               </div>
 
               {/* Right Side: Final Calculation & Recommended Price */}
               <div className="md:w-1/2 flex flex-col space-y-4">
                 {/* Margin Input */}
-                <div className="p-4 bg-white rounded-md shadow-sm">
-                  <label htmlFor="markupMargin" className="block text-sm font-medium text-gray-700">
+                <div className="p-4 bg-white rounded-control shadow-sm">
+                  <label htmlFor="markupMargin" className="block text-sm font-medium text-clay-700">
                     Markup Margin (e.g., 1.25 for 25% markup)
                   </label>
                   <input
@@ -490,14 +490,14 @@ export default function ServicePricingToolClient() {
                     id="markupMargin"
                     value={markupMargin}
                     onChange={(e) => setMarkupMargin(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 1.25"
                   />
                 </div>
 
                 {/* Projected Clients Input */}
-                <div className="p-4 bg-white rounded-md shadow-sm">
-                  <label htmlFor="projectedClients" className="block text-sm font-medium text-gray-700">
+                <div className="p-4 bg-white rounded-control shadow-sm">
+                  <label htmlFor="projectedClients" className="block text-sm font-medium text-clay-700">
                     Projected Number of Clients
                   </label>
                   <input
@@ -505,25 +505,25 @@ export default function ServicePricingToolClient() {
                     id="projectedClients"
                     value={projectedClients}
                     onChange={(e) => setProjectedClients(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="e.g., 5"
                   />
                 </div>
 
                 {/* Simplified Final Calculation */}
-                <div className="p-4 bg-green-50 rounded-md space-y-2">
-                  <h3 className="text-lg font-medium text-green-800">Calculated Price per Service:</h3>
-                  <p className="text-sm text-green-700">Total Estimated Revenue: ${totalRevenue?.toFixed(2)}</p>
-                  <p className="text-sm text-green-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
-                  <p className="text-sm text-green-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
-                  <p className="text-sm text-green-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
+                <div className="p-4 bg-sage-50 rounded-control space-y-2">
+                  <h3 className="text-lg font-medium text-sage-800">Calculated Price per Service:</h3>
+                  <p className="text-sm text-sage-700">Total Estimated Revenue: ${totalRevenue?.toFixed(2)}</p>
+                  <p className="text-sm text-sage-700">Total Estimated Cost: ${totalCost?.toFixed(2)}</p>
+                  <p className="text-sm text-sage-700">Total Estimated Profit: ${totalProfit?.toFixed(2)}</p>
+                  <p className="text-sm text-sage-700">Labor Cost: ${laborCostBreakdown?.toFixed(2)}</p>
                   {agencyFeeBreakdown !== null && (
-                    <p className="text-sm text-green-700">Agency Fee: ${agencyFeeBreakdown?.toFixed(2)}</p>
+                    <p className="text-sm text-sage-700">Agency Fee: ${agencyFeeBreakdown?.toFixed(2)}</p>
                   )}
                 </div>
 
                 {/* Recommended Price */}
-                <div className="p-4 bg-indigo-100 rounded-md text-right">
+                <div className="p-4 bg-indigo-100 rounded-control text-right">
                   <p className="text-xl font-bold text-indigo-800">Recommended Price: ${Math.ceil(calculatedPrice).toFixed(2)}</p>
                 </div>
               </div>
@@ -531,24 +531,24 @@ export default function ServicePricingToolClient() {
 
             <button
               onClick={() => setStep(1)}
-              className="mt-6 inline-flex justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="mt-6 inline-flex justify-center rounded-control border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Back to Inputs
             </button>
             <button
               onClick={() => setShowSaveModal(true)}
-              className="mt-6 ml-4 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              className="mt-6 ml-4 inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
             >
               Save Price
             </button>
 
             {showSaveModal && (
               <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-                <div className="bg-white p-8 rounded-lg shadow-xl">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Save Price Calculation</h3>
+                <div className="bg-white p-8 rounded-card shadow-xl">
+                  <h3 className="text-lg font-medium text-clay-900 mb-4">Save Price Calculation</h3>
                   <input
                     type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     placeholder="Enter a name for this calculation"
                     value={saveName}
                     onChange={(e) => setSaveName(e.target.value)}
@@ -556,13 +556,13 @@ export default function ServicePricingToolClient() {
                   <div className="mt-4 flex justify-end space-x-2">
                     <button
                       onClick={() => setShowSaveModal(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                      className="px-4 py-2 border border-clay-200 rounded-control shadow-sm text-sm font-medium text-clay-700 bg-white hover:bg-clay-50"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleSaveCalculation} // This function will be implemented next
-                      className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                      className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
                     >
                       Save
                     </button>

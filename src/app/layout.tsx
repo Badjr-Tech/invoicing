@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Manrope, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 /**
  * Type pairing.
  *
- * Fraunces for display: a soft, organic serif with real warmth in its
- * curves — it reads handmade rather than corporate, which suits a platform
- * for owner-operated businesses. Variable, so weight and optical size are
- * fluid.
+ * Manrope for display: modern, slightly rounded terminals so it stays warm
+ * without being a serif. Reads clean and current rather than ornamental —
+ * the serif look was tried (Fraunces) and rejected.
  *
  * DM Sans for body: geometric and quiet, so it carries dense financial
  * tables without competing with the headings.
@@ -24,9 +23,10 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const fraunces = Fraunces({
+const manrope = Manrope({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${fraunces.variable} antialiased`}>
+      <body className={`${dmSans.variable} ${manrope.variable} antialiased`}>
         {children}
       </body>
     </html>

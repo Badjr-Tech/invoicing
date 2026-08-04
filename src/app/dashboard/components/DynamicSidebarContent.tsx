@@ -1,13 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchSession } from "@/app/login/actions";
-import { getAllUserBusinesses } from "../businesses/actions";
-import { deleteUserProduct, getUserProducts } from "../products/actions";
-import LogoutButton from "@/app/components/LogoutButton";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import {
+  BookOpen,
+  Briefcase,
+  ChevronRight,
+  Home,
+  LayoutGrid,
+  MessageSquare,
+  Settings,
+  Shield,
+  Wallet,
+} from "lucide-react";
+import { fetchSession } from "@/app/login/actions";
+import { getAllUserBusinesses } from "../businesses/actions";
+import { getUserProducts } from "../products/actions";
+import LogoutButton from "@/app/components/LogoutButton";
 
 interface Business {
   id: number;
@@ -26,17 +38,65 @@ interface UserSession {
   };
 }
 
+/**
+ * Sidebar navigation.
+ *
+ * Design rules, learned the hard way:
+ *  - No full-width hover highlights. Rest state is quiet text; hover shifts
+ *    color; only the ACTIVE route gets a filled pill. One highlight at a
+ *    time, and it means "you are here", not "your mouse is here".
+ *  - Sections are disclosure groups with a rotating chevron, not text arrows.
+ *  - The current section auto-opens based on the route.
+ */
+
+type NavChild = { label: string; href: string };
+type NavSection = {
+  id: string;
+  label: string;
+  icon: typeof Home;
+  children: NavChild[];
+};
+
+const linkBase =
+  "flex items-center gap-2.5 rounded-control px-3 py-2 text-[13px] font-medium transition-colors";
+const restLink = `${linkBase} text-sage-200/80 hover:text-white`;
+const activeLink = `${linkBase} bg-sage-700/70 text-white`;
+
+function SectionHeader({
+  label,
+  icon: Icon,
+  open,
+  onClick,
+}: {
+  label: string;
+  icon: typeof Home;
+  open: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex w-full items-center gap-2.5 rounded-control px-3 py-2 text-[13px] font-semibold text-sage-100 transition-colors hover:text-white"
+      aria-expanded={open}
+    >
+      <Icon size={16} className="shrink-0 text-sage-300" />
+      <span className="flex-1 text-left">{label}</span>
+      <ChevronRight
+        size={14}
+        className={`shrink-0 text-sage-400 transition-transform ${open ? "rotate-90" : ""}`}
+      />
+    </button>
+  );
+}
+
 export default function DynamicSidebarContent() {
+  const pathname = usePathname();
   const [session, setSession] = useState<UserSession | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [userProducts, setUserProducts] = useState<UserProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [adviceInfoCollapsed, setAdviceInfoCollapsed] = useState(true);
-  const [businessToolsCollapsed, setBusinessToolsCollapsed] = useState(true);
-  const [financialToolsCollapsed, setFinancialToolsCollapsed] = useState(true);
-  const [invoicingCollapsed, setInvoicingCollapsed] = useState(true);
-  const [adminToolsCollapsed, setAdminToolsCollapsed] = useState(true);
-  const [productsCollapsed, setProductsCollapsed] = useState(true);
+  const [openSection, setOpenSection] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -50,309 +110,183 @@ export default function DynamicSidebarContent() {
       const userBusinesses = await getAllUserBusinesses(userSession.user.id);
       setBusinesses(userBusinesses);
 
-      const userProducts = await getUserProducts(userSession.user.id);
-      setUserProducts(userProducts);
+      const products = await getUserProducts(userSession.user.id);
+      setUserProducts(products);
 
       setLoading(false);
     }
     fetchData();
   }, []);
 
-  const handleDeleteProduct = async (productId: string) => {
-    if (window.confirm("Are you sure you want to remove this product?")) {
-      await deleteUserProduct(productId);
-    }
-  };
+  const isAdmin = session?.user?.role === "admin";
+  const hasBookkeeping = userProducts.some((p) => p.productId === "bookkeeping");
+
+  const sections: NavSection[] = [
+    {
+      id: "business",
+      label: "My Business",
+      icon: Briefcase,
+      children: [
+        { label: "Businesses", href: "/dashboard/businesses" },
+        ...businesses.map((b) => ({
+          label: b.businessName,
+          href: `/dashboard/businesses/${b.id}`,
+        })),
+        { label: "Contractors", href: "/dashboard/business-tools/contractors" },
+        { label: "Compliance", href: "/dashboard/business-compliance" },
+      ],
+    },
+    {
+      id: "money",
+      label: "Money",
+      icon: Wallet,
+      children: [
+        { label: "Financials Dashboard", href: "/dashboard/financial-tools/dashboard" },
+        { label: "Invoices", href: "/dashboard/invoicing" },
+        { label: "Clients", href: "/dashboard/clients" },
+        { label: "Services", href: "/dashboard/services" },
+        { label: "Budget", href: "/dashboard/financial-tools/budget" },
+        { label: "Contracts", href: "/dashboard/financial-tools/contracts" },
+        ...(hasBookkeeping
+          ? [
+              { label: "Bookkeeping", href: "/dashboard/products/bookkeeping" },
+              { label: "Reports", href: "/dashboard/financial-tools/bookkeeping/reports" },
+            ]
+          : []),
+      ],
+    },
+    {
+      id: "products",
+      label: "Products",
+      icon: LayoutGrid,
+      children: [
+        { label: "Browse products", href: "/dashboard/products" },
+        ...userProducts.map((p) => ({
+          label: p.productId
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (l) => l.toUpperCase()),
+          href: `/dashboard/products/${p.productId}`,
+        })),
+      ],
+    },
+    {
+      id: "learn",
+      label: "Learn & Grow",
+      icon: BookOpen,
+      children: [
+        { label: "Resources", href: "/dashboard/resources" },
+        { label: "Scaling Your Business", href: "/dashboard/scaling-your-business" },
+        { label: "Courses", href: "/dashboard/courses" },
+      ],
+    },
+    ...(isAdmin
+      ? [
+          {
+            id: "admin",
+            label: "Admin",
+            icon: Shield,
+            children: [
+              { label: "Business search", href: "/dashboard/admin/businesses/manage" },
+              { label: "Users", href: "/dashboard/admin/users" },
+              { label: "AGENCY Class", href: "/dashboard/admin/agency-class" },
+              { label: "Records", href: "/dashboard/admin/records" },
+              { label: "Agency Set Up", href: "/dashboard/admin/agency-setup" },
+              { label: "Checklists", href: "/dashboard/admin/agency-setup/checklist-management" },
+            ],
+          } satisfies NavSection,
+        ]
+      : []),
+  ];
+
+  // Open the section the current route lives in.
+  useEffect(() => {
+    if (!pathname) return;
+    const owner = sections.find((section) =>
+      section.children.some((child) => pathname.startsWith(child.href)),
+    );
+    if (owner) setOpenSection(owner.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, businesses.length, userProducts.length]);
 
   if (loading) {
     return (
-      <div className="p-4 text-center text-gray-400">Loading sidebar...</div>
+      <div className="space-y-2.5 p-4" aria-label="Loading navigation">
+        {Array.from({ length: 7 }).map((_, i) => (
+          <div key={i} className="h-8 animate-pulse rounded-control bg-sage-700/50" />
+        ))}
+      </div>
     );
   }
 
-  const isAdmin = session?.user?.role === 'admin';
-
   return (
-    <>
-      <div className="flex items-center space-x-2">
+    <div className="flex h-full flex-col">
+      <Link href="/dashboard" className="flex items-center gap-2.5 px-3 pb-5 pt-2">
+        <Image src="/agency-logo-light.svg" alt="" width={30} height={30} />
+        <span className="font-display text-base font-bold tracking-wide text-white">
+          AGENCY
+        </span>
+      </Link>
+
+      <nav className="flex-1 space-y-0.5 overflow-y-auto pr-1">
+        <Link
+          href="/dashboard"
+          className={pathname === "/dashboard" ? activeLink : restLink}
+        >
+          <Home size={16} className="shrink-0 text-sage-300" />
+          Home
+        </Link>
+        <Link
+          href="/dashboard/messages"
+          className={pathname?.startsWith("/dashboard/messages") ? activeLink : restLink}
+        >
+          <MessageSquare size={16} className="shrink-0 text-sage-300" />
+          Messages
+        </Link>
+
+        <div className="pt-3" />
+
+        {sections.map((section) => {
+          const open = openSection === section.id;
+          return (
+            <div key={section.id}>
+              <SectionHeader
+                label={section.label}
+                icon={section.icon}
+                open={open}
+                onClick={() => setOpenSection(open ? null : section.id)}
+              />
+              {open && (
+                <div className="mb-1.5 ml-[1.15rem] space-y-0.5 border-l border-sage-700 pl-3">
+                  {section.children.map((child) => (
+                    <Link
+                      key={child.href + child.label}
+                      href={child.href}
+                      className={`block rounded-control px-2.5 py-1.5 text-[13px] transition-colors ${
+                        pathname === child.href
+                          ? "bg-sage-700/70 font-medium text-white"
+                          : "text-sage-200/70 hover:text-white"
+                      }`}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </nav>
+
+      <div className="mt-4 flex items-center justify-between border-t border-sage-700 px-1 py-3">
         <Link
           href="/dashboard/profile"
-          className="py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs font-semibold"
+          className="flex items-center gap-2 rounded-control px-2 py-1.5 text-[13px] font-medium text-sage-200/80 transition-colors hover:text-white"
         >
+          <Settings size={15} className="text-sage-300" />
           Profile
         </Link>
         <LogoutButton onDark />
       </div>
-      <div className="mb-4 text-center">
-        <Image src="/agency-logo.svg" alt="AGENCY" width={100} height={100} className="mx-auto" />
-      </div>
-      <nav className="space-y-0.5 font-semibold text-white">
-        <Link
-          href="/dashboard"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-        >
-          Home
-        </Link>
-        {/* Advice & Info Section */}
-        <h2 
-          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
-          onClick={() => setAdviceInfoCollapsed(!adviceInfoCollapsed)}
-        >
-          <span className="mr-2">{adviceInfoCollapsed ? '▶' : '▼'}</span>
-          Advice & Info
-        </h2>
-        {!adviceInfoCollapsed && (
-          <>
-            <Link
-              href="/dashboard/resources"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Resources
-            </Link>
-            <Link
-              href="/dashboard/business-compliance"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Business Compliance
-            </Link>
-            <Link
-              href="/dashboard/scaling-your-business"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Scaling Your Business
-            </Link>
-          </>
-        )}
-        {/* Business Tools Section */}
-        <h2 
-          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
-          onClick={() => setBusinessToolsCollapsed(!businessToolsCollapsed)}
-        >
-          <span className="mr-2">{businessToolsCollapsed ? '▶' : '▼'}</span>
-          Business Tools
-        </h2>
-        {!businessToolsCollapsed && (
-          <>
-            <Link
-              href="/dashboard/messages"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Messages
-            </Link>
-            <Link
-              href="/dashboard/businesses"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Businesses
-            </Link>
-            {businesses.map((business) => (
-              <Link
-                key={business.id}
-                href={`/dashboard/businesses/${business.id}`}
-                className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
-              >
-                - {business.businessName}
-              </Link>
-            ))}
-            <Link
-              href="/dashboard/business-tools/contractors"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Contractors
-            </Link>
-            <Link
-              href="/dashboard/products"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Products
-            </Link>
-            {userProducts.some(product => product.productId === "professional-email") && (
-              <Link
-                href="/dashboard/products/professional-email"
-                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-              >
-                Professional Email
-              </Link>
-            )}
-            {userProducts.some(product => product.productId === "website") && (
-              <Link
-                href="/dashboard/products/website"
-                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-              >
-                Website
-              </Link>
-            )}
-          </>
-        )}
-        {/* Products Section */}
-        <h2 
-          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
-          onClick={() => setProductsCollapsed(!productsCollapsed)}
-        >
-          <span className="mr-2">{productsCollapsed ? '▶' : '▼'}</span>
-          My Products
-        </h2>
-        {!productsCollapsed && (
-          <>
-            {userProducts.map((product) => (
-              <div key={product.id} className="flex items-center justify-between group">
-                <Link
-                  href={`/dashboard/products/${product.productId}`}
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700 flex-grow"
-                >
-                  - {product.productId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
-                </Link>
-                <button
-                  onClick={() => handleDeleteProduct(product.productId)}
-                  className="text-red-500 hover:text-red-700 px-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                  title="Remove product"
-                >
-                  x
-                </button>
-              </div>
-            ))}
-          </>
-        )}
-        {/* Financial Tools Section */}
-        <div 
-          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
-          onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
-        >
-          <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
-          Financial Tools
-        </div>
-        {!financialToolsCollapsed && (
-          <>
-            <Link
-              href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Financials Dashboard
-            </Link>
-            <Link
-              href="/dashboard/financial-tools/contracts"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Contracts
-            </Link>
-            <div 
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs cursor-pointer"
-              onClick={() => setInvoicingCollapsed(!invoicingCollapsed)}
-            >
-              <span className="mr-2">{invoicingCollapsed ? '▶' : '▼'}</span>
-              Invoicing
-            </div>
-            {!invoicingCollapsed && (
-              <div className="pl-4">
-                <Link
-                  href="/dashboard/invoicing"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Invoices
-                </Link>
-                <Link
-                  href="/dashboard/clients"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Clients
-                </Link>
-                <Link
-                  href="/dashboard/services"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Services
-                </Link>
-              </div>
-            )}
-            <Link
-              href="/dashboard/financial-tools/budget"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-            >
-              Budget
-            </Link>
-            {userProducts.some(product => product.productId === "bookkeeping") && (
-              <>
-                <Link
-                  href="/dashboard/products/bookkeeping"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Bookkeeping
-                </Link>
-                <Link
-                  href="/dashboard/financial-tools/bookkeeping/categories"
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
-                >
-                  - Categories
-                </Link>
-                <Link
-                  href="/dashboard/financial-tools/bookkeeping/recurring"
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
-                >
-                  - Recurring
-                </Link>
-                <Link
-                  href="/dashboard/financial-tools/bookkeeping/reports"
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
-                >
-                  - Reports
-                </Link>
-              </>
-            )}
-          </>
-        )}
-        {isAdmin && (
-          <>
-            {/* Admin Tools Section */}
-            <h2 
-              className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
-              onClick={() => setAdminToolsCollapsed(!adminToolsCollapsed)}
-            >
-              <span className="mr-2">{adminToolsCollapsed ? '▶' : '▼'}</span>
-              Admin Tools
-            </h2>
-            {!adminToolsCollapsed && (
-              <>
-                <Link
-                  href="/dashboard/admin/businesses/manage"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Business search
-                </Link>
-                <Link
-                  href="/dashboard/admin/users"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Admin Users
-                </Link>
-                <Link
-                  href="/dashboard/admin/agency-class"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Admin AGENCY Class
-                </Link>
-                <Link
-                  href="/dashboard/admin/records"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Admin Records
-                </Link>
-                <Link
-                  href="/dashboard/admin/agency-setup"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Admin Agency Set Up
-                </Link>
-                <Link
-                  href="/dashboard/admin/agency-setup/checklist-management"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
-                >
-                  Checklist Management
-                </Link>
-              </>
-            )}
-          </>
-        )}
-      </nav>
-    </>
+    </div>
   );
 }

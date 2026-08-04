@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-red-300"
+      className="w-full px-4 py-2 bg-red-600 text-white rounded-control hover:bg-red-700 disabled:bg-red-300"
     >
       {pending ? "Submitting..." : "Confirm and Opt Out"}
     </button>
@@ -45,20 +45,20 @@ export default function OptOutForm({ userName, isOptedOut: initialIsOptedOut }: 
     <>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+        className="px-4 py-2 bg-gray-200 text-clay-800 rounded-control hover:bg-gray-300"
       >
         Opt Out of Communications
       </button>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-background p-8 rounded-lg shadow-2xl max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Confirm Opt-Out</h2>
-            <p className="mb-4 text-gray-600">
+          <div className="bg-background p-8 rounded-card shadow-2xl max-w-md w-full">
+            <h2 className="font-display text-xl font-semibold mb-4">Confirm Opt-Out</h2>
+            <p className="mb-4 text-clay-600">
               Please confirm that you wish to no longer receive any business communications, including funding alerts, business resources, notes, and pitch alerts.
             </p>
-            <p className="mb-6 text-gray-600">
-              To complete this action, please type your full name (<span className="font-mono bg-gray-100 p-1 rounded">{userName}</span>) in the box below.
+            <p className="mb-6 text-clay-600">
+              To complete this action, please type your full name (<span className="font-mono bg-clay-100 p-1 rounded">{userName}</span>) in the box below.
             </p>
             
             <form action={formAction}>
@@ -74,7 +74,7 @@ export default function OptOutForm({ userName, isOptedOut: initialIsOptedOut }: 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="mt-1 block w-full px-3 py-2 border border-light-gray rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-light-gray rounded-control shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
               />
             </div>
           </div>
@@ -85,7 +85,7 @@ export default function OptOutForm({ userName, isOptedOut: initialIsOptedOut }: 
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-gray-600"
+                  className="px-4 py-2 text-clay-600"
                 >
                   Cancel
                 </button>

@@ -167,10 +167,10 @@ export default function InvoicingPageClient({
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-gray-800">Create Invoice</h1>
+        <h1 className="font-display text-3xl font-semibold text-clay-800">Create Invoice</h1>
         <div className="flex items-center space-x-4">
           <div>
-            <label htmlFor="businessForServices" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="businessForServices" className="block text-sm font-medium text-clay-700">
               Filter Services by Business
             </label>
             <select
@@ -181,7 +181,7 @@ export default function InvoicingPageClient({
                 const businessId = e.target.value;
                 setSelectedBusinessForServices(businessId ? parseInt(businessId) : null);
               }}
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
               <option value="">All Businesses</option>
               {businesses.map((business) => (
@@ -191,7 +191,7 @@ export default function InvoicingPageClient({
               ))}
             </select>
           </div>
-          <Link href="/dashboard/invoices" className="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          <Link href="/dashboard/invoices" className="py-2 px-4 bg-ember-600 text-white rounded-control hover:bg-ember-500">
             View Invoices
           </Link>
         </div>
@@ -199,30 +199,30 @@ export default function InvoicingPageClient({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add Services */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Add Services</h2>
+          <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Add Services</h2>
           <div className="space-y-6">
             {Object.entries(servicesByCategory).map(([categoryName, servicesInCat]) => (
               <div key={categoryName}>
-                <h3 className="text-xl font-semibold text-gray-700 mb-3 cursor-pointer flex items-center" onClick={() => toggleCategory(categoryName)}>
+                <h3 className="text-xl font-semibold text-clay-700 mb-3 cursor-pointer flex items-center" onClick={() => toggleCategory(categoryName)}>
                   <span className="mr-2">{collapsedCategories[categoryName] ? '▶' : '▼'}</span>
                   {categoryName}
                 </h3>
                 {!collapsedCategories[categoryName] && (
                   <>
                     {servicesInCat.length === 0 ? (
-                      <p className="text-gray-500">No services in this category.</p>
+                      <p className="text-clay-500">No services in this category.</p>
                     ) : (
                       <div className="space-y-4">
                         {servicesInCat.map((service) => (
-                          <div key={service.id} className="p-4 bg-gray-50 rounded-lg shadow flex justify-between items-center">
+                          <div key={service.id} className="p-4 bg-clay-50 rounded-card shadow flex justify-between items-center">
                             <div>
                               <p className="font-semibold">{service.name}</p>
-                              <p className="text-sm text-gray-600">{service.description}</p>
+                              <p className="text-sm text-clay-600">{service.description}</p>
                               <p className="text-sm font-bold">${service.price}</p>
                             </div>
                             <button
                               onClick={() => handleAddService(service)}
-                              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                              className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                               Add
                             </button>
@@ -239,8 +239,8 @@ export default function InvoicingPageClient({
 
         {/* Right Column: Invoice Cart */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Invoice</h2>
-          <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-lg shadow-md text-white">
+          <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Invoice</h2>
+          <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-card shadow-card text-white">
             <div>
               <label htmlFor="businessId" className="block text-sm font-medium text-white">
                 Business Name
@@ -251,7 +251,7 @@ export default function InvoicingPageClient({
                   name="businessId"
                   required
                   onChange={(e) => setSelectedBusiness(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select your business</option>
                   {businesses.map((business) => (
@@ -273,7 +273,7 @@ export default function InvoicingPageClient({
                   name="invoiceBusinessDisplayName"
                   value={invoiceBusinessDisplayName}
                   onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   required
                 >
                   <option value="">Select business name for invoice</option>
@@ -303,7 +303,7 @@ export default function InvoicingPageClient({
                   name="clientId"
                   required
                   onChange={(e) => setSelectedClient(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
                   <option value="">Select a client</option>
                   {clients.map((client) => (
@@ -326,7 +326,7 @@ export default function InvoicingPageClient({
                   name="invoiceNumber"
                   value={invoiceNumber}
                   onChange={(e) => setInvoiceNumber(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -342,7 +342,7 @@ export default function InvoicingPageClient({
                   name="dueDate"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -359,7 +359,7 @@ export default function InvoicingPageClient({
                         min="1"
                         value={service.quantity}
                         onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-                        className="w-16 text-white px-2 py-1 rounded-md mr-2"
+                        className="w-16 text-white px-2 py-1 rounded-control mr-2"
                       />
                     )}
                     {service.designation === 'flat fee' && (
@@ -367,7 +367,7 @@ export default function InvoicingPageClient({
                         type="number"
                         value={1} // Flat fee services always have quantity 1
                         disabled
-                        className="w-16 text-white px-2 py-1 rounded-md mr-2 bg-gray-200"
+                        className="w-16 text-white px-2 py-1 rounded-control mr-2 bg-gray-200"
                       />
                     )}
                     <p>${(parseFloat(service.price) * (service.quantity ?? 0)).toFixed(2)}</p>
@@ -376,7 +376,7 @@ export default function InvoicingPageClient({
               ))}
             </div>
 
-            <div className="border-t border-gray-200 pt-4">
+            <div className="border-t border-clay-200 pt-4">
               <div className="flex justify-between font-bold text-lg">
                 <p>Total</p>
                 <p>${totalAmount.toFixed(2)}</p>
@@ -394,7 +394,7 @@ export default function InvoicingPageClient({
                   rows={3}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
                 ></textarea>
               </div>
             </div>
@@ -406,13 +406,13 @@ export default function InvoicingPageClient({
             <input type="hidden" name="invoiceBusinessDisplayName" value={invoiceBusinessDisplayName} />
 
 
-            {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
+            {state?.message && <p className="text-sage-700 text-sm">{state.message}</p>}
             {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
 
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Create & Send Invoice
               </button>

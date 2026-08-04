@@ -38,14 +38,14 @@ export default async function CategoryServicesPage(props: any) { // Changed prop
   return (
     <div className="flex-1 p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-gray-800">
-          Services in Category: {category.name} {category.customId && <span className="text-gray-500 text-xl">({category.customId})</span>}
+        <h1 className="font-display text-3xl font-semibold text-clay-800">
+          Services in Category: {category.name} {category.customId && <span className="text-clay-500 text-xl">({category.customId})</span>}
         </h1>
-        <Link href="/dashboard/services" className="py-2 px-4 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
+        <Link href="/dashboard/services" className="py-2 px-4 bg-gray-200 text-clay-800 rounded-control hover:bg-gray-300">
           Back to Categories
         </Link>
       </div>
-      {category.description && <p className="text-lg text-gray-600 mb-6">{category.description}</p>}
+      {category.description && <p className="text-lg text-clay-600 mb-6">{category.description}</p>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column: Add New Service */}

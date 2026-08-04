@@ -25,10 +25,10 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-3xl font-bold text-foreground">Edit Business: {initialBusiness.businessName}</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Edit Business: {initialBusiness.businessName}</h1>
 
       {/* Tabs */}
-      <div className="mt-6 border-b border-gray-200">
+      <div className="mt-6 border-b border-clay-200">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           <TabButton tabName="info" activeTab={activeTab} setActiveTab={setActiveTab}>Business Info</TabButton>
           <TabButton tabName="materials" activeTab={activeTab} setActiveTab={setActiveTab}>Business Materials</TabButton>
@@ -45,7 +45,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
 
             {/* Business Name */}
             <div>
-              <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="businessName" className="block text-sm font-medium text-clay-700">
                 Business Name/Title
               </label>
               <input
@@ -54,13 +54,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessName"
                 required
                 defaultValue={initialBusiness.businessName}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* Legal Business Name */}
             <div>
-              <label htmlFor="legalBusinessName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="legalBusinessName" className="block text-sm font-medium text-clay-700">
                 Legal Business Name
               </label>
               <input
@@ -68,13 +68,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="legalBusinessName"
                 name="legalBusinessName"
                 defaultValue={initialBusiness.legalBusinessName || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* Tax Full Name */}
             <div>
-              <label htmlFor="taxFullName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="taxFullName" className="block text-sm font-medium text-clay-700">
                 Your Full Name for Tax Reasons (e.g., for Sole Proprietorships)
               </label>
               <input
@@ -82,13 +82,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="taxFullName"
                 name="taxFullName"
                 defaultValue={initialBusiness.taxFullName || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* Owner Name */}
             <div>
-              <label htmlFor="ownerName" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="ownerName" className="block text-sm font-medium text-clay-700">
                 Owner Name
               </label>
               <input
@@ -97,13 +97,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="ownerName"
                 required
                 defaultValue={initialBusiness.ownerName}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* Percent Ownership */}
             <div>
-              <label htmlFor="percentOwnership" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="percentOwnership" className="block text-sm font-medium text-clay-700">
                 Percent Ownership
               </label>
               <input
@@ -115,13 +115,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 max="100"
                 step="0.01"
                 defaultValue={parseFloat(initialBusiness.percentOwnership)}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* Business Type */}
             <div>
-              <label htmlFor="businessType" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="businessType" className="block text-sm font-medium text-clay-700">
                 Business Type
               </label>
               <select
@@ -129,7 +129,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessType"
                 required
                 defaultValue={initialBusiness.businessType}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="">Select Business Type</option>
                 <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -141,7 +141,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
 
             {/* Business Tax Status */}
             <div>
-              <label htmlFor="businessTaxStatus" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="businessTaxStatus" className="block text-sm font-medium text-clay-700">
                 Business Tax Status
               </label>
               <select
@@ -149,7 +149,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessTaxStatus"
                 required
                 defaultValue={initialBusiness.businessTaxStatus}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="">Select Tax Status</option>
                 <option value="S-Corporation">S-Corporation</option>
@@ -160,7 +160,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
 
             {/* Business Industry */}
             <div>
-              <label htmlFor="businessIndustry" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="businessIndustry" className="block text-sm font-medium text-clay-700">
                 Business Industry
               </label>
               <input
@@ -169,13 +169,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessIndustry"
                 required
                 defaultValue={initialBusiness.businessIndustry}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* NAICS Code */}
             <div>
-              <label htmlFor="naicsCode" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="naicsCode" className="block text-sm font-medium text-clay-700">
                 NAICS Code (Optional)
               </label>
               <input
@@ -183,13 +183,13 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="naicsCode"
                 name="naicsCode"
                 defaultValue={initialBusiness.naicsCode || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {/* Business Description */}
             <div>
-              <label htmlFor="businessDescription" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="businessDescription" className="block text-sm font-medium text-clay-700">
                 Business Description (Optional)
               </label>
               <textarea
@@ -197,14 +197,14 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessDescription"
                 rows={3}
                 defaultValue={initialBusiness.businessDescription || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               ></textarea>
             </div>
 
             {/* Contact Information */}
-            <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Contact Information</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mt-8 mb-4">Contact Information</h2>
             <div>
-              <label htmlFor="streetAddress" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="streetAddress" className="block text-sm font-medium text-clay-700">
                 Street Address
               </label>
               <input
@@ -212,11 +212,11 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="streetAddress"
                 name="streetAddress"
                 defaultValue={initialBusiness.streetAddress || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
             <div>
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="city" className="block text-sm font-medium text-clay-700">
                 City
               </label>
               <input
@@ -224,12 +224,12 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="city"
                 name="city"
                 defaultValue={initialBusiness.city || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="state" className="block text-sm font-medium text-clay-700">
                   State
                 </label>
                 <input
@@ -238,11 +238,11 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                   name="state"
                   maxLength={2}
                   defaultValue={initialBusiness.state || ''}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
               <div>
-                <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="zipCode" className="block text-sm font-medium text-clay-700">
                   Zip Code
                 </label>
                 <input
@@ -251,12 +251,12 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                   name="zipCode"
                   maxLength={10}
                   defaultValue={initialBusiness.zipCode || ''}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="phone" className="block text-sm font-medium text-clay-700">
                 Phone
               </label>
               <input
@@ -264,11 +264,11 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="phone"
                 name="phone"
                 defaultValue={initialBusiness.phone || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
             <div>
-              <label htmlFor="website" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="website" className="block text-sm font-medium text-clay-700">
                 Website
               </label>
               <input
@@ -276,17 +276,17 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="website"
                 name="website"
                 defaultValue={initialBusiness.website || ''}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
 
             {state?.message && (
-              <div className="mb-4 p-3 rounded-md bg-green-100 text-green-800">
+              <div className="mb-4 p-3 rounded-control bg-sage-100 text-sage-800">
                 {state.message}
               </div>
             )}
             {state?.error && (
-              <div className="mb-4 p-3 rounded-md bg-red-100 text-red-800">
+              <div className="mb-4 p-3 rounded-control bg-red-100 text-red-800">
                 {state.error}
               </div>
             )}
@@ -294,7 +294,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Update Business Profile
             </button>
@@ -302,14 +302,14 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
         )}
         {activeTab === "materials" && (
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Business Materials</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Business Materials</h2>
             {/* Placeholder for business materials management */}
             <p>Business materials management will go here.</p>
           </div>
         )}
         {activeTab === "branding" && (
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Branding</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Branding</h2>
             {/* Placeholder for branding elements */}
             <p>Branding elements (logo, colors, etc.) will go here.</p>
           </div>
@@ -320,7 +320,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
         <Link href={`/dashboard/businesses/${initialBusiness.id}`}>
           <button
             type="button"
-            className="inline-flex justify-center rounded-md border border-gray-300 bg-background py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="inline-flex justify-center rounded-control border border-clay-200 bg-background py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             Back to Business Details
           </button>
@@ -346,7 +346,7 @@ function TabButton({ tabName, activeTab, setActiveTab, children }: TabButtonProp
       className={`${
         isActive
           ? "border-indigo-500 text-indigo-600"
-          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+          : "border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200"
       } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
     >
       {children}

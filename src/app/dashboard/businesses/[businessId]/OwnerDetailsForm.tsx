@@ -42,12 +42,12 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
   };
 
   return (
-    <form action={formAction} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+    <form action={formAction} className="space-y-6 bg-white p-6 rounded-card shadow-card">
       <input type="hidden" name="businessId" value={business.id} />
 
       {/* Gender Dropdown */}
       <div>
-        <label htmlFor="ownerGenderId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ownerGenderId" className="block text-sm font-medium text-clay-700">
           Owner Gender
         </label>
         <select
@@ -55,7 +55,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
           name="ownerGenderId"
           value={currentGenderId || ''}
           onChange={(e) => setCurrentGenderId(parseInt(e.target.value) || null)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         >
           <option value="">Select Gender</option>
           {genders.map((gender) => (
@@ -68,7 +68,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
 
       {/* Race Dropdown */}
       <div>
-        <label htmlFor="ownerRaceId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ownerRaceId" className="block text-sm font-medium text-clay-700">
           Owner Race
         </label>
         <select
@@ -76,7 +76,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
           name="ownerRaceId"
           value={currentRaceId || ''}
           onChange={(e) => setCurrentRaceId(parseInt(e.target.value) || null)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         >
           <option value="">Select Race</option>
           {races.map((race) => (
@@ -89,7 +89,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
 
       {/* Religion Dropdown */}
       <div>
-        <label htmlFor="ownerReligionId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ownerReligionId" className="block text-sm font-medium text-clay-700">
           Owner Religion
         </label>
         <select
@@ -97,7 +97,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
           name="ownerReligionId"
           value={currentReligionId || ''}
           onChange={(e) => setCurrentReligionId(parseInt(e.target.value) || null)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         >
           <option value="">Select Religion</option>
           {religions.map((religion) => (
@@ -110,7 +110,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
 
       {/* Region Dropdown */}
       <div>
-        <label htmlFor="ownerRegionId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ownerRegionId" className="block text-sm font-medium text-clay-700">
           Owner Region
         </label>
         <select
@@ -118,7 +118,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
           name="ownerRegionId"
           value={currentRegionId || ''}
           onChange={(e) => setCurrentRegionId(parseInt(e.target.value) || null)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         >
           <option value="">Select Region</option>
           {regions.map((region) => (
@@ -131,7 +131,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
 
       {/* New: Business Primary Location Dropdown */}
       <div>
-        <label htmlFor="locationId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="locationId" className="block text-sm font-medium text-clay-700">
           Business Primary Location
         </label>
         <select
@@ -139,7 +139,7 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
           name="locationId"
           value={selectedLocationId || ''}
           onChange={(e) => setSelectedLocationId(parseInt(e.target.value) || null)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
         >
           <option value="">Select Primary Location</option>
           {availableLocations.map((loc) => (
@@ -150,13 +150,13 @@ export default function OwnerDetailsForm({ business, genders, races, religions, 
         </select>
       </div>
 
-      {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
+      {state?.message && <p className="text-sage-700 text-sm">{state.message}</p>}
       {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
 
       <div className="mt-4">
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Save Owner Details
         </button>

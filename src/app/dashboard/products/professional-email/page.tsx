@@ -24,23 +24,23 @@ export default function ProfessionalEmailPage() {
   return (
     <div className="flex-1 p-6">
       <div className="flex items-center mb-6">
-        <MailCheck size={48} className="text-blue-600" />
-        <h1 className="text-4xl font-bold text-gray-800 ml-4">Professional Email Product</h1>
+        <MailCheck size={48} className="text-sage-700" />
+        <h1 className="font-display text-3xl font-semibold text-clay-800 ml-4">Professional Email Product</h1>
       </div>
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Simple Professional Email via Routing</h2>
-        <p className="text-lg text-gray-600 mb-6">
+      <div className="bg-white p-6 rounded-card shadow-card">
+        <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Simple Professional Email via Routing</h2>
+        <p className="text-lg text-clay-600 mb-6">
           Skip the tech stress and get a professional email that matches your business name. We’ll handle the setup and routing so you can send and receive emails from your own address using the inbox you already know. It’s easy, reliable, and makes your business look polished.
         </p>
         <form action={formAction}>
           <input type="hidden" name="productId" value="professional-email" />
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
           >
             Add Product
           </button>
-          {state.message && <p className="text-green-600 mt-2">{state.message}</p>}
+          {state.message && <p className="text-sage-700 mt-2">{state.message}</p>}
           {state.error && <p className="text-red-600 mt-2">{state.error}</p>}
         </form>
       </div>

@@ -78,25 +78,25 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-3xl font-bold text-foreground">User Management</h1>
-      <p className="mt-4 text-gray-700">Manage all users in the system.</p>
+      <h1 className="font-display text-2xl font-semibold text-foreground">User Management</h1>
+      <p className="mt-4 text-clay-700">Manage all users in the system.</p>
 
       <div className="mt-6">
         <button
           onClick={() => setShowCreateForm(!showCreateForm)}
-          className="inline-flex justify-center rounded-md border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           {showCreateForm ? "Cancel" : "Create New User"}
         </button>
       </div>
 
       {showCreateForm && (
-        <div className="mt-8 max-w-2xl p-6 bg-background shadow-md rounded-lg">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Create New User</h2>
+        <div className="mt-8 max-w-2xl p-6 bg-background shadow-card rounded-card">
+          <h2 className="font-display text-xl font-semibold text-foreground mb-4">Create New User</h2>
           <form action={createFormAction} className="space-y-6">
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-clay-700">
                 Name
               </label>
               <input
@@ -104,13 +104,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="name"
                 type="text"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-clay-700">
                 Email
               </label>
               <input
@@ -118,13 +118,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="email"
                 type="email"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
 
             {/* Phone */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="phone" className="block text-sm font-medium text-clay-700">
                 Phone
               </label>
               <input
@@ -132,13 +132,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="phone"
                 type="text"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-clay-700">
                 Password
               </label>
               <input
@@ -146,20 +146,20 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="password"
                 type="password"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
 
             {/* Role */}
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="role" className="block text-sm font-medium text-clay-700">
                 Role
               </label>
               <select
                 id="role"
                 name="role"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               >
                 <option value="internal">Internal</option>
                 <option value="external">External</option>
@@ -168,7 +168,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
             </div>
 
             {createState?.message && (
-              <p className="text-sm text-green-600">{createState.message}</p>
+              <p className="text-sm text-sage-700">{createState.message}</p>
             )}
             {createState?.error && (
               <p className="text-sm text-red-600">{createState.error}</p>
@@ -177,7 +177,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
             <div>
               <button
                 type="submit"
-                className="inline-flex justify-center rounded-md border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
                 Create User
               </button>
@@ -187,22 +187,22 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
       )}
 
       <div className="mt-8 overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-clay-200">
           <thead className="bg-background">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">
                 ID
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">
                 Name
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">
                 Email
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">
                 Phone
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">
                 Role
               </th>
               <th scope="col" className="relative px-6 py-3">
@@ -210,22 +210,22 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
               </th>
             </tr>
           </thead>
-          <tbody className="bg-background divide-y divide-gray-200">
+          <tbody className="bg-background divide-y divide-clay-200">
             {allUsers.map((user) => (
               <tr key={user.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                   {user.id}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-500">
                   {user.name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-500">
                   {user.email}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-500">
                   {user.phone}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-500">
                   {user.role}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -251,14 +251,14 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
       {/* Edit User Modal */}
       {showEditModal && editingUser && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-background">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-control bg-background">
             <h3 className="text-lg font-medium leading-6 text-foreground">Edit User</h3>
             <div className="mt-2">
               <form action={editFormAction} className="space-y-6">
                 <input type="hidden" name="userId" value={editingUser.id} />
                 {/* Email */}
                 <div>
-                  <label htmlFor="edit-email" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="edit-email" className="block text-sm font-medium text-clay-700">
                     Email
                   </label>
                   <input
@@ -267,13 +267,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                     type="email"
                     defaultValue={editingUser.email}
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label htmlFor="edit-phone" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="edit-phone" className="block text-sm font-medium text-clay-700">
                     Phone
                   </label>
                   <input
@@ -282,13 +282,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                     type="text"
                     defaultValue={editingUser.phone}
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
 
                 {/* Role */}
                 <div>
-                  <label htmlFor="edit-role" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="edit-role" className="block text-sm font-medium text-clay-700">
                     Role
                   </label>
                   <select
@@ -296,7 +296,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                     name="role"
                     defaultValue={editingUser.role}
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   >
                     <option value="internal">Internal</option>
                     <option value="external">External</option>
@@ -305,7 +305,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 </div>
 
                 {editState?.message && (
-                  <p className="text-sm text-green-600">{editState.message}</p>
+                  <p className="text-sm text-sage-700">{editState.message}</p>
                 )}
                 {editState?.error && (
                   <p className="text-sm text-red-600">{editState.error}</p>
@@ -318,13 +318,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                       setShowEditModal(false);
                       setEditingUser(null);
                     }}
-                    className="inline-flex justify-center rounded-md border border-gray-300 bg-background py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-clay-200 bg-background py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     Save Changes
                   </button>

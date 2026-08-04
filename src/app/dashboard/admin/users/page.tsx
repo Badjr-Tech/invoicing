@@ -39,8 +39,8 @@ export default async function UserManagementPage({ searchParams }: { searchParam
     <div className="flex-1 p-6">
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Admin User Management</h1>
-          <p className="mt-4 text-gray-700">Manage users and their permissions.</p>
+          <h1 className="font-display text-2xl font-semibold text-foreground">Admin User Management</h1>
+          <p className="mt-4 text-clay-700">Manage users and their permissions.</p>
         </div>
         <div className="flex space-x-2">
           <UserDownloadButton />
@@ -49,7 +49,7 @@ export default async function UserManagementPage({ searchParams }: { searchParam
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 border-b border-gray-200">
+      <div className="mt-6 border-b border-clay-200">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           <TabLink href="users" activeTab={activeTab}>Users</TabLink>
           <TabLink href="permissions" activeTab={activeTab}>Permissions</TabLink>

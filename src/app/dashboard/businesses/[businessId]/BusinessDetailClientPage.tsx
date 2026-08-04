@@ -25,35 +25,35 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
 
   return (
     <div className="flex-1 p-6">
-      <div className="border-b border-gray-200">
+      <div className="border-b border-clay-200">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           <button
             onClick={() => setActiveTab('business-profile')}
-            className={`${activeTab === 'business-profile' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'business-profile' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Profile
           </button>
           <button
             onClick={() => setActiveTab('owner-details')}
-            className={`${activeTab === 'owner-details' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'owner-details' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Owner Details
           </button>
           <button
             onClick={() => setActiveTab('design')} // New tab for Design
-            className={`${activeTab === 'design' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'design' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Design
           </button>
           <button
             onClick={() => setActiveTab('business-materials')}
-            className={`${activeTab === 'business-materials' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'business-materials' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Materials
           </button>
           <button
             onClick={() => setActiveTab('edit')}
-            className={`${activeTab === 'edit' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'edit' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Edit
           </button>
@@ -62,30 +62,30 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
 
       {activeTab === 'business-profile' && (
         <div className="mt-8">
-          <h1 className="text-3xl font-bold text-foreground">{business.businessName}</h1>
+          <h1 className="font-display text-2xl font-semibold text-foreground">{business.businessName}</h1>
           <div className="mb-6 flex justify-center">
             {business.logoUrl ? (
-              <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className="rounded-md object-cover border-2 border-gray-300" />
+              <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className="rounded-control object-cover border-2 border-clay-200" />
             ) : (
-              <div className="h-24 w-24 rounded-md bg-gray-200 flex items-center justify-center text-gray-500 text-4xl font-bold border-2 border-gray-300">
+              <div className="h-24 w-24 rounded-control bg-gray-200 flex items-center justify-center text-clay-500 font-display text-3xl font-semibold border-2 border-clay-200">
                 {business.businessName ? business.businessName[0].toUpperCase() : '?'}
               </div>
             )}
           </div>
           {business.businessProfilePhotoUrl && (
             <div className="mb-6 flex justify-center">
-              <Image src={business.businessProfilePhotoUrl} alt="Business Profile Photo" width={512} height={512} className="rounded-md object-cover border-2 border-gray-300" />
+              <Image src={business.businessProfilePhotoUrl} alt="Business Profile Photo" width={512} height={512} className="rounded-control object-cover border-2 border-clay-200" />
             </div>
           )}
-          <p className="mt-4 text-gray-700">Owner: {business.ownerName}</p>
-          <p className="mt-2 text-gray-700">Type: {business.businessType}</p>
-          <p className="mt-2 text-gray-700">Tax Status: {business.businessTaxStatus}</p>
-          {business.taxFullName && <p className="mt-2 text-gray-700">Tax Full Name: {business.taxFullName}</p>}
-          {business.ein && <p className="mt-2 text-gray-700">EIN: {business.ein}</p>}
-          {business.foundingState && <p className="mt-2 text-gray-700">Founding State: {business.foundingState}</p>}
-          {business.domainName && <p className="mt-2 text-gray-700">Domain Name: {business.domainName}</p>}
+          <p className="mt-4 text-clay-700">Owner: {business.ownerName}</p>
+          <p className="mt-2 text-clay-700">Type: {business.businessType}</p>
+          <p className="mt-2 text-clay-700">Tax Status: {business.businessTaxStatus}</p>
+          {business.taxFullName && <p className="mt-2 text-clay-700">Tax Full Name: {business.taxFullName}</p>}
+          {business.ein && <p className="mt-2 text-clay-700">EIN: {business.ein}</p>}
+          {business.foundingState && <p className="mt-2 text-clay-700">Founding State: {business.foundingState}</p>}
+          {business.domainName && <p className="mt-2 text-clay-700">Domain Name: {business.domainName}</p>}
           {business.dbas && business.dbas.length > 0 && (
-            <div className="mt-2 text-gray-700">
+            <div className="mt-2 text-clay-700">
               <p className="font-semibold">DBAs:</p>
               <ul className="list-disc list-inside">
                 {business.dbas.map((dba) => (
@@ -94,14 +94,14 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
               </ul>
             </div>
           )}
-          <p className="mt-2 text-gray-700">Industry: {business.businessIndustry}</p>
-          {business.businessDescription && <p className="mt-2 text-gray-700">Description: {business.businessDescription}</p>}
-          {business.streetAddress && <p className="mt-2 text-gray-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}
-          {business.phone && <p className="mt-2 text-gray-700">Phone: {business.phone}</p>}
-          {business.website && <p className="mt-2 text-gray-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{business.website}</a></p>}
+          <p className="mt-2 text-clay-700">Industry: {business.businessIndustry}</p>
+          {business.businessDescription && <p className="mt-2 text-clay-700">Description: {business.businessDescription}</p>}
+          {business.streetAddress && <p className="mt-2 text-clay-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}
+          {business.phone && <p className="mt-2 text-clay-700">Phone: {business.phone}</p>}
+          {business.website && <p className="mt-2 text-clay-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{business.website}</a></p>}
 
           <div className="mt-8">
-            <h2 className="text-2xl font-bold">Business Documents</h2>
+            <h2 className="font-display text-xl font-semibold">Business Documents</h2>
             <ul>
               {business.material1Url && (
                 <li>
@@ -147,7 +147,7 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column: Owner Details Form */}
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Owner Details</h2>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Owner Details</h2>
             <OwnerDetailsForm
               business={business}
               genders={genders}
@@ -160,9 +160,9 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
           </div>
           {/* Right Column: Placeholder for future additions */}
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-4">Additional Information</h2>
-            <div className="p-6 bg-white rounded-lg shadow-md">
-              <p className="text-gray-700">Content for this section will be added later.</p>
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Additional Information</h2>
+            <div className="p-6 bg-white rounded-card shadow-card">
+              <p className="text-clay-700">Content for this section will be added later.</p>
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
 
       {activeTab === 'design' && ( // New tab content for Design
         <div className="mt-8">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Business Design</h2>
+          <h2 className="font-display text-xl font-semibold text-foreground mb-4">Business Design</h2>
           <BusinessDesignForm business={business} />
         </div>
       )}

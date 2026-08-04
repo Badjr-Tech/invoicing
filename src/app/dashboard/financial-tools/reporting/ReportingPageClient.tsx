@@ -35,13 +35,13 @@ export default function ReportingPageClient() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Reporting</h1>
-      <p className="text-gray-700">This page will allow you to generate various financial reports.</p>
+      <h1 className="font-display text-3xl font-semibold text-clay-800 mb-6">Reporting</h1>
+      <p className="text-clay-700">This page will allow you to generate various financial reports.</p>
       
       <form action={formAction}>
         <button
           type="submit"
-          className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="mt-4 inline-flex justify-center rounded-control border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Generate PDF Report
         </button>

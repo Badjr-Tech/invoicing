@@ -37,30 +37,30 @@ export default function ServiceBasedBudgetDisplayPage() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Your Service-Based Budget</h1>
-      <p className="text-lg text-gray-700 mb-6">
+      <h1 className="font-display text-3xl font-semibold text-clay-800 mb-6">Your Service-Based Budget</h1>
+      <p className="text-lg text-clay-700 mb-6">
         Upload your budget file to see your detailed calculations and profit analysis here.
       </p>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Saved Service Pricing Calculations</h2>
+        <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Saved Service Pricing Calculations</h2>
         {savedCalculations.length === 0 ? (
-          <p className="text-gray-600">No saved calculations yet. Go to the Service Pricing Tool to save some!</p>
+          <p className="text-clay-600">No saved calculations yet. Go to the Service Pricing Tool to save some!</p>
         ) : (
           <div className="space-y-4">
             {savedCalculations.map((calc) => (
-              <div key={calc.id} className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center">
+              <div key={calc.id} className="bg-white p-4 rounded-card shadow-card flex justify-between items-center">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">{calc.name}</h3>
-                  <p className="text-sm text-gray-600">Service: {calc.serviceName} ({calc.pricingModel})</p>
-                  <p className="text-sm text-gray-600">Calculated Price: ${calc.calculatedPrice?.toFixed(2)}</p>
+                  <h3 className="text-lg font-medium text-clay-900">{calc.name}</h3>
+                  <p className="text-sm text-clay-600">Service: {calc.serviceName} ({calc.pricingModel})</p>
+                  <p className="text-sm text-clay-600">Calculated Price: ${calc.calculatedPrice?.toFixed(2)}</p>
                 </div>
                 {/* Potentially add a button here to view full details of a saved calculation */}
               </div>
             ))}
             <button
               onClick={handleClearAll}
-              className="mt-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
+              className="mt-4 px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"
             >
               Clear All Saved Calculations
             </button>

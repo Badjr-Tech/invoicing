@@ -11,8 +11,8 @@ export default async function AdminBusinessesPage({ searchParams }: { searchPara
         <YourBusinessesPageContent />
       ) : (
         <>
-          <h1 className="text-3xl font-bold text-foreground">All Businesses</h1>
-          <p className="mt-4 text-gray-700">View and manage all businesses in the system.</p>
+          <h1 className="font-display text-2xl font-semibold text-foreground">All Businesses</h1>
+          <p className="mt-4 text-clay-700">View and manage all businesses in the system.</p>
           <BusinessSearchAndFilter />
         </>
       )}

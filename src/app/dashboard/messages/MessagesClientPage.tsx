@@ -157,7 +157,7 @@ export default function MessagesPage({
       <>
       <div className="p-4 md:p-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Messages</h1>
+          <h1 className="font-display text-2xl font-semibold text-foreground">Messages</h1>
         </div>
         <div className="mt-6">
           <div className="sm:hidden">
@@ -165,7 +165,7 @@ export default function MessagesPage({
             <select
               id="tabs"
               name="tabs"
-              className="block w-full focus:ring-primary focus:border-primary border-light-gray rounded-md"
+              className="block w-full focus:ring-primary focus:border-primary border-light-gray rounded-control"
               defaultValue={activeTab}
               onChange={(e) => setActiveTab(e.target.value)}
             >
@@ -177,13 +177,13 @@ export default function MessagesPage({
             <nav className="-mb-px flex space-x-8" aria-label="Tabs">
               <button
                 onClick={() => setActiveTab('mass-messages')}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'mass-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+                className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'mass-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
               >
                 Mass Messages
               </button>
               <button
                 onClick={() => setActiveTab('individual-messages')}
-                className={`px-4 py-2 rounded-md text-sm font-medium ${activeTab === 'individual-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+                className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'individual-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
               >
                 Individual Messages
               </button>
@@ -195,12 +195,12 @@ export default function MessagesPage({
           {activeTab === 'individual-messages' && (
             <div className="flex h-[calc(100vh-200px)]"> {/* Adjust height as needed */}
               {/* Left Column: Conversation List */}
-              <div className="w-1/4 border-r border-gray-200 bg-white overflow-y-auto">
-                <div className="flex justify-between items-center p-4 border-b border-gray-200">
+              <div className="w-1/4 border-r border-clay-200 bg-white overflow-y-auto">
+                <div className="flex justify-between items-center p-4 border-b border-clay-200">
                   <h2 className="text-xl font-bold text-foreground">Conversations</h2>
                   <button
                     onClick={() => setShowNewMessageModal(true)}
-                    className="inline-flex justify-center rounded-md border border-transparent bg-primary py-1 px-2 text-xs font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-transparent bg-primary py-1 px-2 text-xs font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >
                     New
                   </button>
@@ -212,11 +212,11 @@ export default function MessagesPage({
                     {conversations.map(conversation => (
                       <li
                         key={conversation.id}
-                        className={`p-4 cursor-pointer hover:bg-gray-100 ${selectedConversationId === conversation.id ? 'bg-gray-100' : ''}`}
+                        className={`p-4 cursor-pointer hover:bg-clay-100 ${selectedConversationId === conversation.id ? 'bg-clay-100' : ''}`}
                         onClick={() => setSelectedConversationId(conversation.id)}
                       >
                         <p className="font-semibold">{conversation.otherParticipant.name}</p>
-                        <p className="text-sm text-gray-500 truncate">{conversation.messages[conversation.messages.length - 1]?.content}</p>
+                        <p className="text-sm text-clay-500 truncate">{conversation.messages[conversation.messages.length - 1]?.content}</p>
                       </li>
                     ))}
                   </ul>
@@ -238,7 +238,7 @@ export default function MessagesPage({
                           className={`flex ${msg.senderId === currentUserId ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`max-w-xs px-4 py-2 rounded-lg ${msg.senderId === currentUserId ? 'bg-primary text-white' : 'bg-gray-200 text-foreground'}`}
+                            className={`max-w-xs px-4 py-2 rounded-card ${msg.senderId === currentUserId ? 'bg-primary text-white' : 'bg-gray-200 text-foreground'}`}
                           >
                             <p>{msg.content}</p>
                             <p className="text-xs text-right mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</p>
@@ -248,26 +248,26 @@ export default function MessagesPage({
                     </div>
                   </div>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-gray-500">
+                  <div className="flex-1 flex items-center justify-center text-clay-500">
                     Select a conversation to start chatting.
                   </div>
                 )}
 
                 {/* New Message Form */}
                 {selectedConversationId && (
-                  <div className="border-t border-gray-200 p-4">
+                  <div className="border-t border-clay-200 p-4">
                     <form action={handleSendMessage} className="flex space-x-2">
                       <input type="hidden" name="recipient" value={conversations.find(c => c.id === selectedConversationId)?.otherParticipant.id} />
                       <textarea
                         name="messageContent"
                         rows={1}
                         required
-                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+                        className="flex-1 rounded-control border-clay-200 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
                         placeholder="Type your message..."
                       ></textarea>
                       <button
                         type="submit"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
                         Send
                       </button>
@@ -280,13 +280,13 @@ export default function MessagesPage({
   
           {activeTab === 'mass-messages' && (
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Mass Messages</h2>
+              <h2 className="font-display text-xl font-semibold text-foreground mb-4">Mass Messages</h2>
               {massMessages.length === 0 ? (
                 <p className="text-foreground">No mass messages sent yet.</p>
               ) : (
                 <ul className="space-y-4">
                   {massMessages.map(msg => (
-                    <li key={msg.id} className="bg-light-gray shadow overflow-hidden sm:rounded-lg p-4">
+                    <li key={msg.id} className="bg-light-gray shadow overflow-hidden sm:rounded-card p-4">
                       <p className="text-foreground">{msg.content}</p>
                       <p className="text-xs text-foreground text-right">{msg.timestamp.toLocaleString()}</p>
                     </li>
@@ -294,7 +294,7 @@ export default function MessagesPage({
                 </ul>
               )}
   
-              <h2 className="text-2xl font-bold text-foreground mb-4 mt-8">Send Mass Message</h2>
+              <h2 className="font-display text-xl font-semibold text-foreground mb-4 mt-8">Send Mass Message</h2>
               <form action={handleSendMassMessage} className="space-y-4">
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-foreground">Message</label>
@@ -303,7 +303,7 @@ export default function MessagesPage({
                     name="message"
                     rows={3}
                     required
-                    className="shadow-sm focus:ring-primary focus:border-primary mt-1 block w-full sm:text-sm border border-light-gray rounded-md"
+                    className="shadow-sm focus:ring-primary focus:border-primary mt-1 block w-full sm:text-sm border border-light-gray rounded-control"
                   ></textarea>
                 </div>
                 <div className="flex items-center">
@@ -318,13 +318,13 @@ export default function MessagesPage({
                   </label>
                 </div>
                             {massSendState?.message && (
-                              <p className="text-sm text-green-600 mt-2">{massSendState.message}</p>
+                              <p className="text-sm text-sage-700 mt-2">{massSendState.message}</p>
                             )}
                             {massSendState?.error && (
                               <p className="text-sm text-red-600 mt-2">{massSendState.error}</p>
                             )}                <button
                   type="submit"
-                  className="inline-flex justify-center rounded-md border border-transparent bg-secondary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-secondary"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-secondary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-secondary"
                 >
                   Send Mass Message
                 </button>
@@ -335,13 +335,13 @@ export default function MessagesPage({
       </div>
       {showNewMessageModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-md w-1/3">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Start a new conversation</h2>
+          <div className="bg-white p-6 rounded-card shadow-card w-1/3">
+            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Start a new conversation</h2>
             <ul className="space-y-2">
               {users.map(user => (
                 <li
                   key={user.id}
-                  className="p-2 cursor-pointer hover:bg-gray-100 rounded-md"
+                  className="p-2 cursor-pointer hover:bg-clay-100 rounded-control"
                   onClick={() => handleSelectUser(user)}
                 >
                   {user.name}
@@ -350,7 +350,7 @@ export default function MessagesPage({
             </ul>
             <button
               onClick={() => setShowNewMessageModal(false)}
-              className="mt-4 inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              className="mt-4 inline-flex justify-center rounded-control border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
             >
               Close
             </button>

@@ -55,9 +55,9 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
     <div className="col-span-full"> {/* Make it full width */}
       <ul className="space-y-4">
         {businesses.map(business => (
-          <li key={business.id} className="bg-white p-4 rounded-lg shadow">
+          <li key={business.id} className="bg-white p-4 rounded-card shadow">
             <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleBusinessCollapse(business.id)}>
-              <h3 className="text-xl font-semibold text-gray-700 flex items-center">
+              <h3 className="text-xl font-semibold text-clay-700 flex items-center">
                 <span className="mr-2">{collapsedBusinesses[business.id] ? '▶' : '▼'}</span>
                 {business.businessName} Categories
               </h3>
@@ -66,23 +66,23 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
               <ul className="ml-6 mt-2 space-y-2">
                 {categoriesByBusiness[business.id]?.length > 0 ? (
                   categoriesByBusiness[business.id].map(category => (
-                    <li key={category.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                    <li key={category.id} className="flex justify-between items-center p-2 bg-clay-50 rounded-control">
                       <div>
                         <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
-                          {category.name} {category.customId && <span className="text-gray-500 text-xs">({category.customId})</span>}
+                          {category.name} {category.customId && <span className="text-clay-500 text-xs">({category.customId})</span>}
                         </Link>
-                        {category.description && <p className="text-sm text-gray-600">{category.description}</p>}
+                        {category.description && <p className="text-sm text-clay-600">{category.description}</p>}
                       </div>
                       <button
                         onClick={() => handleEditClick(category)}
-                        className="ml-4 px-3 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="ml-4 px-3 py-1 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
                       >
                         Edit
                       </button>
                     </li>
                   ))
                 ) : (
-                  <p className="text-gray-500">No categories for this business.</p>
+                  <p className="text-clay-500">No categories for this business.</p>
                 )}
               </ul>
             )}
@@ -90,9 +90,9 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
         ))}
 
         {unassignedCategories.length > 0 && (
-          <li className="bg-white p-4 rounded-lg shadow">
+          <li className="bg-white p-4 rounded-card shadow">
             <div className="flex items-center justify-between cursor-pointer" onClick={toggleUnassignedCollapse}>
-              <h3 className="text-xl font-semibold text-gray-700 flex items-center">
+              <h3 className="text-xl font-semibold text-clay-700 flex items-center">
                 <span className="mr-2">{collapsedUnassigned ? '▶' : '▼'}</span>
                 Unassigned Categories
               </h3>
@@ -100,16 +100,16 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
             {!collapsedUnassigned && (
               <ul className="ml-6 mt-2 space-y-2">
                 {unassignedCategories.map(category => (
-                  <li key={category.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                  <li key={category.id} className="flex justify-between items-center p-2 bg-clay-50 rounded-control">
                     <div>
                       <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
-                        {category.name} {category.customId && <span className="text-gray-500 text-xs">({category.customId})</span>}
+                        {category.name} {category.customId && <span className="text-clay-500 text-xs">({category.customId})</span>}
                       </Link>
-                      {category.description && <p className="text-sm text-gray-600">{category.description}</p>}
+                      {category.description && <p className="text-sm text-clay-600">{category.description}</p>}
                     </div>
                     <button
                       onClick={() => handleEditClick(category)}
-                      className="ml-4 px-3 py-1 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      className="ml-4 px-3 py-1 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
                     >
                       Edit
                     </button>

@@ -46,7 +46,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
       <input type="hidden" name="businessId" value={business.id} />
       {/* Business Name */}
       <div>
-        <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="businessName" className="block text-sm font-medium text-clay-700">
           Business Name
         </label>
         <input
@@ -55,13 +55,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           defaultValue={business.businessName}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Owner Name */}
       <div>
-        <label htmlFor="ownerName" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ownerName" className="block text-sm font-medium text-clay-700">
           Owner Name
         </label>
         <input
@@ -70,13 +70,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           defaultValue={business.ownerName}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Percent Ownership */}
       <div>
-        <label htmlFor="percentOwnership" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="percentOwnership" className="block text-sm font-medium text-clay-700">
           Percent Ownership
         </label>
         <input
@@ -86,13 +86,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           step="0.01"
           defaultValue={business.percentOwnership}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Business Type */}
       <div>
-        <label htmlFor="businessType" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="businessType" className="block text-sm font-medium text-clay-700">
           Business Type
         </label>
         <select
@@ -100,7 +100,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="businessType"
           defaultValue={business.businessType}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         >
           <option value="">Select Business Type</option>
           <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -112,7 +112,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
 
       {/* Business Tax Status */}
       <div>
-        <label htmlFor="businessTaxStatus" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="businessTaxStatus" className="block text-sm font-medium text-clay-700">
           Business Tax Status
         </label>
         <select
@@ -120,7 +120,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="businessTaxStatus"
           defaultValue={business.businessTaxStatus}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         >
           <option value="">Select Tax Status</option>
           <option value="S-Corporation">S-Corporation</option>
@@ -131,7 +131,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
 
       {/* Business Description */}
       <div>
-        <label htmlFor="businessDescription" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="businessDescription" className="block text-sm font-medium text-clay-700">
           Business Description
         </label>
         <textarea
@@ -139,13 +139,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="businessDescription"
           rows={3}
           defaultValue={business.businessDescription || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         ></textarea>
       </div>
 
       {/* Business Industry */}
       <div>
-        <label htmlFor="businessIndustry" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="businessIndustry" className="block text-sm font-medium text-clay-700">
           Business Industry
         </label>
         <input
@@ -154,13 +154,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           defaultValue={business.businessIndustry}
           required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Street Address */}
       <div>
-        <label htmlFor="streetAddress" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="streetAddress" className="block text-sm font-medium text-clay-700">
           Street Address
         </label>
         <input
@@ -168,13 +168,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="streetAddress"
           type="text"
           defaultValue={business.streetAddress || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* City */}
       <div>
-        <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="city" className="block text-sm font-medium text-clay-700">
           City
         </label>
         <input
@@ -182,13 +182,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="city"
           type="text"
           defaultValue={business.city || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* State */}
       <div>
-        <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="state" className="block text-sm font-medium text-clay-700">
           State
         </label>
         <input
@@ -197,13 +197,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={2}
           defaultValue={business.state || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Zip Code */}
       <div>
-        <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="zipCode" className="block text-sm font-medium text-clay-700">
           Zip Code
         </label>
         <input
@@ -212,20 +212,20 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={10}
           defaultValue={business.zipCode || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Location */}
       <div>
-        <label htmlFor="locationId" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="locationId" className="block text-sm font-medium text-clay-700">
           Location
         </label>
         <select
           id="locationId"
           name="locationId"
           defaultValue={business.locationId || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         >
           <option value="">Select Location</option>
           {availableLocations.map(location => (
@@ -238,7 +238,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
 
       {/* Phone */}
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="phone" className="block text-sm font-medium text-clay-700">
           Phone
         </label>
         <input
@@ -246,13 +246,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="phone"
           type="text"
           defaultValue={business.phone || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Website */}
       <div>
-        <label htmlFor="website" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="website" className="block text-sm font-medium text-clay-700">
           Website
         </label>
         <input
@@ -260,13 +260,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="website"
           type="text"
           defaultValue={business.website || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* EIN */}
       <div>
-        <label htmlFor="ein" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ein" className="block text-sm font-medium text-clay-700">
           EIN
         </label>
         <input
@@ -275,13 +275,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={9}
           defaultValue={business.ein || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Founding State */}
       <div>
-        <label htmlFor="foundingState" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="foundingState" className="block text-sm font-medium text-clay-700">
           Founding State
         </label>
         <input
@@ -290,13 +290,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={2}
           defaultValue={business.foundingState || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Domain Name */}
       <div>
-        <label htmlFor="domainName" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="domainName" className="block text-sm font-medium text-clay-700">
           Domain Name
         </label>
         <input
@@ -304,13 +304,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="domainName"
           type="text"
           defaultValue={business.domainName || ''}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
         />
       </div>
 
       {/* Business Logo Upload */}
       <div>
-        <label htmlFor="logo" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="logo" className="block text-sm font-medium text-clay-700">
           Business Logo
         </label>
         <div className="mt-2">
@@ -319,19 +319,19 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
             name="logo"
             type="file"
             onChange={handleLogoChange}
-            className="block w-full text-sm text-foreground border border-gray-300 rounded-lg cursor-pointer bg-background focus:outline-none"
+            className="block w-full text-sm text-foreground border border-clay-200 rounded-card cursor-pointer bg-background focus:outline-none"
           />
         </div>
         {logoPreview && (
           <div className="mt-4">
-            <Image src={logoPreview} alt="Logo Preview" width={96} height={96} className="rounded-md object-cover" />
+            <Image src={logoPreview} alt="Logo Preview" width={96} height={96} className="rounded-control object-cover" />
           </div>
         )}
       </div>
 
       {/* Business Profile Photo Upload */}
       <div>
-        <label htmlFor="businessProfilePhoto" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="businessProfilePhoto" className="block text-sm font-medium text-clay-700">
           Business Profile Photo
         </label>
         <div className="mt-2">
@@ -339,13 +339,13 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
             id="businessProfilePhoto"
             name="businessProfilePhoto"
             type="file"
-            className="block w-full text-sm text-foreground border border-gray-300 rounded-lg cursor-pointer bg-background focus:outline-none"
+            className="block w-full text-sm text-foreground border border-clay-200 rounded-card cursor-pointer bg-background focus:outline-none"
           />
         </div>
       </div>
 
       {editState?.message && (
-        <p className="text-sm text-green-600 mt-2">{editState.message}</p>
+        <p className="text-sm text-sage-700 mt-2">{editState.message}</p>
       )}
       {editState?.error && (
         <p className="text-sm text-red-600 mt-2">{editState.error}</p>
@@ -354,7 +354,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
       <div className="mt-6">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
           Save Changes
         </button>

@@ -27,17 +27,17 @@ export default function ComplianceChecklist({ checklistItems }) {
   }, [checkedItems, checklistItems]);
 
   return (
-    <div className="mt-8 p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Compliance Checklist</h2>
+    <div className="mt-8 p-6 bg-white shadow-card rounded-card">
+      <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Compliance Checklist</h2>
       <div className="mb-8">
-        <h3 className="text-lg font-medium text-gray-800">Progress</h3>
+        <h3 className="text-lg font-medium text-clay-800">Progress</h3>
         <div className="mt-2 bg-gray-200 rounded-full h-4">
           <div
-            className="bg-blue-600 h-4 rounded-full"
+            className="bg-ember-600 h-4 rounded-full"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-        <p className="mt-2 text-sm text-gray-600">{Math.round(progress)}% Complete</p>
+        <p className="mt-2 text-sm text-clay-600">{Math.round(progress)}% Complete</p>
       </div>
       <div className="space-y-4">
         {checklistItems.map((item) => (
@@ -48,17 +48,17 @@ export default function ComplianceChecklist({ checklistItems }) {
                 id={item.itemId}
                 checked={checkedItems[item.itemId] || false}
                 onChange={() => handleCheckboxChange(item.itemId)}
-                className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="h-5 w-5 text-sage-700 border-clay-200 rounded focus:ring-sage-300"
               />
-              <button onClick={() => toggleExpand(item.itemId)} className="ml-3 text-lg text-gray-700 text-left flex-grow">
+              <button onClick={() => toggleExpand(item.itemId)} className="ml-3 text-lg text-clay-700 text-left flex-grow">
                 {item.title}
               </button>
             </div>
             {expandedItems[item.itemId] && (
-              <div className="mt-2 ml-8 p-4 bg-gray-50 rounded-lg">
-                <p className="text-gray-600">{item.description}</p>
+              <div className="mt-2 ml-8 p-4 bg-clay-50 rounded-card">
+                <p className="text-clay-600">{item.description}</p>
                 {item.link && (
-                  <Link href={item.link} target={item.link.startsWith('/') ? '_self' : '_blank'} rel={item.link.startsWith('/') ? '' : 'noopener noreferrer'} className="text-blue-600 hover:underline mt-2 inline-block">
+                  <Link href={item.link} target={item.link.startsWith('/') ? '_self' : '_blank'} rel={item.link.startsWith('/') ? '' : 'noopener noreferrer'} className="text-sage-700 hover:underline mt-2 inline-block">
                     Go to resource
                   </Link>
                 )}

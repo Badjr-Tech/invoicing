@@ -99,56 +99,56 @@ const Lesson: React.FC<LessonProps> = ({ lesson, index, /* moveLesson, */ onUpda
   // const opacity = isDragging ? 0 : 1;
 
   return (
-    <div /* ref={(node) => drag(drop(node))} style={{ opacity }} */ className="bg-gray-50 p-4 rounded-md shadow-sm mb-4 border border-gray-200">
+    <div /* ref={(node) => drag(drop(node))} style={{ opacity }} */ className="bg-clay-50 p-4 rounded-control shadow-sm mb-4 border border-clay-200">
       <h4 className="text-lg font-semibold mb-2">Lesson {index + 1}</h4>
       <div className="space-y-3">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <label className="block text-sm font-medium text-clay-700">Title</label>
           <input
             type="text"
             value={lessonTitle}
             onChange={(e) => setLessonTitle(e.target.value)}
             onBlur={handleUpdateLesson}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             disabled={isCoursePublished}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Content</label>
+          <label className="block text-sm font-medium text-clay-700">Content</label>
           <textarea
             value={lessonContent}
             onChange={(e) => setLessonContent(e.target.value)}
             onBlur={handleUpdateLesson}
             rows={5}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             disabled={isCoursePublished}
           ></textarea>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Video URL</label>
+          <label className="block text-sm font-medium text-clay-700">Video URL</label>
           <input
             type="text"
             value={lessonVideoUrl}
             onChange={(e) => setLessonVideoUrl(e.target.value)}
             onBlur={handleUpdateLesson}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             disabled={isCoursePublished}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">PDF Uploads</label>
+          <label className="block text-sm font-medium text-clay-700">PDF Uploads</label>
           <input
             type="file"
             accept=".pdf"
             multiple
             onChange={handlePdfChange}
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+            className="mt-1 block w-full text-sm text-clay-500 file:mr-4 file:py-2 file:px-4 file:rounded-control file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
             disabled={isCoursePublished}
           />
           <ul className="mt-2 space-y-1">
             {lesson.materials.map(material => (
-              <li key={material.id} className="flex items-center justify-between text-sm text-gray-600">
+              <li key={material.id} className="flex items-center justify-between text-sm text-clay-600">
                 <a href={material.fileUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{material.fileName}</a>
                 {!isCoursePublished && (
                   <button onClick={() => onPdfDelete(material.id)} className="ml-2 text-red-600 hover:text-red-800">
@@ -383,16 +383,16 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
   return (
     // <DndProvider backend={HTML5Backend}>
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold text-foreground mb-6">Edit Course: {course.title}</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground mb-6">Edit Course: {course.title}</h1>
 
         {/* Course Status and Actions */}
-        <div className="mb-6 p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
-          <p className="text-lg font-semibold">Status: <span className={`font-bold ${isCoursePublished ? 'text-green-600' : 'text-yellow-600'}`}>{course.status.toUpperCase()}</span></p>
+        <div className="mb-6 p-4 bg-white rounded-card shadow-card flex items-center justify-between">
+          <p className="text-lg font-semibold">Status: <span className={`font-bold ${isCoursePublished ? 'text-sage-700' : 'text-yellow-600'}`}>{course.status.toUpperCase()}</span></p>
           <div>
             {!isCoursePublished ? (
               <button
                 onClick={() => publishCourseAction(course.id)}
-                className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="ml-4 inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
               >
                 Publish Course
               </button>
@@ -402,13 +402,13 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                   href={`/courses/${course.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   View Public Page
                 </Link>
                 <button
                   onClick={() => unpublishCourseAction(course.id)}
-                  className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-yellow-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+                  className="ml-4 inline-flex justify-center rounded-control border border-transparent bg-yellow-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
                 >
                   Unpublish Course
                 </button>
@@ -418,11 +418,11 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
         </div>
 
         {/* Course Details Form */}
-        <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Course Details</h2>
+        <div className="mb-8 p-6 bg-white rounded-card shadow-card">
+          <h2 className="font-display text-xl font-semibold text-clay-900 mb-4">Course Details</h2>
           <div className="space-y-4">
             <div>
-              <label htmlFor="courseTitle" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="courseTitle" className="block text-sm font-medium text-clay-700">
                 Title
               </label>
               <input
@@ -431,12 +431,12 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                 value={courseTitle}
                 onChange={(e) => setCourseTitle(e.target.value)}
                 onBlur={handleUpdateCourseDetails}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 disabled={isCoursePublished}
               />
             </div>
             <div>
-              <label htmlFor="courseDescription" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="courseDescription" className="block text-sm font-medium text-clay-700">
                 Description
               </label>
               <textarea
@@ -445,7 +445,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                 onChange={(e) => setCourseDescription(e.target.value)}
                 onBlur={handleUpdateCourseDetails}
                 rows={5}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 disabled={isCoursePublished}
               ></textarea>
             </div>
@@ -453,8 +453,8 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
         </div>
 
         {/* Lessons Management */}
-        <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Lessons</h2>
+        <div className="mb-8 p-6 bg-white rounded-card shadow-card">
+          <h2 className="font-display text-xl font-semibold text-clay-900 mb-4">Lessons</h2>
           <div className="space-y-6">
             {lessons.map((lesson, index) => (
               <Lesson
@@ -473,7 +473,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
           {!isCoursePublished && (
             <button
               onClick={handleAddLesson}
-              className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Add New Lesson
             </button>
@@ -481,20 +481,20 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
         </div>
 
         {/* External User Access */}
-        <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">External User Access</h2>
+        <div className="mb-8 p-6 bg-white rounded-card shadow-card">
+          <h2 className="font-display text-xl font-semibold text-clay-900 mb-4">External User Access</h2>
           <div className="space-y-4">
             <div>
-              <label htmlFor="externalUserEmail" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="externalUserEmail" className="block text-sm font-medium text-clay-700">
                 Add External User by Email
               </label>
-              <div className="mt-1 flex rounded-md shadow-sm">
+              <div className="mt-1 flex rounded-control shadow-sm">
                 <input
                   type="email"
                   id="externalUserEmail"
                   value={newExternalUserEmail}
                   onChange={(e) => setNewExternalUserEmail(e.target.value)}
-                  className="flex-1 block w-full rounded-none rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="flex-1 block w-full rounded-none rounded-l-md border-clay-200 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   placeholder="user@example.com"
                   disabled={isCoursePublished}
                 />
@@ -510,16 +510,16 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
               </div>
             </div>
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Users with Access</h3>
+              <h3 className="text-lg font-medium text-clay-900 mb-2">Users with Access</h3>
               {externalAccesses.length === 0 ? (
-                <p className="text-sm text-gray-500">No external users have access to this course yet.</p>
+                <p className="text-sm text-clay-500">No external users have access to this course yet.</p>
               ) : (
-                <ul className="divide-y divide-gray-200">
+                <ul className="divide-y divide-clay-200">
                   {externalAccesses.map(access => (
                     <li key={access.id} className="py-3 flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{access.externalUserId}</p>
-                        <p className="text-sm text-gray-500">Access Key: <span className="font-mono">{access.accessKey}</span></p>
+                        <p className="text-sm font-medium text-clay-900">{access.externalUserId}</p>
+                        <p className="text-sm text-clay-500">Access Key: <span className="font-mono">{access.accessKey}</span></p>
                       </div>
                       {!isCoursePublished && (
                         <button onClick={() => handleRemoveExternalUserAccess(access.id)} className="text-red-600 hover:text-red-800 text-sm">

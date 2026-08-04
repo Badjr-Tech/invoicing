@@ -73,14 +73,14 @@ export default function EditCategoryModal({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-clay-900">
                   Edit Service Category
                 </Dialog.Title>
                 <div className="mt-2">
                   <form action={formAction} className="space-y-4">
                     <input type="hidden" name="id" value={currentCategory.id} />
                     <div>
-                      <label htmlFor="businessId" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="businessId" className="block text-sm font-medium text-clay-700">
                         Assign to Business
                       </label>
                       <div className="mt-1">
@@ -90,7 +90,7 @@ export default function EditCategoryModal({
                           required
                           value={currentCategory.businessId || ''}
                           onChange={handleInputChange}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
                           <option value="">Select a business</option>
                           {businesses.map((business) => (
@@ -102,7 +102,7 @@ export default function EditCategoryModal({
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="name" className="block text-sm font-medium text-clay-700">
                         Category Name
                       </label>
                       <input
@@ -112,11 +112,11 @@ export default function EditCategoryModal({
                         value={currentCategory.name}
                         onChange={handleInputChange}
                         required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
                     <div>
-                      <label htmlFor="customId" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="customId" className="block text-sm font-medium text-clay-700">
                         Custom ID (Optional)
                       </label>
                       <input
@@ -125,11 +125,11 @@ export default function EditCategoryModal({
                         id="customId"
                         value={currentCategory.customId || ''}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>
                     <div>
-                      <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="description" className="block text-sm font-medium text-clay-700">
                         Description (Optional)
                       </label>
                       <textarea
@@ -138,24 +138,24 @@ export default function EditCategoryModal({
                         rows={3}
                         value={currentCategory.description || ''}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       ></textarea>
                     </div>
 
-                    {state?.message && <p className="text-green-600 text-sm">{state.message}</p>}
+                    {state?.message && <p className="text-sage-700 text-sm">{state.message}</p>}
                     {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
 
                     <div className="mt-4 flex justify-end space-x-2">
                       <button
                         type="button"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
+                        className="inline-flex justify-center rounded-control border border-transparent bg-clay-100 px-4 py-2 text-sm font-medium text-clay-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
                         onClick={onClose}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                        className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
                       >
                         Update Category
                       </button>
