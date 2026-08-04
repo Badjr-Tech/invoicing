@@ -26,6 +26,19 @@ export const users = pgTable('users', {
   personalZipCode: varchar('personal_zip_code', { length: 10 }),
   profilePhotoUrl: text('profile_photo_url'),
   isOptedOut: boolean('is_opted_out').notNull().default(false),
+
+  // --- Onboarding and trial (spec §4.2) ---
+  // A member gets 7 days of full access from signup. After that the tools
+  // lock until onboarding is complete: Stripe connected and intake done.
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  /** Set when the guided product tour is finished. */
+  tourCompletedAt: timestamp('tour_completed_at', { withTimezone: true }),
+  /** Set when every required onboarding step is done. Null means still gated. */
+  onboardingCompletedAt: timestamp('onboarding_completed_at', { withTimezone: true }),
+  /** Set when the onboarding meeting has been booked (spec §4.1). */
+  onboardingMeetingBookedAt: timestamp('onboarding_meeting_booked_at', { withTimezone: true }),
+  /** Admin override to keep an account usable without completing onboarding. */
+  gateExemptUntil: timestamp('gate_exempt_until', { withTimezone: true }),
 });
 
 export const invoices = pgTable('invoices', {
@@ -91,6 +104,18 @@ export const businesses = pgTable('businesses', {
   ein: varchar('ein', { length: 9 }),
   foundingState: varchar('founding_state', { length: 2 }),
   domainName: text('domain_name'),
+
+  // --- Stripe Connect (spec §3.1) ---
+  // The account ID is stored immediately on creation, before onboarding
+  // completes, so an abandoned flow resumes rather than orphaning an account.
+  stripeConnectAccountId: text('stripe_connect_account_id'),
+  /** not_started | onboarding | enabled | restricted | disabled */
+  stripeConnectStatus: text('stripe_connect_status').notNull().default('not_started'),
+  stripeChargesEnabled: boolean('stripe_charges_enabled').notNull().default(false),
+  stripePayoutsEnabled: boolean('stripe_payouts_enabled').notNull().default(false),
+  stripeConnectOnboardedAt: timestamp('stripe_connect_onboarded_at', { withTimezone: true }),
+  /** Card is off by default; enabling it raises the member's rate (spec §4.3). */
+  cardPaymentsEnabled: boolean('card_payments_enabled').notNull().default(false),
 });
 
 export const dbas = pgTable('dbas', {
@@ -668,4 +693,9 @@ export const recurringTransactions = pgTable('recurring_transactions', {
 export const platformSettings = pgTable('platform_settings', {
   id: serial('id').primaryKey(),
   adminFee: numeric('admin_fee', { precision: 5, scale: 2 }),
+  /**
+   * Scheduling link for the onboarding meeting (spec §6.4).
+   * Configuration, not a build — Calendly or Google appointments.
+   */
+  onboardingMeetingUrl: text('onboarding_meeting_url'),
 });

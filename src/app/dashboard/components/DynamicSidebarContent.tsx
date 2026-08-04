@@ -77,11 +77,11 @@ export default function DynamicSidebarContent() {
       <div className="flex items-center space-x-2">
         <Link
           href="/dashboard/profile"
-          className="py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs font-semibold"
+          className="py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs font-semibold"
         >
           Profile
         </Link>
-        <LogoutButton />
+        <LogoutButton onDark />
       </div>
       <div className="mb-4 text-center">
         <Image src="/yellow.png" alt="Logo" width={100} height={100} className="mx-auto" />
@@ -89,13 +89,13 @@ export default function DynamicSidebarContent() {
       <nav className="space-y-0.5 font-semibold text-white">
         <Link
           href="/dashboard"
-          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+          className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
         >
           Home
         </Link>
         {/* Advice & Info Section */}
         <h2 
-          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
           onClick={() => setAdviceInfoCollapsed(!adviceInfoCollapsed)}
         >
           <span className="mr-2">{adviceInfoCollapsed ? '▶' : '▼'}</span>
@@ -105,19 +105,19 @@ export default function DynamicSidebarContent() {
           <>
             <Link
               href="/dashboard/resources"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Resources
             </Link>
             <Link
               href="/dashboard/business-compliance"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Business Compliance
             </Link>
             <Link
               href="/dashboard/scaling-your-business"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Scaling Your Business
             </Link>
@@ -125,7 +125,7 @@ export default function DynamicSidebarContent() {
         )}
         {/* Business Tools Section */}
         <h2 
-          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
           onClick={() => setBusinessToolsCollapsed(!businessToolsCollapsed)}
         >
           <span className="mr-2">{businessToolsCollapsed ? '▶' : '▼'}</span>
@@ -135,13 +135,13 @@ export default function DynamicSidebarContent() {
           <>
             <Link
               href="/dashboard/messages"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Messages
             </Link>
             <Link
               href="/dashboard/businesses"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Businesses
             </Link>
@@ -149,27 +149,27 @@ export default function DynamicSidebarContent() {
               <Link
                 key={business.id}
                 href={`/dashboard/businesses/${business.id}`}
-                className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
               >
                 - {business.businessName}
               </Link>
             ))}
             <Link
               href="/dashboard/business-tools/contractors"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Contractors
             </Link>
             <Link
               href="/dashboard/products"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Products
             </Link>
             {userProducts.some(product => product.productId === "professional-email") && (
               <Link
                 href="/dashboard/products/professional-email"
-                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
               >
                 Professional Email
               </Link>
@@ -177,7 +177,7 @@ export default function DynamicSidebarContent() {
             {userProducts.some(product => product.productId === "website") && (
               <Link
                 href="/dashboard/products/website"
-                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
               >
                 Website
               </Link>
@@ -186,7 +186,7 @@ export default function DynamicSidebarContent() {
         )}
         {/* Products Section */}
         <h2 
-          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
           onClick={() => setProductsCollapsed(!productsCollapsed)}
         >
           <span className="mr-2">{productsCollapsed ? '▶' : '▼'}</span>
@@ -198,7 +198,7 @@ export default function DynamicSidebarContent() {
               <div key={product.id} className="flex items-center justify-between group">
                 <Link
                   href={`/dashboard/products/${product.productId}`}
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary flex-grow"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700 flex-grow"
                 >
                   - {product.productId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
                 </Link>
@@ -215,7 +215,7 @@ export default function DynamicSidebarContent() {
         )}
         {/* Financial Tools Section */}
         <div 
-          className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+          className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
           onClick={() => setFinancialToolsCollapsed(!financialToolsCollapsed)}
         >
           <span className="mr-2">{financialToolsCollapsed ? '▶' : '▼'}</span>
@@ -225,18 +225,18 @@ export default function DynamicSidebarContent() {
           <>
             <Link
               href="/dashboard/financial-tools/dashboard" // Link to the new Financials Dashboard
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Financials Dashboard
             </Link>
             <Link
               href="/dashboard/financial-tools/contracts"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Contracts
             </Link>
             <div 
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs cursor-pointer"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs cursor-pointer"
               onClick={() => setInvoicingCollapsed(!invoicingCollapsed)}
             >
               <span className="mr-2">{invoicingCollapsed ? '▶' : '▼'}</span>
@@ -246,19 +246,19 @@ export default function DynamicSidebarContent() {
               <div className="pl-4">
                 <Link
                   href="/dashboard/invoicing"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Invoices
                 </Link>
                 <Link
                   href="/dashboard/clients"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Clients
                 </Link>
                 <Link
                   href="/dashboard/services"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Services
                 </Link>
@@ -266,7 +266,7 @@ export default function DynamicSidebarContent() {
             )}
             <Link
               href="/dashboard/financial-tools/budget"
-              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+              className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
             >
               Budget
             </Link>
@@ -274,25 +274,25 @@ export default function DynamicSidebarContent() {
               <>
                 <Link
                   href="/dashboard/products/bookkeeping"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Bookkeeping
                 </Link>
                 <Link
                   href="/dashboard/financial-tools/bookkeeping/categories"
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
                 >
                   - Categories
                 </Link>
                 <Link
                   href="/dashboard/financial-tools/bookkeeping/recurring"
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
                 >
                   - Recurring
                 </Link>
                 <Link
                   href="/dashboard/financial-tools/bookkeeping/reports"
-                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-primary"
+                  className="block py-1 px-6 text-xs rounded transition duration-200 hover:bg-sage-700"
                 >
                   - Reports
                 </Link>
@@ -304,7 +304,7 @@ export default function DynamicSidebarContent() {
           <>
             {/* Admin Tools Section */}
             <h2 
-              className="text-lg font-semibold text-light-gray uppercase mt-4 mb-1 flex items-center cursor-pointer"
+              className="text-xs font-semibold tracking-widest text-sage-300 uppercase mt-5 mb-1.5 flex items-center cursor-pointer select-none"
               onClick={() => setAdminToolsCollapsed(!adminToolsCollapsed)}
             >
               <span className="mr-2">{adminToolsCollapsed ? '▶' : '▼'}</span>
@@ -314,37 +314,37 @@ export default function DynamicSidebarContent() {
               <>
                 <Link
                   href="/dashboard/admin/businesses/manage"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Business search
                 </Link>
                 <Link
                   href="/dashboard/admin/users"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Admin Users
                 </Link>
                 <Link
                   href="/dashboard/admin/agency-class"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Admin AGENCY Class
                 </Link>
                 <Link
                   href="/dashboard/admin/records"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Admin Records
                 </Link>
                 <Link
                   href="/dashboard/admin/agency-setup"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Admin Agency Set Up
                 </Link>
                 <Link
                   href="/dashboard/admin/agency-setup/checklist-management"
-                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-primary text-xs"
+                  className="block py-1.5 px-4 rounded transition duration-200 hover:bg-sage-700 text-xs"
                 >
                   Checklist Management
                 </Link>

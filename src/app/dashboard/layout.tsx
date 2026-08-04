@@ -1,28 +1,39 @@
 import { redirect } from "next/navigation";
-import { getSession } from "@/app/login/actions"; // Keep getSession for initial redirect check
-import DynamicSidebarContent from "@/app/dashboard/components/DynamicSidebarContent"; // Import the new Client Component
+import { requireUser } from "@/lib/session";
+import { loadAccessState } from "@/lib/onboarding-access";
+import DynamicSidebarContent from "@/app/dashboard/components/DynamicSidebarContent";
+import TrialBanner from "@/app/dashboard/components/TrialBanner";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
-  if (!session || !session.user) {
-    redirect("/login");
+  const user = await requireUser();
+
+  // The tools stay open for the 7-day trial. Once it lapses, an unfinished
+  // member is sent to /onboarding, which lives outside /dashboard so this
+  // redirect cannot loop.
+  const access = await loadAccessState(user.id);
+  if (access?.gated) {
+    redirect("/onboarding");
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
-      <aside className="relative w-64 bg-secondary text-white px-4 pt-4 space-y-2">
-        <DynamicSidebarContent /> {/* Render the Client Component here */}
+    <div className="flex min-h-screen bg-clay-50">
+      <aside className="relative w-64 shrink-0 bg-sage-800 text-sage-50 px-4 pt-4 space-y-2">
+        <DynamicSidebarContent />
       </aside>
 
-      {/* Main content */}
-      <main className="flex-1 flex flex-col text-foreground p-6 overflow-x-hidden">
-        {children}
-        <footer className="mt-auto py-4 text-center text-sm text-foreground">
+      <main className="flex-1 flex flex-col text-clay-800 overflow-x-hidden">
+        {access && !access.onboardingComplete && (
+          <TrialBanner
+            daysRemaining={access.trialDaysRemaining}
+            progress={access.progress}
+          />
+        )}
+        <div className="flex-1 p-6 lg:p-8">{children}</div>
+        <footer className="mt-auto py-6 text-center text-xs text-clay-500">
           Tech By Badjr
         </footer>
       </main>

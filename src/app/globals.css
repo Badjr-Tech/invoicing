@@ -1,50 +1,72 @@
-@config "../../tailwind.config.ts";
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary-accent: #ffbd5a;
-  --color-secondary-accent: #476c2e;
-  --color-light-gray: #ffbd5a;
-  --color-light-background: #ffffff;
-  --color-dark-foreground: #363636;
-  --color-primary: #ffbd5a;
-  --color-secondary: #476c2e;
-  --color-background: #ffffff;
-  --color-foreground: #363636;
-  --color-primary-foreground: #363636;
-}
+/*
+ * AGENCY theme.
+ *
+ * Color tokens live in tailwind.config.ts. The variables here exist for the
+ * handful of places that need raw CSS values; keep them in sync with the
+ * config rather than introducing new colors.
+ *
+ * Note: this project runs Tailwind v3 via postcss. A v4-style `@theme` block
+ * was previously defined here and silently ignored — do not reintroduce one.
+ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #363636;
-  --primary-accent: #ffbd5a;
-  --secondary-accent: #476c2e;
-  --light-gray: #ffbd5a;
-  --primary: #ffbd5a;
-  --secondary: #476c2e;
-  --primary-foreground: #363636;
-  --font-bebas-neue: 'Bebas Neue', sans-serif;
-  --font-dm-sans: 'DM Sans', sans-serif;
+  --canvas: #fbf8f3;
+  --surface: #ffffff;
+  --ink: #2b2722;
+  --ink-muted: #6b6259;
+  --line: #e8e1d6;
+  --sage: #a3c293;
+  --sage-deep: #2f4124;
+  --ember: #c87a17;
+  --ember-deep: #a96313;
+
+  --font-dm-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'DM Sans', Georgia, serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-dm-sans); /* Apply DM Sans globally */
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-dm-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-dm-sans); /* Apply DM Sans to headings */
+  font-family: var(--font-dm-sans);
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
 
-button {
-  background-color: var(--color-secondary);
-  color: #fff;
-  transition: background-color 0.2s ease, color 0.2s ease;
+@layer base {
+  /*
+   * A default button appearance that any utility class can override.
+   *
+   * This previously sat outside a layer, which put it at the same specificity
+   * as Tailwind utilities and let it win — `bg-blue-600` on a button did
+   * nothing. In @layer base it loses to utilities, which is what we want.
+   */
+  button {
+    background-color: var(--ember-deep);
+    color: #fff;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  button:hover:not(:disabled),
+  button:focus-visible {
+    background-color: var(--ember);
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
-button:hover,
-button:focus-visible {
-  background-color: var(--color-primary);
-  color: var(--color-primary-foreground);
+:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 2px;
 }

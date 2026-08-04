@@ -1,31 +1,37 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { db } from '@/db';
-import { contractors, businesses } from '@/db/schema';
+import { contractors } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { v4 as uuidv4 } from 'uuid'; // For generating unique tokens
+import { v4 as uuidv4 } from 'uuid';
+import { getSessionUser } from '@/lib/session';
+import { getOwnedBusinessIds } from '@/lib/tenancy';
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
-  // TODO: Implement proper authentication and get the actual userId
-  const userId = 1; // Placeholder userId for now
-  const contractorId = parseInt(params.id);
+type RouteContext = { params: Promise<{ id: string }> };
+
+export async function POST(request: NextRequest, { params }: RouteContext) {
+  const user = await getSessionUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  const { id } = await params;
+  const contractorId = parseInt(id);
 
   if (isNaN(contractorId)) {
     return new NextResponse('Invalid Contractor ID', { status: 400 });
   }
 
   try {
-    // Verify that the contractor belongs to one of the user's businesses
     const existingContractor = await db.select().from(contractors).where(eq(contractors.id, contractorId));
 
     if (existingContractor.length === 0) {
       return new NextResponse('Contractor not found', { status: 404 });
     }
 
-    const userBusinesses = await db.select({ id: businesses.id }).from(businesses).where(eq(businesses.userId, userId));
-    const businessIds = userBusinesses.map(b => b.id);
+    const ownedBusinessIds = await getOwnedBusinessIds(user.id);
 
-    if (!businessIds.includes(existingContractor[0].businessId)) {
-      return new NextResponse('Unauthorized to invite this contractor', { status: 403 });
+    if (!ownedBusinessIds.includes(existingContractor[0].businessId)) {
+      return new NextResponse('Forbidden', { status: 403 });
     }
 
     const invitationToken = uuidv4();
@@ -41,7 +47,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
       return new NextResponse('Failed to generate invitation', { status: 500 });
     }
 
-    // Construct the invitation link (replace with your actual domain)
+    // NOTE: /onboard-contractor/[token] does not exist yet, so this link 404s.
     const invitationLink = `${request.nextUrl.origin}/onboard-contractor/${invitationToken}`;
 
     return NextResponse.json({ invitationLink: invitationLink }, { status: 200 });

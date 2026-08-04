@@ -1,16 +1,20 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { db } from '@/db';
-import { contractors, businesses } from '@/db/schema';
-import { eq, and } from 'drizzle-orm';
+import { contractors } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+import { getSessionUser } from '@/lib/session';
+import { getOwnedBusinessIds } from '@/lib/tenancy';
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-  // TODO: Implement proper authentication and get the actual userId
-  const userId = 1; // Placeholder userId for now
-  const contractorId = parseInt(params.id);
+type RouteContext = { params: Promise<{ id: string }> };
 
-  // if (!userId) {
-  //   return new NextResponse('Unauthorized', { status: 401 });
-  // }
+export async function PUT(request: NextRequest, { params }: RouteContext) {
+  const user = await getSessionUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  const { id } = await params;
+  const contractorId = parseInt(id);
 
   if (isNaN(contractorId)) {
     return new NextResponse('Invalid Contractor ID', { status: 400 });
@@ -20,26 +24,35 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const body = await request.json();
     const { name, role, monthlyPayment, businessId, invitationToken, invitationSentAt, onboardedAt, w9Url, contractorTaxId, contractorAddress, contractorCity, contractorState, contractorZipCode } = body;
 
-    // Fetch the contractor to ensure ownership
     const existingContractor = await db.select().from(contractors).where(eq(contractors.id, contractorId));
 
     if (existingContractor.length === 0) {
       return new NextResponse('Contractor not found', { status: 404 });
     }
 
-    // Verify that the contractor belongs to one of the user's businesses
-    const userBusinesses = await db.select({ id: businesses.id }).from(businesses).where(eq(businesses.userId, userId));
-    const businessIds = userBusinesses.map(b => b.id);
+    const ownedBusinessIds = await getOwnedBusinessIds(user.id);
 
-    if (!businessIds.includes(existingContractor[0].businessId)) {
-      return new NextResponse('Unauthorized to update this contractor', { status: 403 });
+    if (!ownedBusinessIds.includes(existingContractor[0].businessId)) {
+      return new NextResponse('Forbidden', { status: 403 });
+    }
+
+    // A reassignment must land in a business the caller also owns, otherwise
+    // the update becomes a way to push a record into someone else's tenant.
+    let nextBusinessId: number | undefined;
+    if (businessId !== undefined) {
+      nextBusinessId = Number(businessId);
+      if (!Number.isInteger(nextBusinessId) || !ownedBusinessIds.includes(nextBusinessId)) {
+        return new NextResponse('Forbidden', { status: 403 });
+      }
     }
 
     const updatedContractor = await db.update(contractors).set({
       name: name,
       role: role,
-      monthlyPayment: monthlyPayment ? parseFloat(monthlyPayment) : undefined,
-      businessId: businessId,
+      // numeric(10,2) round-trips as a string in Drizzle; handing it a number
+      // fails the update at runtime.
+      monthlyPayment: monthlyPayment ? Number(monthlyPayment).toFixed(2) : undefined,
+      businessId: nextBusinessId,
       invitationToken: invitationToken,
       invitationSentAt: invitationSentAt ? new Date(invitationSentAt) : undefined,
       onboardedAt: onboardedAt ? new Date(onboardedAt) : undefined,
@@ -59,33 +72,30 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
-  // TODO: Implement proper authentication and get the actual userId
-  const userId = 1; // Placeholder userId for now
-  const contractorId = parseInt(params.id);
+export async function DELETE(request: NextRequest, { params }: RouteContext) {
+  const user = await getSessionUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
 
-  // if (!userId) {
-  //   return new NextResponse('Unauthorized', { status: 401 });
-  // }
+  const { id } = await params;
+  const contractorId = parseInt(id);
 
   if (isNaN(contractorId)) {
     return new NextResponse('Invalid Contractor ID', { status: 400 });
   }
 
   try {
-    // Fetch the contractor to ensure ownership
     const existingContractor = await db.select().from(contractors).where(eq(contractors.id, contractorId));
 
     if (existingContractor.length === 0) {
       return new NextResponse('Contractor not found', { status: 404 });
     }
 
-    // Verify that the contractor belongs to one of the user's businesses
-    const userBusinesses = await db.select({ id: businesses.id }).from(businesses).where(eq(businesses.userId, userId));
-    const businessIds = userBusinesses.map(b => b.id);
+    const ownedBusinessIds = await getOwnedBusinessIds(user.id);
 
-    if (!businessIds.includes(existingContractor[0].businessId)) {
-      return new NextResponse('Unauthorized to delete this contractor', { status: 403 });
+    if (!ownedBusinessIds.includes(existingContractor[0].businessId)) {
+      return new NextResponse('Forbidden', { status: 403 });
     }
 
     await db.delete(contractors).where(eq(contractors.id, contractorId));
@@ -96,10 +106,3 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }
-
-
-
-
-
-
-

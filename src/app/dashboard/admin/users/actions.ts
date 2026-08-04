@@ -14,9 +14,34 @@ type FormState = {
 } | undefined;
 
 export async function getAllUsers() {
+  // Every export from a "use server" file is a callable endpoint, so this
+  // needs its own check — it cannot rely on the admin page gating the UI.
+  const session = await getSession();
+  if (!session?.user || session.user.role !== 'admin') {
+    return [];
+  }
+
   try {
-    const allUsers = await db.query.users.findMany();
-    return allUsers;
+    // Explicit column list: findMany() returned the password hash for every
+    // user in the system.
+    return await db.query.users.findMany({
+      columns: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        role: true,
+        hasBusinessProfile: true,
+        personalAddress: true,
+        personalCity: true,
+        personalState: true,
+        personalZipCode: true,
+        profilePhotoUrl: true,
+        isOptedOut: true,
+        createdAt: true,
+        onboardingCompletedAt: true,
+      },
+    });
   } catch (error) {
     console.error("Error fetching all users:", error);
     return [];
@@ -125,11 +150,10 @@ export async function downloadAllData() {
   const usersData = await getAllUsers();
   const businessesData = await getAllBusinesses("", {});
 
-  // Remove sensitive information from users
-  const sanitizedUsers = usersData.map(({ password, ...user }) => user);
-
+  // getAllUsers now selects an explicit column list that omits the password
+  // hash, so there is nothing left to strip here.
   const allData = {
-    users: sanitizedUsers,
+    users: usersData,
     businesses: businessesData,
   };
 

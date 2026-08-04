@@ -3,7 +3,14 @@
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { getSession, encrypt, SessionPayload } from "@/app/login/actions";
+import { getSession } from "@/app/login/actions";
+import {
+  SESSION_COOKIE,
+  SESSION_DURATION_MS,
+  encrypt,
+  sessionCookieOptions,
+  toSessionUser,
+} from "@/lib/session-core";
 import { revalidatePath } from "next/cache";
 import { put } from "@vercel/blob";
 import { cookies } from "next/headers";
@@ -57,16 +64,12 @@ export async function updateProfile(prevState: FormState, formData: FormData): P
     });
 
     if (updatedUser) {
-      // Create a new session payload with the updated user data
-      const newSessionPayload: SessionPayload = {
-        user: updatedUser,
-        expires: session.expires, // Keep the original expiration
-      };
-
-      // Encrypt the new session payload and set the cookie
-      const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+      // Re-issue the session so the sidebar and profile reflect the new values.
+      // toSessionUser keeps the password hash out of the token.
+      const expires = new Date(Date.now() + SESSION_DURATION_MS);
+      const token = await encrypt({ user: toSessionUser(updatedUser) }, expires);
       const cookieStore = await cookies();
-      cookieStore.set("session", await encrypt(newSessionPayload), { expires, httpOnly: true });
+      cookieStore.set(SESSION_COOKIE, token, sessionCookieOptions(expires));
     }
 
     revalidatePath("/dashboard/profile"); // Revalidate the specific profile path to show updated data
