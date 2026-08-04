@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="AGENCY">
+  <!--
+    Light variant of the mark, for dark surfaces.
+
+    The standard logo uses sage-300 and ember-500, which both sink into deep
+    sage. This lifts the circle to near-white and the triangle to ember-300 so
+    the mark keeps its shape on the brand panel.
+  -->
+  <polygon points="250,40 424,338 76,338" fill="#E5A54F"/>
+  <polygon points="250,104 326,236 174,236" fill="#F2F6EF"/>
+  <circle cx="250" cy="196" r="162" fill="none" stroke="#F2F6EF" stroke-width="17"/>
+</svg>

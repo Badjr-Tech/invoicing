@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { passwordResetTokens, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/email";
+import { renderBrandedEmail, renderPlainText } from "@/lib/email-template";
 
 export type FormState = {
   message: string;
@@ -65,19 +66,28 @@ export async function forgotPassword(
       process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
     const resetUrl = `${baseUrl}/reset-password?token=${token}`;
 
+    const firstName = user.name?.split(" ")[0] ?? "there";
+
+    // AGENCY's own transactional mail uses the house palette. Member-to-client
+    // mail passes the member's brand instead.
+    const content = {
+      brand: { name: "AGENCY" },
+      heading: "Reset your password",
+      paragraphs: [
+        `Hi ${firstName},`,
+        "Someone asked to reset the password on your AGENCY account. Use the button below within the next hour to choose a new one.",
+        "If that was not you, you can ignore this email — your password stays exactly as it is.",
+      ],
+      button: { label: "Choose a new password", url: resetUrl },
+      footerNote: "This link expires in one hour and can only be used once.",
+      preheader: "Your AGENCY password reset link, valid for one hour.",
+    };
+
     const result = await sendEmail({
       to: email,
       subject: "Reset your AGENCY password",
-      text: [
-        `Hi ${user.name?.split(" ")[0] ?? "there"},`,
-        "",
-        "Someone asked to reset the password on your AGENCY account.",
-        "Open this link within the next hour to choose a new one:",
-        "",
-        resetUrl,
-        "",
-        "If that wasn't you, you can ignore this email. Your password stays as it is.",
-      ].join("\n"),
+      text: renderPlainText(content),
+      html: renderBrandedEmail(content),
     });
 
     if (!result.ok) {
