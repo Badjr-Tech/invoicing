@@ -62,19 +62,30 @@ const TOOLKIT = [
 const INCLUDED = [
   {
     icon: CalendarCheck,
-    title: "Meetings with us",
-    body: "Real conversations about your business — not a chatbot and not a help centre.",
+    title: "Consulting & meetings",
+    body: "Real conversations about your actual business — pricing, scope, hiring, a bad month. Not a chatbot and not a help centre.",
   },
   {
     icon: BookOpen,
     title: "Classes & resources",
-    body: "The AGENCY course, templates and the frameworks we use with our own clients.",
+    body: "The AGENCY course, templates, contracts and the frameworks we use with our own clients.",
   },
   {
     icon: Handshake,
     title: "Business connections",
     body: "Introductions, opportunities and referrals from inside the network.",
   },
+];
+
+/**
+ * Sold separately, per spec §6.6. Named here so the page never implies the
+ * percentage covers a website build or a per-seat mailbox.
+ */
+const ADD_ONS = [
+  "Website build & hosting",
+  "Professional email",
+  "Portfolio",
+  "Campaigns",
 ];
 
 export default function Home() {
@@ -181,6 +192,17 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          <div className="mt-10 border-t border-clay-200 pt-7">
+            <p className="text-sm text-clay-600">
+              <span className="font-semibold text-clay-800">
+                Need more than the platform?
+              </span>{" "}
+              {ADD_ONS.join(" · ")} — done by our studio, quoted separately when
+              you want them. Never bundled into your rate, never switched on
+              without you asking.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -188,52 +210,55 @@ export default function Home() {
       <section className="border-y border-clay-200 bg-sage-800">
         <div className="mx-auto max-w-6xl px-6 py-16">
           <h2 className="font-display text-3xl text-white md:text-4xl">
-            No monthly fee. No annual contract.
+            One percentage. Nothing on top.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-sage-100">
-            You are never billed for AGENCY. Instead, a small percentage comes
-            out of the payments you collect through the platform — and that one
-            percentage covers everything.
+            No monthly fee. No annual contract. No card on file. We get paid the
+            same way you do — when your client pays — and that single percentage
+            is the only number you will ever see from us.
           </p>
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             <div className="rounded-card border border-sage-700 bg-sage-900/40 p-6">
               <p className="font-display text-xl text-ember-300">
-                Your processing is covered
+                Processing, on us
               </p>
               <p className="mt-2.5 text-sm leading-relaxed text-sage-100">
-                Bank transfer fees come out of our percentage, not your pocket.
-                You keep the full amount your client paid.
+                Stripe still takes its cut of every payment — it just comes out
+                of our percentage instead of yours. You will never see a
+                separate processing line.
               </p>
             </div>
             <div className="rounded-card border border-sage-700 bg-sage-900/40 p-6">
               <p className="font-display text-xl text-ember-300">
-                The platform is covered
+                Every tool, unlocked
               </p>
               <p className="mt-2.5 text-sm leading-relaxed text-sage-100">
-                Every tool, every update, unlimited invoices and clients. No
-                seats, no tiers, nothing switched off behind an upgrade.
+                Invoicing, bookkeeping, budgeting, pricing, contracts and
+                contractors — from day one. Unlimited invoices, unlimited
+                clients, no seats, no tiers, nothing held back behind an
+                upgrade.
               </p>
             </div>
             <div className="rounded-card border border-sage-700 bg-sage-900/40 p-6">
               <p className="font-display text-xl text-ember-300">
-                We are covered
+                And us, included
               </p>
               <p className="mt-2.5 text-sm leading-relaxed text-sage-100">
-                Meetings, resources and introductions are part of membership,
-                not a separate invoice.
+                Consulting, meetings, classes, templates and introductions come
+                with membership. There is no hourly rate behind them.
               </p>
             </div>
           </div>
 
-          <p className="mt-10 max-w-2xl text-sage-100">
-            A quiet month costs you almost nothing. We only do well when you do
-            — which is the point.
+          <p className="mt-10 max-w-2xl text-lg text-sage-100">
+            Slow month? You pay almost nothing. Best month you have ever had?
+            Our percentage goes <em className="not-italic text-ember-300">down</em>.
           </p>
-          <p className="mt-4 text-sm text-sage-300">
-            The percentage falls as your revenue grows. Card payments cost more
-            to process, so they stay switched off unless you choose to enable
-            them.
+          <p className="mt-4 max-w-2xl text-sm text-sage-300">
+            Bank transfer is the default — cheapest for your client and best for
+            you. Cards cost noticeably more to run, so they stay off until you
+            decide you want them.
           </p>
         </div>
       </section>
