@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
+  AtSign,
   BookOpen,
   Building2,
   CalendarCheck,
@@ -57,6 +58,11 @@ const TOOLKIT = [
     title: "Contractors",
     body: "Track who you pay, onboard them properly, and keep the paperwork where you can find it in January.",
   },
+  {
+    icon: AtSign,
+    title: "Business email",
+    body: "Send from your own business name, with replies going straight to your inbox. Included — pick your address and you are sending.",
+  },
 ];
 
 const INCLUDED = [
@@ -81,12 +87,7 @@ const INCLUDED = [
  * Sold separately, per spec §6.6. Named here so the page never implies the
  * percentage covers a website build or a per-seat mailbox.
  */
-const ADD_ONS = [
-  "Website build & hosting",
-  "Professional email",
-  "Portfolio",
-  "Campaigns",
-];
+const ADD_ONS = ["Website build & hosting", "Portfolio", "Campaigns"];
 
 export default function Home() {
   return (

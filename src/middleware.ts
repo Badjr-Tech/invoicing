@@ -7,12 +7,16 @@ import {
   encrypt,
   sessionCookieOptions,
 } from "@/lib/session-core";
+import { isGated } from "@/lib/access-edge";
 
 /**
  * Routes under /api that are intentionally reachable without a session.
  * Everything else matched below requires one.
  */
 const PUBLIC_API_PREFIXES: string[] = [];
+
+/** Methods that cannot change state, so they never trigger the gate check. */
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
 
 function isPublicApi(pathname: string) {
   return PUBLIC_API_PREFIXES.some((prefix) => pathname.startsWith(prefix));
@@ -44,6 +48,32 @@ export async function middleware(request: NextRequest) {
   // Admin surface is gated here, not by hiding links in the sidebar.
   if (pathname.startsWith("/dashboard/admin") && session.user.role !== "admin") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  // A member past the trial with onboarding unfinished can still look at
+  // everything — that is how they see what they are signing up for. What they
+  // cannot do is change anything, so only writes are checked, and only once
+  // the cheap checks above have passed.
+  //
+  // Onboarding routes are exempt: those writes are how the member gets out of
+  // the gate in the first place.
+  const isWrite = !SAFE_METHODS.has(request.method);
+  const isOnboardingRoute =
+    pathname.startsWith("/onboarding") || pathname.startsWith("/api/onboarding");
+
+  if (isWrite && !isOnboardingRoute && (await isGated(session.user.id))) {
+    if (isApi) {
+      return NextResponse.json(
+        { error: "Finish setting up your account to make changes." },
+        { status: 403 },
+      );
+    }
+    // Server actions post back to the page they live on, so a redirect here
+    // would be swallowed. A 403 surfaces as an error the form can show.
+    return NextResponse.json(
+      { error: "Finish setting up your account to make changes." },
+      { status: 403 },
+    );
   }
 
   const response = NextResponse.next();
