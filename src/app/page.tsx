@@ -1,38 +1,80 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Building2,
+  CalendarCheck,
+  FileText,
+  Handshake,
+  LineChart,
+  Receipt,
+  Users,
+  Wallet,
+} from "lucide-react";
 
 /**
  * Public landing page.
  *
- * States the model plainly, including the rate. A member who understands the
- * percentage before signing up is a member who does not feel ambushed by the
- * first invoice — and the pricing is a selling point, not a disclosure.
+ * Leads with what the platform does, because that is the product. The
+ * percentage is framed as what it replaces — no monthly fee, no contract, and
+ * no processing fee on bank transfers, which is literally true: AGENCY is the
+ * Stripe fee payer (controller.fees.payer = 'application'), so it absorbs the
+ * processing cost out of its own percentage.
+ *
+ * Do not overstate this. Card payments carry a 1.5% member contribution, so
+ * the copy says bank transfer specifically.
  */
 
-const PILLARS = [
+const TOOLKIT = [
   {
-    title: "Get paid",
-    body: "Invoice your clients and collect by bank transfer or card. The money lands in your account, not ours — we never hold your funds.",
+    icon: Receipt,
+    title: "Invoicing & payments",
+    body: "Build an invoice, send it, get paid by bank transfer or card. Clients, services and rates all live here.",
   },
   {
-    title: "Know your numbers",
-    body: "Three numbers on every login: what you are owed, what you actually spend, and what is genuinely free to reinvest.",
+    icon: Wallet,
+    title: "Bookkeeping",
+    body: "Income, expenses, categories and recurring entries — posting themselves as money moves, with reports you can hand your accountant.",
   },
   {
-    title: "Books that keep themselves",
-    body: "Every payment posts itself, categorised, at gross — so what you hand your accountant in January already ties out.",
+    icon: LineChart,
+    title: "Budgeting & pricing",
+    body: "Operating budgets, product and service pricing calculators, and owner pay — so your rates come from your numbers, not a guess.",
   },
   {
-    title: "Learn as you build",
-    body: "Classes, templates and the frameworks we use with our own clients. Pricing, scope, contracts, the lot.",
+    icon: Building2,
+    title: "Business setup",
+    body: "Register your business and DBAs, keep your formation details, EIN and branding in one place, and work a compliance checklist.",
+  },
+  {
+    icon: FileText,
+    title: "Contracts & scopes",
+    body: "Send contracts to clients from the platform, branded as your business, with the file attached.",
+  },
+  {
+    icon: Users,
+    title: "Contractors",
+    body: "Track who you pay, onboard them properly, and keep the paperwork where you can find it in January.",
   },
 ];
 
-const BANDS = [
-  { range: "Up to $100k", rate: "7%" },
-  { range: "$100k – $500k", rate: "5%" },
-  { range: "Above $500k", rate: "3%" },
+const INCLUDED = [
+  {
+    icon: CalendarCheck,
+    title: "Meetings with us",
+    body: "Real conversations about your business — not a chatbot and not a help centre.",
+  },
+  {
+    icon: BookOpen,
+    title: "Classes & resources",
+    body: "The AGENCY course, templates and the frameworks we use with our own clients.",
+  },
+  {
+    icon: Handshake,
+    title: "Business connections",
+    body: "Introductions, opportunities and referrals from inside the network.",
+  },
 ];
 
 export default function Home() {
@@ -58,20 +100,21 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* Hero */}
-      <section className="mx-auto max-w-6xl px-6 pb-20 pt-14 md:pt-24">
+      {/* Hero — what it is */}
+      <section className="mx-auto max-w-6xl px-6 pb-16 pt-14 md:pt-24">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-sage-700">
-          A business incubator, built into software
+          Everything your small business runs on
         </p>
         <h1 className="mt-5 max-w-3xl font-display text-5xl leading-[1.08] text-clay-800 md:text-6xl">
-          Run the business.
+          One place for the
           <br />
-          Not the paperwork.
+          whole business.
         </h1>
-        <p className="mt-6 max-w-xl text-lg leading-relaxed text-clay-700">
-          AGENCY is where owner-operated businesses register, invoice, get paid,
-          keep their books and learn to grow — in one place, with a real person
-          behind it.
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-clay-700">
+          Invoicing, payments, bookkeeping, budgeting, pricing, contracts,
+          contractors, business registration, classes and resources — plus real
+          people to talk to. AGENCY is the back office you would build if you
+          had the time.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center gap-4">
@@ -87,64 +130,116 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The model — stated plainly */}
-      <section className="border-y border-clay-200 bg-sage-800">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <h2 className="font-display text-3xl text-white md:text-4xl">
-            We earn when you earn. Not before.
-          </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-sage-100">
-            No monthly seat fee. No annual contract. AGENCY takes a percentage
-            of what you actually collect through the platform — so a quiet month
-            costs you almost nothing, and we only do well when you do.
-          </p>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {BANDS.map((band) => (
-              <div
-                key={band.range}
-                className="rounded-card border border-sage-700 bg-sage-900/40 p-6"
-              >
-                <p className="font-display text-4xl text-ember-300">{band.rate}</p>
-                <p className="mt-2 text-sm text-sage-100">{band.range}</p>
-                <p className="mt-1 text-xs text-sage-300">
-                  of what you collect, per year
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <p className="mt-6 text-sm text-sage-300">
-            Bank transfer is the default. Card payments cost more to process and
-            are off unless you turn them on.
-          </p>
-        </div>
-      </section>
-
-      {/* What you get */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      {/* The toolkit */}
+      <section className="mx-auto max-w-6xl px-6 py-14">
         <h2 className="font-display text-3xl text-clay-800 md:text-4xl">
-          Everything the business actually needs
+          The tools, all in one login
         </h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {PILLARS.map((pillar) => (
+        <p className="mt-3 max-w-2xl text-clay-600">
+          No stitching together five subscriptions that do not talk to each
+          other.
+        </p>
+
+        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {TOOLKIT.map(({ icon: Icon, title, body }) => (
             <div
-              key={pillar.title}
-              className="rounded-card border border-clay-200 bg-white p-7 shadow-card"
+              key={title}
+              className="rounded-card border border-clay-200 bg-white p-6 shadow-card"
             >
-              <h3 className="font-display text-xl text-clay-800">
-                {pillar.title}
-              </h3>
-              <p className="mt-2.5 leading-relaxed text-clay-600">
-                {pillar.body}
-              </p>
+              <span className="flex h-10 w-10 items-center justify-center rounded-control bg-sage-100 text-sage-700">
+                <Icon size={19} />
+              </span>
+              <h3 className="mt-4 font-display text-lg text-clay-800">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-clay-600">{body}</p>
             </div>
           ))}
         </div>
       </section>
 
+      {/* Not just software */}
+      <section className="mx-auto max-w-6xl px-6 py-14">
+        <div className="rounded-card border border-clay-200 bg-white p-8 shadow-card md:p-12">
+          <h2 className="font-display text-3xl text-clay-800 md:text-4xl">
+            And it is not just software
+          </h2>
+          <p className="mt-3 max-w-2xl text-clay-600">
+            Membership comes with the things software cannot give you.
+          </p>
+
+          <div className="mt-9 grid gap-8 md:grid-cols-3">
+            {INCLUDED.map(({ icon: Icon, title, body }) => (
+              <div key={title}>
+                <span className="flex h-10 w-10 items-center justify-center rounded-control bg-ember-100 text-ember-700">
+                  <Icon size={19} />
+                </span>
+                <h3 className="mt-4 font-display text-lg text-clay-800">
+                  {title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-clay-600">
+                  {body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it is paid for */}
+      <section className="border-y border-clay-200 bg-sage-800">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <h2 className="font-display text-3xl text-white md:text-4xl">
+            No monthly fee. No annual contract.
+          </h2>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-sage-100">
+            You are never billed for AGENCY. Instead, a small percentage comes
+            out of the payments you collect through the platform — and that one
+            percentage covers everything.
+          </p>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            <div className="rounded-card border border-sage-700 bg-sage-900/40 p-6">
+              <p className="font-display text-xl text-ember-300">
+                Your processing is covered
+              </p>
+              <p className="mt-2.5 text-sm leading-relaxed text-sage-100">
+                Bank transfer fees come out of our percentage, not your pocket.
+                You keep the full amount your client paid.
+              </p>
+            </div>
+            <div className="rounded-card border border-sage-700 bg-sage-900/40 p-6">
+              <p className="font-display text-xl text-ember-300">
+                The platform is covered
+              </p>
+              <p className="mt-2.5 text-sm leading-relaxed text-sage-100">
+                Every tool, every update, unlimited invoices and clients. No
+                seats, no tiers, nothing switched off behind an upgrade.
+              </p>
+            </div>
+            <div className="rounded-card border border-sage-700 bg-sage-900/40 p-6">
+              <p className="font-display text-xl text-ember-300">
+                We are covered
+              </p>
+              <p className="mt-2.5 text-sm leading-relaxed text-sage-100">
+                Meetings, resources and introductions are part of membership,
+                not a separate invoice.
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-10 max-w-2xl text-sage-100">
+            A quiet month costs you almost nothing. We only do well when you do
+            — which is the point.
+          </p>
+          <p className="mt-4 text-sm text-sage-300">
+            The percentage falls as your revenue grows. Card payments cost more
+            to process, so they stay switched off unless you choose to enable
+            them.
+          </p>
+        </div>
+      </section>
+
       {/* Close */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
+      <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="rounded-card border border-ember-200 bg-ember-50 px-8 py-12 text-center">
           <h2 className="font-display text-3xl text-clay-800">
             Seven days, everything unlocked.
