@@ -21,7 +21,7 @@ export default async function OnboardingLayout({
       <header className="border-b border-clay-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <Image
-            src="/agency-logo.png"
+            src="/agency-logo.svg"
             alt="AGENCY"
             width={40}
             height={40}

@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Image
-            src="/agency-logo.png"
+            src="/agency-logo.svg"
             alt="AGENCY"
             width={72}
             height={72}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="AGENCY">
+  <!--
+    The AGENCY mark, redrawn as vector.
+
+    The source PNG was flattened onto an opaque white square, which showed as
+    a card behind the logo on any tinted surface. This has a transparent
+    background and stays sharp at favicon size.
+
+    Colors are the design tokens: ember-500 #C87A17, sage-300 #A3C293.
+  -->
+  <polygon points="250,40 424,338 76,338" fill="#C87A17"/>
+  <polygon points="250,104 326,236 174,236" fill="#A3C293"/>
+  <circle cx="250" cy="196" r="162" fill="none" stroke="#A3C293" stroke-width="17"/>
+</svg>

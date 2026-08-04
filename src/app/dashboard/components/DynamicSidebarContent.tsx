@@ -84,7 +84,7 @@ export default function DynamicSidebarContent() {
         <LogoutButton onDark />
       </div>
       <div className="mb-4 text-center">
-        <Image src="/agency-logo.png" alt="AGENCY" width={100} height={100} className="mx-auto" />
+        <Image src="/agency-logo.svg" alt="AGENCY" width={100} height={100} className="mx-auto" />
       </div>
       <nav className="space-y-0.5 font-semibold text-white">
         <Link

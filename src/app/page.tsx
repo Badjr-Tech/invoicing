@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center pt-20">
       <Image
-        src="/agency-logo.png"
+        src="/agency-logo.svg"
         alt="AGENCY"
         width={200}
         height={200}
