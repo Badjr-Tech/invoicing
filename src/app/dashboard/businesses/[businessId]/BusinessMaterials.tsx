@@ -32,7 +32,7 @@ export default function BusinessDocuments({ business }: BusinessDocumentsProps) 
               type="text"
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               defaultValue={(business as any)[`material${i}Title`] || ''}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
             <label htmlFor={`material${i}`} className="block text-sm font-medium text-clay-700 mt-2">
               Document {i} File
@@ -41,12 +41,12 @@ export default function BusinessDocuments({ business }: BusinessDocumentsProps) 
               id={`material${i}`}
               name={`material${i}`}
               type="file"
-              className="block w-full text-sm text-foreground border border-clay-200 rounded-card cursor-pointer bg-background focus:outline-none"
+              className="block w-full text-sm text-clay-800 border border-clay-200 rounded-card cursor-pointer bg-clay-50 focus:outline-none"
             />
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {(business as any)[`material${i}Url`] && (
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              <a href={(business as any)[`material${i}Url`]} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+              <a href={(business as any)[`material${i}Url`]} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">
                 View Current Document {i}
               </a>
             )}
@@ -63,7 +63,7 @@ export default function BusinessDocuments({ business }: BusinessDocumentsProps) 
         <div className="mt-6">
           <button
             type="submit"
-            className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
           >
             Save Changes
           </button>

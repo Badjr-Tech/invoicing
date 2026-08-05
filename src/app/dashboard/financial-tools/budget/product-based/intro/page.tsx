@@ -32,7 +32,7 @@ export default function ProductBasedBudgetIntroPage() {
             href="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy" // Assuming same template for now, or provide a product-specific one
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-control text-white bg-indigo-600 hover:bg-indigo-700"
+            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500"
           >
             Copy Budget Template
           </a>

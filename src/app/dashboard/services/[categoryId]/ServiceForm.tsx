@@ -26,7 +26,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
               id="businessId"
               name="businessId"
               required
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
             >
               <option value="">Select a business</option>
               {businesses.map((business) => (
@@ -47,7 +47,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
               name="name"
               type="text"
               required
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
             />
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
               id="description"
               name="description"
               rows={3}
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
             />
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
               type="number"
               step="0.01"
               required
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
             />
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
               id="designation"
               name="designation"
               required
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
             >
               <option value="">Select designation</option>
               <option value="hourly">Hourly</option>
@@ -110,7 +110,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
               id="serviceNumber"
               name="serviceNumber"
               type="text"
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
             />
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function ServiceForm({ categoryId, businesses }: { categoryId: nu
         <div>
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
           >
             Add Service
           </button>

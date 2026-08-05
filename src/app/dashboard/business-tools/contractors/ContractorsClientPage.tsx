@@ -183,7 +183,7 @@ export default function ContractorsClientPage() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
               required
             />
           </div>
@@ -194,7 +194,7 @@ export default function ContractorsClientPage() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
               required
             />
           </div>
@@ -205,7 +205,7 @@ export default function ContractorsClientPage() {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             />
           </div>
           <div>
@@ -215,7 +215,7 @@ export default function ContractorsClientPage() {
               id="monthlyPayment"
               value={monthlyPayment}
               onChange={(e) => setMonthlyPayment(e.target.value)}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
               step="0.01"
               required
             />
@@ -226,7 +226,7 @@ export default function ContractorsClientPage() {
               id="business"
               value={selectedBusinessId}
               onChange={(e) => setSelectedBusinessId(e.target.value)}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
               required
             >
               <option value="">Select a Business</option>
@@ -241,7 +241,7 @@ export default function ContractorsClientPage() {
           <div className="flex space-x-4">
             <button
               type="submit"
-              className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
             >
               {editingContractor ? 'Update Contractor' : 'Add Contractor'}
             </button>
@@ -249,7 +249,7 @@ export default function ContractorsClientPage() {
               <button
                 type="button"
                 onClick={resetForm}
-                className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
               >
                 Cancel Edit
               </button>

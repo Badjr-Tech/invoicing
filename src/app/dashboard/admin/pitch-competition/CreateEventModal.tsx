@@ -22,9 +22,9 @@ export default function CreateEventModal({ onAdd, onClose }: CreateEventModalPro
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-control bg-background">
+      <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-control bg-clay-50">
         <div className="mt-3 text-center">
-          <h3 className="text-lg leading-6 font-medium text-foreground">Create New Competition Event</h3>
+          <h3 className="text-lg leading-6 font-medium text-clay-800">Create New Competition Event</h3>
           <form onSubmit={handleSubmit} className="mt-2 px-7 py-3">
             <input
               type="text"
@@ -43,7 +43,7 @@ export default function CreateEventModal({ onAdd, onClose }: CreateEventModalPro
             <div className="items-center px-4 py-3">
               <button
                 type="submit"
-                className="px-4 py-2 bg-indigo-600 text-white text-base font-medium rounded-control w-full shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-4 py-2 bg-ember-600 text-white text-base font-medium rounded-control w-full shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300"
               >
                 Create Event
               </button>

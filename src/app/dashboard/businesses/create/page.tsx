@@ -49,7 +49,7 @@ export default function CreateBusinessPage() {
               id="businessName"
               name="businessName"
               required
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
@@ -62,7 +62,7 @@ export default function CreateBusinessPage() {
               type="text"
               id="legalBusinessName"
               name="legalBusinessName"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
@@ -75,7 +75,7 @@ export default function CreateBusinessPage() {
               type="text"
               id="taxFullName"
               name="taxFullName"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function CreateBusinessPage() {
               id="ownerName"
               name="ownerName"
               required
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
@@ -106,7 +106,7 @@ export default function CreateBusinessPage() {
               min="0"
               max="100"
               step="0.01"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
@@ -119,7 +119,7 @@ export default function CreateBusinessPage() {
               id="businessType"
               name="businessType"
               required
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             >
               <option value="">Select Business Type</option>
               <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -138,7 +138,7 @@ export default function CreateBusinessPage() {
               id="businessTaxStatus"
               name="businessTaxStatus"
               required
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             >
               <option value="">Select Tax Status</option>
               <option value="S-Corporation">S-Corporation</option>
@@ -156,7 +156,7 @@ export default function CreateBusinessPage() {
               id="businessDescription"
               name="businessDescription"
               rows={3}
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             ></textarea>
           </div>
 
@@ -170,7 +170,7 @@ export default function CreateBusinessPage() {
               type="text"
               id="streetAddress"
               name="streetAddress"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
           <div>
@@ -181,7 +181,7 @@ export default function CreateBusinessPage() {
               type="text"
               id="city"
               name="city"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -194,7 +194,7 @@ export default function CreateBusinessPage() {
                 id="state"
                 name="state"
                 maxLength={2}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
             <div>
@@ -206,7 +206,7 @@ export default function CreateBusinessPage() {
                 id="zipCode"
                 name="zipCode"
                 maxLength={10}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function CreateBusinessPage() {
               type="tel"
               id="phone"
               name="phone"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
           <div>
@@ -229,14 +229,14 @@ export default function CreateBusinessPage() {
               type="url"
               id="website"
               name="website"
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
           >
             Create Business Profile
           </button>

@@ -219,7 +219,7 @@ export default function ServicePricingToolClient() {
                     id="serviceName"
                     value={serviceName}
                     onChange={(e) => setServiceName(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., Social Media Management"
                   />
                 </div>
@@ -232,7 +232,7 @@ export default function ServicePricingToolClient() {
                     id="currentServicePrice"
                     value={currentServicePrice}
                     onChange={(e) => setCurrentServicePrice(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 500.00"
                   />
                 </div>
@@ -245,7 +245,7 @@ export default function ServicePricingToolClient() {
                     id="estimatedHours"
                     value={estimatedHours}
                     onChange={(e) => setEstimatedHours(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 10"
                   />
                 </div>
@@ -258,7 +258,7 @@ export default function ServicePricingToolClient() {
                     id="adminHours"
                     value={adminHours}
                     onChange={(e) => setAdminHours(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 2"
                   />
                 </div>
@@ -271,7 +271,7 @@ export default function ServicePricingToolClient() {
                     id="yourHourlyRate"
                     value={yourHourlyRate}
                     onChange={(e) => setYourHourlyRate(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 50.00"
                   />
                 </div>
@@ -325,7 +325,7 @@ export default function ServicePricingToolClient() {
                       id="packageDuration"
                       value={packageDuration}
                       onChange={(e) => setPackageDuration(e.target.value)}
-                      className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                       placeholder="e.g., 3 (for 3 months) or 5 (for 5 instances)"
                     />
                   </div>
@@ -348,7 +348,7 @@ export default function ServicePricingToolClient() {
                         id={`costName-${item.id}`}
                         value={item.name}
                         onChange={(e) => updateCostItem(item.id, 'name', e.target.value)}
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                         placeholder="e.g., Software License"
                       />
                     </div>
@@ -361,7 +361,7 @@ export default function ServicePricingToolClient() {
                         id={`costAmount-${item.id}`}
                         value={item.amount}
                         onChange={(e) => updateCostItem(item.id, 'amount', e.target.value)}
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                         placeholder="e.g., 15.00"
                       />
                     </div>
@@ -395,7 +395,7 @@ export default function ServicePricingToolClient() {
                     id="servicesInSixMonths"
                     value={servicesInSixMonths}
                     onChange={(e) => setServicesInSixMonths(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 100"
                   />
                 </div>
@@ -410,7 +410,7 @@ export default function ServicePricingToolClient() {
                         id={`opCostName-${item.id}`}
                         value={item.name}
                         onChange={(e) => item.name !== 'AGENCY FEE' && updateOperationalCostItem(item.id, 'name', e.target.value)}
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                         placeholder="e.g., Contractor Fee"
                         readOnly={item.name === 'AGENCY FEE'}
                       />
@@ -424,7 +424,7 @@ export default function ServicePricingToolClient() {
                         id={`opCostAmount-${item.id}`}
                         value={item.amount}
                         onChange={(e) => item.name !== 'AGENCY FEE' && updateOperationalCostItem(item.id, 'amount', e.target.value)}
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                         placeholder="e.g., 50.00"
                         readOnly={item.name === 'AGENCY FEE'}
                       />
@@ -449,7 +449,7 @@ export default function ServicePricingToolClient() {
 
             <button
               onClick={handleProceedToCalculation}
-              className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
             >
               Proceed to Calculation
             </button>
@@ -490,7 +490,7 @@ export default function ServicePricingToolClient() {
                     id="markupMargin"
                     value={markupMargin}
                     onChange={(e) => setMarkupMargin(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 1.25"
                   />
                 </div>
@@ -505,7 +505,7 @@ export default function ServicePricingToolClient() {
                     id="projectedClients"
                     value={projectedClients}
                     onChange={(e) => setProjectedClients(e.target.value)}
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="e.g., 5"
                   />
                 </div>
@@ -523,8 +523,8 @@ export default function ServicePricingToolClient() {
                 </div>
 
                 {/* Recommended Price */}
-                <div className="p-4 bg-indigo-100 rounded-control text-right">
-                  <p className="text-xl font-bold text-indigo-800">Recommended Price: ${Math.ceil(calculatedPrice).toFixed(2)}</p>
+                <div className="p-4 bg-sage-100 rounded-control text-right">
+                  <p className="text-xl font-bold text-sage-800">Recommended Price: ${Math.ceil(calculatedPrice).toFixed(2)}</p>
                 </div>
               </div>
             </div>
@@ -548,7 +548,7 @@ export default function ServicePricingToolClient() {
                   <h3 className="text-lg font-medium text-clay-900 mb-4">Save Price Calculation</h3>
                   <input
                     type="text"
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                     placeholder="Enter a name for this calculation"
                     value={saveName}
                     onChange={(e) => setSaveName(e.target.value)}
@@ -562,7 +562,7 @@ export default function ServicePricingToolClient() {
                     </button>
                     <button
                       onClick={handleSaveCalculation} // This function will be implemented next
-                      className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                      className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500"
                     >
                       Save
                     </button>

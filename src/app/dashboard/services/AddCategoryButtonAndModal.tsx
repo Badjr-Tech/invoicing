@@ -16,7 +16,7 @@ export default function AddCategoryButtonAndModal({ businesses }: { businesses: 
     <>
       <button
         onClick={openModal}
-        className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="px-4 py-2 bg-ember-600 text-white rounded-md hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
       >
         Add Category
       </button>

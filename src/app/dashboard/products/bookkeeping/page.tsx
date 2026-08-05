@@ -63,7 +63,7 @@ export default function BookkeepingProductPage() {
   return (
     <div className="flex-1 p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="font-display text-2xl font-semibold text-foreground">Bookkeeping</h1>
+        <h1 className="font-display text-2xl font-semibold text-clay-800">Bookkeeping</h1>
         <select
           value={selectedBusinessId || ''}
           onChange={(e) => setSelectedBusinessId(Number(e.target.value))}
@@ -100,7 +100,7 @@ export default function BookkeepingProductPage() {
             <input type="hidden" name="type" value="income" />
             <div>
               <label htmlFor="income-service" className="block text-sm font-medium text-clay-700">Service</label>
-              <select id="income-service" name="serviceId" className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary">
+              <select id="income-service" name="serviceId" className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300">
                 <option value="">Select a service</option>
                 {services.map(service => (
                   <option key={service.id} value={service.id}>{service.name}</option>
@@ -109,21 +109,21 @@ export default function BookkeepingProductPage() {
             </div>
             <div>
               <label htmlFor="income-description" className="block text-sm font-medium text-clay-700">Description</label>
-              <input type="text" id="income-description" name="description" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary" />
+              <input type="text" id="income-description" name="description" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300" />
             </div>
             <div>
               <label htmlFor="income-amount" className="block text-sm font-medium text-clay-700">Amount</label>
-              <input type="number" id="income-amount" name="amount" step="0.01" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary" />
+              <input type="number" id="income-amount" name="amount" step="0.01" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300" />
             </div>
             <div>
               <label htmlFor="income-date" className="block text-sm font-medium text-clay-700">Date</label>
-              <input type="date" id="income-date" name="date" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary" />
+              <input type="date" id="income-date" name="date" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300" />
             </div>
             <div>
               <label htmlFor="income-notes" className="block text-sm font-medium text-clay-700">Notes</label>
-              <textarea id="income-notes" name="notes" rows={3} className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary"></textarea>
+              <textarea id="income-notes" name="notes" rows={3} className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"></textarea>
             </div>
-            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Add Income</button>
+            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">Add Income</button>
             {addTransactionState?.message && <p className="text-sage-700 mt-2">{addTransactionState.message}</p>}
             {addTransactionState?.error && <p className="text-red-600 mt-2">{addTransactionState.error}</p>}
           </form>
@@ -136,21 +136,21 @@ export default function BookkeepingProductPage() {
             <input type="hidden" name="type" value="expense" />
             <div>
               <label htmlFor="expense-description" className="block text-sm font-medium text-clay-700">Description</label>
-              <input type="text" id="expense-description" name="description" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary" />
+              <input type="text" id="expense-description" name="description" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300" />
             </div>
             <div>
               <label htmlFor="expense-amount" className="block text-sm font-medium text-clay-700">Amount</label>
-              <input type="number" id="expense-amount" name="amount" step="0.01" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary" />
+              <input type="number" id="expense-amount" name="amount" step="0.01" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300" />
             </div>
             <div>
               <label htmlFor="expense-date" className="block text-sm font-medium text-clay-700">Date</label>
-              <input type="date" id="expense-date" name="date" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary" />
+              <input type="date" id="expense-date" name="date" required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300" />
             </div>
             <div>
               <label htmlFor="expense-notes" className="block text-sm font-medium text-clay-700">Notes</label>
-              <textarea id="expense-notes" name="notes" rows={3} className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary"></textarea>
+              <textarea id="expense-notes" name="notes" rows={3} className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"></textarea>
             </div>
-            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">Add Expense</button>
+            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">Add Expense</button>
             {addTransactionState?.message && <p className="text-sage-700 mt-2">{addTransactionState.message}</p>}
             {addTransactionState?.error && <p className="text-red-600 mt-2">{addTransactionState.error}</p>}
           </form>

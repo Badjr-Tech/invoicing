@@ -6,7 +6,7 @@ export default async function ContractsPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-foreground">Send a Contract</h1>
+      <h1 className="text-3xl font-bold text-clay-800">Send a Contract</h1>
       <div className="mt-6">
         <SendContractForm clients={clients} />
       </div>

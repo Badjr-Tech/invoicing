@@ -60,7 +60,7 @@ export default function ProfilePage() {
         )}
       </div>
 
-      <h1 className="font-display text-2xl font-semibold text-foreground">Your Personal Profile</h1> {/* Renamed heading */}
+      <h1 className="font-display text-2xl font-semibold text-clay-800">Your Personal Profile</h1> {/* Renamed heading */}
       <p className="mt-4 text-clay-700">Manage your personal information.</p>
 
       <div className="mt-8 max_w_md">
@@ -80,7 +80,7 @@ export default function ProfilePage() {
               id="profilePhoto"
               name="profilePhoto"
               type="file"
-              className="mt-1 block w-full text-sm text-foreground
+              className="mt-1 block w-full text-sm text-clay-800
                 file:mr-4 file:py-2 file:px-4
                 file:rounded-control file:border-0
                 file:text-sm file:font-semibold
@@ -115,7 +115,7 @@ export default function ProfilePage() {
               type="text"
               defaultValue={user.name}
               required
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
           </div>
 
@@ -130,7 +130,7 @@ export default function ProfilePage() {
               type="text"
               defaultValue={user.phone}
               required
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
           </div>
 
@@ -144,7 +144,7 @@ export default function ProfilePage() {
               name="personalAddress"
               type="text"
               defaultValue={user.personalAddress || ''}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
           </div>
 
@@ -158,7 +158,7 @@ export default function ProfilePage() {
               name="personalCity"
               type="text"
               defaultValue={user.personalCity || ''}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
           </div>
 
@@ -173,7 +173,7 @@ export default function ProfilePage() {
               type="text"
               maxLength={2}
               defaultValue={user.personalState || ''}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
           </div>
 
@@ -188,7 +188,7 @@ export default function ProfilePage() {
               type="text"
               maxLength={10}
               defaultValue={user.personalZipCode || ''}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
             />
           </div>
 
@@ -202,7 +202,7 @@ export default function ProfilePage() {
           <div>
             <button
               type="submit"
-              className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
             >
               Update Profile
             </button>

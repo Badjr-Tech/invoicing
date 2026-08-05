@@ -29,31 +29,31 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           <button
             onClick={() => setActiveTab('business-profile')}
-            className={`${activeTab === 'business-profile' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'business-profile' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Profile
           </button>
           <button
             onClick={() => setActiveTab('owner-details')}
-            className={`${activeTab === 'owner-details' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'owner-details' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Owner Details
           </button>
           <button
             onClick={() => setActiveTab('design')} // New tab for Design
-            className={`${activeTab === 'design' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'design' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Design
           </button>
           <button
             onClick={() => setActiveTab('business-materials')}
-            className={`${activeTab === 'business-materials' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'business-materials' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Business Materials
           </button>
           <button
             onClick={() => setActiveTab('edit')}
-            className={`${activeTab === 'edit' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'edit' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Edit
           </button>
@@ -62,7 +62,7 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
 
       {activeTab === 'business-profile' && (
         <div className="mt-8">
-          <h1 className="font-display text-2xl font-semibold text-foreground">{business.businessName}</h1>
+          <h1 className="font-display text-2xl font-semibold text-clay-800">{business.businessName}</h1>
           <div className="mb-6 flex justify-center">
             {business.logoUrl ? (
               <Image src={business.logoUrl} alt="Business Logo" width={96} height={96} className="rounded-control object-cover border-2 border-clay-200" />
@@ -98,42 +98,42 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
           {business.businessDescription && <p className="mt-2 text-clay-700">Description: {business.businessDescription}</p>}
           {business.streetAddress && <p className="mt-2 text-clay-700">Address: {business.streetAddress}, {business.city}, {business.state} {business.zipCode}</p>}
           {business.phone && <p className="mt-2 text-clay-700">Phone: {business.phone}</p>}
-          {business.website && <p className="mt-2 text-clay-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{business.website}</a></p>}
+          {business.website && <p className="mt-2 text-clay-700">Website: <a href={business.website} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">{business.website}</a></p>}
 
           <div className="mt-8">
             <h2 className="font-display text-xl font-semibold">Business Documents</h2>
             <ul>
               {business.material1Url && (
                 <li>
-                  <a href={business.material1Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                  <a href={business.material1Url} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">
                     {business.material1Title || 'Document 1'}
                   </a>
                 </li>
               )}
               {business.material2Url && (
                 <li>
-                  <a href={business.material2Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                  <a href={business.material2Url} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">
                     {business.material2Title || 'Document 2'}
                   </a>
                 </li>
               )}
               {business.material3Url && (
                 <li>
-                  <a href={business.material3Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                  <a href={business.material3Url} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">
                     {business.material3Title || 'Document 3'}
                   </a>
                 </li>
               )}
               {business.material4Url && (
                 <li>
-                  <a href={business.material4Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                  <a href={business.material4Url} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">
                     {business.material4Title || 'Document 4'}
                   </a>
                 </li>
               )}
               {business.material5Url && (
                 <li>
-                  <a href={business.material5Url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">
+                  <a href={business.material5Url} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">
                     {business.material5Title || 'Document 5'}
                   </a>
                 </li>
@@ -147,7 +147,7 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Left Column: Owner Details Form */}
           <div>
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Owner Details</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Owner Details</h2>
             <OwnerDetailsForm
               business={business}
               genders={genders}
@@ -160,7 +160,7 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
           </div>
           {/* Right Column: Placeholder for future additions */}
           <div>
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Additional Information</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Additional Information</h2>
             <div className="p-6 bg-white rounded-card shadow-card">
               <p className="text-clay-700">Content for this section will be added later.</p>
             </div>
@@ -170,7 +170,7 @@ export default function BusinessDetailClientPage({ initialBusiness, genders, rac
 
       {activeTab === 'design' && ( // New tab content for Design
         <div className="mt-8">
-          <h2 className="font-display text-xl font-semibold text-foreground mb-4">Business Design</h2>
+          <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Business Design</h2>
           <BusinessDesignForm business={business} />
         </div>
       )}

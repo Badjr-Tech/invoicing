@@ -157,7 +157,7 @@ export default function MessagesPage({
       <>
       <div className="p-4 md:p-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="font-display text-2xl font-semibold text-foreground">Messages</h1>
+          <h1 className="font-display text-2xl font-semibold text-clay-800">Messages</h1>
         </div>
         <div className="mt-6">
           <div className="sm:hidden">
@@ -165,7 +165,7 @@ export default function MessagesPage({
             <select
               id="tabs"
               name="tabs"
-              className="block w-full focus:ring-primary focus:border-primary border-light-gray rounded-control"
+              className="block w-full focus:ring-sage-300 focus:border-sage-400 border-light-gray rounded-control"
               defaultValue={activeTab}
               onChange={(e) => setActiveTab(e.target.value)}
             >
@@ -177,13 +177,13 @@ export default function MessagesPage({
             <nav className="-mb-px flex space-x-8" aria-label="Tabs">
               <button
                 onClick={() => setActiveTab('mass-messages')}
-                className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'mass-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+                className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'mass-messages' ? 'bg-sage-800 text-clay-800' : 'bg-light-gray text-clay-800'}`}
               >
                 Mass Messages
               </button>
               <button
                 onClick={() => setActiveTab('individual-messages')}
-                className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'individual-messages' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+                className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'individual-messages' ? 'bg-sage-800 text-clay-800' : 'bg-light-gray text-clay-800'}`}
               >
                 Individual Messages
               </button>
@@ -197,16 +197,16 @@ export default function MessagesPage({
               {/* Left Column: Conversation List */}
               <div className="w-1/4 border-r border-clay-200 bg-white overflow-y-auto">
                 <div className="flex justify-between items-center p-4 border-b border-clay-200">
-                  <h2 className="text-xl font-bold text-foreground">Conversations</h2>
+                  <h2 className="text-xl font-bold text-clay-800">Conversations</h2>
                   <button
                     onClick={() => setShowNewMessageModal(true)}
-                    className="inline-flex justify-center rounded-control border border-transparent bg-primary py-1 px-2 text-xs font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-1 px-2 text-xs font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                   >
                     New
                   </button>
                 </div>
                 {conversations.length === 0 ? (
-                  <p className="text-foreground p-4">No conversations yet.</p>
+                  <p className="text-clay-800 p-4">No conversations yet.</p>
                 ) : (
                   <ul>
                     {conversations.map(conversation => (
@@ -228,7 +228,7 @@ export default function MessagesPage({
                 {selectedConversationId ? (
                   <div className="flex-1 p-4 overflow-y-auto">
                     {/* Chat messages will go here */}
-                    <h2 className="text-xl font-bold text-foreground mb-4">
+                    <h2 className="text-xl font-bold text-clay-800 mb-4">
                       Chat with {conversations.find(c => c.id === selectedConversationId)?.otherParticipant.name}
                     </h2>
                     <div className="space-y-4">
@@ -238,7 +238,7 @@ export default function MessagesPage({
                           className={`flex ${msg.senderId === currentUserId ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`max-w-xs px-4 py-2 rounded-card ${msg.senderId === currentUserId ? 'bg-primary text-white' : 'bg-gray-200 text-foreground'}`}
+                            className={`max-w-xs px-4 py-2 rounded-card ${msg.senderId === currentUserId ? 'bg-sage-600 text-white' : 'bg-gray-200 text-clay-800'}`}
                           >
                             <p>{msg.content}</p>
                             <p className="text-xs text-right mt-1">{new Date(msg.timestamp).toLocaleTimeString()}</p>
@@ -262,12 +262,12 @@ export default function MessagesPage({
                         name="messageContent"
                         rows={1}
                         required
-                        className="flex-1 rounded-control border-clay-200 shadow-sm focus:ring-primary focus:border-primary sm:text-sm"
+                        className="flex-1 rounded-control border-clay-200 shadow-sm focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                         placeholder="Type your message..."
                       ></textarea>
                       <button
                         type="submit"
-                        className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                       >
                         Send
                       </button>
@@ -280,30 +280,30 @@ export default function MessagesPage({
   
           {activeTab === 'mass-messages' && (
             <div>
-              <h2 className="font-display text-xl font-semibold text-foreground mb-4">Mass Messages</h2>
+              <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Mass Messages</h2>
               {massMessages.length === 0 ? (
-                <p className="text-foreground">No mass messages sent yet.</p>
+                <p className="text-clay-800">No mass messages sent yet.</p>
               ) : (
                 <ul className="space-y-4">
                   {massMessages.map(msg => (
                     <li key={msg.id} className="bg-light-gray shadow overflow-hidden sm:rounded-card p-4">
-                      <p className="text-foreground">{msg.content}</p>
-                      <p className="text-xs text-foreground text-right">{msg.timestamp.toLocaleString()}</p>
+                      <p className="text-clay-800">{msg.content}</p>
+                      <p className="text-xs text-clay-800 text-right">{msg.timestamp.toLocaleString()}</p>
                     </li>
                   ))}
                 </ul>
               )}
   
-              <h2 className="font-display text-xl font-semibold text-foreground mb-4 mt-8">Send Mass Message</h2>
+              <h2 className="font-display text-xl font-semibold text-clay-800 mb-4 mt-8">Send Mass Message</h2>
               <form action={handleSendMassMessage} className="space-y-4">
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground">Message</label>
+                  <label htmlFor="message" className="block text-sm font-medium text-clay-800">Message</label>
                   <textarea
                     id="message"
                     name="message"
                     rows={3}
                     required
-                    className="shadow-sm focus:ring-primary focus:border-primary mt-1 block w-full sm:text-sm border border-light-gray rounded-control"
+                    className="shadow-sm focus:ring-sage-300 focus:border-sage-400 mt-1 block w-full sm:text-sm border border-light-gray rounded-control"
                   ></textarea>
                 </div>
                 <div className="flex items-center">
@@ -311,9 +311,9 @@ export default function MessagesPage({
                     id="excludeOptedOut"
                     name="excludeOptedOut"
                     type="checkbox"
-                    className="focus:ring-primary h-4 w-4 text-primary border-light-gray rounded"
+                    className="focus:ring-sage-300 h-4 w-4 text-sage-700 border-light-gray rounded"
                   />
-                  <label htmlFor="excludeOptedOut" className="ml-2 text-sm text-foreground">
+                  <label htmlFor="excludeOptedOut" className="ml-2 text-sm text-clay-800">
                     Exclude users who have opted out of mass messages
                   </label>
                 </div>
@@ -324,7 +324,7 @@ export default function MessagesPage({
                               <p className="text-sm text-red-600 mt-2">{massSendState.error}</p>
                             )}                <button
                   type="submit"
-                  className="inline-flex justify-center rounded-control border border-transparent bg-secondary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-secondary"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-sage-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-secondary"
                 >
                   Send Mass Message
                 </button>
@@ -336,7 +336,7 @@ export default function MessagesPage({
       {showNewMessageModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-card shadow-card w-1/3">
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Start a new conversation</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Start a new conversation</h2>
             <ul className="space-y-2">
               {users.map(user => (
                 <li

@@ -55,7 +55,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           defaultValue={business.businessName}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -70,7 +70,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           defaultValue={business.ownerName}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -86,7 +86,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           step="0.01"
           defaultValue={business.percentOwnership}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -100,7 +100,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="businessType"
           defaultValue={business.businessType}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         >
           <option value="">Select Business Type</option>
           <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -120,7 +120,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="businessTaxStatus"
           defaultValue={business.businessTaxStatus}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         >
           <option value="">Select Tax Status</option>
           <option value="S-Corporation">S-Corporation</option>
@@ -139,7 +139,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="businessDescription"
           rows={3}
           defaultValue={business.businessDescription || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         ></textarea>
       </div>
 
@@ -154,7 +154,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           defaultValue={business.businessIndustry}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -168,7 +168,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="streetAddress"
           type="text"
           defaultValue={business.streetAddress || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -182,7 +182,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="city"
           type="text"
           defaultValue={business.city || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -197,7 +197,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={2}
           defaultValue={business.state || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -212,7 +212,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={10}
           defaultValue={business.zipCode || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -225,7 +225,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           id="locationId"
           name="locationId"
           defaultValue={business.locationId || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         >
           <option value="">Select Location</option>
           {availableLocations.map(location => (
@@ -246,7 +246,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="phone"
           type="text"
           defaultValue={business.phone || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -260,7 +260,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="website"
           type="text"
           defaultValue={business.website || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -275,7 +275,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={9}
           defaultValue={business.ein || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -290,7 +290,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           type="text"
           maxLength={2}
           defaultValue={business.foundingState || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -304,7 +304,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
           name="domainName"
           type="text"
           defaultValue={business.domainName || ''}
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
         />
       </div>
 
@@ -319,7 +319,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
             name="logo"
             type="file"
             onChange={handleLogoChange}
-            className="block w-full text-sm text-foreground border border-clay-200 rounded-card cursor-pointer bg-background focus:outline-none"
+            className="block w-full text-sm text-clay-800 border border-clay-200 rounded-card cursor-pointer bg-clay-50 focus:outline-none"
           />
         </div>
         {logoPreview && (
@@ -339,7 +339,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
             id="businessProfilePhoto"
             name="businessProfilePhoto"
             type="file"
-            className="block w-full text-sm text-foreground border border-clay-200 rounded-card cursor-pointer bg-background focus:outline-none"
+            className="block w-full text-sm text-clay-800 border border-clay-200 rounded-card cursor-pointer bg-clay-50 focus:outline-none"
           />
         </div>
       </div>
@@ -354,7 +354,7 @@ export default function EditBusinessProfileForm({ initialBusiness, availableDemo
       <div className="mt-6">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
         >
           Save Changes
         </button>

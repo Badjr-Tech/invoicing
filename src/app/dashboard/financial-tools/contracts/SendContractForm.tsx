@@ -26,7 +26,7 @@ export default function SendContractForm({ clients }: SendContractFormProps) {
           id="clientEmail"
           name="clientEmail"
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
         >
           <option value="">Select a client</option>
           {clients.map(client => (
@@ -46,7 +46,7 @@ export default function SendContractForm({ clients }: SendContractFormProps) {
           name="contract"
           required
           accept=".pdf"
-          className="mt-1 block w-full text-sm text-clay-500 file:mr-4 file:py-2 file:px-4 file:rounded-control file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+          className="mt-1 block w-full text-sm text-clay-500 file:mr-4 file:py-2 file:px-4 file:rounded-control file:border-0 file:text-sm file:font-semibold file:bg-sage-50 file:text-sage-700 hover:file:bg-sage-100"
         />
       </div>
       <div>
@@ -58,7 +58,7 @@ export default function SendContractForm({ clients }: SendContractFormProps) {
           name="message"
           rows={5}
           required
-          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
         ></textarea>
       </div>
 
@@ -67,7 +67,7 @@ export default function SendContractForm({ clients }: SendContractFormProps) {
 
       <button
         type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
       >
         Send Contract
       </button>

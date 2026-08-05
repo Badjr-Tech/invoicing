@@ -28,10 +28,10 @@ export default function AdminAgencySetUpPage() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground mb-6">Admin Agency Set Up</h1>
+      <h1 className="font-display text-2xl font-semibold text-clay-800 mb-6">Admin Agency Set Up</h1>
 
       <div className="flex space-x-4 mb-6">
-        <Link href="/dashboard/admin/agency-setup/checklist-management" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+        <Link href="/dashboard/admin/agency-setup/checklist-management" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
           Checklist Management
         </Link>
         <button className="inline-flex justify-center py-2 px-4 border border-clay-200 shadow-sm text-sm font-medium rounded-control text-clay-700 bg-white hover:bg-clay-50">
@@ -54,10 +54,10 @@ export default function AdminAgencySetUpPage() {
               step="0.01"
               defaultValue={adminFee}
               required
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
             />
           </div>
-          <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
             Save Admin Fee
           </button>
           {updateFeeState?.message && <p className="text-sage-700 mt-2">{updateFeeState.message}</p>}

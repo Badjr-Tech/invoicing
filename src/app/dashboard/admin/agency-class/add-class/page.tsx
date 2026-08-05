@@ -29,7 +29,7 @@ export default async function AddClassPage() {
             id="title"
             name="title"
             required
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
           />
         </div>
         <div>
@@ -38,7 +38,7 @@ export default async function AddClassPage() {
             id="description"
             name="description"
             rows={3}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
           ></textarea>
         </div>
         <div>
@@ -47,7 +47,7 @@ export default async function AddClassPage() {
             id="teacherId"
             name="teacherId"
             required
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
           >
             {teachers.map((teacher) => (
               <option key={teacher.id} value={teacher.id}>
@@ -63,7 +63,7 @@ export default async function AddClassPage() {
             name="type"
             required
             defaultValue="agency-course" // Default to AGENCY Course
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
           >
             <option value="pre-course">Pre-Course</option>
             <option value="agency-course">AGENCY Course</option>
@@ -75,7 +75,7 @@ export default async function AddClassPage() {
         </div>
         <button
           type="submit"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
         >
           Create Class
         </button>

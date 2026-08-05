@@ -9,7 +9,7 @@ export default function ServiceBasedBudgetIntroPage() {
       {/* How to Price Your Service Button */}
       <div className="mb-8 bg-white p-6 rounded-card shadow-card"> {/* Changed mt-8 to mb-8 for spacing */}
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Need help pricing your services?</h2>
-        <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="inline-block px-6 py-3 border border-transparent rounded-control shadow-sm text-lg font-medium text-white bg-secondary-accent hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-accent">
+        <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="inline-block px-6 py-3 border border-transparent rounded-control shadow-sm text-lg font-medium text-white bg-sage-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-accent">
           How to Price Your Service
         </Link>
       </div>
@@ -32,7 +32,7 @@ export default function ServiceBasedBudgetIntroPage() {
             href="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-control text-white bg-indigo-600 hover:bg-indigo-700"
+            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500"
           >
             Copy Budget Template
           </a>
@@ -59,7 +59,7 @@ export default function ServiceBasedBudgetIntroPage() {
       {/* How to Price Your Service Button */}
       <div className="mt-8 bg-white p-6 rounded-card shadow-card">
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Need help pricing your services?</h2>
-        <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="inline-block px-6 py-3 border border-transparent rounded-control shadow-sm text-lg font-medium text-white bg-secondary-accent hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-accent">
+        <Link href="/dashboard/financial-tools/budget/pricing-tools/service" className="inline-block px-6 py-3 border border-transparent rounded-control shadow-sm text-lg font-medium text-white bg-sage-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-accent">
           How to Price Your Service
         </Link>
       </div>

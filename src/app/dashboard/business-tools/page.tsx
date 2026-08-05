@@ -11,7 +11,7 @@ export default function BusinessToolsPage() {
         <Link href="/dashboard/businesses" className="aspect-square border border-transparent rounded-control shadow-sm text-lg font-medium text-white bg-sage-600 hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300 flex flex-col items-center justify-center text-center">
           Businesses
         </Link>
-        <Link href="/dashboard/products" className="aspect-square border border-transparent rounded-control shadow-sm text-lg font-medium text-primary-foreground bg-primary hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-accent flex flex-col items-center justify-center text-center">
+        <Link href="/dashboard/products" className="aspect-square border border-transparent rounded-control shadow-sm text-lg font-medium text-white bg-sage-600 hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300 flex flex-col items-center justify-center text-center">
           Products
         </Link>
       </div>

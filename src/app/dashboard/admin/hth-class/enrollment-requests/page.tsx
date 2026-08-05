@@ -26,10 +26,10 @@ export default async function EnrollmentRequestsPage() {
       ) : (
         <ul className="space-y-4">
           {pendingRequests.map((request) => (
-            <li key={request.id} className="bg-background shadow overflow-hidden rounded-control px-6 py-4">
+            <li key={request.id} className="bg-clay-50 shadow overflow-hidden rounded-control px-6 py-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className="text-lg font-medium text-foreground">User: {request.user?.name} ({request.user?.email})</p>
+                  <p className="text-lg font-medium text-clay-800">User: {request.user?.name} ({request.user?.email})</p>
                   <p className="text-sm text-clay-500">Class: {request.class?.title}</p>
                   <p className="text-sm text-clay-500">Requested on: {new Date(request.enrollmentDate).toLocaleDateString()}</p>
                 </div>

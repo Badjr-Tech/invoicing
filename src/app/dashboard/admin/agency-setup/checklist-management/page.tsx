@@ -44,7 +44,7 @@ export default function ChecklistManagementPage() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground mb-6">Checklist Management</h1>
+      <h1 className="font-display text-2xl font-semibold text-clay-800 mb-6">Checklist Management</h1>
 
       <div className="flex border-b">
         <button
@@ -86,7 +86,7 @@ export default function ChecklistManagementPage() {
               <input type="text" id="link" name="link" defaultValue={editingItem?.link || ''} className="mt-1 block w-full rounded-control border-clay-200 shadow-sm" />
             </div>
             <div className="flex items-center">
-              <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark">
+              <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark">
                 {editingItem ? 'Update' : 'Create'}
               </button>
               {editingItem && (
@@ -120,7 +120,7 @@ export default function ChecklistManagementPage() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-900">{item.itemId}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-900">{item.title}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button onClick={() => setEditingItem(item)} className="text-indigo-600 hover:text-indigo-900">Edit</button>
+                        <button onClick={() => setEditingItem(item)} className="text-sage-700 hover:text-sage-800">Edit</button>
                         <button onClick={() => handleDelete(item.id)} className="ml-4 text-red-600 hover:text-red-900">Delete</button>
                       </td>
                     </tr>

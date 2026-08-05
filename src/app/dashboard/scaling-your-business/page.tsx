@@ -59,7 +59,7 @@ export default function ScalingYourBusinessPage() {
         {Object.keys(groupedItems).map((tab) => (
           <button
             key={tab}
-            className={`py-2 px-4 text-lg font-medium ${activeTab === tab ? 'border-b-2 border-blue-600 text-sage-700' : 'text-clay-500'}`}
+            className={`py-2 px-4 text-lg font-medium ${activeTab === tab ? 'border-b-2 border-ember-500 text-sage-700' : 'text-clay-500'}`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
@@ -71,7 +71,7 @@ export default function ScalingYourBusinessPage() {
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">{activeTab}</h2>
         <div className="mb-8">
           <h3 className="text-lg font-medium text-clay-800">Progress</h3>
-          <div className="mt-2 bg-gray-200 rounded-full h-4">
+          <div className="mt-2 bg-clay-100 rounded-full h-4">
             <div
               className="bg-ember-600 h-4 rounded-full"
               style={{ width: `${progress}%` }}

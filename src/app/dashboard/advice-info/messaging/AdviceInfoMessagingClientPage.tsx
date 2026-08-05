@@ -25,7 +25,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
   return (
     <div className="p-4 md:p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="font-display text-2xl font-semibold text-foreground">Advice & Info Messaging</h1>
+        <h1 className="font-display text-2xl font-semibold text-clay-800">Advice & Info Messaging</h1>
       </div>
       <div className="mt-6">
         <div className="sm:hidden">
@@ -33,7 +33,7 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
           <select
             id="tabs"
             name="tabs"
-            className="block w-full focus:ring-primary focus:border-primary border-light-gray rounded-control"
+            className="block w-full focus:ring-sage-300 focus:border-sage-400 border-light-gray rounded-control"
             defaultValue={activeTab}
             onChange={(e) => setActiveTab(e.target.value)}
           >
@@ -45,13 +45,13 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('help-requests')}
-              className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'help-requests' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+              className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'help-requests' ? 'bg-sage-800 text-clay-800' : 'bg-light-gray text-clay-800'}`}
             >
               Help Requests
             </button>
             <button
               onClick={() => setActiveTab('referrals')}
-              className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'referrals' ? 'bg-secondary text-foreground' : 'bg-light-gray text-foreground'}`}
+              className={`px-4 py-2 rounded-control text-sm font-medium ${activeTab === 'referrals' ? 'bg-sage-800 text-clay-800' : 'bg-light-gray text-clay-800'}`}
             >
               Referrals
             </button>
@@ -62,30 +62,30 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
       <div className="mt-8">
         {activeTab === 'help-requests' && (
           <div>
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Help Requests</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Help Requests</h2>
             {isExternal ? (
               <>
-                <div className="mb-8 p-6 bg-background shadow-card rounded-card">
-                  <h3 className="text-xl font-bold text-foreground mb-4">Submit a New Help Request</h3>
+                <div className="mb-8 p-6 bg-clay-50 shadow-card rounded-card">
+                  <h3 className="text-xl font-bold text-clay-800 mb-4">Submit a New Help Request</h3>
                   <form action={helpRequestAction} className="space-y-4">
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-foreground">Subject</label>
+                      <label htmlFor="subject" className="block text-sm font-medium text-clay-800">Subject</label>
                       <input
                         type="text"
                         id="subject"
                         name="subject"
                         required
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                       />
                     </div>
                     <div>
-                      <label htmlFor="description" className="block text-sm font-medium text-foreground">Description</label>
+                      <label htmlFor="description" className="block text-sm font-medium text-clay-800">Description</label>
                       <textarea
                         id="description"
                         name="description"
                         rows={4}
                         required
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                       ></textarea>
                     </div>
                     {helpRequestState?.message && (
@@ -96,56 +96,56 @@ export default function AdviceInfoMessagingClientPage({ isAdmin, isExternal, cur
                     )}
                     <button
                       type="submit"
-                      className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                     >
                       Submit Request
                     </button>
                   </form>
                 </div>
 
-                <h3 className="text-xl font-bold text-foreground mb-4 mt-8">Your Previous Requests</h3>
+                <h3 className="text-xl font-bold text-clay-800 mb-4 mt-8">Your Previous Requests</h3>
                 {initialHelpRequests.length === 0 ? (
-                  <p className="text-foreground">You have not submitted any help requests yet.</p>
+                  <p className="text-clay-800">You have not submitted any help requests yet.</p>
                 ) : (
                   <ul className="space-y-4">
                     {initialHelpRequests.map(request => (
                       <li key={request.id} className="bg-light-gray shadow overflow-hidden sm:rounded-card p-4">
                         <p className="text-sm font-semibold">Subject: {request.subject}</p>
-                        <p className="text-foreground">Status: {request.status}</p>
-                        <p className="text-xs text-foreground text-right">{request.timestamp.toLocaleString()}</p>
+                        <p className="text-clay-800">Status: {request.status}</p>
+                        <p className="text-xs text-clay-800 text-right">{request.timestamp.toLocaleString()}</p>
                       </li>
                     ))}
                   </ul>
                 )}
               </>
             ) : (
-              <p className="text-foreground">Internal/Admin user view for Help Requests.</p>
+              <p className="text-clay-800">Internal/Admin user view for Help Requests.</p>
             )}
           </div>
         )}
 
         {activeTab === 'referrals' && (
           <div>
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Referrals</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Referrals</h2>
             {isExternal ? (
               <>
-                <h3 className="text-xl font-bold text-foreground mb-4">Referrals from Admins</h3>
+                <h3 className="text-xl font-bold text-clay-800 mb-4">Referrals from Admins</h3>
                 {initialReferrals.length === 0 ? (
-                  <p className="text-foreground">No referrals from admins yet.</p>
+                  <p className="text-clay-800">No referrals from admins yet.</p>
                 ) : (
                   <ul className="space-y-4">
                     {initialReferrals.map(referral => (
                       <li key={referral.id} className="bg-light-gray shadow overflow-hidden sm:rounded-card p-4">
                         <p className="text-sm font-semibold">Admin Referral:</p>
-                        <p className="text-foreground">{referral.content}</p>
-                        <p className="text-xs text-foreground text-right">{referral.timestamp.toLocaleString()}</p>
+                        <p className="text-clay-800">{referral.content}</p>
+                        <p className="text-xs text-clay-800 text-right">{referral.timestamp.toLocaleString()}</p>
                       </li>
                     ))}
                   </ul>
                 )}
               </>
             ) : (
-              <p className="text-foreground">Internal/Admin user view for Referrals.</p>
+              <p className="text-clay-800">Internal/Admin user view for Referrals.</p>
             )}
           </div>
         )}

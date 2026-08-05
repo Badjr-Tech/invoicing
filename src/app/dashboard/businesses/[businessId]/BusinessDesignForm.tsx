@@ -47,7 +47,7 @@ export default function BusinessDesignForm({ business }: BusinessDesignFormProps
             id="color1"
             value={color1}
             onChange={(e) => setColor1(e.target.value)}
-            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color1) ? 'border-red-500' : ''}`}
+            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm ${!isValidHex(color1) ? 'border-red-500' : ''}`}
             placeholder="#RRGGBB"
           />
           {!isValidHex(color1) && color1 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
@@ -69,7 +69,7 @@ export default function BusinessDesignForm({ business }: BusinessDesignFormProps
             id="color2"
             value={color2}
             onChange={(e) => setColor2(e.target.value)}
-            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color2) ? 'border-red-500' : ''}`}
+            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm ${!isValidHex(color2) ? 'border-red-500' : ''}`}
             placeholder="#RRGGBB"
           />
           {!isValidHex(color2) && color2 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
@@ -91,7 +91,7 @@ export default function BusinessDesignForm({ business }: BusinessDesignFormProps
             id="color3"
             value={color3}
             onChange={(e) => setColor3(e.target.value)}
-            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color3) ? 'border-red-500' : ''}`}
+            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm ${!isValidHex(color3) ? 'border-red-500' : ''}`}
             placeholder="#RRGGBB"
           />
           {!isValidHex(color3) && color3 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
@@ -113,7 +113,7 @@ export default function BusinessDesignForm({ business }: BusinessDesignFormProps
             id="color4"
             value={color4}
             onChange={(e) => setColor4(e.target.value)}
-            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${!isValidHex(color4) ? 'border-red-500' : ''}`}
+            className={`mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm ${!isValidHex(color4) ? 'border-red-500' : ''}`}
             placeholder="#RRGGBB"
           />
           {!isValidHex(color4) && color4 !== '' && <p className="text-red-500 text-xs mt-1">Invalid Hex code</p>}
@@ -131,7 +131,7 @@ export default function BusinessDesignForm({ business }: BusinessDesignFormProps
       <div className="mt-4">
         <button
           type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
         >
           Save Design
         </button>

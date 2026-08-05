@@ -136,25 +136,25 @@ export default function RecordsPageClient({
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           <button
             onClick={() => setActiveTab('invoices')}
-            className={`${activeTab === 'invoices' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'invoices' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Invoices
           </button>
           <button
             onClick={() => setActiveTab('businesses')}
-            className={`${activeTab === 'businesses' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'businesses' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Businesses
           </button>
           <button
             onClick={() => setActiveTab('clients')}
-            className={`${activeTab === 'clients' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'clients' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Clients
           </button>
           <button
             onClick={() => setActiveTab('services')}
-            className={`${activeTab === 'services' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
+            className={`${activeTab === 'services' ? 'border-sage-400 text-sage-700' : 'border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200'} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
           >
             Services
           </button>

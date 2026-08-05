@@ -68,7 +68,7 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
                   categoriesByBusiness[business.id].map(category => (
                     <li key={category.id} className="flex justify-between items-center p-2 bg-clay-50 rounded-control">
                       <div>
-                        <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
+                        <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-sage-700 hover:underline">
                           {category.name} {category.customId && <span className="text-clay-500 text-xs">({category.customId})</span>}
                         </Link>
                         {category.description && <p className="text-sm text-clay-600">{category.description}</p>}
@@ -102,7 +102,7 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
                 {unassignedCategories.map(category => (
                   <li key={category.id} className="flex justify-between items-center p-2 bg-clay-50 rounded-control">
                     <div>
-                      <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-indigo-600 hover:underline">
+                      <Link href={`/dashboard/services/${category.id}`} className="font-semibold text-sage-700 hover:underline">
                         {category.name} {category.customId && <span className="text-clay-500 text-xs">({category.customId})</span>}
                       </Link>
                       {category.description && <p className="text-sm text-clay-600">{category.description}</p>}

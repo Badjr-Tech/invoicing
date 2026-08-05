@@ -23,7 +23,7 @@ export default function ReportsPage() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground mb-6">Reports</h1>
+      <h1 className="font-display text-2xl font-semibold text-clay-800 mb-6">Reports</h1>
 
       <div className="mb-8 p-6 bg-white shadow-card rounded-card">
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Generate Report</h2>
@@ -45,7 +45,7 @@ export default function ReportsPage() {
             <input type="date" id="endDate" name="endDate" value={endDate} onChange={e => setEndDate(e.target.value)} required className="mt-1 block w-full rounded-control border-clay-200 shadow-sm" />
           </div>
           <div className="flex items-center">
-            <button onClick={handleGenerateReport} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark">
+            <button onClick={handleGenerateReport} className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark">
               Generate Report
             </button>
             {showPdf && (

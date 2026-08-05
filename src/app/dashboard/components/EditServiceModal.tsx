@@ -42,7 +42,7 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
                     type="text"
                     required
                     defaultValue={service.name}
-                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                   />
                 </div>
               </div>
@@ -55,7 +55,7 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
                     id="businessId"
                     name="businessId"
                     defaultValue={service.businessId || ""}
-                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                   >
                     <option value="">Select a business</option>
                     {businesses.map((business) => (
@@ -76,7 +76,7 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
                     name="description"
                     rows={3}
                     defaultValue={service.description || ""}
-                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                   />
                 </div>
               </div>
@@ -92,7 +92,7 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
                     step="0.01"
                     required
                     defaultValue={parseFloat(service.price)}
-                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                   />
                 </div>
               </div>
@@ -101,14 +101,14 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
               <div className="items-center gap-2 mt-3 sm:flex">
                 <button
                   type="submit"
-                  className="w-full inline-flex justify-center rounded-control border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm"
+                  className="w-full inline-flex justify-center rounded-control border border-transparent shadow-sm px-4 py-2 bg-ember-600 text-base font-medium text-white hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300 sm:w-auto sm:text-sm"
                 >
                   Save Changes
                 </button>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="mt-3 w-full inline-flex justify-center rounded-control border border-clay-200 shadow-sm px-4 py-2 bg-white text-base font-medium text-clay-700 hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm"
+                  className="mt-3 w-full inline-flex justify-center rounded-control border border-clay-200 shadow-sm px-4 py-2 bg-white text-base font-medium text-clay-700 hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300 sm:mt-0 sm:w-auto sm:text-sm"
                 >
                   Cancel
                 </button>

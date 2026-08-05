@@ -78,21 +78,21 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground">User Management</h1>
+      <h1 className="font-display text-2xl font-semibold text-clay-800">User Management</h1>
       <p className="mt-4 text-clay-700">Manage all users in the system.</p>
 
       <div className="mt-6">
         <button
           onClick={() => setShowCreateForm(!showCreateForm)}
-          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
         >
           {showCreateForm ? "Cancel" : "Create New User"}
         </button>
       </div>
 
       {showCreateForm && (
-        <div className="mt-8 max-w-2xl p-6 bg-background shadow-card rounded-card">
-          <h2 className="font-display text-xl font-semibold text-foreground mb-4">Create New User</h2>
+        <div className="mt-8 max-w-2xl p-6 bg-clay-50 shadow-card rounded-card">
+          <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Create New User</h2>
           <form action={createFormAction} className="space-y-6">
             {/* Name */}
             <div>
@@ -104,7 +104,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="name"
                 type="text"
                 required
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
               />
             </div>
 
@@ -118,7 +118,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="email"
                 type="email"
                 required
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
               />
             </div>
 
@@ -132,7 +132,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="phone"
                 type="text"
                 required
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
               />
             </div>
 
@@ -146,7 +146,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 name="password"
                 type="password"
                 required
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
               />
             </div>
 
@@ -159,7 +159,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                 id="role"
                 name="role"
                 required
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
               >
                 <option value="internal">Internal</option>
                 <option value="external">External</option>
@@ -177,7 +177,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
             <div>
               <button
                 type="submit"
-                className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
               >
                 Create User
               </button>
@@ -188,7 +188,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
 
       <div className="mt-8 overflow-x-auto">
         <table className="min-w-full divide-y divide-clay-200">
-          <thead className="bg-background">
+          <thead className="bg-clay-50">
             <tr>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">
                 ID
@@ -210,10 +210,10 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
               </th>
             </tr>
           </thead>
-          <tbody className="bg-background divide-y divide-clay-200">
+          <tbody className="bg-clay-50 divide-y divide-clay-200">
             {allUsers.map((user) => (
               <tr key={user.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-clay-800">
                   {user.id}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-500">
@@ -234,7 +234,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                       setEditingUser(user);
                       setShowEditModal(true);
                     }}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-sage-700 hover:text-sage-800"
                   >
                     Edit
                   </button>
@@ -251,8 +251,8 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
       {/* Edit User Modal */}
       {showEditModal && editingUser && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-control bg-background">
-            <h3 className="text-lg font-medium leading-6 text-foreground">Edit User</h3>
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-control bg-clay-50">
+            <h3 className="text-lg font-medium leading-6 text-clay-800">Edit User</h3>
             <div className="mt-2">
               <form action={editFormAction} className="space-y-6">
                 <input type="hidden" name="userId" value={editingUser.id} />
@@ -267,7 +267,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                     type="email"
                     defaultValue={editingUser.email}
                     required
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
                   />
                 </div>
 
@@ -282,7 +282,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                     type="text"
                     defaultValue={editingUser.phone}
                     required
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
                   />
                 </div>
 
@@ -296,7 +296,7 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                     name="role"
                     defaultValue={editingUser.role}
                     required
-                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300"
                   >
                     <option value="internal">Internal</option>
                     <option value="external">External</option>
@@ -318,13 +318,13 @@ export default function UserManagementClientPage({ initialUsers, isInternalUserV
                       setShowEditModal(false);
                       setEditingUser(null);
                     }}
-                    className="inline-flex justify-center rounded-control border border-clay-200 bg-background py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-clay-200 bg-clay-50 py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-transparent bg-[#910000] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a0000] focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                   >
                     Save Changes
                   </button>

@@ -90,7 +90,7 @@ export default function EditCategoryModal({
                           required
                           value={currentCategory.businessId || ''}
                           onChange={handleInputChange}
-                          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                          className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                         >
                           <option value="">Select a business</option>
                           {businesses.map((business) => (
@@ -112,7 +112,7 @@ export default function EditCategoryModal({
                         value={currentCategory.name}
                         onChange={handleInputChange}
                         required
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                       />
                     </div>
                     <div>
@@ -125,7 +125,7 @@ export default function EditCategoryModal({
                         id="customId"
                         value={currentCategory.customId || ''}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                       />
                     </div>
                     <div>
@@ -138,7 +138,7 @@ export default function EditCategoryModal({
                         rows={3}
                         value={currentCategory.description || ''}
                         onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                       ></textarea>
                     </div>
 
@@ -155,7 +155,7 @@ export default function EditCategoryModal({
                       </button>
                       <button
                         type="submit"
-                        className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+                        className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 px-4 py-2 text-sm font-medium text-white hover:bg-ember-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-sage-300 focus-visible:ring-offset-2"
                       >
                         Update Category
                       </button>

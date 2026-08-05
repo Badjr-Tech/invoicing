@@ -25,7 +25,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground">Edit Business: {initialBusiness.businessName}</h1>
+      <h1 className="font-display text-2xl font-semibold text-clay-800">Edit Business: {initialBusiness.businessName}</h1>
 
       {/* Tabs */}
       <div className="mt-6 border-b border-clay-200">
@@ -54,7 +54,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessName"
                 required
                 defaultValue={initialBusiness.businessName}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -68,7 +68,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="legalBusinessName"
                 name="legalBusinessName"
                 defaultValue={initialBusiness.legalBusinessName || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -82,7 +82,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="taxFullName"
                 name="taxFullName"
                 defaultValue={initialBusiness.taxFullName || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -97,7 +97,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="ownerName"
                 required
                 defaultValue={initialBusiness.ownerName}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -115,7 +115,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 max="100"
                 step="0.01"
                 defaultValue={parseFloat(initialBusiness.percentOwnership)}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -129,7 +129,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessType"
                 required
                 defaultValue={initialBusiness.businessType}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               >
                 <option value="">Select Business Type</option>
                 <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -149,7 +149,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessTaxStatus"
                 required
                 defaultValue={initialBusiness.businessTaxStatus}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               >
                 <option value="">Select Tax Status</option>
                 <option value="S-Corporation">S-Corporation</option>
@@ -169,7 +169,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessIndustry"
                 required
                 defaultValue={initialBusiness.businessIndustry}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -183,7 +183,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="naicsCode"
                 name="naicsCode"
                 defaultValue={initialBusiness.naicsCode || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -197,7 +197,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 name="businessDescription"
                 rows={3}
                 defaultValue={initialBusiness.businessDescription || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               ></textarea>
             </div>
 
@@ -212,7 +212,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="streetAddress"
                 name="streetAddress"
                 defaultValue={initialBusiness.streetAddress || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
             <div>
@@ -224,7 +224,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="city"
                 name="city"
                 defaultValue={initialBusiness.city || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -238,7 +238,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                   name="state"
                   maxLength={2}
                   defaultValue={initialBusiness.state || ''}
-                  className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
                 />
               </div>
               <div>
@@ -251,7 +251,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                   name="zipCode"
                   maxLength={10}
                   defaultValue={initialBusiness.zipCode || ''}
-                  className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
                 />
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="phone"
                 name="phone"
                 defaultValue={initialBusiness.phone || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
             <div>
@@ -276,7 +276,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
                 id="website"
                 name="website"
                 defaultValue={initialBusiness.website || ''}
-                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
               />
             </div>
 
@@ -294,7 +294,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
             >
               Update Business Profile
             </button>
@@ -302,14 +302,14 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
         )}
         {activeTab === "materials" && (
           <div>
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Business Materials</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Business Materials</h2>
             {/* Placeholder for business materials management */}
             <p>Business materials management will go here.</p>
           </div>
         )}
         {activeTab === "branding" && (
           <div>
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Branding</h2>
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Branding</h2>
             {/* Placeholder for branding elements */}
             <p>Branding elements (logo, colors, etc.) will go here.</p>
           </div>
@@ -320,7 +320,7 @@ export default function EditBusinessProfileClientPage({ initialBusiness }: EditB
         <Link href={`/dashboard/businesses/${initialBusiness.id}`}>
           <button
             type="button"
-            className="inline-flex justify-center rounded-control border border-clay-200 bg-background py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-background focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="inline-flex justify-center rounded-control border border-clay-200 bg-clay-50 py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
           >
             Back to Business Details
           </button>
@@ -345,7 +345,7 @@ function TabButton({ tabName, activeTab, setActiveTab, children }: TabButtonProp
       onClick={() => setActiveTab(tabName)}
       className={`${
         isActive
-          ? "border-indigo-500 text-indigo-600"
+          ? "border-sage-400 text-sage-700"
           : "border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200"
       } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
     >

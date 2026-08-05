@@ -55,7 +55,7 @@ export default function ClientsPageClient({
                   name="name"
                   type="text"
                   required
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                 />
               </div>
             </div>
@@ -70,7 +70,7 @@ export default function ClientsPageClient({
                   name="email"
                   type="email"
                   required
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                 />
               </div>
             </div>
@@ -85,7 +85,7 @@ export default function ClientsPageClient({
                   id="clientBusinessName"
                   name="clientBusinessName"
                   type="text"
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                 />
               </div>
             </div>
@@ -99,7 +99,7 @@ export default function ClientsPageClient({
                 <select
                   id="businessId"
                   name="businessId"
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
                 >
                   <option value="">Select a business</option>
                   {businesses.map((business) => (
@@ -117,7 +117,7 @@ export default function ClientsPageClient({
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
               >
                 Add Client
               </button>
@@ -136,7 +136,7 @@ export default function ClientsPageClient({
               name="filterBusiness"
               value={selectedBusinessFilter}
               onChange={(e) => setSelectedBusinessFilter(e.target.value)}
-              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             >
               <option value="">All Businesses</option>
               {businesses.map((business) => (

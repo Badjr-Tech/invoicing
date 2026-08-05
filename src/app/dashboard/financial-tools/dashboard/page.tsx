@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { FileText, CheckCircle, DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
+import { DollarSign, ExternalLink, TrendingDown, TrendingUp } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -26,6 +26,12 @@ interface IncomeMinusFeesData {
   totalFees: number;
   netIncome: number;
 }
+
+// Chart strokes come from the design tokens: sage-600 and ember-500.
+const SAGE = '#547344';
+const EMBER = '#C87A17';
+
+const dollars = (value: number) => `$${value.toFixed(2)}`;
 
 export default function FinancialsDashboardPage() {
   const [monthlyRevenueData, setMonthlyRevenueData] = useState<MonthlyData[]>([]);
@@ -57,105 +63,127 @@ export default function FinancialsDashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex-1 p-8 bg-clay-50 min-h-screen flex items-center justify-center">
-        <p className="text-xl text-clay-600">Loading financial data...</p>
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <p className="text-clay-600">Loading financial data...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex-1 p-8 bg-clay-50 min-h-screen flex items-center justify-center">
-        <p className="text-xl text-red-600">{error}</p>
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <p className="text-red-600">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 p-8 bg-clay-50 min-h-screen">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-5xl font-extrabold text-dark-foreground tracking-tight">Financials Overview</h1>
-        <Link href="/dashboard/financial-tools/reporting" className="px-6 py-3 bg-primary text-primary-foreground rounded-card shadow-card hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-accent transition duration-150 ease-in-out">
-          Generate Report
-        </Link>
+    <div className="mx-auto max-w-6xl">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="font-display text-3xl font-semibold text-clay-800">
+            Financials Overview
+          </h1>
+          <p className="mt-1 text-clay-600">
+            Revenue, net income, and where the money actually went.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          {/* Deep-links to the member's own Stripe Express dashboard once
+              Connect is live; until then it lands on the connect step. */}
+          <Link
+            href="/onboarding/payments"
+            className="inline-flex items-center gap-1.5 rounded-control border border-clay-200 bg-white px-4 py-2.5 text-sm font-semibold text-clay-700 shadow-sm transition hover:border-sage-300 hover:text-clay-900"
+          >
+            Stripe account <ExternalLink size={14} />
+          </Link>
+          <Link
+            href="/dashboard/financial-tools/reporting"
+            className="rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-ember-500"
+          >
+            Generate Report
+          </Link>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Monthly Revenue Chart */}
-        <div className="bg-light-background p-8 rounded-xl shadow-lg border border-clay-200">
-          <div className="flex items-center mb-6">
-            <TrendingUp className="w-10 h-10 text-primary mr-4" />
-            <h2 className="font-display text-2xl font-semibold text-primary-foreground border-b pb-4 mb-4 border-primary-accent flex-grow">Monthly Revenue</h2>
+        <div className="rounded-card border border-clay-200 bg-white p-6 shadow-card">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-control bg-ember-100 text-ember-700">
+              <TrendingUp size={18} />
+            </span>
+            <h2 className="font-display text-lg font-semibold text-clay-800">
+              Monthly Revenue
+            </h2>
           </div>
           <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
-              <LineChart
-                data={monthlyRevenueData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+              <LineChart data={monthlyRevenueData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E8E1D6" />
+                <XAxis dataKey="month" stroke="#7D7263" fontSize={12} />
+                <YAxis stroke="#7D7263" fontSize={12} />
+                <Tooltip formatter={(value) => dollars(Number(value))} />
                 <Legend />
-                <Line type="monotone" dataKey="totalRevenue" stroke="#ffbd5a" activeDot={{ r: 8 }} name="Revenue" />
+                <Line type="monotone" dataKey="totalRevenue" stroke={EMBER} strokeWidth={2} activeDot={{ r: 6 }} name="Revenue" />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Monthly Net Income Chart */}
-        <div className="bg-light-background p-8 rounded-xl shadow-lg border border-clay-200">
-          <div className="flex items-center mb-6">
-            <TrendingDown className="w-10 h-10 text-secondary mr-4" />
-            <h2 className="font-display text-2xl font-semibold text-secondary-accent border-b pb-4 mb-4 border-secondary-accent flex-grow">Monthly Net Income</h2>
+        <div className="rounded-card border border-clay-200 bg-white p-6 shadow-card">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-control bg-sage-100 text-sage-700">
+              <TrendingDown size={18} />
+            </span>
+            <h2 className="font-display text-lg font-semibold text-clay-800">
+              Monthly Net Income
+            </h2>
           </div>
           <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
-              <LineChart
-                data={monthlyNetIncomeData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value: number) => `$${value.toFixed(2)}`} />
+              <LineChart data={monthlyNetIncomeData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E8E1D6" />
+                <XAxis dataKey="month" stroke="#7D7263" fontSize={12} />
+                <YAxis stroke="#7D7263" fontSize={12} />
+                <Tooltip formatter={(value) => dollars(Number(value))} />
                 <Legend />
-                <Line type="monotone" dataKey="netIncome" stroke="#476c2e" activeDot={{ r: 8 }} name="Net Income" />
+                <Line type="monotone" dataKey="netIncome" stroke={SAGE} strokeWidth={2} activeDot={{ r: 6 }} name="Net Income" />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
 
-      {/* Income Minus Fees Section (retained as a summary) */}
-      <div className="bg-light-background p-8 rounded-xl shadow-lg border border-clay-200 col-span-full">
-        <div className="flex items-center mb-6">
-          <DollarSign className="w-10 h-10 text-primary mr-4" />
-          <h2 className="font-display text-2xl font-semibold text-primary-foreground border-b pb-4 mb-4 border-primary-accent flex-grow">Current Income Summary</h2>
+      {/* Income summary */}
+      <div className="rounded-card border border-clay-200 bg-white p-6 shadow-card">
+        <div className="mb-5 flex items-center gap-3">
+          <span className="flex h-9 w-9 items-center justify-center rounded-control bg-sage-100 text-sage-700">
+            <DollarSign size={18} />
+          </span>
+          <h2 className="font-display text-lg font-semibold text-clay-800">
+            Current Income Summary
+          </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="text-clay-700 text-lg">Total Income:</p>
-            <p className="text-3xl font-extrabold text-secondary-accent">${incomeMinusFees.totalIncome.toFixed(2)}</p>
+        <div className="grid grid-cols-1 gap-4 text-center md:grid-cols-3">
+          <div className="rounded-control bg-clay-50 py-5">
+            <p className="text-sm text-clay-600">Total Income</p>
+            <p className="mt-1 font-display text-3xl font-bold text-clay-800">
+              {dollars(incomeMinusFees.totalIncome)}
+            </p>
           </div>
-          <div>
-            <p className="text-clay-700 text-lg">Total Fees:</p>
-            <p className="text-3xl font-extrabold text-red-600">${incomeMinusFees.totalFees.toFixed(2)}</p>
+          <div className="rounded-control bg-clay-50 py-5">
+            <p className="text-sm text-clay-600">Total Fees</p>
+            <p className="mt-1 font-display text-3xl font-bold text-red-600">
+              {dollars(incomeMinusFees.totalFees)}
+            </p>
           </div>
-          <div>
-            <p className="text-clay-700 text-lg">Net Income:</p>
-            <p className="text-3xl font-extrabold text-invoice-blue">${incomeMinusFees.netIncome.toFixed(2)}</p>
+          <div className="rounded-control bg-clay-50 py-5">
+            <p className="text-sm text-clay-600">Net Income</p>
+            <p className="mt-1 font-display text-3xl font-bold text-sage-700">
+              {dollars(incomeMinusFees.netIncome)}
+            </p>
           </div>
         </div>
       </div>

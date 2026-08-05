@@ -58,7 +58,7 @@ export default function RecurringTransactionsPage() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="font-display text-2xl font-semibold text-foreground mb-6">Recurring Transactions</h1>
+      <h1 className="font-display text-2xl font-semibold text-clay-800 mb-6">Recurring Transactions</h1>
 
       <div className="mb-8 p-6 bg-white shadow-card rounded-card">
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">
@@ -108,7 +108,7 @@ export default function RecurringTransactionsPage() {
             <input type="date" id="endDate" name="endDate" defaultValue={editingTransaction?.endDate ? new Date(editingTransaction.endDate).toISOString().split('T')[0] : ''} className="mt-1 block w-full rounded-control border-clay-200 shadow-sm" />
           </div>
           <div className="flex items-center">
-            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-primary hover:bg-primary-dark">
+            <button type="submit" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark">
               {editingTransaction ? 'Update' : 'Create'}
             </button>
             {editingTransaction && (
@@ -146,7 +146,7 @@ export default function RecurringTransactionsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-900">{transaction.type}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-clay-900">{transaction.frequency}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button onClick={() => setEditingTransaction(transaction)} className="text-indigo-600 hover:text-indigo-900">Edit</button>
+                      <button onClick={() => setEditingTransaction(transaction)} className="text-sage-700 hover:text-sage-800">Edit</button>
                       <button onClick={() => handleDelete(transaction.id)} className="ml-4 text-red-600 hover:text-red-900">Delete</button>
                     </td>
                   </tr>

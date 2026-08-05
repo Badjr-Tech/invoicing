@@ -49,23 +49,23 @@ export default function PitchCompetitionClientPage({ initialEvents }: PitchCompe
   if (selectedEvent) {
     return (
       <div>
-        <button onClick={() => setSelectedEvent(null)} className="text-indigo-600 hover:underline mb-4">← Back to Events</button>
+        <button onClick={() => setSelectedEvent(null)} className="text-sage-700 hover:underline mb-4">← Back to Events</button>
         <h1 className="font-display text-xl font-semibold mb-4">Submissions for {selectedEvent.title}</h1>
         {isLoadingSubmissions ? <p>Loading submissions...</p> : (
           <div className="mt-8">
             <table className="min-w-full divide-y divide-clay-200">
-              <thead className="bg-background">
+              <thead className="bg-clay-50">
                 <tr>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">Project Name</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">Submitter</th>
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-clay-500 uppercase tracking-wider">Date</th>
                 </tr>
               </thead>
-              <tbody className="bg-background divide-y divide-clay-200">
+              <tbody className="bg-clay-50 divide-y divide-clay-200">
                 {submissions.map((submission) => (
                   <tr key={submission.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
-                      <Link href={`/dashboard/admin/pitch-competition/projects/${submission.id}`} className="text-indigo-600 hover:underline">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-clay-800">
+                      <Link href={`/dashboard/admin/pitch-competition/projects/${submission.id}`} className="text-sage-700 hover:underline">
                         {submission.title}
                       </Link>
                     </td>
@@ -88,7 +88,7 @@ export default function PitchCompetitionClientPage({ initialEvents }: PitchCompe
         <h1 className="font-display text-xl font-semibold">Pitch Competition Events</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-control hover:bg-indigo-700"
+          className="bg-ember-600 text-white px-4 py-2 rounded-control hover:bg-ember-500"
         >
           Create Event
         </button>
@@ -100,14 +100,14 @@ export default function PitchCompetitionClientPage({ initialEvents }: PitchCompe
         )}
       </div>
       <div className="mt-8">
-        <div className="bg-background shadow overflow-hidden sm:rounded-control">
+        <div className="bg-clay-50 shadow overflow-hidden sm:rounded-control">
           <ul role="list" className="divide-y divide-clay-200">
             {events.map((event) => (
               <li key={event.id}>
-                <a href="#" onClick={(e) => { e.preventDefault(); handleSelectEvent(event); }} className="block hover:bg-background">
+                <a href="#" onClick={(e) => { e.preventDefault(); handleSelectEvent(event); }} className="block hover:bg-clay-50">
                   <div className="px-4 py-4 sm:px-6">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-indigo-600 truncate">{event.title}</p>
+                      <p className="text-sm font-medium text-sage-700 truncate">{event.title}</p>
                       <div className="ml-2 flex-shrink-0 flex">
                         <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-sage-100 text-sage-800">
                           {event.date ? new Date(event.date).toLocaleDateString() : 'TBA'}

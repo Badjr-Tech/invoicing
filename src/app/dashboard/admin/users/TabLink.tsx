@@ -30,7 +30,7 @@ export default function TabLink({ href, activeTab, children }: TabLinkProps) {
       href={`/dashboard/admin/users?${createTabQueryString(href)}`}
       className={`${
         isActive
-          ? "border-indigo-500 text-indigo-600"
+          ? "border-sage-400 text-sage-700"
           : "border-transparent text-clay-500 hover:text-clay-700 hover:border-clay-200"
       } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm`}
       aria-current={isActive ? "page" : undefined}

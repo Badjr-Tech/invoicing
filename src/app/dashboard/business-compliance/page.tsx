@@ -11,7 +11,7 @@ export default async function BusinessCompliancePage() {
   if (!userId) {
     return (
       <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold text-foreground">Business Compliance</h1>
+        <h1 className="text-3xl font-bold text-clay-800">Business Compliance</h1>
         <p className="mt-4 text-muted-foreground">
           Please log in to view your business compliance checklist.
         </p>
@@ -24,7 +24,7 @@ export default async function BusinessCompliancePage() {
 
   return (
     <div className="flex-1 p-6">
-      <h1 className="text-3xl font-bold text-foreground">Business Compliance</h1>
+      <h1 className="text-3xl font-bold text-clay-800">Business Compliance</h1>
       <ComplianceChecklist businesses={businesses} checklistItems={checklistItems} />
     </div>
   );

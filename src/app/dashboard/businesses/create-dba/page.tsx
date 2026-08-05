@@ -82,7 +82,7 @@ export default function CreateDbaPage() {
               id="dbaName"
               name="dbaName"
               required
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             />
           </div>
 
@@ -95,7 +95,7 @@ export default function CreateDbaPage() {
               id="businessId"
               name="businessId"
               required
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             >
               <option value="">Select a Business</option>
               {businesses.map((business) => (
@@ -115,14 +115,14 @@ export default function CreateDbaPage() {
               id="description"
               name="description"
               rows={3}
-              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border border-clay-200 rounded-control shadow-sm p-2 focus:ring-sage-300 focus:border-sage-400"
             ></textarea>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
           >
             Create DBA
           </button>

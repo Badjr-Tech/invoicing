@@ -138,7 +138,7 @@ export default function BusinessSearchAndFilter() {
   };
 
   return (
-    <div className="mt-6 p-4 bg-background shadow-card rounded-card">
+    <div className="mt-6 p-4 bg-clay-50 shadow-card rounded-card">
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         {/* Search Bar */}
         <div className="flex-1">
@@ -149,7 +149,7 @@ export default function BusinessSearchAndFilter() {
             placeholder="Search by business name..."
             defaultValue={searchQuery}
             onChange={handleSearchChange}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
           />
         </div>
 
@@ -160,7 +160,7 @@ export default function BusinessSearchAndFilter() {
             id="businessTypeFilter"
             defaultValue={businessTypeFilter}
             onChange={(e) => handleFilterChange("businessType", e.target.value)}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
           >
             <option value="">All Types</option>
             <option value="Sole Proprietorship">Sole Proprietorship</option>
@@ -177,7 +177,7 @@ export default function BusinessSearchAndFilter() {
             id="businessTaxStatusFilter"
             defaultValue={businessTaxStatusFilter}
             onChange={(e) => handleFilterChange("businessTaxStatus", e.target.value)}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-foreground"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
           >
             <option value="">All Tax Statuses</option>
             <option value="S-Corporation">S-Corporation</option>
@@ -197,7 +197,7 @@ export default function BusinessSearchAndFilter() {
             onChange={handleArchivedToggle}
             className="h-4 w-4 text-[#910000] focus:ring-[#910000] border-clay-200 rounded"
           />
-          <label htmlFor="isArchivedFilter" className="ml-2 block text-sm text-foreground">
+          <label htmlFor="isArchivedFilter" className="ml-2 block text-sm text-clay-800">
             Show Archived Businesses
           </label>
         </div>
@@ -209,7 +209,7 @@ export default function BusinessSearchAndFilter() {
             onChange={handleOptedOutToggle}
             className="h-4 w-4 text-[#910000] focus:ring-[#910000] border-clay-200 rounded"
           />
-          <label htmlFor="includeOptedOutFilter" className="ml-2 block text-sm text-foreground">
+          <label htmlFor="includeOptedOutFilter" className="ml-2 block text-sm text-clay-800">
             Include Opted-Out Users
           </label>
         </div>
@@ -237,7 +237,7 @@ export default function BusinessSearchAndFilter() {
                     </div>
                   )}
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">{business.businessName}</h3>
+                    <h3 className="text-xl font-bold text-clay-800">{business.businessName}</h3>
                     <p className="mt-2 text-sm text-clay-600">User: {userEmail}</p>
                     <p className="text-sm text-clay-600">Owner: {business.ownerName}</p>
                     <p className="text-sm text-clay-600">Type: {business.businessType}</p>

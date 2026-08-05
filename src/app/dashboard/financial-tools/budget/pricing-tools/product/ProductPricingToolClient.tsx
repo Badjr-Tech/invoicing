@@ -36,7 +36,7 @@ export default function ProductPricingToolClient() {
             id="cogs"
             value={cogs}
             onChange={(e) => setCogs(e.target.value)}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             placeholder="e.g., 10.00"
           />
         </div>
@@ -49,7 +49,7 @@ export default function ProductPricingToolClient() {
             id="profitMargin"
             value={profitMargin}
             onChange={(e) => setProfitMargin(e.target.value)}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             placeholder="e.g., 30"
           />
         </div>
@@ -62,13 +62,13 @@ export default function ProductPricingToolClient() {
             id="competitorPrice"
             value={competitorPrice}
             onChange={(e) => setCompetitorPrice(e.target.value)}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             placeholder="e.g., 15.00"
           />
         </div>
         <button
           onClick={calculatePrice}
-          className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
         >
           Calculate Price
         </button>

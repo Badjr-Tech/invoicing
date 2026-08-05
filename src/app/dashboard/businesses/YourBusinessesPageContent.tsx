@@ -111,27 +111,27 @@ export default function YourBusinessesPageContent() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-foreground">Your Businesses</h1>
-        <p className="mt-4 text-foreground">Manage all your registered businesses.</p>
+        <h1 className="font-display text-2xl font-semibold text-clay-800">Your Businesses</h1>
+        <p className="mt-4 text-clay-800">Manage all your registered businesses.</p>
 
         <div className="mt-6 flex space-x-4">
           <button
             onClick={() => setShowCreateForm(!showCreateForm)}
-            className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
           >
             {showCreateForm ? "Cancel" : "Create New Business"}
           </button>
           <button
             onClick={() => setShowDbaForm(!showDbaForm)}
-            className="inline-flex justify-center rounded-control border border-transparent bg-secondary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
+            className="inline-flex justify-center rounded-control border border-transparent bg-sage-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
           >
             {showDbaForm ? "Cancel" : "Add DBA"}
           </button>
         </div>
 
         {showCreateForm && (
-          <div className="mt-8 max-w-2xl p-6 bg-background shadow-card rounded-card">
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Create New Business Profile</h2>
+          <div className="mt-8 max-w-2xl p-6 bg-clay-50 shadow-card rounded-card">
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Create New Business Profile</h2>
             <form action={createFormAction} className="space-y-6">
               {/* Form fields for creating a new business */}
             </form>
@@ -139,18 +139,18 @@ export default function YourBusinessesPageContent() {
         )}
 
         {showDbaForm && (
-          <div className="mt-8 max-w-2xl p-6 bg-background shadow-card rounded-card">
-            <h2 className="font-display text-xl font-semibold text-foreground mb-4">Add DBA</h2>
+          <div className="mt-8 max-w-2xl p-6 bg-clay-50 shadow-card rounded-card">
+            <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Add DBA</h2>
             <form action={createDbaFormAction} className="space-y-6">
               <div>
-                <label htmlFor="businessId" className="block text-sm font-medium text-foreground">
+                <label htmlFor="businessId" className="block text-sm font-medium text-clay-800">
                   Select Business
                 </label>
                 <select
                   id="businessId"
                   name="businessId"
                   required
-                  className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+                  className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
                 >
                   <option value="">Select a business</option>
                   {userBusinesses.map((business) => (
@@ -161,7 +161,7 @@ export default function YourBusinessesPageContent() {
                 </select>
               </div>
               <div>
-                <label htmlFor="dbaName" className="block text-sm font-medium text-foreground">
+                <label htmlFor="dbaName" className="block text-sm font-medium text-clay-800">
                   DBA Name
                 </label>
                 <input
@@ -169,7 +169,7 @@ export default function YourBusinessesPageContent() {
                   name="dbaName"
                   type="text"
                   required
-                  className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-primary focus:ring-primary text-foreground"
+                  className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 text-clay-800"
                 />
               </div>
               {createDbaState?.message && (
@@ -181,7 +181,7 @@ export default function YourBusinessesPageContent() {
               <div>
                 <button
                   type="submit"
-                  className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                 >
                   Add DBA
                 </button>
@@ -193,13 +193,13 @@ export default function YourBusinessesPageContent() {
         {/* Display existing businesses */}
         <div className="mt-8 flex flex-col space-y-4">
           {userBusinesses.length === 0 && !showCreateForm ? (
-            <p className="text-foreground">You don&apos;t have any businesses yet. Click &quot;Create New Business&quot; to get started!</p>
+            <p className="text-clay-800">You don&apos;t have any businesses yet. Click &quot;Create New Business&quot; to get started!</p>
           ) : (
             userBusinesses.map((business) => (
               <button
                 key={business.id}
                 onClick={() => handleBusinessClick(business.id)}
-                className={`w-full text-left py-4 px-6 rounded-card shadow-card transition-all duration-200 flex items-center space-x-4 ${business.isArchived ? 'bg-gray-200 text-clay-500 opacity-60' : 'bg-background hover:shadow-lg'}`}
+                className={`w-full text-left py-4 px-6 rounded-card shadow-card transition-all duration-200 flex items-center space-x-4 ${business.isArchived ? 'bg-gray-200 text-clay-500 opacity-60' : 'bg-clay-50 hover:shadow-lg'}`}
               >
                 {business.logoUrl ? (
                   <Image src={business.logoUrl} alt={`${business.businessName} Logo`} width={40} height={40} className="rounded-full object-cover" />
@@ -224,14 +224,14 @@ export default function YourBusinessesPageContent() {
 
       {/* Display existing businesses */}
       <div>
-        <h2 className="font-display text-2xl font-semibold text-foreground">Your DBAs</h2>
+        <h2 className="font-display text-2xl font-semibold text-clay-800">Your DBAs</h2>
         <div className="mt-8 flex flex-col space-y-4">
           {allDbas.length === 0 ? (
-            <p className="text-foreground">You don&apos;t have any DBAs yet.</p>
+            <p className="text-clay-800">You don&apos;t have any DBAs yet.</p>
           ) : (
             allDbas.map((dba) => {
               const parentBusiness = userBusinesses.find(b => b.id === dba.businessId);
-              const bgColor = parentBusiness?.color1 || 'bg-background';
+              const bgColor = parentBusiness?.color1 || 'bg-clay-50';
               return (
                 <button key={dba.id} onClick={() => handleDbaClick(dba.id)} className={`p-4 rounded-card shadow-card w-full text-left`} style={{ backgroundColor: bgColor }}>
                   <h3 className="text-xl font-bold text-white">{dba.name}</h3>

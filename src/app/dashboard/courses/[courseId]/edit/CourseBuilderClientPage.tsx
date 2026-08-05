@@ -109,7 +109,7 @@ const Lesson: React.FC<LessonProps> = ({ lesson, index, /* moveLesson, */ onUpda
             value={lessonTitle}
             onChange={(e) => setLessonTitle(e.target.value)}
             onBlur={handleUpdateLesson}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             disabled={isCoursePublished}
           />
         </div>
@@ -120,7 +120,7 @@ const Lesson: React.FC<LessonProps> = ({ lesson, index, /* moveLesson, */ onUpda
             onChange={(e) => setLessonContent(e.target.value)}
             onBlur={handleUpdateLesson}
             rows={5}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             disabled={isCoursePublished}
           ></textarea>
         </div>
@@ -131,7 +131,7 @@ const Lesson: React.FC<LessonProps> = ({ lesson, index, /* moveLesson, */ onUpda
             value={lessonVideoUrl}
             onChange={(e) => setLessonVideoUrl(e.target.value)}
             onBlur={handleUpdateLesson}
-            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
             placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             disabled={isCoursePublished}
           />
@@ -143,13 +143,13 @@ const Lesson: React.FC<LessonProps> = ({ lesson, index, /* moveLesson, */ onUpda
             accept=".pdf"
             multiple
             onChange={handlePdfChange}
-            className="mt-1 block w-full text-sm text-clay-500 file:mr-4 file:py-2 file:px-4 file:rounded-control file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100"
+            className="mt-1 block w-full text-sm text-clay-500 file:mr-4 file:py-2 file:px-4 file:rounded-control file:border-0 file:text-sm file:font-semibold file:bg-sage-50 file:text-sage-700 hover:file:bg-sage-100"
             disabled={isCoursePublished}
           />
           <ul className="mt-2 space-y-1">
             {lesson.materials.map(material => (
               <li key={material.id} className="flex items-center justify-between text-sm text-clay-600">
-                <a href={material.fileUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{material.fileName}</a>
+                <a href={material.fileUrl} target="_blank" rel="noopener noreferrer" className="text-sage-700 hover:underline">{material.fileName}</a>
                 {!isCoursePublished && (
                   <button onClick={() => onPdfDelete(material.id)} className="ml-2 text-red-600 hover:text-red-800">
                     Delete
@@ -383,7 +383,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
   return (
     // <DndProvider backend={HTML5Backend}>
       <div className="flex-1 p-6">
-        <h1 className="font-display text-2xl font-semibold text-foreground mb-6">Edit Course: {course.title}</h1>
+        <h1 className="font-display text-2xl font-semibold text-clay-800 mb-6">Edit Course: {course.title}</h1>
 
         {/* Course Status and Actions */}
         <div className="mb-6 p-4 bg-white rounded-card shadow-card flex items-center justify-between">
@@ -402,7 +402,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                   href={`/courses/${course.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                 >
                   View Public Page
                 </Link>
@@ -431,7 +431,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                 value={courseTitle}
                 onChange={(e) => setCourseTitle(e.target.value)}
                 onBlur={handleUpdateCourseDetails}
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                 disabled={isCoursePublished}
               />
             </div>
@@ -445,7 +445,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                 onChange={(e) => setCourseDescription(e.target.value)}
                 onBlur={handleUpdateCourseDetails}
                 rows={5}
-                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-control border-clay-200 shadow-sm focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                 disabled={isCoursePublished}
               ></textarea>
             </div>
@@ -473,7 +473,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
           {!isCoursePublished && (
             <button
               onClick={handleAddLesson}
-              className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
             >
               Add New Lesson
             </button>
@@ -494,7 +494,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                   id="externalUserEmail"
                   value={newExternalUserEmail}
                   onChange={(e) => setNewExternalUserEmail(e.target.value)}
-                  className="flex-1 block w-full rounded-none rounded-l-md border-clay-200 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  className="flex-1 block w-full rounded-none rounded-l-md border-clay-200 focus:border-sage-400 focus:ring-sage-300 sm:text-sm"
                   placeholder="user@example.com"
                   disabled={isCoursePublished}
                 />
@@ -502,7 +502,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                   <button
                     type="button"
                     onClick={handleAddExternalUserAccess}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md shadow-sm text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
                   >
                     Add Access
                   </button>

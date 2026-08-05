@@ -15,17 +15,17 @@ export default async function CoursesPage() {
   return (
     <div className="flex-1 p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="font-display text-2xl font-semibold text-foreground">Your Courses</h1>
+        <h1 className="font-display text-2xl font-semibold text-clay-800">Your Courses</h1>
         <Link
           href="/dashboard/courses/create"
-          className="inline-flex justify-center rounded-control border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="inline-flex justify-center rounded-control border border-transparent bg-sage-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sage-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
         >
           Create New Course
         </Link>
       </div>
 
       {courses.length === 0 ? (
-        <p className="text-foreground">You haven&apos;t created any courses yet.</p>
+        <p className="text-clay-800">You haven&apos;t created any courses yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
@@ -36,7 +36,7 @@ export default async function CoursesPage() {
               <div className="flex space-x-4">
                 <Link
                   href={`/dashboard/courses/${course.id}/edit`}
-                  className="inline-flex justify-center rounded-control border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                 >
                   Edit Course
                 </Link>
@@ -45,7 +45,7 @@ export default async function CoursesPage() {
                     href={`/courses/${course.id}`} // Public URL
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex justify-center rounded-control border border-clay-200 bg-white py-2 px-4 text-sm font-medium text-clay-700 shadow-sm hover:bg-clay-50 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
                   >
                     View Public Page
                   </Link>

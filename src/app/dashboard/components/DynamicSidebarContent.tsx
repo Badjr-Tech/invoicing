@@ -198,15 +198,17 @@ export default function DynamicSidebarContent() {
       : []),
   ];
 
-  // Open the section the current route lives in.
+  // Open the section the current route lives in — once, when the sidebar
+  // first knows its data. Re-running this on every navigation forced sections
+  // open against the member's own clicks and made the list jump around.
   useEffect(() => {
-    if (!pathname) return;
+    if (loading || openSection !== null || !pathname) return;
     const owner = sections.find((section) =>
       section.children.some((child) => pathname.startsWith(child.href)),
     );
     if (owner) setOpenSection(owner.id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, businesses.length, userProducts.length]);
+  }, [loading]);
 
   if (loading) {
     return (
