@@ -1,31 +1,32 @@
 "use server";
 
+import { db } from "@/db";
+import { businesses } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { requireUser } from "@/lib/session";
 import { ownsBusiness } from "@/lib/tenancy";
+import { getStripe } from "@/lib/stripe";
 
 export type ConnectResult =
   | { ok: true; url: string }
   | { ok: false; error: string };
 
 /**
- * Begin Stripe Connect onboarding for a business (spec §3.1).
+ * Begin (or resume) Stripe Connect onboarding for a business. Spec §3.1.
  *
- * INTEGRATION POINT — not yet wired to Stripe.
+ * Express account, with AGENCY as the fee payer:
+ * `controller.fees.payer = 'application'` is set at creation and is NOT
+ * changeable afterward — the whole fee model rests on it. Stripe requires
+ * the platform to also own losses and requirement collection under that
+ * setting, which is why those fields travel together below.
  *
- * The surrounding flow is complete: the caller is authenticated, ownership is
- * checked, and the result shape is what the client expects. What remains is
- * the Stripe call itself, which needs the `stripe` package and live keys:
+ * The account id is stored IMMEDIATELY on creation, before onboarding
+ * completes, so an abandoned flow resumes into the same account instead of
+ * orphaning one per attempt.
  *
- *   1. Create an Express account with controller.fees.payer = 'application'.
- *      That setting is NOT changeable afterward and the whole fee model
- *      depends on it (spec §2.1).
- *   2. Persist the returned account ID to businesses.stripeConnectAccountId
- *      IMMEDIATELY, before onboarding completes, so an abandoned flow resumes
- *      instead of orphaning an account.
- *   3. Create an Account Link with refresh_url and return_url pointing back
- *      to /onboarding/payments, and return its URL here.
- *   4. Let the account.updated webhook set stripeChargesEnabled — never trust
- *      the browser's return trip as proof the account is live.
+ * Completion is decided by the account.updated webhook flipping
+ * stripe_charges_enabled — never by the browser making it back to the
+ * return URL, which proves nothing.
  */
 export async function startStripeConnect(businessId: number): Promise<ConnectResult> {
   const user = await requireUser();
@@ -37,13 +38,65 @@ export async function startStripeConnect(businessId: number): Promise<ConnectRes
   if (!process.env.STRIPE_SECRET_KEY) {
     return {
       ok: false,
-      error:
-        "Payments are not configured yet. Add STRIPE_SECRET_KEY and complete the Connect integration.",
+      error: "Payments are not configured yet. Add STRIPE_SECRET_KEY to the environment.",
     };
   }
 
-  return {
-    ok: false,
-    error: "Stripe Connect is not wired up yet — see startStripeConnect in this file.",
-  };
+  const business = await db.query.businesses.findFirst({
+    where: eq(businesses.id, businessId),
+  });
+  if (!business) {
+    return { ok: false, error: "Business not found." };
+  }
+
+  const stripe = getStripe();
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+  try {
+    let accountId = business.stripeConnectAccountId;
+
+    if (!accountId) {
+      const account = await stripe.accounts.create({
+        controller: {
+          fees: { payer: "application" }, // permanent; load-bearing (spec §2.1)
+          losses: { payments: "application" },
+          requirement_collection: "stripe",
+          stripe_dashboard: { type: "express" },
+        },
+        business_profile: {
+          name: business.businessName,
+          ...(business.website ? { url: business.website } : {}),
+        },
+        metadata: {
+          agencyBusinessId: String(business.id),
+          agencyUserId: String(user.id),
+        },
+      });
+
+      accountId = account.id;
+
+      // Persisted before onboarding begins, so a half-finished flow resumes.
+      await db
+        .update(businesses)
+        .set({
+          stripeConnectAccountId: accountId,
+          stripeConnectStatus: "onboarding",
+        })
+        .where(eq(businesses.id, business.id));
+    }
+
+    const link = await stripe.accountLinks.create({
+      account: accountId,
+      type: "account_onboarding",
+      refresh_url: `${baseUrl}/onboarding/payments?refresh=1`,
+      return_url: `${baseUrl}/onboarding/payments?returned=1`,
+    });
+
+    return { ok: true, url: link.url };
+  } catch (error: unknown) {
+    console.error("[stripe-connect] failed to start onboarding:", error);
+    const message =
+      error instanceof Error ? error.message : "Unknown Stripe error.";
+    return { ok: false, error: `Could not start Stripe onboarding: ${message}` };
+  }
 }

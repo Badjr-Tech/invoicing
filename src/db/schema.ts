@@ -699,3 +699,20 @@ export const platformSettings = pgTable('platform_settings', {
    */
   onboardingMeetingUrl: text('onboarding_meeting_url'),
 });
+
+/**
+ * Every Stripe webhook event, persisted BEFORE processing (spec §3.5).
+ *
+ * The id is Stripe's own event id with a unique constraint, which makes
+ * duplicate deliveries no-ops — Stripe retries, so duplicates are a
+ * certainty, not an edge case. Processing happens off the stored row;
+ * error records why a row failed so it can be replayed.
+ */
+export const stripeEvents = pgTable('stripe_events', {
+  id: text('id').primaryKey(), // Stripe event id, e.g. evt_...
+  type: text('type').notNull(),
+  payload: text('payload').notNull(), // raw JSON body as received
+  receivedAt: timestamp('received_at', { withTimezone: true }).notNull().defaultNow(),
+  processedAt: timestamp('processed_at', { withTimezone: true }),
+  error: text('error'),
+});

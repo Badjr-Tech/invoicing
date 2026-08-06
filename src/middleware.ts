@@ -13,7 +13,11 @@ import { isGated } from "@/lib/access-edge";
  * Routes under /api that are intentionally reachable without a session.
  * Everything else matched below requires one.
  */
-const PUBLIC_API_PREFIXES: string[] = [];
+const PUBLIC_API_PREFIXES: string[] = [
+  // Stripe calls this directly; there is no session. Its auth is the webhook
+  // signature, verified in the route itself.
+  "/api/stripe/webhook",
+];
 
 /** Methods that cannot change state, so they never trigger the gate check. */
 const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
