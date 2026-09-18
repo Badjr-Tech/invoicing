@@ -1,5 +1,7 @@
 "use server";
 
+import { SITE_URL } from "@/lib/site";
+
 import { createHash, randomBytes } from "crypto";
 import { db } from "@/db";
 import { passwordResetTokens, users } from "@/db/schema";
@@ -69,8 +71,7 @@ export async function forgotPassword(
       expiresAt: new Date(Date.now() + TOKEN_TTL_MS),
     });
 
-    const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const baseUrl = SITE_URL;
     const resetUrl = `${baseUrl}/reset-password?token=${token}`;
 
     const firstName = user.name?.split(" ")[0] ?? "there";

@@ -1,5 +1,7 @@
 "use server";
 
+import { SITE_URL } from "@/lib/site";
+
 import { db } from "@/db";
 import { businesses } from "@/db/schema";
 import { eq } from "drizzle-orm";
@@ -50,7 +52,7 @@ export async function startStripeConnect(businessId: number): Promise<ConnectRes
   }
 
   const stripe = getStripe();
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = SITE_URL;
 
   try {
     let accountId = business.stripeConnectAccountId;
