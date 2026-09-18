@@ -12,10 +12,10 @@ export default async function AdminHTHClassPage() {
       <h1 className="font-display text-2xl font-semibold mb-6">HTH Class - Admin View (Teacher)</h1>
 
       <div className="mb-6 flex space-x-4">
-        <Link href="/dashboard/admin/hth-class/add-class" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
+        <Link href="/dashboard/admin/hth-class/add-class" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
           Add New Class
         </Link>
-        <Link href="/dashboard/admin/hth-class/enrollment-requests" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
+        <Link href="/dashboard/admin/hth-class/enrollment-requests" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
           View Enrollment Requests
         </Link>
       </div>

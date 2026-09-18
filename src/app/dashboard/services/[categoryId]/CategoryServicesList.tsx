@@ -45,7 +45,7 @@ export default function CategoryServicesList({ category, services, businesses }:
                 <p className="text-sm font-bold">${parseFloat(service.price).toFixed(2)}</p>
               </div>
               <div className="flex items-center space-x-2">
-                <button onClick={() => handleEditClick(service)} className="px-3 py-1 bg-ember-500 text-white rounded-control hover:bg-ember-500">Edit</button>
+                <button onClick={() => handleEditClick(service)} className="px-3 py-1 bg-ember-500 text-white rounded-control hover:bg-ember-700">Edit</button>
                 <button
                   onClick={() => handleDelete(service.id)}
                   disabled={isPending}

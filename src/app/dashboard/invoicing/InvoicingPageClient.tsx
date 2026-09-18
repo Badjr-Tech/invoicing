@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { useFormState } from "react-dom";
 import { createInvoice } from "./actions";
 import { generateInvoicePDF } from "./pdf";
-import Link from "next/link"; // Import Link
-import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import PendingButton from "@/app/components/PendingButton";
+import { ChevronDown, ChevronRight, Plus, ReceiptText, X } from "lucide-react";
 
 interface Service {
   id: number;
@@ -18,9 +19,9 @@ interface Service {
     id: number;
     name: string;
   } | null;
-  designation: 'hourly' | 'per deliverable' | 'flat fee'; // New field
-  serviceNumber: string | null; // New field
-  quantity?: number; // Made optional
+  designation: 'hourly' | 'per deliverable' | 'flat fee';
+  serviceNumber: string | null;
+  quantity?: number;
 }
 
 interface ServiceCategory {
@@ -35,15 +36,20 @@ export type FormState = {
   error: string;
   invoice?: {
     client: { name: string; email: string };
-    services: { name: string; price: string; description: string | null; quantity: number; type: 'hourly' | 'per_deliverable' | 'flat_fee' }[]; // Updated service type
+    services: { name: string; price: string; description: string | null; quantity: number; type: 'hourly' | 'per_deliverable' | 'flat_fee' }[];
     totalAmount: number;
     user: { logoUrl: string | null };
     dueDate: Date | null;
-    invoiceNumber: string; // New field
-    notes: string | null; // New field
-    invoiceBusinessDisplayName: string; // New field
+    invoiceNumber: string;
+    notes: string | null;
+    invoiceBusinessDisplayName: string;
   };
 } | undefined;
+
+const inputStyles =
+  "block w-full rounded-control border border-clay-200 bg-white px-3 py-2 text-sm text-clay-800 shadow-sm transition placeholder:text-clay-400 focus:border-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-200/70";
+
+const labelStyles = "block text-sm font-medium text-clay-700";
 
 export default function InvoicingPageClient({
   clients,
@@ -73,13 +79,13 @@ export default function InvoicingPageClient({
 }) {
   const [state, formAction] = useFormState<FormState, FormData>(createInvoice, undefined);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
-  const [selectedClient, setSelectedClient] = useState<number | null>(null);
+  const [, setSelectedClient] = useState<number | null>(null);
   const [selectedBusiness, setSelectedBusiness] = useState<number | null>(null);
-  const [selectedBusinessObject, setSelectedBusinessObject] = useState<typeof businesses[number] | null>(null); // New state for selected business object
+  const [selectedBusinessObject, setSelectedBusinessObject] = useState<typeof businesses[number] | null>(null);
   const [invoiceNumber, setInvoiceNumber] = useState<string>('');
   const [notes, setNotes] = useState<string>('');
   const [invoiceBusinessDisplayName, setInvoiceBusinessDisplayName] = useState<string>('');
-  const [dueDate, setDueDate] = useState(''); // New state for due date
+  const [dueDate, setDueDate] = useState('');
   const [selectedBusinessForServices, setSelectedBusinessForServices] = useState<number | null>(null);
 
   useEffect(() => {
@@ -139,9 +145,13 @@ export default function InvoicingPageClient({
     setSelectedServices([...selectedServices, { ...service, quantity: 1 }]);
   };
 
+  const handleRemoveService = (index: number) => {
+    setSelectedServices(selectedServices.filter((_, i) => i !== index));
+  };
+
   const handleQuantityChange = (index: number, quantity: number) => {
     const updatedServices = [...selectedServices];
-    updatedServices[index].quantity = quantity;
+    updatedServices[index].quantity = Number.isNaN(quantity) ? 1 : Math.max(1, quantity);
     setSelectedServices(updatedServices);
   };
 
@@ -155,23 +165,26 @@ export default function InvoicingPageClient({
     ? categories.filter(category => category.businessId === selectedBusinessForServices)
     : categories;
 
-  // Group services by category
   const servicesByCategory: { [key: string]: Service[] } = {};
   filteredCategories.forEach(category => {
     servicesByCategory[category.name] = filteredServices.filter(service => service.categoryId === category.id);
   });
-  // Add uncategorized services
   servicesByCategory["Uncategorized"] = filteredServices.filter(service => service.categoryId === null);
 
-
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="font-display text-3xl font-semibold text-clay-800">Create Invoice</h1>
-        <div className="flex items-center space-x-4">
+    <div className="mx-auto max-w-6xl">
+      {/* Header */}
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="font-display text-3xl font-semibold text-clay-800">Create an invoice</h1>
+          <p className="mt-1 text-clay-600">
+            Pick the services, choose the client, send it.
+          </p>
+        </div>
+        <div className="flex items-end gap-3">
           <div>
-            <label htmlFor="businessForServices" className="block text-sm font-medium text-clay-700">
-              Filter Services by Business
+            <label htmlFor="businessForServices" className="mb-1.5 block text-xs font-medium text-clay-600">
+              Filter services by business
             </label>
             <select
               id="businessForServices"
@@ -181,9 +194,9 @@ export default function InvoicingPageClient({
                 const businessId = e.target.value;
                 setSelectedBusinessForServices(businessId ? parseInt(businessId) : null);
               }}
-              className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
+              className={inputStyles}
             >
-              <option value="">All Businesses</option>
+              <option value="">All businesses</option>
               {businesses.map((business) => (
                 <option key={business.id} value={business.id}>
                   {business.businessName}
@@ -191,67 +204,84 @@ export default function InvoicingPageClient({
               ))}
             </select>
           </div>
-          <Link href="/dashboard/invoices" className="py-2 px-4 bg-ember-600 text-white rounded-control hover:bg-ember-500">
-            View Invoices
+          <Link
+            href="/dashboard/invoices"
+            className="rounded-control border border-clay-200 bg-white px-4 py-2 text-sm font-semibold text-clay-700 shadow-sm transition hover:border-sage-300 hover:text-clay-900"
+          >
+            View invoices
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Column: Add Services */}
-        <div>
-          <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Add Services</h2>
-          <div className="space-y-6">
-            {Object.entries(servicesByCategory).map(([categoryName, servicesInCat]) => (
-              <div key={categoryName}>
-                <h3 className="text-xl font-semibold text-clay-700 mb-3 cursor-pointer flex items-center" onClick={() => toggleCategory(categoryName)}>
-                  <span className="mr-2">{collapsedCategories[categoryName] ? '▶' : '▼'}</span>
-                  {categoryName}
-                </h3>
-                {!collapsedCategories[categoryName] && (
-                  <>
-                    {servicesInCat.length === 0 ? (
-                      <p className="text-clay-500">No services in this category.</p>
-                    ) : (
-                      <div className="space-y-4">
-                        {servicesInCat.map((service) => (
-                          <div key={service.id} className="p-4 bg-clay-50 rounded-card shadow flex justify-between items-center">
-                            <div>
-                              <p className="font-semibold">{service.name}</p>
-                              <p className="text-sm text-clay-600">{service.description}</p>
-                              <p className="text-sm font-bold">${service.price}</p>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+        {/* Left: service picker */}
+        <div className="lg:col-span-2">
+          <div className="rounded-card border border-clay-200 bg-white p-5 shadow-card">
+            <h2 className="font-display text-lg font-semibold text-clay-800">Services</h2>
+            <p className="mt-0.5 text-sm text-clay-600">Click a category, then add what you did.</p>
+
+            <div className="mt-4 space-y-2">
+              {Object.entries(servicesByCategory).map(([categoryName, servicesInCat]) => (
+                <div key={categoryName} className="overflow-hidden rounded-control border border-clay-200">
+                  <button
+                    type="button"
+                    onClick={() => toggleCategory(categoryName)}
+                    className="flex w-full items-center justify-between bg-clay-50 px-4 py-2.5 text-left text-sm font-semibold text-clay-800 transition hover:bg-clay-100"
+                  >
+                    <span>{categoryName}</span>
+                    <span className="flex items-center gap-2 text-clay-500">
+                      <span className="text-xs font-normal">{servicesInCat.length}</span>
+                      {collapsedCategories[categoryName] ? <ChevronRight size={15} /> : <ChevronDown size={15} />}
+                    </span>
+                  </button>
+
+                  {!collapsedCategories[categoryName] && (
+                    <div className="divide-y divide-clay-100">
+                      {servicesInCat.length === 0 ? (
+                        <p className="px-4 py-3 text-sm text-clay-500">No services in this category.</p>
+                      ) : (
+                        servicesInCat.map((service) => (
+                          <div key={service.id} className="flex items-center justify-between gap-3 px-4 py-3">
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-medium text-clay-800">{service.name}</p>
+                              {service.description && (
+                                <p className="truncate text-xs text-clay-500">{service.description}</p>
+                              )}
+                              <p className="mt-0.5 text-xs font-semibold text-sage-700">
+                                ${service.price}
+                                <span className="ml-1 font-normal text-clay-500">· {service.designation}</span>
+                              </p>
                             </div>
                             <button
+                              type="button"
                               onClick={() => handleAddService(service)}
-                              className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
+                              className="inline-flex shrink-0 items-center gap-1 rounded-control bg-sage-100 px-3 py-1.5 text-xs font-semibold text-sage-800 transition hover:bg-sage-200"
                             >
-                              Add
+                              <Plus size={13} /> Add
                             </button>
                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            ))}
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Right Column: Invoice Cart */}
-        <div>
-          <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Invoice</h2>
-          <form action={formAction} className="space-y-6 bg-invoice-blue p-6 rounded-card shadow-card text-white">
-            <div>
-              <label htmlFor="businessId" className="block text-sm font-medium text-white">
-                Business Name
-              </label>
-              <div className="mt-1">
+        {/* Right: the invoice */}
+        <div className="lg:col-span-3">
+          <form action={formAction} className="rounded-card border border-clay-200 bg-white p-6 shadow-card">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label htmlFor="businessId" className={labelStyles}>Business</label>
                 <select
                   id="businessId"
                   name="businessId"
                   required
                   onChange={(e) => setSelectedBusiness(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
+                  className={`mt-1.5 ${inputStyles}`}
                 >
                   <option value="">Select your business</option>
                   {businesses.map((business) => (
@@ -261,22 +291,20 @@ export default function InvoicingPageClient({
                   ))}
                 </select>
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="invoiceBusinessDisplayName" className="block text-sm font-medium text-white">
-                Business Line/DBA or Trade Name, if applicable
-              </label>
-              <div className="mt-1">
+              <div>
+                <label htmlFor="invoiceBusinessDisplayName" className={labelStyles}>
+                  Name shown on the invoice
+                </label>
                 <select
                   id="invoiceBusinessDisplayName"
                   name="invoiceBusinessDisplayName"
                   value={invoiceBusinessDisplayName}
                   onChange={(e) => setInvoiceBusinessDisplayName(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
+                  className={`mt-1.5 ${inputStyles}`}
                   required
                 >
-                  <option value="">Select business name for invoice</option>
+                  <option value="">Business or DBA name</option>
                   {selectedBusinessObject && (
                     <>
                       <option value={selectedBusinessObject.businessName}>
@@ -291,19 +319,15 @@ export default function InvoicingPageClient({
                   )}
                 </select>
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="clientId" className="block text-sm font-medium text-white">
-                Client
-              </label>
-              <div className="mt-1">
+              <div>
+                <label htmlFor="clientId" className={labelStyles}>Client</label>
                 <select
                   id="clientId"
                   name="clientId"
                   required
                   onChange={(e) => setSelectedClient(parseInt(e.target.value))}
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
+                  className={`mt-1.5 ${inputStyles}`}
                 >
                   <option value="">Select a client</option>
                   {clients.map((client) => (
@@ -313,90 +337,99 @@ export default function InvoicingPageClient({
                   ))}
                 </select>
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="invoiceNumber" className="block text-sm font-medium text-white">
-                Invoice Number
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  id="invoiceNumber"
-                  name="invoiceNumber"
-                  value={invoiceNumber}
-                  onChange={(e) => setInvoiceNumber(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="dueDate" className="block text-sm font-medium text-white">
-                Due Date
-              </label>
-              <div className="mt-1">
-                <input
-                  type="date"
-                  id="dueDate"
-                  name="dueDate"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-lg font-medium text-white">Selected Services</h3>
-              {selectedServices.map((service, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <p>{service.name}</p>
-                  <div className="flex items-center">
-                    {service.designation !== 'flat fee' && (
-                      <input
-                        type="number"
-                        min="1"
-                        value={service.quantity}
-                        onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
-                        className="w-16 text-white px-2 py-1 rounded-control mr-2"
-                      />
-                    )}
-                    {service.designation === 'flat fee' && (
-                      <input
-                        type="number"
-                        value={1} // Flat fee services always have quantity 1
-                        disabled
-                        className="w-16 text-white px-2 py-1 rounded-control mr-2 bg-gray-200"
-                      />
-                    )}
-                    <p>${(parseFloat(service.price) * (service.quantity ?? 0)).toFixed(2)}</p>
-                  </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="invoiceNumber" className={labelStyles}>Invoice #</label>
+                  <input
+                    type="text"
+                    id="invoiceNumber"
+                    name="invoiceNumber"
+                    value={invoiceNumber}
+                    onChange={(e) => setInvoiceNumber(e.target.value)}
+                    placeholder="1042"
+                    className={`mt-1.5 ${inputStyles}`}
+                  />
                 </div>
-              ))}
-            </div>
-
-            <div className="border-t border-clay-200 pt-4">
-              <div className="flex justify-between font-bold text-lg">
-                <p>Total</p>
-                <p>${totalAmount.toFixed(2)}</p>
+                <div>
+                  <label htmlFor="dueDate" className={labelStyles}>Due date</label>
+                  <input
+                    type="date"
+                    id="dueDate"
+                    name="dueDate"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    className={`mt-1.5 ${inputStyles}`}
+                  />
+                </div>
               </div>
             </div>
 
-            <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-white">
-                Notes
-              </label>
-              <div className="mt-1">
-                <textarea
-                  id="notes"
-                  name="notes"
-                  rows={3}
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-clay-200 rounded-control shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sage-300 focus:border-sage-400 sm:text-sm text-black"
-                ></textarea>
+            {/* Line items */}
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-clay-500">Line items</h3>
+
+              {selectedServices.length === 0 ? (
+                <div className="mt-3 flex flex-col items-center rounded-control border border-dashed border-clay-300 bg-clay-50 px-4 py-8 text-center">
+                  <ReceiptText size={22} className="text-clay-400" />
+                  <p className="mt-2 text-sm text-clay-600">
+                    Nothing here yet — add services from the left.
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-3 divide-y divide-clay-100 rounded-control border border-clay-200">
+                  {selectedServices.map((service, index) => (
+                    <div key={index} className="flex items-center gap-3 px-4 py-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-clay-800">{service.name}</p>
+                        <p className="text-xs text-clay-500">
+                          ${service.price}
+                          {service.designation !== 'flat fee' && ` × ${service.quantity ?? 1}`}
+                        </p>
+                      </div>
+                      {service.designation !== 'flat fee' && (
+                        <input
+                          type="number"
+                          min="1"
+                          value={service.quantity}
+                          onChange={(e) => handleQuantityChange(index, parseInt(e.target.value))}
+                          aria-label={`Quantity for ${service.name}`}
+                          className="w-16 rounded-control border border-clay-200 px-2 py-1 text-center text-sm text-clay-800 focus:border-sage-400 focus:outline-none focus:ring-1 focus:ring-sage-200"
+                        />
+                      )}
+                      <p className="w-20 text-right text-sm font-semibold text-clay-800">
+                        ${(parseFloat(service.price) * (service.quantity ?? 0)).toFixed(2)}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveService(index)}
+                        aria-label={`Remove ${service.name}`}
+                        className="rounded-full p-1 text-clay-400 transition hover:bg-clay-100 hover:text-clay-700"
+                      >
+                        <X size={15} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-4 flex items-center justify-between rounded-control bg-clay-50 px-4 py-3">
+                <p className="text-sm font-semibold text-clay-700">Total</p>
+                <p className="font-display text-xl font-bold text-clay-800">${totalAmount.toFixed(2)}</p>
               </div>
+            </div>
+
+            <div className="mt-5">
+              <label htmlFor="notes" className={labelStyles}>Notes</label>
+              <textarea
+                id="notes"
+                name="notes"
+                rows={3}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Payment terms, a thank you, anything the client should see."
+                className={`mt-1.5 ${inputStyles}`}
+              ></textarea>
             </div>
 
             <input type="hidden" name="services" value={JSON.stringify(selectedServices)} />
@@ -405,18 +438,24 @@ export default function InvoicingPageClient({
             <input type="hidden" name="notes" value={notes} />
             <input type="hidden" name="invoiceBusinessDisplayName" value={invoiceBusinessDisplayName} />
 
+            {state?.message && (
+              <p className="mt-4 rounded-control border border-sage-200 bg-sage-50 px-3.5 py-2.5 text-sm text-clay-800">
+                {state.message}
+              </p>
+            )}
+            {state?.error && (
+              <p role="alert" className="mt-4 rounded-control border border-ember-200 bg-ember-50 px-3.5 py-2.5 text-sm text-clay-800">
+                {state.error}
+              </p>
+            )}
 
-            {state?.message && <p className="text-sage-700 text-sm">{state.message}</p>}
-            {state?.error && <p className="text-red-600 text-sm">{state.error}</p>}
-
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
-              >
-                Create & Send Invoice
-              </button>
-            </div>
+            <PendingButton
+              disabled={selectedServices.length === 0}
+              className="mt-6 w-full rounded-control bg-ember-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-ember-700"
+              pendingLabel="Creating invoice…"
+            >
+              Create &amp; send invoice
+            </PendingButton>
           </form>
         </div>
       </div>

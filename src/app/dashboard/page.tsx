@@ -7,8 +7,11 @@ import {
   Receipt,
   Users,
 } from 'lucide-react';
+import type { Metadata } from "next";
 import { requireUser } from '@/lib/session';
 import { loadBirdsEyeMetrics, formatCurrency } from '@/lib/dashboard-metrics';
+
+export const metadata: Metadata = { title: "Dashboard" };
 
 /**
  * Home is the Bird's Eye View (spec §4.5): three numbers, large, above the
@@ -120,7 +123,7 @@ export default async function DashboardPage() {
           </p>
           <Link
             href="/onboarding"
-            className="mt-4 inline-flex items-center gap-1.5 rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
           >
             Continue setup <ArrowRight size={16} />
           </Link>

@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { users } from "@/db/schema";
 import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
+import { rateLimited, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
 
 export type FormState = {
   message: string;
@@ -21,6 +22,23 @@ export async function createAccount(prevState: FormState, formData: FormData): P
   const confirmPassword = formData.get("confirmPassword") as string ?? "";
 
   const fail = (error: string): FormState => ({ message: "", error });
+
+  // Spam defence, cheapest checks first.
+  //
+  // The honeypot ("company") is invisible to humans; a filled value means a
+  // bot, which gets the same success message as everyone else so it learns
+  // nothing. The timestamp rejects sub-1.5s submissions — no human reads a
+  // five-field form that fast.
+  if ((formData.get("company") as string ?? "").length > 0) {
+    return { message: "Account created successfully!", error: "" };
+  }
+  const renderedAt = Number(formData.get("formRenderedAt") ?? 0);
+  if (renderedAt > 0 && Date.now() - renderedAt < 1500) {
+    return { message: "Account created successfully!", error: "" };
+  }
+  if (await rateLimited("signup", 5, 60_000)) {
+    return fail(RATE_LIMIT_MESSAGE);
+  }
 
   if (!name || !phone || !email || !password) {
     return fail("All fields are required.");

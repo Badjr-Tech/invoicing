@@ -75,7 +75,7 @@ export default async function AddClassPage() {
         </div>
         <button
           type="submit"
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
         >
           Create Class
         </button>

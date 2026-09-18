@@ -37,6 +37,17 @@ export interface SendEmailOptions {
    * inflates content by about a third, so keep sources under roughly 7 MB.
    */
   attachments?: Array<{ name: string; contentBase64: string }>;
+  /**
+   * 'marketing' for anything a member did not directly trigger —
+   * announcements, tips, campaigns. Requires recipientUserId: the send is
+   * skipped when they have opted out, and the message carries a working
+   * unsubscribe (List-Unsubscribe headers + a link the body must include).
+   * 'transactional' (default) is exempt and must NOT carry unsubscribe —
+   * opted-out members still get their password resets and receipts.
+   */
+  kind?: 'transactional' | 'marketing';
+  /** Required when kind is 'marketing'. */
+  recipientUserId?: number;
 }
 
 export type SendEmailResult =
@@ -52,9 +63,48 @@ export async function sendEmail({
   fromEmail: fromEmailOverride,
   replyTo,
   attachments,
+  kind = 'transactional',
+  recipientUserId,
 }: SendEmailOptions): Promise<SendEmailResult> {
   const apiKey = process.env.BREVO_API_KEY;
   const fromEmail = process.env.BREVO_FROM_EMAIL;
+
+  let unsubscribeHeaders: Record<string, string> = {};
+
+  if (kind === 'marketing') {
+    if (!recipientUserId) {
+      return { ok: false, error: 'Marketing email requires recipientUserId.' };
+    }
+
+    // The opt-out flag is checked at the moment of sending — an unsubscribe
+    // link that does not actually stop the next email is worse than none.
+    const { db } = await import('@/db');
+    const { users } = await import('@/db/schema');
+    const { eq } = await import('drizzle-orm');
+    const recipient = await db.query.users.findFirst({
+      where: eq(users.id, recipientUserId),
+    });
+    if (!recipient) {
+      return { ok: false, error: `No user ${recipientUserId} to send to.` };
+    }
+    if (recipient.isOptedOut) {
+      return { ok: false, skipped: true, error: 'Recipient has unsubscribed.' };
+    }
+
+    const { makeOneClickUrl, makeUnsubscribeUrl } = await import('@/lib/unsubscribe');
+    unsubscribeHeaders = {
+      'List-Unsubscribe': `<${await makeOneClickUrl(recipientUserId)}>`,
+      'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+    };
+
+    // Refuse to send marketing whose body has no visible unsubscribe link.
+    if (!(html ?? text).includes('/unsubscribe')) {
+      return {
+        ok: false,
+        error: `Marketing email must include an unsubscribe link in the body. Get one from makeUnsubscribeUrl(${recipientUserId}) — e.g. ${await makeUnsubscribeUrl(recipientUserId)}`,
+      };
+    }
+  }
 
   if (!apiKey || !fromEmail) {
     // Not an error in development — the caller decides whether to fall back.
@@ -85,6 +135,7 @@ export async function sendEmail({
         textContent: text,
         ...(html ? { htmlContent: html } : {}),
         ...(replyTo ? { replyTo } : {}),
+        ...(Object.keys(unsubscribeHeaders).length ? { headers: unsubscribeHeaders } : {}),
         ...(attachments?.length
           ? {
               attachment: attachments.map((file) => ({

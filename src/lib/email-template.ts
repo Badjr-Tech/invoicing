@@ -46,6 +46,12 @@ export interface BrandedEmailOptions {
    * clients scrape the first words of the body, which reads like an accident.
    */
   preheader?: string;
+  /**
+   * REQUIRED for marketing email (sendEmail refuses marketing bodies without
+   * it). Renders a visible unsubscribe link in the footer. Leave unset for
+   * transactional mail — password resets must not offer to unsubscribe.
+   */
+  unsubscribeUrl?: string;
 }
 
 const DEFAULT_PRIMARY = '#6d8f5e'; // sage-600
@@ -97,7 +103,7 @@ function readableTextOn(hexColor: string): string {
 }
 
 export function renderBrandedEmail(options: BrandedEmailOptions): string {
-  const { brand, heading, paragraphs, button, details, footerNote, preheader } =
+  const { brand, heading, paragraphs, button, details, footerNote, preheader, unsubscribeUrl } =
     options;
 
   const primary = safeColor(brand.color1, DEFAULT_PRIMARY);
@@ -188,7 +194,11 @@ ${
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
               <tr><td style="border-top:1px solid ${HAIRLINE};padding-top:20px;">
                 ${footer}
-                <p style="margin:12px 0 0;font-size:12px;color:${MUTED};">Sent by ${businessName} via AGENCY.</p>
+                <p style="margin:12px 0 0;font-size:12px;color:${MUTED};">Sent by ${businessName} via AGENCY.${
+                  unsubscribeUrl
+                    ? ` <a href="${escapeHtml(unsubscribeUrl)}" style="color:${MUTED};text-decoration:underline;">Unsubscribe</a>`
+                    : ''
+                }</p>
               </td></tr>
             </table>
           </td>
@@ -225,5 +235,8 @@ export function renderPlainText(options: BrandedEmailOptions): string {
   }
 
   lines.push('', `Sent by ${options.brand.name} via AGENCY.`);
+  if (options.unsubscribeUrl) {
+    lines.push(`Unsubscribe: ${options.unsubscribeUrl}`);
+  }
   return lines.join('\n');
 }

@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { passwordResetTokens, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/email";
+import { rateLimited, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
 import { renderBrandedEmail, renderPlainText } from "@/lib/email-template";
 
 export type FormState = {
@@ -42,6 +43,12 @@ export async function forgotPassword(
 
   if (!email) {
     return { message: "", error: "Enter your email address." };
+  }
+
+  // Each request sends an email; without a lid this is a free spam cannon
+  // aimed at any address an attacker types in.
+  if (await rateLimited("forgot-password", 3, 60_000)) {
+    return { message: "", error: RATE_LIMIT_MESSAGE };
   }
 
   try {

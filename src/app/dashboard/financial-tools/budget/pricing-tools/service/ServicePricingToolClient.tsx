@@ -375,7 +375,7 @@ export default function ServicePricingToolClient() {
                 ))}
                 <button
                   onClick={addCostItem}
-                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-700"
                 >
                   Add Additional Cost
                 </button>
@@ -440,7 +440,7 @@ export default function ServicePricingToolClient() {
                 ))}
                 <button
                   onClick={addOperationalCostItem}
-                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500"
+                  className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-700"
                 >
                   Add Operational Cost
                 </button>
@@ -449,7 +449,7 @@ export default function ServicePricingToolClient() {
 
             <button
               onClick={handleProceedToCalculation}
-              className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
             >
               Proceed to Calculation
             </button>
@@ -562,7 +562,7 @@ export default function ServicePricingToolClient() {
                     </button>
                     <button
                       onClick={handleSaveCalculation} // This function will be implemented next
-                      className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500"
+                      className="px-4 py-2 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-700"
                     >
                       Save
                     </button>

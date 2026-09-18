@@ -43,7 +43,7 @@ export default function CreateEventModal({ onAdd, onClose }: CreateEventModalPro
             <div className="items-center px-4 py-3">
               <button
                 type="submit"
-                className="px-4 py-2 bg-ember-600 text-white text-base font-medium rounded-control w-full shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300"
+                className="px-4 py-2 bg-ember-600 text-white text-base font-medium rounded-control w-full shadow-sm hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-sage-300"
               >
                 Create Event
               </button>

@@ -72,7 +72,7 @@ export default async function PaymentsStepPage() {
             </p>
             <Link
               href="/dashboard/businesses/create"
-              className="mt-4 inline-block rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+              className="mt-4 inline-block rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
             >
               Register business
             </Link>

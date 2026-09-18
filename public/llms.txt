@@ -1,0 +1,37 @@
+# AGENCY
+
+> AGENCY is a small-business incubator delivered as software, by DakJen
+> Creative LLC. Owner-operated businesses register, invoice their clients,
+> get paid, keep their books, budget, price their work, send contracts,
+> manage contractors and take classes — in one place, with real people
+> behind it.
+
+## How it works
+
+- No monthly fee, no annual contract. AGENCY takes a single percentage of
+  what a member collects through the platform; that one number covers
+  payment processing (bank transfer), every tool, and access to the team.
+- The percentage falls as a member's revenue grows.
+- New members get 7 days of full access before connecting anything.
+- Payments run on Stripe Connect; AGENCY never holds member funds.
+
+## What's included
+
+Invoicing & payments, bookkeeping, budgeting & pricing tools, business and
+DBA registration, contracts, contractor management, business email,
+consulting & meetings, classes & resources, business connections.
+
+Website builds, portfolios and campaigns are studio services from DakJen
+Creative, quoted separately.
+
+## Pages
+
+- Home: /
+- Create an account: /create-account
+- Sign in: /login
+- Privacy: /privacy
+- Terms: /terms
+
+## Contact
+
+DakJen Creative LLC — dakjenenterprises@gmail.com

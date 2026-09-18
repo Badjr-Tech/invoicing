@@ -17,6 +17,9 @@ const PUBLIC_API_PREFIXES: string[] = [
   // Stripe calls this directly; there is no session. Its auth is the webhook
   // signature, verified in the route itself.
   "/api/stripe/webhook",
+  // One-click unsubscribe (RFC 8058): mail clients POST here with no session.
+  // The signed token in the URL is the authorization.
+  "/api/unsubscribe",
 ];
 
 /** Methods that cannot change state, so they never trigger the gate check. */

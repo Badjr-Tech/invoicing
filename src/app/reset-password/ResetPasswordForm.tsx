@@ -2,6 +2,7 @@
 
 import { useFormState } from "react-dom";
 import Link from "next/link";
+import PendingButton from "@/app/components/PendingButton";
 import { resetPassword, FormState } from "./actions";
 
 const inputStyles =
@@ -19,7 +20,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
         <p className="font-semibold text-clay-800">{state.message}</p>
         <Link
           href="/login"
-          className="mt-4 inline-block rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+          className="mt-4 inline-block rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
         >
           Sign in
         </Link>
@@ -73,12 +74,12 @@ export default function ResetPasswordForm({ token }: { token: string }) {
         </p>
       )}
 
-      <button
-        type="submit"
-        className="w-full rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+      <PendingButton
+        className="w-full rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
+        pendingLabel="Saving…"
       >
         Set new password
-      </button>
+      </PendingButton>
     </form>
   );
 }

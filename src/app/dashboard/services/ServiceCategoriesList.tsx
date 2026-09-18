@@ -75,7 +75,7 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
                       </div>
                       <button
                         onClick={() => handleEditClick(category)}
-                        className="ml-4 px-3 py-1 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
+                        className="ml-4 px-3 py-1 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
                       >
                         Edit
                       </button>
@@ -109,7 +109,7 @@ export default function ServiceCategoriesList({ categories, businesses }: { cate
                     </div>
                     <button
                       onClick={() => handleEditClick(category)}
-                      className="ml-4 px-3 py-1 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
+                      className="ml-4 px-3 py-1 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
                     >
                       Edit
                     </button>

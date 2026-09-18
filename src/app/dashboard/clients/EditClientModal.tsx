@@ -153,7 +153,7 @@ export default function EditClientModal({
                       </button>
                       <button
                         type="submit"
-                        className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 px-4 py-2 text-sm font-medium text-white hover:bg-ember-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-sage-300 focus-visible:ring-offset-2"
+                        className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 px-4 py-2 text-sm font-medium text-white hover:bg-ember-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sage-300 focus-visible:ring-offset-2"
                       >
                         Update Client
                       </button>

@@ -46,7 +46,7 @@ export default function LockedBanner({
           {next && (
             <Link
               href={next.href}
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-control bg-ember-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-ember-500"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-control bg-ember-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-ember-700"
             >
               {next.title} <ArrowRight size={15} />
             </Link>

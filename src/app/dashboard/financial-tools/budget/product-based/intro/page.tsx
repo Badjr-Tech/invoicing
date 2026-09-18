@@ -32,7 +32,7 @@ export default function ProductBasedBudgetIntroPage() {
             href="https://docs.google.com/spreadsheets/d/1BZt7YpQjokWzTiy5e4K3C-JpgepTRMx4PDtieVT2Y3Y/copy" // Assuming same template for now, or provide a product-specific one
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500"
+            className="inline-block px-6 py-3 border border-transparent text-base font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700"
           >
             Copy Budget Template
           </a>
@@ -65,7 +65,7 @@ export default function ProductBasedBudgetIntroPage() {
       </div>
       {/* Proceed to Budget Button */}
       <div className="mt-8 text-center">
-        <Link href="/dashboard/financial-tools/budget/product-based" className="inline-block px-8 py-4 border border-transparent text-xl font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
+        <Link href="/dashboard/financial-tools/budget/product-based" className="inline-block px-8 py-4 border border-transparent text-xl font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
           Proceed to Product-Based Budget
         </Link>
       </div>

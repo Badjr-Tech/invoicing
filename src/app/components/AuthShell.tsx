@@ -112,4 +112,4 @@ export const authInput =
   "block w-full rounded-control border border-clay-200 bg-white px-3.5 py-2.5 text-clay-800 shadow-sm transition placeholder:text-clay-400 focus:border-sage-400 focus:outline-none focus:ring-2 focus:ring-sage-200/70";
 
 export const authButton =
-  "w-full rounded-control bg-ember-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-ember-300 focus:ring-offset-2 focus:ring-offset-clay-50";
+  "w-full rounded-control bg-ember-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-ember-300 focus:ring-offset-2 focus:ring-offset-clay-50";

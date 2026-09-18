@@ -15,7 +15,7 @@ export default async function AdminAGENCYClassPage() {
         <Link href="/dashboard/admin/agency-class/add-class" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-sage-600 hover:bg-sage-700-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
           Add New Class
         </Link>
-        <Link href="/dashboard/admin/agency-class/enrollment-requests" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
+        <Link href="/dashboard/admin/agency-class/enrollment-requests" className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300">
           View Enrollment Requests
         </Link>
       </div>

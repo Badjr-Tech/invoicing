@@ -101,7 +101,7 @@ export default function EditServiceModal({ service, onClose, onSubmissionSuccess
               <div className="items-center gap-2 mt-3 sm:flex">
                 <button
                   type="submit"
-                  className="w-full inline-flex justify-center rounded-control border border-transparent shadow-sm px-4 py-2 bg-ember-600 text-base font-medium text-white hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300 sm:w-auto sm:text-sm"
+                  className="w-full inline-flex justify-center rounded-control border border-transparent shadow-sm px-4 py-2 bg-ember-600 text-base font-medium text-white hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300 sm:w-auto sm:text-sm"
                 >
                   Save Changes
                 </button>

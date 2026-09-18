@@ -23,6 +23,21 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          // Browsers must not second-guess content types.
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          // A financial portal has no business inside anyone's iframe.
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

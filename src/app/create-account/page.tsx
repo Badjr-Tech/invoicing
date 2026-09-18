@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useFormState } from "react-dom";
 import Link from "next/link";
 import { createAccount, FormState } from "./actions";
+import PendingButton from "@/app/components/PendingButton";
 import AuthShell, { authButton, authInput } from "@/app/components/AuthShell";
 
 export default function CreateAccountPage() {
@@ -10,6 +12,8 @@ export default function CreateAccountPage() {
     createAccount,
     undefined,
   );
+  // Set once on mount; the server rejects submissions under 1.5s after this.
+  const [renderedAt] = useState(() => Date.now());
 
   return (
     <AuthShell
@@ -32,13 +36,22 @@ export default function CreateAccountPage() {
           <p className="font-semibold text-clay-800">{state.message}</p>
           <Link
             href="/login"
-            className="mt-4 inline-block rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+            className="mt-4 inline-block rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
           >
             Sign in to get started
           </Link>
         </div>
       ) : (
         <form action={formAction} className="space-y-5">
+          {/* Spam traps. "company" is offscreen — humans never see it, bots
+              autofill it. formRenderedAt lets the server reject sub-1.5s
+              submissions. */}
+          <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden">
+            <label htmlFor="company">Company</label>
+            <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" />
+          </div>
+          <input type="hidden" name="formRenderedAt" value={renderedAt} />
+
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-clay-700">
               Your name
@@ -125,9 +138,9 @@ export default function CreateAccountPage() {
             </p>
           )}
 
-          <button type="submit" className={authButton}>
-            Create account
-          </button>
+          <PendingButton className={authButton} pendingLabel="Creating your account…">
+          Create account
+        </PendingButton>
         </form>
       )}
     </AuthShell>

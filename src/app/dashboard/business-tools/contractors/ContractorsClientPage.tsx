@@ -241,7 +241,7 @@ export default function ContractorsClientPage() {
           <div className="flex space-x-4">
             <button
               type="submit"
-              className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
+              className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2"
             >
               {editingContractor ? 'Update Contractor' : 'Add Contractor'}
             </button>
@@ -310,7 +310,7 @@ export default function ContractorsClientPage() {
                   {!contractor.onboardedAt && (
                     <button
                       onClick={() => handleInviteContractor(contractor.id)}
-                      className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-500"
+                      className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-control text-white bg-ember-600 hover:bg-ember-700"
                     >
                       Invite to Onboard
                     </button>

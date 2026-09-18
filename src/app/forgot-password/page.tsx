@@ -3,6 +3,7 @@
 import { useFormState } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
+import PendingButton from "@/app/components/PendingButton";
 import { forgotPassword } from "./actions";
 
 type FormState = {
@@ -72,12 +73,12 @@ export default function ForgotPasswordPage() {
                 </p>
               )}
 
-              <button
-                type="submit"
-                className="w-full rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+              <PendingButton
+                className="w-full rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
+                pendingLabel="Sending…"
               >
                 Send reset link
-              </button>
+              </PendingButton>
             </form>
           )}
         </div>

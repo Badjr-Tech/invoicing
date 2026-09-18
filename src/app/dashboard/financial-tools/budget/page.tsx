@@ -40,7 +40,7 @@ export default function BudgetPage() {
       <div className="mt-8">
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Other Financial Tools</h2>
         <div className="bg-white p-6 rounded-card shadow-card">
-          <Link href="/dashboard/financial-tools/budget/operating-expenses" className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2">
+          <Link href="/dashboard/financial-tools/budget/operating-expenses" className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2">
             Calculate Operating Expenses
           </Link>
         </div>
@@ -51,7 +51,7 @@ export default function BudgetPage() {
         <h2 className="font-display text-xl font-semibold text-clay-800 mb-4">Your Budgets</h2>
         <div className="bg-white p-6 rounded-card shadow-card">
           <p className="text-clay-700 mb-4">No budgets created yet. Start by creating a new budget.</p>
-          <button className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2">
+          <button className="inline-flex justify-center rounded-control border border-transparent bg-ember-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-sage-300 focus:ring-offset-2">
             Add New Budget
           </button>
         </div>

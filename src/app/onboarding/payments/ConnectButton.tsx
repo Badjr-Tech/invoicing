@@ -40,7 +40,7 @@ export default function ConnectButton({
         type="button"
         onClick={handleClick}
         disabled={isPending}
-        className="rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500 disabled:opacity-60"
+        className="rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700 disabled:opacity-60"
       >
         {isPending ? "Opening Stripe…" : "Connect with Stripe"}
       </button>

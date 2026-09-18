@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { db } from "@/db";
 import { passwordResetTokens, users } from "@/db/schema";
 import { and, eq, gt } from "drizzle-orm";
+import { rateLimited, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
 
 export type FormState = {
   message: string;
@@ -29,6 +30,11 @@ export async function resetPassword(
 
   if (!token) {
     return fail("This reset link is invalid. Request a new one.");
+  }
+
+  // Stops brute-forcing token values.
+  if (await rateLimited("reset-password", 5, 60_000)) {
+    return fail(RATE_LIMIT_MESSAGE);
   }
 
   if (password.length < MIN_PASSWORD_LENGTH) {

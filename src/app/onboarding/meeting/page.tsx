@@ -57,7 +57,7 @@ export default async function MeetingStepPage() {
               href={schedulingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500"
+              className="inline-flex items-center gap-2 rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700"
             >
               <CalendarDays size={16} /> Pick a time
             </a>

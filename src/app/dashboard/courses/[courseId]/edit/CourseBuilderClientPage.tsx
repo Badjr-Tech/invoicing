@@ -473,7 +473,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
           {!isCoursePublished && (
             <button
               onClick={handleAddLesson}
-              className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
+              className="mt-6 w-full flex justify-center py-2 px-4 border border-transparent rounded-control shadow-sm text-sm font-medium text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
             >
               Add New Lesson
             </button>
@@ -502,7 +502,7 @@ export default function CourseBuilderClientPage({ initialCourse, currentUserId }
                   <button
                     type="button"
                     onClick={handleAddExternalUserAccess}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md shadow-sm text-white bg-ember-600 hover:bg-ember-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md shadow-sm text-white bg-ember-600 hover:bg-ember-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-300"
                   >
                     Add Access
                   </button>

@@ -88,7 +88,7 @@ export default function PitchCompetitionClientPage({ initialEvents }: PitchCompe
         <h1 className="font-display text-xl font-semibold">Pitch Competition Events</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-ember-600 text-white px-4 py-2 rounded-control hover:bg-ember-500"
+          className="bg-ember-600 text-white px-4 py-2 rounded-control hover:bg-ember-700"
         >
           Create Event
         </button>

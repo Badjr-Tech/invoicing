@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { rateLimited, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
 import {
   SESSION_COOKIE,
   SESSION_DURATION_MS,
@@ -31,6 +32,11 @@ export async function login(prevState: FormState, formData: FormData) {
 
   if (!email || !password) {
     return { error: "Invalid email or password" };
+  }
+
+  // Ten tries a minute per IP: room for typos, none for credential stuffing.
+  if (await rateLimited("login", 10, 60_000)) {
+    return { error: RATE_LIMIT_MESSAGE };
   }
 
   const user = await db.query.users.findFirst({

@@ -105,7 +105,7 @@ export default function Home() {
           </Link>
           <Link
             href="/create-account"
-            className="rounded-control bg-ember-600 px-4 py-2 font-semibold text-white transition hover:bg-ember-500"
+            className="rounded-control bg-ember-600 px-4 py-2 font-semibold text-white transition hover:bg-ember-700"
           >
             Start free
           </Link>
@@ -132,7 +132,7 @@ export default function Home() {
         <div className="mt-9 flex flex-wrap items-center gap-4">
           <Link
             href="/create-account"
-            className="inline-flex items-center gap-2 rounded-control bg-ember-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-ember-500"
+            className="inline-flex items-center gap-2 rounded-control bg-ember-600 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-ember-700"
           >
             Start your 7 days <ArrowRight size={17} />
           </Link>
@@ -276,7 +276,7 @@ export default function Home() {
           </p>
           <Link
             href="/create-account"
-            className="mt-7 inline-flex items-center gap-2 rounded-control bg-ember-600 px-6 py-3 font-semibold text-white transition hover:bg-ember-500"
+            className="mt-7 inline-flex items-center gap-2 rounded-control bg-ember-600 px-6 py-3 font-semibold text-white transition hover:bg-ember-700"
           >
             Create your account <ArrowRight size={17} />
           </Link>
@@ -284,13 +284,52 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-clay-200">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-8 text-sm text-clay-600">
-          <span>AGENCY — DakJen Creative LLC</span>
-          <Link href="/login" className="font-medium hover:text-clay-800">
-            Sign in
-          </Link>
+        <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-clay-600">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <span>AGENCY — DakJen Creative LLC</span>
+            <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
+              <Link href="/privacy" className="hover:text-clay-800">Privacy</Link>
+              <Link href="/terms" className="hover:text-clay-800">Terms</Link>
+              <a href="mailto:dakjenenterprises@gmail.com" className="hover:text-clay-800">Contact</a>
+              <Link href="/login" className="font-medium hover:text-clay-800">Sign in</Link>
+            </nav>
+          </div>
+          <p className="mt-4 text-xs text-clay-500">
+            No tracking cookies here — we use Vercel Analytics, which is
+            cookieless and anonymous. Details in the{" "}
+            <Link href="/privacy" className="underline underline-offset-2 hover:text-clay-700">
+              privacy policy
+            </Link>.
+          </p>
         </div>
       </footer>
+
+      {/* Structured data for search engines. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                name: "AGENCY",
+                legalName: "DakJen Creative LLC",
+                url: "https://invoicing-eight-lime.vercel.app",
+                logo: "https://invoicing-eight-lime.vercel.app/agency-logo.svg",
+                email: "dakjenenterprises@gmail.com",
+              },
+              {
+                "@type": "WebSite",
+                name: "AGENCY",
+                url: "https://invoicing-eight-lime.vercel.app",
+                description:
+                  "One place for the whole business — invoicing, payments, bookkeeping, budgeting, contracts, classes and real people to talk to.",
+              },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

@@ -46,7 +46,7 @@ export default function TrialBanner({
 
       <Link
         href="/onboarding"
-        className="rounded-control bg-ember-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-ember-500"
+        className="rounded-control bg-ember-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-ember-700"
       >
         Finish setup
       </Link>

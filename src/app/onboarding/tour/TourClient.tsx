@@ -263,7 +263,7 @@ export default function TourClient({ alreadyComplete }: { alreadyComplete: boole
           type="button"
           onClick={goNext}
           disabled={isPending}
-          className="flex items-center gap-1.5 rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-500 disabled:opacity-60"
+          className="flex items-center gap-1.5 rounded-control bg-ember-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ember-700 disabled:opacity-60"
         >
           {isLast ? (isPending ? "Finishing…" : "Finish") : "Next"}
           {!isLast && <ArrowRight size={16} />}

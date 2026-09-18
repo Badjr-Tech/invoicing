@@ -3,6 +3,7 @@
 import { useFormState } from "react-dom";
 import Link from "next/link";
 import { login } from "./actions";
+import PendingButton from "@/app/components/PendingButton";
 import AuthShell, { authButton, authInput } from "@/app/components/AuthShell";
 
 type FormState = {
@@ -80,9 +81,9 @@ export default function LoginPage() {
           </p>
         )}
 
-        <button type="submit" className={authButton}>
+        <PendingButton className={authButton} pendingLabel="Signing in…">
           Sign in
-        </button>
+        </PendingButton>
       </form>
     </AuthShell>
   );

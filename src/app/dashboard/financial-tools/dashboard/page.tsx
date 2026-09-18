@@ -99,7 +99,7 @@ export default function FinancialsDashboardPage() {
           </Link>
           <Link
             href="/dashboard/financial-tools/reporting"
-            className="rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-ember-500"
+            className="rounded-control bg-ember-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-ember-700"
           >
             Generate Report
           </Link>
